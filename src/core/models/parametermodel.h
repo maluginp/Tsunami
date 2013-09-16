@@ -13,6 +13,8 @@ public:
     double&  minimum()   const;
     double&  maximum()   const;
     bool&    fixed()     const;
+
+    static QVariantList getColumns();
 private:
     int libraryId_;
     int paramId_;
@@ -20,8 +22,6 @@ private:
     double initial_;
     double minimum_;
     double maximum_;
-    bool fixed_;
-
 
 };
 

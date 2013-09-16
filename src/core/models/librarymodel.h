@@ -1,9 +1,11 @@
 #ifndef LIBRARYMODEL_H
 #define LIBRARYMODEL_H
 #include <QDateTime>
+#include <Model.h>
+
 class ParameterModel;
 
-class LibraryModel {
+class LibraryModel : public Model {
 public:
     LibraryModel();
 
@@ -14,6 +16,10 @@ public:
     QDateTime& createAt() const;
     QDateTime& changeAt() const;
 
+
+    QVariant parameterValue(const int& row,const int& column) const;
+    QString parameterName(const int& row);
+    bool setParameterValue(const int& row,const int& column, const QVariant& value);
     QList<ParameterModel> parameters();
 
 private:
