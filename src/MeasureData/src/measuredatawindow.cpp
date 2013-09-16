@@ -7,8 +7,8 @@ MeasureDataWindow::MeasureDataWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->plotItemSplitter->widget( 0 )->setMaximumWidth( 250 );
-    ui->parameterSplitter->widget(0)->setMaximumWidth( 300 );
+    ui->plotItemSplitter->widget( 0 )->setMaximumWidth( 300 );
+    ui->parameterSplitter->widget(0)->setMaximumWidth( 250 );
 }
 
 MeasureDataWindow::~MeasureDataWindow()
