@@ -28,7 +28,8 @@ SOURCES += main.cpp \
     components/json.cpp \
     views/measureitemview.cpp \
     views/parameteritemview.cpp \
-    views/listitemview.cpp
+    views/listitemview.cpp \
+    models/measureplotmodel.cpp
 
 HEADERS += \
     models/strategymodel.h \
@@ -43,7 +44,8 @@ HEADERS += \
     ../../include/Model.h \
     views/measureitemview.h \
     views/parameteritemview.h \
-    views/listitemview.h
+    views/listitemview.h \
+    models/measureplotmodel.h
 
 include(../../Tsunami.pri)
 
