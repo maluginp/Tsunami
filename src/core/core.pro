@@ -27,7 +27,8 @@ SOURCES += main.cpp \
     dbstorage/dbstorage.cpp \
     components/json.cpp \
     views/measureitemview.cpp \
-    views/parameteritemview.cpp
+    views/parameteritemview.cpp \
+    views/listitemview.cpp
 
 HEADERS += \
     models/strategymodel.h \
@@ -41,7 +42,8 @@ HEADERS += \
     components/json.h \
     ../../include/Model.h \
     views/measureitemview.h \
-    views/parameteritemview.h
+    views/parameteritemview.h \
+    views/listitemview.h
 
 include(../../Tsunami.pri)
 
