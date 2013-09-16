@@ -11,6 +11,11 @@ CONFIG(release,debug|release){
 
 
 HEADERS += \
-    ../../include/defines.h
+    ../../include/defines.h \
+    src/measuredatawindow.h
 
-SOURCES += src/main.cpp
+SOURCES += src/main.cpp \
+    src/measuredatawindow.cpp
+
+FORMS += \
+    src/measuredatawindow.ui

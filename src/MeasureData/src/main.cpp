@@ -1,13 +1,10 @@
-#include <iostream>
+#include <QApplication>
+#include "measuredatawindow.h"
 
+int main(int argc, char *argv[]) {
+    QApplication a(argc, argv);
+    MeasureDataWindow mainWindow;
+    mainWindow.show();
 
-//#include <defines.h>
-
-using namespace std;
-
-int main(){
-
-//    at = QtJson::parse( QString("[1,2,3]") ).toList();
-    cout << "MAIN" << endl;
-    return 0;
+    return a.exec();
 }
