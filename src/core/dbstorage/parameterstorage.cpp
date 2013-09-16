@@ -1,4 +1,5 @@
 #include "parameterstorage.h"
+#include "models/librarymodel.h"
 
 const QString ParameterStorage::TABLE_NAME_PARAMETERS = QString("parameters");
 const QString ParameterStorage::TABLE_NAME_LIBRARIES  = QString("libraries");
@@ -20,8 +21,28 @@ void ParameterStorage::saveLibraryImpl(const LibraryModel &library) {
 
     QString sqlQuery;
 
-//    sqlQuery = sql("INSERT OR REPLACE INTO %1("
-//                   "library_id")
+    sqlQuery = sql("INSERT INTO %1( name, project_id, user_id, create_at, change_at, enable) "
+                   "       VALUES (:name,:project_id,:user_id,:create_at,:change_at,:enable)")
+            .arg(TABLE_NAME_LIBRARIES);
+
+    int lastInsertId=0;
+
+    sqlQuery = sql("INSERT INTO %1( name, initial, minimum, maximum, library_id)"
+                   "        VALUES(:name,:initial,:minimum,:maximum,:library_id")
+            .arg(TABLE_NAME_PARAMETERS);
+
+    saveToCache( library );
+}
+
+LibraryModel ParameterStorage::openLibraryImpl(const int &libraryId) {
+   QString sqlQuery;
+   LibraryModel library;
+   sqlQuery = sql("SELECT * FROM %1 WHERE library_id=:library_id").arg(TABLE_NAME_LIBRARIES);
+
+   lastLibrary_ = library;
+   saveToCache( library );
+
+   return library;
 }
 
 void ParameterStorage::createTable(const ParameterStorage::ParameterTable &table) {
@@ -46,6 +67,18 @@ void ParameterStorage::createTable(const ParameterStorage::ParameterTable &table
                         "maximum REAL,"
                         "library_id INTEGER"
                         ")").arg(TABLE_NAME_PARAMETERS);
+    }
+
+}
+
+void ParameterStorage::saveToCache(const LibraryModel &library) {
+
+    if(cachedLibraries_.size() <= CACHE_SIZE_PARAMETER_STORAGE){
+        cachedLibraries_.insert( library.id(), library );
+    }else{
+        //! Удаляем первый элемент кэша
+        cachedLibraries_.erase( cachedLibraries_.begin() );
+        cachedLibraries_.insert( library.id(), library );
     }
 
 }
