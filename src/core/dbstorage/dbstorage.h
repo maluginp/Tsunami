@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QtSql>
 
-const QString dbMain = QString("base.db");
+
 
 class DbStorage : public QObject {
     Q_OBJECT
@@ -13,6 +13,8 @@ public:
     bool isOpen();
     QString lastError();
     virtual QString dbName() = 0;
+
+    QString sql(const char* sql);
 
 protected:
     explicit DbStorage(QObject *parent = 0);
@@ -26,7 +28,7 @@ protected:
     bool createTable(const QString& table, const QStringList& columns);
 
     QMutex dbMutex_;
-
+    const QString dbMain;
 private:
     QSqlDatabase allocateDb();
 

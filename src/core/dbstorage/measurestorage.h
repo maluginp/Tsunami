@@ -7,7 +7,9 @@
 
 class MeasureModel;
 
-const QString measureConnectionName = QString("measure_connection");
+
+
+const QString CONNECTION_NAME_MEASURE = QString("measure_connection");
 
 class MeasureStorage : public DbStorage, public Singleton<MeasureStorage> {
 public:
@@ -22,11 +24,16 @@ protected:
     QString connectionName() const;
 
 private:
+
     MeasureModel openMeasureImpl(const int& measureId);
     bool saveMeasureImpl(const MeasureModel& measure);
-    void createDbStructure();
+    void createTable( const MeasureTable& table );
 
+    enum MeasureTable{
+        TABLE_MEASURES
+    };
 
+    const QString TABLE_NAME_MEASURES;
 };
 
 

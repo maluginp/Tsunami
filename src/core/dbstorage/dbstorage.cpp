@@ -1,4 +1,5 @@
 #include "dbstorage.h"
+const QString DbStorage::dbMain = QString("base.db");
 
 bool DbStorage::isOpen() {
     return db().isOpen();
@@ -6,6 +7,10 @@ bool DbStorage::isOpen() {
 
 QString DbStorage::lastError() {
     return *lastErrors_.localData();
+}
+
+QString DbStorage::sql(const char *sql) {
+   return QString::fromLatin1( sql );
 }
 
 DbStorage::DbStorage(QObject *parent) :

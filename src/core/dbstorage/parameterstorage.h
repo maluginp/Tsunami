@@ -8,6 +8,7 @@
 class LibraryModel;
 
 #define CACHE_SIZE_PARAMETER_STORAGE 10
+const QString CONNECTION_NAME_PARAMETER = QString("parameter_connection");
 
 class ParameterStorage : public DbStorage, public Singleton<ParameterStorage> {
 public:
@@ -24,13 +25,22 @@ public:
 protected:
     QString connectionName() const;
 private:
-    void addLibraryImpl( const LibraryModel& library );
-    LibraryModel getLibraryImpl( const int& libraryId );
+    void saveLibraryImpl( const LibraryModel& library );
+    LibraryModel openLibraryImpl( const int& libraryId );
     void addParameterToLibraryImpl( const ParameterModel& parameter );
 
-    LibraryModel lastLibrary_;
+    void createTable( const ParameterTable& table);
 
+    LibraryModel lastLibrary_;
     mutable QMap<int, LibraryModel> cachedLibraries_;
+
+    enum ParameterTable{
+        TABLE_PARAMETERS,
+        TABLE_LIBRARIES
+    };
+
+    const QString TABLE_NAME_PARAMETERS;
+    const QString TABLE_NAME_LIBRARIES;
 };
 
 #endif // PARAMETERSTORAGE_H
