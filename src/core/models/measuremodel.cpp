@@ -149,3 +149,29 @@ QString MeasureModel::jsonData() const {
 
     return json;
 }
+
+
+int MeasureModel::dataRows() {
+    return data_.items.size();
+}
+
+int MeasureModel::dataColumns() {
+    return data_.columns.size();
+}
+
+QVariant MeasureModel::getColumnName(const int &section) const {
+    if( section < data_.columns.size() ){
+        return data_.columns.at( section );
+    }
+    return QVariant("");
+}
+
+QVariant MeasureModel::item(const int &row, const int &column) const {
+    // check
+    QVariant value = data_.items[row][column];
+    return value;
+}
+
+QVariant &MeasureModel::item(const int &row, const int &column) {
+    return data_.items[row][column];
+}

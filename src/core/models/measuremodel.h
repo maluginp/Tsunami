@@ -41,6 +41,11 @@ public:
     unsigned projectId() const;
     MeasureHeader header() const;
 
+    int dataRows();
+    int dataColumns();
+    QVariant getColumnName(const int& section) const;
+    QVariant item(const int& row, const int& column) const;
+    QVariant& item(const int &row, const int &column);
 
 private:
     void parseJsonHeader(const QString& header);
