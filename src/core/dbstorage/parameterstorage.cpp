@@ -93,9 +93,15 @@ bool ParameterStorage::saveLibraryImpl(const LibraryModel &library) {
         return false;
     }
 
-    int lastInsertId=q.lastInsertId();
+    int lastInsertId;
+    if(isNew){
+        lastInsertId = q.lastInsertId();
+    }else{
+        lastInsertId = library.id();
+    }
 
-    sqlQuery = sql("INSERT INTO %1( name, initial, minimum, maximum, library_id)"
+
+    sqlQuery = sql("INSERT OR REPLACE INTO %1( name, initial, minimum, maximum, library_id)"
                    "        VALUES(:name,:initial,:minimum,:maximum,:library_id")
             .arg(TABLE_NAME_PARAMETERS);
 
@@ -204,7 +210,7 @@ void ParameterStorage::createTable(const ParameterStorage::ParameterTable &table
     QString sqlQuery("");
     if(table == ParameterStorage::TABLE_LIBRARIES){
         sqlQuery = sql( "CREATE TABLE IF NOT EXISTS %1 ("
-                        "library_id INTEGER PRIMARY KEY,"
+                        "library_id INTEGER PRIMARY KEY ON CONFLICT REPLACE,"
                         "name TEXT,"
                         "project_id INTEGER,"
                         "user_id INTEGER,"
@@ -215,7 +221,7 @@ void ParameterStorage::createTable(const ParameterStorage::ParameterTable &table
 
     }else if(table == ParameterStorage::TABLE_PARAMETERS){
         sqlQuery = sql( "CREATE TABLE IF NOT EXISTS %1 ("
-                        "param_id INTEGER PRIMARY KEY,"
+                        "param_id INTEGER PRIMARY KEY ON CONFLICT REPLACE,"
                         "name TEXT,"
                         "initial REAL,"
                         "minimum REAL,"
