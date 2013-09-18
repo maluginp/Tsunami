@@ -1,15 +1,17 @@
 #include "parameterstorage.h"
-#include "models/librarymodel.h"
+#include "../models/librarymodel.h"
 
-const QString ParameterStorage::TABLE_NAME_PARAMETERS = QString("parameters");
-const QString ParameterStorage::TABLE_NAME_LIBRARIES  = QString("libraries");
+QString ParameterStorage::TABLE_NAME_PARAMETERS = QString("parameters");
+QString ParameterStorage::TABLE_NAME_LIBRARIES  = QString("libraries");
+QString ParameterStorage::CONNECTION_NAME_PARAMETER = QString("parameter_connection");
 
-ParameterStorage::ParameterStorage()
+
+ParameterStorage::ParameterStorage() : DbStorage(0)
 {
 }
 
 QString ParameterStorage::dbName() const {
-    return DbStorage::dbMain;
+    return DbStorage::DBASE_COMMON_NAME;
 
 }
 

@@ -1,6 +1,4 @@
 #include "parameteritemview.h"
-#include "models/librarymodel.h"
-#include "models/parametermodel.h"
 
 ParameterItemView::ParameterItemView(const int& libraryId,QObject *parent) :
     QAbstractItemModel(parent) {
@@ -26,7 +24,7 @@ QModelIndex ParameterItemView::parent(const QModelIndex &child) const {
 }
 
 int ParameterItemView::rowCount(const QModelIndex &parent) const {
-    return library_.parameters().size();
+    return rows_;
 }
 
 int ParameterItemView::columnCount(const QModelIndex &parent) const {
@@ -50,7 +48,7 @@ Qt::ItemFlags ParameterItemView::flags(const QModelIndex &index) const {
 void ParameterItemView::openParameters(const int &libraryId) {
     library_ = storage_->openLibrary( libraryId );
     storeLibrary_ = library_;
-
+    rows_ = library_.parameters().size();
     columns_ = ParameterModel::getColumns();
 }
 
@@ -75,7 +73,7 @@ QVariant ParameterItemView::headerData(int section, Qt::Orientation orientation,
     }
 
     if(orientation == Qt::Vertical){
-        return QVariant( library_.parameterName( section ) );
+        return QVariant(library_.parameterName( section ));
     }
 
     return QVariant();

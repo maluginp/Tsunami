@@ -1,20 +1,18 @@
 #ifndef MEASURESTORAGE_H
 #define MEASURESTORAGE_H
 #include "dbstorage.h"
-#include <QVariantMap>
-#include <QtSql>
 #include <singleton.h>
 
-class MeasureModel;
-
-
-
-const QString CONNECTION_NAME_MEASURE = QString("measure_connection");
+#include "../models/measuremodel.h"
 
 class MeasureStorage : public DbStorage, public Singleton<MeasureStorage> {
 public:
+    enum MeasureTable{
+        TABLE_MEASURES
+    };
+
     MeasureStorage();
-    QString dbName();
+    QString dbName() const;
 
     bool saveMeasure(const MeasureModel& measure);
     MeasureModel openMeasure(const int& measureId);
@@ -29,11 +27,8 @@ private:
     bool saveMeasureImpl(const MeasureModel& measure);
     void createTable( const MeasureTable& table );
 
-    enum MeasureTable{
-        TABLE_MEASURES
-    };
-
-    const QString TABLE_NAME_MEASURES;
+    static QString CONNECTION_NAME_MEASURE;
+    static QString TABLE_NAME_MEASURES;
 };
 
 

@@ -45,12 +45,12 @@ public:
     int dataColumns();
     QVariant getColumnName(const int& section) const;
     QVariant item(const int& row, const int& column) const;
-    QVariant& item(const int &row, const int &column);
+    double &item(const int &row, const int &column);
 
 private:
     void parseJsonHeader(const QString& header);
     void parseJsonHeaderData(const QString& headerData);
-    void parseJsonData( const QString& data );
+    void parseJsonData(const QString& jsonData );
 
     QString jsonHeader() const;
     QString jsonHeaderData() const;

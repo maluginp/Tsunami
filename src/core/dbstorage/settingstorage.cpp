@@ -1,5 +1,5 @@
 #include "settingstorage.h"
 
-SettingStorage::SettingStorage()
+SettingStorage::SettingStorage() : DbStorage(0)
 {
 }

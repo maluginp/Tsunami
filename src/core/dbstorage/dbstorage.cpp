@@ -1,5 +1,14 @@
 #include "dbstorage.h"
-const QString DbStorage::dbMain = QString("base.db");
+QString DbStorage::DBASE_COMMON_NAME = QString("base.db");
+
+
+DbStorage::DbStorage(QObject *parent) :
+    QObject(parent) {
+}
+
+DbStorage::~DbStorage() {
+
+}
 
 bool DbStorage::isOpen() {
     return db().isOpen();
@@ -13,9 +22,6 @@ QString DbStorage::sql(const char *sql) {
    return QString::fromLatin1( sql );
 }
 
-DbStorage::DbStorage(QObject *parent) :
-    QObject(parent) {
-}
 
 bool DbStorage::tableExists(const QString &table) {
     setLastError(QString());

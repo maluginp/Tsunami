@@ -2,7 +2,7 @@
 #define PARAMETERITEMVIEW_H
 
 #include <QAbstractItemModel>
-#include "dbstorage/parameterstorage.h"
+#include "../dbstorage/parameterstorage.h"
 
 class LibraryModel;
 

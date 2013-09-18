@@ -17,6 +17,7 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp \
+    components/json.cpp \
     models/strategymodel.cpp \
     models/parametermodel.cpp \
     models/measuremodel.cpp \
@@ -25,13 +26,13 @@ SOURCES += main.cpp \
     dbstorage/parameterstorage.cpp \
     dbstorage/measurestorage.cpp \
     dbstorage/dbstorage.cpp \
-    components/json.cpp \
     views/measureitemview.cpp \
     views/parameteritemview.cpp \
     views/listitemview.cpp \
     models/measureplotmodel.cpp
 
 HEADERS += \
+    components/json.h \
     models/strategymodel.h \
     models/parametermodel.h \
     models/measuremodel.h \
@@ -40,8 +41,6 @@ HEADERS += \
     dbstorage/parameterstorage.h \
     dbstorage/measurestorage.h \
     dbstorage/dbstorage.h \
-    components/json.h \
-    ../../include/Model.h \
     views/measureitemview.h \
     views/parameteritemview.h \
     views/listitemview.h \

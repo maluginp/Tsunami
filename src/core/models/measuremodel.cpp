@@ -1,5 +1,5 @@
 #include "measuremodel.h"
-#include "json.h"
+#include "../components/json.h"
 
 MeasureModel::MeasureModel()
 {
@@ -66,10 +66,10 @@ void MeasureModel::parseJsonHeaderData(const QString &headerData) {
     }
 }
 
-void MeasureModel::parseJsonData(const QString &data) {
+void MeasureModel::parseJsonData(const QString &jsonData) {
     bool ok;
 
-    QVariantMap data = QtJson::parse(data).toMap();
+    QVariantMap data = QtJson::parse(jsonData).toMap();
 
     foreach(QString key, data.keys()){
         if(compare(key,"columns")){
@@ -94,7 +94,7 @@ QString MeasureModel::jsonHeader() const {
     QVariantMap header;
     switch(header_.type){
     case TYPE_DC: header.insert("type",   QVariant("dc"));   break;
-    case TYPE_AC: header.insert("type",   QVariant("ac");    break;
+    case TYPE_AC: header.insert("type",   QVariant("ac"));    break;
     case TYPE_TRAN: header.insert("type", QVariant("tran")); break;
     }
     header.insert("comment",     QVariant(header_.comment));
@@ -172,6 +172,6 @@ QVariant MeasureModel::item(const int &row, const int &column) const {
     return value;
 }
 
-QVariant &MeasureModel::item(const int &row, const int &column) {
+double &MeasureModel::item(const int &row, const int &column) {
     return data_.items[row][column];
 }

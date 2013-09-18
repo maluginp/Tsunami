@@ -2,8 +2,8 @@
 #define MEASUREITEMVIEW_H
 
 #include <QAbstractItemModel>
-class MeasureStorage;
-class MeasureModel;
+#include "../dbstorage/measurestorage.h"
+
 class MeasureItemView : public QAbstractItemModel {
     Q_OBJECT
 public:

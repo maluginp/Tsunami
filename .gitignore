@@ -9,3 +9,6 @@ build/
 tmp/
 Makefile
 *.app
+*.Debug
+*.Release
+stuff

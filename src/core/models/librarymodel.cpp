@@ -1,5 +1,5 @@
 #include "librarymodel.h"
-#include "models/parametermodel.h"
+#include "parametermodel.h"
 LibraryModel::LibraryModel()
 {
 }
@@ -19,6 +19,10 @@ QVariant LibraryModel::parameterValue(const int &row, const int &column) const {
     return QVariant();
 }
 
+QString LibraryModel::parameterName(const int &row) const {
+    return QString();
+}
+
 bool LibraryModel::setParameterValue(const int &row, const int &column, const QVariant &value) {
     bool ok;
 
@@ -34,4 +38,8 @@ bool LibraryModel::setParameterValue(const int &row, const int &column, const QV
     }
 
     return true;
+}
+
+QList<ParameterModel> LibraryModel::parameters() {
+    return parameters_;
 }

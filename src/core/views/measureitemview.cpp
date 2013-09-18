@@ -1,6 +1,7 @@
 #include "measureitemview.h"
-#include "dbstorage/measurestorage.h"
-#include "models/measuremodel.h"
+#include "../dbstorage/measurestorage.h"
+#include "../models/measuremodel.h"
+
 MeasureItemView::MeasureItemView(const int &measureId, QObject *parent) :
     QAbstractItemModel(parent),rows_(0),columns_(0) {
 
@@ -40,7 +41,7 @@ QVariant MeasureItemView::data(const QModelIndex &index, int role) const {
         return QVariant();
     }
 
-    return measure_.item( index.row(), index.column() );
+    return QVariant(measure_.item( index.row(), index.column() ));
 
 }
 
@@ -49,8 +50,9 @@ Qt::ItemFlags MeasureItemView::flags(const QModelIndex &index) const {
 }
 
 bool MeasureItemView::setData(const QModelIndex &index, const QVariant &value, int role) {
+    bool ok;
     if(role == Qt::EditRole){
-        measure_.item( index.row(), index.column() ) = value;
+        measure_.item( index.row(), index.column() ) = value.toDouble(&ok);
     }
     return false;
 }

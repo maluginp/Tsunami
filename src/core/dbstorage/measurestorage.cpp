@@ -1,14 +1,15 @@
 #include "measurestorage.h"
 #include "../models/measuremodel.h"
 
-const QString MeasureStorage::TABLE_NAME_MEASURES = QString("measures");
+QString MeasureStorage::TABLE_NAME_MEASURES = QString("measures");
+QString MeasureStorage::CONNECTION_NAME_MEASURE = QString("measure_connection");
 
 MeasureStorage::MeasureStorage()
 {
 }
 
-QString MeasureStorage::dbName() {
-    return DbStorage::dbMain;
+QString MeasureStorage::dbName() const {
+    return DbStorage::DBASE_COMMON_NAME;
 }
 
 QString MeasureStorage::connectionName() const {
@@ -32,20 +33,12 @@ void MeasureStorage::createTable(const MeasureTable &table) {
     }
 
 }
-QString MeasureStorage::getTableMeasures() const
-{
-    return tableMeasures;
-}
 
-
-
-bool MeasureStorage::addMeasureImpl(const MeasureModel &measure) {
-
-
-
+bool MeasureStorage::saveMeasureImpl(const MeasureModel &measure) {
+    return false;
 }
 
 
 MeasureModel MeasureStorage::openMeasure(const int &measureId) {
-
+    return MeasureModel();
 }

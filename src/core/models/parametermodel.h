@@ -5,6 +5,7 @@
 #include <QVariant>
 class ParameterModel {
 public:
+    ParameterModel() {};
     ParameterModel(const QString& name, double initial, double minimum, double maximum, bool fixed);
     int&     id()        const;
     int&     libraryId() const;
