@@ -15,7 +15,11 @@ public:
     int& userId() const;
     QDateTime& createAt() const;
     QDateTime& changeAt() const;
+    bool enable() const;
 
+    void updateLibraryId(const int& libraryId );
+
+    bool parameterExists( const QString& parameter );
 
     QVariant parameterValue(const int& row,const int& column) const;
     QString parameterName(const int &row) const;
@@ -29,6 +33,7 @@ private:
     QDateTime createAt_;
     QDateTime changeAt_;
     QString name_;
+    bool enable_;
 
     QList<ParameterModel> parameters_;
 };

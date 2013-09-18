@@ -4,6 +4,24 @@ LibraryModel::LibraryModel()
 {
 }
 
+void LibraryModel::updateLibraryId(const int &libraryId) {
+    int rows = parameters_.size();
+    for(int row=0; row < rows; ++row){
+        parameters_[row].libraryId_ = libraryId;
+    }
+    libraryId_ = libraryId;
+}
+
+bool LibraryModel::parameterExists(const QString &parameter) {
+    foreach(ParameterModel param, parameters_){
+        if(param.name() == parameter){
+            return true;
+        }
+    }
+
+    return false;
+}
+
 
 QVariant LibraryModel::parameterValue(const int &row, const int &column) const {
     ParameterModel parameter = parameters_.value(row);

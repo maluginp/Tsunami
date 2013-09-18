@@ -5,6 +5,21 @@
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlError>
+#include <QtSql/QSqlRecord>
+namespace detail {
+    template <class T>
+    struct proxy{
+        T* resource_;
+    };
+}
+template <class T>
+struct TransactionCtx{
+    T* storage_;
+    bool isCommited_;
+    TransactionCtx(T* storage, bool isCommited):
+        storage_(storage), isCommited_(isCommited) {}
+
+};
 
 class DbStorage : public QObject {
     Q_OBJECT
@@ -27,6 +42,9 @@ protected:
     void setLastError(const QString& msg);
 
     bool createTable(const QString& table, const QStringList& columns);
+    bool beginTransaction();
+    bool rollback();
+    bool endTransaction();
 
     QMutex dbMutex_;
     static QString DBASE_COMMON_NAME;

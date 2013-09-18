@@ -19,7 +19,7 @@ QString DbStorage::lastError() {
 }
 
 QString DbStorage::sql(const char *sql) {
-   return QString::fromLatin1( sql );
+    return QString::fromLatin1( sql );
 }
 
 
@@ -53,6 +53,51 @@ void DbStorage::closeAll() {
 
 void DbStorage::setLastError(const QString &msg) {
     lastErrors_.setLocalData( new QString(msg) );
+}
+
+bool DbStorage::beginTransaction() {
+    setLastError( QString() );
+    QSqlDatabase& dbc = db();
+    if(!dbc.isOpen()){
+        setLastError( QString("Database is not open") );
+        return false;
+    }
+    if(!dbc.transaction()){
+        setLastError( dbc.lastError().text() );
+        return false;
+    }
+
+    return true;
+
+}
+
+bool DbStorage::rollback(){
+    setLastError( QString() );
+    QSqlDatabase& dbc = db();
+    if(!dbc.isOpen()){
+        setLastError( QString("Database is not open") );
+        return false;
+    }
+    if(!dbc.rollback()){
+        setLastError( dbc.lastError().text() );
+        return false;
+    }
+
+    return true;
+}
+
+bool DbStorage::endTransaction() {
+    setLastError( QString() );
+    QSqlDatabase& dbc = db();
+    if(!dbc.isOpen()){
+        setLastError( QString("Database is not open") );
+        return false;
+    }
+    if(!dbc.commit()){
+        setLastError( dbc.lastError().text() );
+        return false;
+    }
+    return true;
 }
 
 QSqlDatabase DbStorage::allocateDb() {

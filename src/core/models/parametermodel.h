@@ -3,7 +3,10 @@
 
 #include <QString>
 #include <QVariant>
+class LibraryModel;
+
 class ParameterModel {
+    friend class LibraryModel;
 public:
     ParameterModel() {};
     ParameterModel(const QString& name, double initial, double minimum, double maximum, bool fixed);

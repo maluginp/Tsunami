@@ -9,7 +9,6 @@
 #include "../models/parametermodel.h"
 
 #define CACHE_SIZE_PARAMETER_STORAGE 10
-
 class ParameterStorage : public DbStorage, public Singleton<ParameterStorage> {
     enum ParameterTable{
         TABLE_PARAMETERS,
@@ -20,7 +19,7 @@ public:
 
     QString dbName() const;
     LibraryModel library();
-
+    bool saveLibrary( );
     bool saveLibrary( const LibraryModel& library );
     bool addParameterToLibrary( const ParameterModel& parameter );
     LibraryModel openLibrary( const int& libraryId );
@@ -31,7 +30,7 @@ protected:
 private:
 
 
-    void saveLibraryImpl( const LibraryModel& library );
+    bool saveLibraryImpl( const LibraryModel& library );
     LibraryModel openLibraryImpl( const int& libraryId );
     void addParameterToLibraryImpl( const ParameterModel& parameter );
 
