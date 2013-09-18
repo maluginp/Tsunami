@@ -23,9 +23,16 @@ void ParameterStorage::saveLibraryImpl(const LibraryModel &library) {
 
     QString sqlQuery;
 
+    //! Start commit
+
     sqlQuery = sql("INSERT INTO %1( name, project_id, user_id, create_at, change_at, enable) "
                    "       VALUES (:name,:project_id,:user_id,:create_at,:change_at,:enable)")
             .arg(TABLE_NAME_LIBRARIES);
+
+    QSqlQuery q( sqlQuery, db() );
+
+
+
 
     int lastInsertId=0;
 
