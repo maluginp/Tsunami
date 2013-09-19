@@ -6,6 +6,7 @@
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlError>
 #include <QtSql/QSqlRecord>
+
 namespace detail {
     template <class T>
     struct proxy{
