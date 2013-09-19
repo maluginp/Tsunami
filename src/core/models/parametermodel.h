@@ -3,20 +3,27 @@
 
 #include <QString>
 #include <QVariant>
-class LibraryModel;
+//class LibraryModel;
 
 class ParameterModel {
-    friend class LibraryModel;
 public:
     ParameterModel() {};
     ParameterModel(const QString& name, double initial, double minimum, double maximum, bool fixed);
-    int&     id()        const;
-    int&     libraryId() const;
-    QString& name()      const;
-    double&  initial()   const;
-    double&  minimum()   const;
-    double&  maximum()   const;
-    bool&    fixed()     const;
+
+    const int&     id()        const;
+    const int&     libraryId() const;
+    const QString& name()      const;
+    const double&  initial()   const;
+    const double&  minimum()   const;
+    const double&  maximum()   const;
+
+    ParameterModel& setId(const int& id);
+    ParameterModel& setLibraryId(const int& libraryId);
+    ParameterModel& setName(const QString& name);
+    ParameterModel& setInitial(const double& initial);
+    ParameterModel& setMinimum(const double& minimum);
+    ParameterModel& setMaximum(const double& maximum);
+
 
     static QVariantList getColumns();
 private:

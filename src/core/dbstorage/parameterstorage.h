@@ -22,8 +22,8 @@ public:
     bool saveLibrary( );
     bool saveLibrary( const LibraryModel& library );
     bool addParameterToLibrary( const ParameterModel& parameter );
-    LibraryModel openLibrary( const int& libraryId );
-    void setCurrentLibrary(  const int& libraryId );
+    LibraryModel openLibrary( const int& libraryId ) const;
+    void setCurrentLibrary(  const int& libraryId ) const;
 
 protected:
     QString connectionName() const;
@@ -31,17 +31,15 @@ private:
 
 
     bool saveLibraryImpl( const LibraryModel& library );
-    LibraryModel openLibraryImpl( const int& libraryId );
-    void addParameterToLibraryImpl( const ParameterModel& parameter );
+    LibraryModel openLibraryImpl( const int& libraryId ) const;
+    void addParameterToLibraryImpl( const ParameterModel& parameter ) const;
 
-    void createTable( const ParameterTable& table);
+    bool createTable( const ParameterTable& table);
 
     void saveToCache( const LibraryModel& library );
 
     LibraryModel lastLibrary_;
     mutable QMap<int, LibraryModel> cachedLibraries_;
-
-
 
     static QString TABLE_NAME_PARAMETERS;
     static QString TABLE_NAME_LIBRARIES;

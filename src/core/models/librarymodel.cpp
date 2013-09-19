@@ -12,7 +12,7 @@ void LibraryModel::updateLibraryId(const int &libraryId) {
     libraryId_ = libraryId;
 }
 
-bool LibraryModel::parameterExists(const QString &parameter) {
+bool LibraryModel::parameterExists(const QString &parameter) const {
     foreach(ParameterModel param, parameters_){
         if(param.name() == parameter){
             return true;
@@ -37,7 +37,7 @@ QVariant LibraryModel::parameterValue(const int &row, const int &column) const {
     return QVariant();
 }
 
-QString LibraryModel::parameterName(const int &row) const {
+const QString &LibraryModel::parameterName(const int &row) const {
     return QString();
 }
 
@@ -58,6 +58,6 @@ bool LibraryModel::setParameterValue(const int &row, const int &column, const QV
     return true;
 }
 
-QList<ParameterModel> LibraryModel::parameters() {
+QList<ParameterModel> LibraryModel::parameters() const {
     return parameters_;
 }

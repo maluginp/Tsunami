@@ -9,21 +9,27 @@ class LibraryModel : public Model {
 public:
     LibraryModel();
 
-    QString& name() const;
-    int& id() const;
-    int& projectId() const;
-    int& userId() const;
-    QDateTime& createAt() const;
-    QDateTime& changeAt() const;
-    bool enable() const;
+    const QString& name() const;
+    const int& id() const;
+    const int& projectId() const;
+    const int& userId() const;
+    const QDateTime& createAt() const;
+    const QDateTime& changeAt() const;
+    const bool& enable() const;
 
-    void updateLibraryId(const int& libraryId );
+    LibraryModel& setId(const int& id);
+    LibraryModel& setProjectId(const int& projectId);
+    LibraryModel& setUserId(const int& userId);
+    LibraryModel& setCreateAt(const QDateTime& createAt);
+    LibraryModel& setChangeAt(const QDateTime& changeAt);
+    LibraryModel& setEnable(const bool& enable);
 
-    bool parameterExists( const QString& parameter );
+    bool parameterExists( const QString& parameter ) const;
 
     QVariant parameterValue(const int& row,const int& column) const;
     QString parameterName(const int &row) const;
     bool setParameterValue(const int& row,const int& column, const QVariant& value);
+
     QList<ParameterModel> parameters();
 
 private:
