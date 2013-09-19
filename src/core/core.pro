@@ -9,8 +9,7 @@ QT       += core
 QT       -= gui
 
 TARGET   =  core
-CONFIG   += console
-CONFIG   += sql
+CONFIG   += console sql
 CONFIG   -= app_bundle
 
 TEMPLATE = app

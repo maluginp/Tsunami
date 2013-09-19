@@ -34,7 +34,7 @@ QString MeasureStorage::connectionName() const {
     return CONNECTION_NAME_MEASURE;
 }
 
-const MeasureModel &MeasureStorage::openMeasureImpl(const int &measureId) const {
+MeasureModel MeasureStorage::openMeasureImpl(const int &measureId) {
     setLastError( QString() );
 
     if( cachedMeasures_.contains( measureId ) ){
@@ -123,20 +123,23 @@ bool MeasureStorage::saveMeasureImpl(const MeasureModel &measure) {
 
     QString sqlQuery;
 
+    MeasureModel model = measure;
+
+
     if(!beginTransaction()){
         return false;
     }
 
     sqlQuery = sql("INSERT OR REPLACE INTO %1(measure_id,project_id,header,"
                    "header_data,data,create_at,change_at,enable) "
-                   "VALUES (:measure_id,:project_id,:header,:header_data,:data,
+                   "VALUES (:measure_id,:project_id,:header,:header_data,:data,"
                    ":create_at,:change_at,:enable)").arg(TABLE_NAME_MEASURES);
 
     QSqlQuery q(sqlQuery,db());
 
-    if(measure.id() == -1){
-        int lastInsertId = q.lastInsertId();
-        measure.setId( lastInsertId + 1 );
+    if(model.id() == -1){
+        int lastInsertId = q.lastInsertId().toInt() + 1;
+        model.setId( lastInsertId );
     }
 
     q.bindValue(":measure_id", measure.id() );
@@ -159,12 +162,12 @@ bool MeasureStorage::saveMeasureImpl(const MeasureModel &measure) {
         return false;
     }
 
-    saveCache( measure );
+    saveCache( model );
 
     return true;
 }
 
 
-const MeasureModel& MeasureStorage::openMeasure(const int &measureId) const {
+MeasureModel MeasureStorage::openMeasure(const int &measureId) {
     return openMeasureImpl( measureId );
 }

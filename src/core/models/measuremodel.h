@@ -52,7 +52,7 @@ public:
 
 
     double &item(const int &row, const int &column);
-    const QVariant& itemAt(const int& row, const int& column) const;
+    const QVariant& itemAt(const QModelIndex& index) const;
 
     int dataRows();
     int dataColumns();

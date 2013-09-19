@@ -25,13 +25,14 @@ protected:
     QString connectionName() const;
 
 private:
-    const MeasureModel& openMeasureImpl(const int& measureId) const;
+
+    MeasureModel openMeasureImpl(const int& measureId);
     bool saveMeasureImpl(const MeasureModel& measure);
     bool createTable( const MeasureTable& table );
 
-    void saveCache( const MeasureModel& measure );
+    void saveCache( const MeasureModel& measure ) const;
 
-    MeasureModel currentMeasure_;
+    mutable MeasureModel currentMeasure_;
 
     mutable QMap<int,MeasureModel> cachedMeasures_;
 

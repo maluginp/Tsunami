@@ -6,6 +6,7 @@
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlError>
 #include <QtSql/QSqlRecord>
+
 namespace detail {
     template <class T>
     struct proxy{
@@ -29,7 +30,7 @@ public:
     QString lastError();
     virtual QString dbName() const = 0;
 
-    QString sql(const char* sql);
+    const QString& sql(const char* sql) const;
 
 protected:
     explicit DbStorage(QObject *parent = 0);

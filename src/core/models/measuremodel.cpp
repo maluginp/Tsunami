@@ -167,7 +167,7 @@ int MeasureModel::dataColumns() {
     return data_.columns.size();
 }
 
-QVariant MeasureModel::getColumnName(const int &section) const {
+const QVariant& MeasureModel::getColumnName(const int &section) const {
     if( section < data_.columns.size() ){
         return data_.columns.at( section );
     }
@@ -176,22 +176,22 @@ QVariant MeasureModel::getColumnName(const int &section) const {
 
 MeasureModel &MeasureModel::setId(const int &id) {
     measureId_ = id;
-    return this;
+    return *this;
 }
 
 MeasureModel &MeasureModel::setProjectId(const int &projectId) {
     projectId_ = projectId;
-    return this;
+    return *this;
 }
 
 MeasureModel &MeasureModel::setHeader(const MeasureHeader &header) {
     header_ = header;
-    return this;
+    return *this;
 }
 
 MeasureModel &MeasureModel::setHeaderData(const QList<MeasureHeaderData> &headerData) {
     headerData_ = headerData;
-    return this;
+    return *this;
 }
 
 MeasureModel &MeasureModel::setHeaderData(const MeasureHeaderData &headerData) {
@@ -199,45 +199,44 @@ MeasureModel &MeasureModel::setHeaderData(const MeasureHeaderData &headerData) {
     headers.append( headerData );
     headerData_ = headers;
 
-    return this;
+    return *this;
 }
 
 MeasureModel &MeasureModel::appendHeaderData(const MeasureHeaderData &headerData) {
     headerData_.append( headerData );
-    return this;
+    return *this;
 }
 
 MeasureModel &MeasureModel::setMeasureData(const MeasureData &data) {
     data_ = data;
-    return this;
+    return *this;
 }
 
 MeasureModel &MeasureModel::setEnable(const bool &enable) {
     enable_ = enable;
-    return this;
+    return *this;
 }
 
 MeasureModel &MeasureModel::setUserId(const int &userId) {
     userId_ = userId;
-    return this;
+    return *this;
 }
 
 MeasureModel &MeasureModel::setCreateAt(const QDateTime &createAt) {
     createAt_ = createAt;
-    return this;
+    return *this;
 }
 
 MeasureModel &MeasureModel::setChangeAt(const QDateTime &changeAt) {
     changeAt_ = changeAt;
-    return this;
-}
-
-const QVariant& itemAt(const int& row, const int& column) const {
-    // check
-    QVariant value = data_.items[row][column];
-    return value;
+    return *this;
 }
 
 double &MeasureModel::item(const int &row, const int &column) {
     return data_.items[row][column];
+}
+
+const QVariant &MeasureModel::itemAt(const QModelIndex &index) const{
+    QVariant value = data_.items[index.row()][index.column()];
+    return value;
 }

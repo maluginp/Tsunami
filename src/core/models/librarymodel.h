@@ -2,11 +2,14 @@
 #define LIBRARYMODEL_H
 #include <QDateTime>
 #include <Model.h>
-
+#include <QModelIndex>
+//#include "../dbstorage/parameterstorage.h"
 
 class ParameterModel;
+class ParameterStorage;
 
 class LibraryModel : public Model {
+    friend class ParameterStorage;
 public:
     LibraryModel();
     ~LibraryModel();
@@ -20,6 +23,7 @@ public:
     inline const bool& enable() const         { return enable_;    }
 
     LibraryModel& setId(const int& id);
+    LibraryModel& setName(const QString& name);
     LibraryModel& setProjectId(const int& projectId);
     LibraryModel& setUserId(const int& userId);
     LibraryModel& setCreateAt(const QDateTime& createAt);
@@ -31,7 +35,7 @@ public:
 
     void setParameter( const QString& parameter, const ParameterModel& model );
     bool parameterExists( const QString& parameter ) const;
-    const QVariant& parameterValue(const QModelIndex& index) const;
+    QVariant parameterValue(const QModelIndex& index) const;
     bool setParameterValue(const QModelIndex& index, const QVariant& value);
 
     QList<ParameterModel> parameters() const;

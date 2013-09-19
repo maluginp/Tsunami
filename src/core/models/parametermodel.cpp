@@ -22,30 +22,30 @@ ParameterModel::ParameterModel() :
 
 ParameterModel &ParameterModel::setId(const int &id) {
     paramId_ = id;
-    return this;
+    return *this;
 }
 
 ParameterModel &ParameterModel::setLibraryId(const int &libraryId) {
     libraryId_ = libraryId;
-    return this;
+    return *this;
 }
 
 ParameterModel &ParameterModel::setName(const QString &name) {
     name_ = name;
-    return this;
+    return *this;
 }
 
 ParameterModel &ParameterModel::setInitial(const double &initial) {
     initial_ = initial;
-    return this;
+    return *this;
 }
 
 ParameterModel &ParameterModel::setMinimum(const double &minimum) {
     minimum_ = minimum;
-    return this;
+    return *this;
 }
 
 ParameterModel &ParameterModel::setMaximum(const double &maximum) {
     maximum_ = maximum;
-    return this;
+    return *this;
 }

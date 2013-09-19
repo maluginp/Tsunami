@@ -36,7 +36,7 @@ int MeasureItemView::columnCount(const QModelIndex &parent) const {
     return columns_;
 }
 
-QVariant MeasureItemView::data(const QModelIndex &index, int role) const {
+QVariant MeasureItemView::data(const QModelIndex &index, int role)  {
     if(role != Qt::EditRole && role != Qt::DisplayRole){
         return QVariant();
     }
