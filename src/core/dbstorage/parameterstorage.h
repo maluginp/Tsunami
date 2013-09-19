@@ -35,7 +35,7 @@ private:
 
     bool createTable( const ParameterTable& table);
 
-    void saveToCache( const LibraryModel& library );
+    void saveCache( const LibraryModel& library );
 
     LibraryModel lastLibrary_;
     mutable QMap<int, LibraryModel> cachedLibraries_;

@@ -4,8 +4,12 @@
 QString MeasureStorage::TABLE_NAME_MEASURES = QString("measures");
 QString MeasureStorage::CONNECTION_NAME_MEASURE = QString("measure_connection");
 
-MeasureStorage::MeasureStorage()
-{
+MeasureStorage::MeasureStorage() {
+
+    if(!tableExists( TABLE_NAME_MEASURES )){
+        createTable( TABLE_MEASURES );
+    }
+
 }
 
 QString MeasureStorage::dbName() const {
