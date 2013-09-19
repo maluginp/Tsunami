@@ -16,6 +16,16 @@ QString MeasureStorage::connectionName() const {
     return CONNECTION_NAME_MEASURE;
 }
 
+const MeasureModel &MeasureStorage::openMeasureImpl(const int &measureId) const {
+    setLastError( QString() );
+
+    QString sqlQuery;
+
+
+
+
+}
+
 void MeasureStorage::createTable(const MeasureTable &table) {
 
     if(table == MeasureStorage::TABLE_MEASURES){

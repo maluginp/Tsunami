@@ -23,7 +23,7 @@ protected:
 
 private:
 
-    MeasureModel openMeasureImpl(const int& measureId);
+    const MeasureModel& openMeasureImpl(const int& measureId) const;
     bool saveMeasureImpl(const MeasureModel& measure);
     void createTable( const MeasureTable& table );
 

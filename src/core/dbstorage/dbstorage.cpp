@@ -102,9 +102,9 @@ bool DbStorage::endTransaction() {
 
 bool DbStorage::dropTable(const QString &table) {
     setLastError(QString());
-    QString querySql = sql( "DROP TABLE %1" ).arg(table);
+    QString sqlQuery = sql( "DROP TABLE %1" ).arg(table);
 
-    QSqlQuery q(querySql,db());
+    QSqlQuery q(sqlQuery,db());
     if(!q.exec()){
         setLastError( q.lastError().text() );
         return false;
