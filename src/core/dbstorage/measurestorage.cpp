@@ -12,12 +12,30 @@ QString MeasureStorage::dbName() const {
     return DbStorage::DBASE_COMMON_NAME;
 }
 
+bool MeasureStorage::saveMeasure() {
+
+    bool res = saveMeasureImpl( currentMeasure_ );
+
+    return res;
+
+}
+
+bool MeasureStorage::saveMeasure(const MeasureModel &measure) {
+    bool res = saveMeasureImpl( measure );
+
+    return res;
+}
+
 QString MeasureStorage::connectionName() const {
     return CONNECTION_NAME_MEASURE;
 }
 
 const MeasureModel &MeasureStorage::openMeasureImpl(const int &measureId) const {
     setLastError( QString() );
+
+    if( cachedMeasures_.contains( measureId ) ){
+        return cachedMeasures_[measureId];
+    }
 
     QString sqlQuery;
 
@@ -44,6 +62,10 @@ const MeasureModel &MeasureStorage::openMeasureImpl(const int &measureId) const 
     model.setChangeAt( q.value(rec.indexOf("change_at")).toDateTime() );
     model.setEnable( q.value(rec.indexOf("enable")).toBool() );
 
+
+    currentMeasure_ = model;
+
+    saveCache( model );
 
     return model;
 
@@ -77,11 +99,68 @@ bool MeasureStorage::createTable(const MeasureTable &table) {
     return true;
 }
 
+void MeasureStorage::saveCache(const MeasureModel &measure) {
+    if( cachedMeasures_.contains( measure.id() ) ){
+        cachedMeasures_[measure.id()] = measure;
+        return;
+    }
+
+    if(cachedMeasures_.size() > CACHE_SIZE_MEASURE_STORAGE){
+        cachedMeasures_.erase( cachedMeasures_.begin() );
+    }
+
+    cachedMeasures_.insert( measure.id(), measure );
+
+
+
+}
+
 bool MeasureStorage::saveMeasureImpl(const MeasureModel &measure) {
-    return false;
+
+    QString sqlQuery;
+
+    if(!beginTransaction()){
+        return false;
+    }
+
+    sqlQuery = sql("INSERT OR REPLACE INTO %1(measure_id,project_id,header,"
+                   "header_data,data,create_at,change_at,enable) "
+                   "VALUES (:measure_id,:project_id,:header,:header_data,:data,
+                   ":create_at,:change_at,:enable)").arg(TABLE_NAME_MEASURES);
+
+    QSqlQuery q(sqlQuery,db());
+
+    if(measure.id() == -1){
+        int lastInsertId = q.lastInsertId();
+        measure.setId( lastInsertId + 1 );
+    }
+
+    q.bindValue(":measure_id", measure.id() );
+    q.bindValue(":project_id",  measure.projectId());
+    q.bindValue(":header", measure.jsonHeader());
+    q.bindValue(":header_data",measure.jsonHeaderData());
+    q.bindValue(":data",measure.jsonData());
+    q.bindValue(":create_at",measure.createAt());
+    q.bindValue(":change_at",measure.changeAt());
+    q.bindValue(":enable",measure.enable());
+
+    if(!q.exec()){
+        setLastError( q.lastError().text() );
+        rollback();
+        return false;
+    }
+
+    if(!endTransaction()){
+//        roolback();
+        return false;
+    }
+
+    saveCache( measure );
+
+    return true;
 }
 
 
-MeasureModel MeasureStorage::openMeasure(const int &measureId) {
-    return MeasureModel();
+const MeasureModel& MeasureStorage::openMeasure(const int &measureId) const {
+    return openMeasureImpl( measureId );
 }

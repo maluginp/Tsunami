@@ -134,12 +134,17 @@ bool ParameterStorage::saveLibraryImpl(const LibraryModel &library) {
     }
 
 
-    saveToCache( lastLibrary_ );
+    saveCache( lastLibrary_ );
     return true;
 }
 
 LibraryModel ParameterStorage::openLibraryImpl(const int &libraryId) const {
     setLastError(QString());
+
+    if(cachedLibraries_.contains(libraryId)){
+        return cachedLibraries_[libraryId];
+    }
+
     QString sqlQuery;
     LibraryModel library;
     sqlQuery = sql("SELECT * FROM %1 WHERE library_id=:library_id").arg(TABLE_NAME_LIBRARIES);
@@ -195,7 +200,7 @@ LibraryModel ParameterStorage::openLibraryImpl(const int &libraryId) const {
 
 
     lastLibrary_ = library;
-    saveToCache( library );
+    saveCache( library );
 
     return library;
 }
@@ -207,7 +212,7 @@ void ParameterStorage::addParameterToLibraryImpl(const ParameterModel &parameter
 
     lastLibrary_.parameters_.append( parameter );
     saveLibraryImpl( lastLibrary_ );
-    saveToCache( lastLibrary_);
+    saveCache( lastLibrary_);
 
 }
 
@@ -247,19 +252,18 @@ bool ParameterStorage::createTable(const ParameterStorage::ParameterTable &table
     return true;
 }
 
-void ParameterStorage::saveToCache(const LibraryModel &library) {
+void ParameterStorage::saveCache(const LibraryModel &library) {
 
     //! Если содержится в кэше, то обновляем
     if( cachedLibraries_.contains(library.id()) ){
         cachedLibraries_[library.id()] = library;
+        return;
     }
 
-    if(cachedLibraries_.size() <= CACHE_SIZE_PARAMETER_STORAGE){
-        cachedLibraries_.insert( library.id(), library );
-    }else{
+    if(cachedLibraries_.size() > CACHE_SIZE_PARAMETER_STORAGE){
         //! Удаляем первый элемент кэша
         cachedLibraries_.erase( cachedLibraries_.begin() );
-        cachedLibraries_.insert( library.id(), library );
     }
+    cachedLibraries_.insert( library.id(), library );
 
 }
