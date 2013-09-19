@@ -5,6 +5,14 @@ MeasureModel::MeasureModel()
 {
 }
 
+const MeasureHeaderData &MeasureModel::headerData(const int &index) const {
+    if( index < 0 || index >= headerData_.size() ){
+        return MeasureHeaderData();
+    }
+
+    return headerData_[index];
+}
+
 
 void MeasureModel::parseJsonHeader(const QString &header) {
 
@@ -166,7 +174,55 @@ QVariant MeasureModel::getColumnName(const int &section) const {
     return QVariant("");
 }
 
-QVariant MeasureModel::item(const int &row, const int &column) const {
+MeasureModel &MeasureModel::setId(const int &id) {
+    measureId_ = id;
+    return this;
+}
+
+MeasureModel &MeasureModel::setProjectId(const int &projectId) {
+    projectId_ = projectId;
+    return this;
+}
+
+MeasureModel &MeasureModel::setHeader(const MeasureHeader &header) {
+    header_ = header;
+    return this;
+}
+
+MeasureModel &MeasureModel::setHeaderData(const QList<MeasureHeaderData> &headerData) {
+    headerData_ = headerData;
+    return this;
+}
+
+MeasureModel &MeasureModel::setHeaderData(const MeasureHeaderData &headerData) {
+    QList<MeasureHeaderData> headers;
+    headers.append( headerData );
+    headerData_ = headers;
+
+    return this;
+}
+
+MeasureModel &MeasureModel::appendHeaderData(const MeasureHeaderData &headerData) {
+    headerData_.append( headerData );
+    return this;
+}
+
+MeasureModel &MeasureModel::setMeasureData(const MeasureData &data) {
+    data_ = data;
+    return this;
+}
+
+MeasureModel &MeasureModel::setEnable(const bool &enable) {
+    enable_ = enable;
+    return this;
+}
+
+MeasureModel &MeasureModel::setUserId(const int &userId) {
+    userId_ = userId;
+    return this;
+}
+
+const QVariant& itemAt(const int& row, const int& column) const {
     // check
     QVariant value = data_.items[row][column];
     return value;
