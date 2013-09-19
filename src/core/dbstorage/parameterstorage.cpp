@@ -25,8 +25,12 @@ QString ParameterStorage::dbName() const {
 
 }
 
+const LibraryModel &ParameterStorage::library() const{
+    return currentLibrary_;
+}
+
 bool ParameterStorage::saveLibrary() {
-    bool res = saveLibraryImpl( lastLibrary_ );
+    bool res = saveLibraryImpl( currentLibrary_ );
     return res;
 }
 
@@ -39,19 +43,19 @@ bool ParameterStorage::addParameterToLibrary(const ParameterModel &parameter) {
     return addParameterToLibraryImpl( parameter );
 }
 
-LibraryModel ParameterStorage::openLibrary(const int &libraryId) {
+LibraryModel ParameterStorage::openLibrary(const int &libraryId){
     return openLibraryImpl(libraryId);
 }
 
 void ParameterStorage::setCurrentLibrary(const int &libraryId) {
-    if(lastLibrary_.id() == libraryId){
+    if(currentLibrary_.id() == libraryId){
         return;
     }
 
     if( cachedLibraries_.contains(libraryId) ){
-        lastLibrary_ = cachedLibraries_[libraryId];
+        currentLibrary_ = cachedLibraries_[libraryId];
     }else{
-        lastLibrary_ = openLibrary( libraryId );
+        currentLibrary_ = openLibrary( libraryId );
     }
 }
 
@@ -63,7 +67,7 @@ bool ParameterStorage::saveLibraryImpl(const LibraryModel &library) {
 
     QString sqlQuery;
     int lastInsertId;
-    lastLibrary_ = library;
+    currentLibrary_ = library;
 
     //! Start commit
     if(!beginTransaction()){
@@ -77,20 +81,20 @@ bool ParameterStorage::saveLibraryImpl(const LibraryModel &library) {
 
     QSqlQuery q( sqlQuery, db() );
 
-    q.bindValue(":name",       lastLibrary_.name());
-    q.bindValue(":project_id", lastLibrary_.projectId() );
-    q.bindValue(":user_id",    lastLibrary_.userId() );
-    q.bindValue(":create_at",  lastLibrary_.createAt());
-    q.bindValue(":change_at",  lastLibrary_.changeAt());
-    q.bindValue(":enable",     lastLibrary_.enable());
+    q.bindValue(":name",       currentLibrary_.name());
+    q.bindValue(":project_id", currentLibrary_.projectId() );
+    q.bindValue(":user_id",    currentLibrary_.userId() );
+    q.bindValue(":create_at",  currentLibrary_.createAt());
+    q.bindValue(":change_at",  currentLibrary_.changeAt());
+    q.bindValue(":enable",     currentLibrary_.enable());
 
     //! TODO: strong check
-    if(lastLibrary_.id() == -1){
+    if(currentLibrary_.id() == -1){
         lastInsertId = q.lastInsertId().toInt();
-        lastLibrary_.setId(lastInsertId);
+        currentLibrary_.setId(lastInsertId);
     }
 
-    q.bindValue(":library_id", lastLibrary_.id() );
+    q.bindValue(":library_id", currentLibrary_.id() );
 
     if(!q.exec()){
         setLastError( q.lastError().text() );
@@ -104,14 +108,14 @@ bool ParameterStorage::saveLibraryImpl(const LibraryModel &library) {
                    "        VALUES(:param_id,:name,:initial,:minimum,:maximum,:library_id")
             .arg(TABLE_NAME_PARAMETERS);
 
-    foreach(ParameterModel parameter,lastLibrary_.parameters()){
+    foreach(ParameterModel parameter,currentLibrary_.parameters()){
         q = QSqlQuery( sqlQuery, db() );
 
         if(parameter.id() != -1 ){
             lastInsertId = -1;
             parameter.setId(  lastInsertId  );
 
-            lastLibrary_.setParameter( parameter.name(), parameter );
+            currentLibrary_.setParameter( parameter.name(), parameter );
         }
 
         q.bindValue(":name",parameter.name());
@@ -134,12 +138,17 @@ bool ParameterStorage::saveLibraryImpl(const LibraryModel &library) {
     }
 
 
-    saveToCache( lastLibrary_ );
+    saveCache( currentLibrary_ );
     return true;
 }
 
-LibraryModel ParameterStorage::openLibraryImpl(const int &libraryId) const {
+LibraryModel ParameterStorage::openLibraryImpl(const int &libraryId) {
     setLastError(QString());
+
+    if(cachedLibraries_.contains(libraryId)){
+        return cachedLibraries_[libraryId];
+    }
+
     QString sqlQuery;
     LibraryModel library;
     sqlQuery = sql("SELECT * FROM %1 WHERE library_id=:library_id").arg(TABLE_NAME_LIBRARIES);
@@ -156,7 +165,7 @@ LibraryModel ParameterStorage::openLibraryImpl(const int &libraryId) const {
     QSqlRecord rec(q.record());
 
     library.setId(        q.value(rec.indexOf("library_id" )).toInt()    );
-    library.setName(      q.value(rec.indexOf("name")).toInt()           );
+    library.setName(      q.value(rec.indexOf("name")).toString()        );
     library.setProjectId( q.value(rec.indexOf("project_id")).toInt()     );
     library.setUserId(    q.value(rec.indexOf("user_id")).toInt()        );
     library.setCreateAt(  q.value(rec.indexOf("create_at")).toDateTime() );
@@ -178,7 +187,7 @@ LibraryModel ParameterStorage::openLibraryImpl(const int &libraryId) const {
     }
 
     while( q.next() ){
-        rec(q.record());
+        rec = QSqlRecord(q.record());
         ParameterModel parameter;
         parameter.setId(       q.value( rec.indexOf("param_id")).toInt()   )
                 .setName(      q.value( rec.indexOf("name") ).toString()   )
@@ -194,21 +203,21 @@ LibraryModel ParameterStorage::openLibraryImpl(const int &libraryId) const {
 
 
 
-    lastLibrary_ = library;
-    saveToCache( library );
+    currentLibrary_ = library;
+    saveCache( library );
 
     return library;
 }
 
-void ParameterStorage::addParameterToLibraryImpl(const ParameterModel &parameter) const {
-    if(lastLibrary_.parameterExists( parameter.name() )){
-        return;
+bool ParameterStorage::addParameterToLibraryImpl(const ParameterModel &parameter) {
+    if(currentLibrary_.parameterExists( parameter.name() )){
+        return false;
     }
 
-    lastLibrary_.parameters_.append( parameter );
-    saveLibraryImpl( lastLibrary_ );
-    saveToCache( lastLibrary_);
-
+    currentLibrary_.parameters_.append( parameter );
+    saveLibraryImpl( currentLibrary_ );
+    saveCache( currentLibrary_);
+    return true;
 }
 
 bool ParameterStorage::createTable(const ParameterStorage::ParameterTable &table) {
@@ -247,19 +256,18 @@ bool ParameterStorage::createTable(const ParameterStorage::ParameterTable &table
     return true;
 }
 
-void ParameterStorage::saveToCache(const LibraryModel &library) {
+void ParameterStorage::saveCache(const LibraryModel &library) const {
 
     //! Если содержится в кэше, то обновляем
     if( cachedLibraries_.contains(library.id()) ){
         cachedLibraries_[library.id()] = library;
+        return;
     }
 
-    if(cachedLibraries_.size() <= CACHE_SIZE_PARAMETER_STORAGE){
-        cachedLibraries_.insert( library.id(), library );
-    }else{
+    if(cachedLibraries_.size() > CACHE_SIZE_PARAMETER_STORAGE){
         //! Удаляем первый элемент кэша
         cachedLibraries_.erase( cachedLibraries_.begin() );
-        cachedLibraries_.insert( library.id(), library );
     }
+    cachedLibraries_.insert( library.id(), library );
 
 }

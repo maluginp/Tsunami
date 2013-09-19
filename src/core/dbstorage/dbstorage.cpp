@@ -18,7 +18,7 @@ QString DbStorage::lastError() {
     return *lastErrors_.localData();
 }
 
-QString DbStorage::sql(const char *sql) {
+const QString &DbStorage::sql(const char *sql) const {
     return QString::fromLatin1( sql );
 }
 
@@ -33,10 +33,10 @@ bool DbStorage::tableExists(const QString &table) {
     return q.next();
 }
 
-QSqlDatabase &DbStorage::db() {
+QSqlDatabase &DbStorage::db(){
     Qt::HANDLE threadId = QThread::currentThreadId();
     if(!databases_.contains(threadId)){
-        databases_[threadId] = allocateDb();
+        databases_.insert(threadId,allocateDb());
     }
 
     return databases_[threadId];
@@ -51,7 +51,7 @@ void DbStorage::closeAll() {
     }
 }
 
-void DbStorage::setLastError(const QString &msg) {
+void DbStorage::setLastError(const QString &msg){
     lastErrors_.setLocalData( new QString(msg) );
 }
 

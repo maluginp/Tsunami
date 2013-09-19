@@ -1,5 +1,6 @@
 #include "librarymodel.h"
 #include "parametermodel.h"
+
 LibraryModel::LibraryModel() :
     libraryId_(-1),projectId_(-1),userId_(-1),createAt_(QDateTime::currentDateTime()),
     changeAt_(QDateTime::currentDateTime()),enable_(false)
@@ -19,32 +20,37 @@ LibraryModel &LibraryModel::setId(const int &id) {
     }
 
 
-    return this;
+    return *this;
+}
+
+LibraryModel &LibraryModel::setName(const QString &name) {
+    name_ = name;
+    return *this;
 }
 
 LibraryModel &LibraryModel::setProjectId(const int &projectId) {
     projectId_ = projectId;
-    return this;
+    return *this;
 }
 
 LibraryModel &LibraryModel::setUserId(const int &userId) {
     userId_ = userId;
-    return this;
+    return *this;
 }
 
 LibraryModel &LibraryModel::setCreateAt(const QDateTime &createAt) {
     createAt_ = createAt;
-    return this;
+    return *this;
 }
 
 LibraryModel &LibraryModel::setChangeAt(const QDateTime &changeAt) {
     changeAt_ = changeAt;
-    return this;
+    return *this;
 }
 
 LibraryModel &LibraryModel::setEnable(const bool &enable) {
     enable_ = enable;
-    return this;
+    return *this;
 }
 
 void LibraryModel::setParameter(const QString &parameter, const ParameterModel &model) {
@@ -73,9 +79,9 @@ bool LibraryModel::parameterExists(const QString &parameter) const {
 }
 
 
-const QVariant &LibraryModel::parameterValue(const QModelIndex &index) const {
-    ParameterModel parameter = parameters_.value(index);
-    switch(column){
+QVariant LibraryModel::parameterValue(const QModelIndex &index) const {
+    ParameterModel parameter = parameters_.value(index.row());
+    switch(index.column()){
     case 0:  QVariant(parameter.id());
     case 1: return QVariant(parameter.libraryId());
     case 2: return QVariant(parameter.name());
@@ -90,13 +96,13 @@ const QVariant &LibraryModel::parameterValue(const QModelIndex &index) const {
 bool LibraryModel::setParameterValue(const QModelIndex &index, const QVariant &value) {
     bool ok;
 
-    switch(column){
-    case 0: parameters_[index].id()        = value.toInt(&ok);break;
-    case 1: parameters_[index].libraryId() = value.toInt(&ok); break;
-    case 2: parameters_[index].name()      = value.toString();
-    case 3: parameters_[index].initial()   = value.toDouble(&ok); break;
-    case 4: parameters_[index].minimum()   = value.toDouble(&ok); break;
-    case 5: parameters_[index].maximum()   = value.toDouble(&ok); break;
+    switch(index.column()){
+    case 0: parameters_[index.row()].setId(        value.toInt(&ok)   ); break;
+    case 1: parameters_[index.row()].setLibraryId( value.toInt(&ok)   ); break;
+    case 2: parameters_[index.row()].setName(      value.toString()   ); break;
+    case 3: parameters_[index.row()].setInitial(   value.toDouble(&ok)); break;
+    case 4: parameters_[index.row()].setMinimum(   value.toDouble(&ok)); break;
+    case 5: parameters_[index.row()].setMaximum(   value.toDouble(&ok)); break;
     default:
         return false;
     }

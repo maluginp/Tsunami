@@ -17,12 +17,12 @@ public:
     ParameterStorage();
     ~ParameterStorage();
     QString dbName() const;
-    LibraryModel library();
+    const LibraryModel& library() const;
     bool saveLibrary( );
     bool saveLibrary( const LibraryModel& library );
     bool addParameterToLibrary( const ParameterModel& parameter );
-    LibraryModel openLibrary( const int& libraryId ) const;
-    void setCurrentLibrary(  const int& libraryId ) const;
+    LibraryModel openLibrary( const int& libraryId );
+    void setCurrentLibrary(  const int& libraryId );
 
 protected:
     QString connectionName() const;
@@ -30,14 +30,14 @@ private:
 
 
     bool saveLibraryImpl( const LibraryModel& library );
-    LibraryModel openLibraryImpl( const int& libraryId ) const;
-    void addParameterToLibraryImpl( const ParameterModel& parameter ) const;
+    LibraryModel openLibraryImpl( const int& libraryId );
+    bool addParameterToLibraryImpl( const ParameterModel& parameter );
 
     bool createTable( const ParameterTable& table);
 
-    void saveToCache( const LibraryModel& library );
+    void saveCache( const LibraryModel& library ) const;
 
-    LibraryModel lastLibrary_;
+    mutable LibraryModel currentLibrary_;
     mutable QMap<int, LibraryModel> cachedLibraries_;
 
     static QString TABLE_NAME_PARAMETERS;

@@ -5,6 +5,8 @@
 
 #include "../models/measuremodel.h"
 
+#define CACHE_SIZE_MEASURE_STORAGE 10
+
 class MeasureStorage : public DbStorage, public Singleton<MeasureStorage> {
 public:
     enum MeasureTable{
@@ -14,6 +16,7 @@ public:
     MeasureStorage();
     QString dbName() const;
 
+    bool saveMeasure();
     bool saveMeasure(const MeasureModel& measure);
     MeasureModel openMeasure(const int& measureId);
 
@@ -22,10 +25,14 @@ protected:
     QString connectionName() const;
 
 private:
-
-    const MeasureModel& openMeasureImpl(const int& measureId) const;
+    MeasureModel openMeasureImpl(const int& measureId);
     bool saveMeasureImpl(const MeasureModel& measure);
-    void createTable( const MeasureTable& table );
+    bool createTable( const MeasureTable& table );
+
+    void saveCache( const MeasureModel& measure ) const;
+
+    mutable MeasureModel currentMeasure_;
+    mutable QMap<int,MeasureModel> cachedMeasures_;
 
     static QString CONNECTION_NAME_MEASURE;
     static QString TABLE_NAME_MEASURES;
