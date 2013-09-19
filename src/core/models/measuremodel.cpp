@@ -222,6 +222,16 @@ MeasureModel &MeasureModel::setUserId(const int &userId) {
     return this;
 }
 
+MeasureModel &MeasureModel::setCreateAt(const QDateTime &createAt) {
+    createAt_ = createAt;
+    return this;
+}
+
+MeasureModel &MeasureModel::setChangeAt(const QDateTime &changeAt) {
+    changeAt_ = changeAt;
+    return this;
+}
+
 const QVariant& itemAt(const int& row, const int& column) const {
     // check
     QVariant value = data_.items[row][column];

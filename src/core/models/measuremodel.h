@@ -44,7 +44,11 @@ public:
     inline const MeasureData& data() const                    { return data_;       }
     inline const bool& enable() const                         { return enable_;     }
     inline const int&  userId() const                         { return userId_;     }
+    inline const QDateTime& createAt() const                  { return createAt_;   }
+    inline const QDateTime& changeAt() const                  { return changeAt_;   }
     const MeasureHeaderData& headerData(const int& index) const;
+
+
 
 
     double &item(const int &row, const int &column);
@@ -64,7 +68,8 @@ public:
     MeasureModel& setMeasureData( const MeasureData& data);
     MeasureModel& setEnable( const bool& enable );
     MeasureModel& setUserId( const int& userId );
-
+    MeasureModel& setCreateAt( const QDateTime& createAt);
+    MeasureModel& setChangeAt( const QDateTime& changeAt);
 
 private:
     void parseJsonHeader(const QString& header);
@@ -80,6 +85,10 @@ private:
     MeasureHeader header_;
     QList<MeasureHeaderData> headerData_;
     MeasureData data_;
+
+    QDateTime createAt_;
+    QDateTime changeAt_;
+
     bool enable_;
     int userId_;
 };

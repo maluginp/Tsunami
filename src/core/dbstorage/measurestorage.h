@@ -22,10 +22,9 @@ protected:
     QString connectionName() const;
 
 private:
-
     const MeasureModel& openMeasureImpl(const int& measureId) const;
     bool saveMeasureImpl(const MeasureModel& measure);
-    void createTable( const MeasureTable& table );
+    bool createTable( const MeasureTable& table );
 
     static QString CONNECTION_NAME_MEASURE;
     static QString TABLE_NAME_MEASURES;
