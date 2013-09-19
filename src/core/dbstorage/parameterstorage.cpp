@@ -90,19 +90,26 @@ bool ParameterStorage::saveLibraryImpl(const LibraryModel &library) {
 
 
 
-    sqlQuery = sql("INSERT OR REPLACE INTO %1( name, initial, minimum, maximum, library_id)"
-                   "        VALUES(:name,:initial,:minimum,:maximum,:library_id")
+    sqlQuery = sql("INSERT OR REPLACE INTO %1(param_id, name, initial, minimum, maximum, library_id)"
+                   "        VALUES(:param_id,:name,:initial,:minimum,:maximum,:library_id")
             .arg(TABLE_NAME_PARAMETERS);
 
     foreach(ParameterModel parameter,lastLibrary_.parameters()){
         q = QSqlQuery( sqlQuery, db() );
+
+        if(parameter.id() != -1 ){
+            lastInsertId = -1;
+            parameter.setId(  lastInsertId  );
+
+            lastLibrary_.setParameter( parameter.name(), parameter );
+        }
 
         q.bindValue(":name",parameter.name());
         q.bindValue(":initial",parameter.initial());
         q.bindValue(":minimum",parameter.initial());
         q.bindValue(":maximum",parameter.maximum());
         q.bindValue(":library_id",parameter.libraryId());
-
+        q.bindValue(":param_id",parameter.id());
         if(!q.exec()){
             setLastError( q.lastError().text() );
             rollback();

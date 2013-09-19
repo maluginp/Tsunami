@@ -24,13 +24,15 @@ public:
     LibraryModel& setChangeAt(const QDateTime& changeAt);
     LibraryModel& setEnable(const bool& enable);
 
+    void setParameter( const QString& parameter, const ParameterModel& model );
+
     bool parameterExists( const QString& parameter ) const;
 
     QVariant parameterValue(const int& row,const int& column) const;
-    QString parameterName(const int &row) const;
+    const QString& parameterName(const int &row) const;
     bool setParameterValue(const int& row,const int& column, const QVariant& value);
 
-    QList<ParameterModel> parameters();
+    QList<ParameterModel> parameters() const;
 
 private:
     int libraryId_;
