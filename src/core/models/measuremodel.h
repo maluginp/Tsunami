@@ -37,15 +37,35 @@ friend class MeasureStorage;
 
 public:
     MeasureModel();
-    unsigned id() const;
-    unsigned projectId() const;
-    MeasureHeader header() const;
+    const int& id() const;
+    const int& projectId() const;
+    const MeasureHeader& header() const;
+    const QList<MeasureHeaderData>& headerData() const;
+    const MeasureHeaderData& headerData(const int& index) const;
+    const MeasureData& data() const;
+    const bool& enable() const;
+    const int&  userId() const;
+
+    double &item(const int &row, const int &column);
+    const QVariant& itemAt(const int& row, const int& column) const;
 
     int dataRows();
     int dataColumns();
-    QVariant getColumnName(const int& section) const;
-    QVariant item(const int& row, const int& column) const;
-    double &item(const int &row, const int &column);
+
+    const QVariant& getColumnName(const int& section) const;
+
+
+    MeasureModel& setId(const int& id);
+    MeasureModel& setProjectId(const int& id);
+    MeasureModel& setHeader( const MeasureHeader& header );
+    MeasureModel& setHeaderData( const QList<MeasureHeaderData>& headerData);
+    MeasureModel& setHeaderData( const MeasureHeaderData& headerData);
+    MeasureModel& appendHeaderData( const MeasureHeaderData& headerData );
+    MeasureModel& setMeasureData( const MeasureData& data);
+    MeasureModel& setEnable( const bool& enable );
+    MeasureModel& setUserId( const int& userId );
+
+
 
 private:
     void parseJsonHeader(const QString& header);
