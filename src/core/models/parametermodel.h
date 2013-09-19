@@ -7,15 +7,14 @@
 
 class ParameterModel {
 public:
-    ParameterModel() {};
-    ParameterModel(const QString& name, double initial, double minimum, double maximum, bool fixed);
+    ParameterModel();
 
-    const int&     id()        const;
-    const int&     libraryId() const;
-    const QString& name()      const;
-    const double&  initial()   const;
-    const double&  minimum()   const;
-    const double&  maximum()   const;
+    inline const int&     id()        const { return paramId_;   }
+    inline const int&     libraryId() const { return libraryId_; }
+    inline const QString& name()      const { return name_;      }
+    inline const double&  initial()   const { return initial_;   }
+    inline const double&  minimum()   const { return minimum_;   }
+    inline const double&  maximum()   const { return maximum_;   }
 
     ParameterModel& setId(const int& id);
     ParameterModel& setLibraryId(const int& libraryId);

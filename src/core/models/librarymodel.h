@@ -3,11 +3,13 @@
 #include <QDateTime>
 #include <Model.h>
 
+
 class ParameterModel;
 
 class LibraryModel : public Model {
 public:
     LibraryModel();
+    ~LibraryModel();
 
     inline const QString& name() const        { return name_;      }
     inline const int& id() const              { return libraryId_; }
@@ -24,13 +26,13 @@ public:
     LibraryModel& setChangeAt(const QDateTime& changeAt);
     LibraryModel& setEnable(const bool& enable);
 
+    const ParameterModel& parameter(const QString& parameter) const;
+    const ParameterModel& parameter(const int& nParameter) const;
+
     void setParameter( const QString& parameter, const ParameterModel& model );
-
     bool parameterExists( const QString& parameter ) const;
-
-    QVariant parameterValue(const int& row,const int& column) const;
-    const QString& parameterName(const int &row) const;
-    bool setParameterValue(const int& row,const int& column, const QVariant& value);
+    const QVariant& parameterValue(const QModelIndex& index) const;
+    bool setParameterValue(const QModelIndex& index, const QVariant& value);
 
     QList<ParameterModel> parameters() const;
 

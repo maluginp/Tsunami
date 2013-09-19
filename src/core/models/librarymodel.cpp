@@ -1,6 +1,12 @@
 #include "librarymodel.h"
 #include "parametermodel.h"
-LibraryModel::LibraryModel()
+LibraryModel::LibraryModel() :
+    libraryId_(-1),projectId_(-1),userId_(-1),createAt_(QDateTime::currentDateTime()),
+    changeAt_(QDateTime::currentDateTime()),enable_(false)
+{
+}
+
+LibraryModel::~LibraryModel()
 {
 }
 
@@ -9,11 +15,50 @@ LibraryModel &LibraryModel::setId(const int &id) {
 
     int rows = parameters_.size();
     for(int row=0; row < rows; ++row){
-        parameters_[row].libraryId_ = libraryId;
+        parameters_[row].setLibraryId(id);
     }
 
 
     return this;
+}
+
+LibraryModel &LibraryModel::setProjectId(const int &projectId) {
+    projectId_ = projectId;
+    return this;
+}
+
+LibraryModel &LibraryModel::setUserId(const int &userId) {
+    userId_ = userId;
+    return this;
+}
+
+LibraryModel &LibraryModel::setCreateAt(const QDateTime &createAt) {
+    createAt_ = createAt;
+    return this;
+}
+
+LibraryModel &LibraryModel::setChangeAt(const QDateTime &changeAt) {
+    changeAt_ = changeAt;
+    return this;
+}
+
+LibraryModel &LibraryModel::setEnable(const bool &enable) {
+    enable_ = enable;
+    return this;
+}
+
+void LibraryModel::setParameter(const QString &parameter, const ParameterModel &model) {
+
+    int rows = parameters_.size();
+    for(int row=0; row < rows; ++row){
+        if(parameters_[row].name() == parameter){
+            parameters_[row] = model;
+            return;
+        }
+    }
+
+    parameters_ << model;
+
 }
 
 
@@ -28,8 +73,8 @@ bool LibraryModel::parameterExists(const QString &parameter) const {
 }
 
 
-QVariant LibraryModel::parameterValue(const int &row, const int &column) const {
-    ParameterModel parameter = parameters_.value(row);
+const QVariant &LibraryModel::parameterValue(const QModelIndex &index) const {
+    ParameterModel parameter = parameters_.value(index);
     switch(column){
     case 0:  QVariant(parameter.id());
     case 1: return QVariant(parameter.libraryId());
@@ -42,20 +87,16 @@ QVariant LibraryModel::parameterValue(const int &row, const int &column) const {
     return QVariant();
 }
 
-const QString &LibraryModel::parameterName(const int &row) const {
-    return QString();
-}
-
-bool LibraryModel::setParameterValue(const int &row, const int &column, const QVariant &value) {
+bool LibraryModel::setParameterValue(const QModelIndex &index, const QVariant &value) {
     bool ok;
 
     switch(column){
-    case 0: parameters_[row].id()        = value.toInt(&ok);break;
-    case 1: parameters_[row].libraryId() = value.toInt(&ok); break;
-    case 2: parameters_[row].name()      = value.toString();
-    case 3: parameters_[row].initial()   = value.toDouble(&ok); break;
-    case 4: parameters_[row].minimum()   = value.toDouble(&ok); break;
-    case 5: parameters_[row].maximum()   = value.toDouble(&ok); break;
+    case 0: parameters_[index].id()        = value.toInt(&ok);break;
+    case 1: parameters_[index].libraryId() = value.toInt(&ok); break;
+    case 2: parameters_[index].name()      = value.toString();
+    case 3: parameters_[index].initial()   = value.toDouble(&ok); break;
+    case 4: parameters_[index].minimum()   = value.toDouble(&ok); break;
+    case 5: parameters_[index].maximum()   = value.toDouble(&ok); break;
     default:
         return false;
     }
@@ -63,6 +104,30 @@ bool LibraryModel::setParameterValue(const int &row, const int &column, const QV
     return true;
 }
 
+const ParameterModel &LibraryModel::parameter(const QString &parameter) const {
+    int rows = parameters_.size();
+    for(int row=0; row < rows; ++row){
+        if(parameters_[row].name() == parameter){
+            return parameters_[row];
+        }
+    }
+
+    return ParameterModel();
+}
+
+const ParameterModel &LibraryModel::parameter(const int &nParameter) const {
+
+    int rows = parameters_.size();
+    if(nParameter < 0 || nParameter >= rows){
+        return ParameterModel();
+    }
+
+    return parameters_[nParameter];
+
+}
+
 QList<ParameterModel> LibraryModel::parameters() const {
     return parameters_;
 }
+
+
