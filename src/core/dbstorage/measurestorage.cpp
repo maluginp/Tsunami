@@ -20,7 +20,7 @@ void MeasureStorage::createTable(const MeasureTable &table) {
 
     if(table == MeasureStorage::TABLE_MEASURES){
         QString querySql = sql("CREATE TABLE IF NOT EXISTS %1 ("
-                               "measure_id INTEGER PRIMARY KEY,"
+                               "measure_id INTEGER PRIMARY KEY ON CONFLICT REPLACE,"
                                "project_id INTEGER,"
                                "header TEXT,"
                                "header_data TEXT,"

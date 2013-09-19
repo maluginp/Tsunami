@@ -100,6 +100,19 @@ bool DbStorage::endTransaction() {
     return true;
 }
 
+bool DbStorage::dropTable(const QString &table) {
+    setLastError(QString());
+    QString querySql = sql( "DROP TABLE %1" ).arg(table);
+
+    QSqlQuery q(querySql,db());
+    if(!q.exec()){
+        setLastError( q.lastError().text() );
+        return false;
+    }
+
+    return true;
+}
+
 QSqlDatabase DbStorage::allocateDb() {
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", connectionName());
     db.setDatabaseName(dbName());

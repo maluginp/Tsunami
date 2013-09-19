@@ -1,7 +1,6 @@
 #ifndef PARAMETERSTORAGE_H
 #define PARAMETERSTORAGE_H
 
-
 #include <singleton.h>
 #include "dbstorage.h"
 

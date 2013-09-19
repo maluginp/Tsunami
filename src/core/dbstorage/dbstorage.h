@@ -46,6 +46,8 @@ protected:
     bool rollback();
     bool endTransaction();
 
+    bool dropTable(const QString& table);
+
     QMutex dbMutex_;
     static QString DBASE_COMMON_NAME;
 private:
