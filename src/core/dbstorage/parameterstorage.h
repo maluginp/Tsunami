@@ -16,7 +16,7 @@ class ParameterStorage : public DbStorage, public Singleton<ParameterStorage> {
     };
 public:
     ParameterStorage();
-
+    ~ParameterStorage();
     QString dbName() const;
     LibraryModel library();
     bool saveLibrary( );

@@ -4,13 +4,18 @@ LibraryModel::LibraryModel()
 {
 }
 
-void LibraryModel::updateLibraryId(const int &libraryId) {
+LibraryModel &LibraryModel::setId(const int &id) {
+    libraryId_ = id;
+
     int rows = parameters_.size();
     for(int row=0; row < rows; ++row){
         parameters_[row].libraryId_ = libraryId;
     }
-    libraryId_ = libraryId;
+
+
+    return this;
 }
+
 
 bool LibraryModel::parameterExists(const QString &parameter) const {
     foreach(ParameterModel param, parameters_){

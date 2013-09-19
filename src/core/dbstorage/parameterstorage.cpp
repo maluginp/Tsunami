@@ -6,8 +6,18 @@ QString ParameterStorage::TABLE_NAME_LIBRARIES  = QString("libraries");
 QString ParameterStorage::CONNECTION_NAME_PARAMETER = QString("parameter_connection");
 
 
-ParameterStorage::ParameterStorage() : DbStorage(0)
-{
+ParameterStorage::ParameterStorage() : DbStorage(0) {
+    if( !tableExists(TABLE_NAME_LIBRARIES)){
+        createTable(TABLE_LIBRARIES);
+    }
+
+    if( !tableExists( TABLE_NAME_PARAMETERS ) ){
+        createTable( TABLE_PARAMETERS );
+    }
+}
+
+ParameterStorage::~ParameterStorage() {
+
 }
 
 QString ParameterStorage::dbName() const {
@@ -170,11 +180,11 @@ LibraryModel ParameterStorage::openLibraryImpl(const int &libraryId) const {
     while( q.next() ){
         rec(q.record());
         ParameterModel parameter;
-        parameter.setId( q.value( rec.indexOf("param_id")).toInt() )
-                .setName( q.value( rec.indexOf("name") ).toString() )
-                .setInitial( q.value( rec.indexOf("initial")).toDouble() )
-                .setMinimum( q.value( rec.indexOf("minimum")).toDouble() )
-                .setMaximum( q.value( rec.indexOf("maximum")).toDouble() )
+        parameter.setId(       q.value( rec.indexOf("param_id")).toInt()   )
+                .setName(      q.value( rec.indexOf("name") ).toString()   )
+                .setInitial(   q.value( rec.indexOf("initial")).toDouble() )
+                .setMinimum(   q.value( rec.indexOf("minimum")).toDouble() )
+                .setMaximum(   q.value( rec.indexOf("maximum")).toDouble() )
                 .setLibraryId( q.value( rec.indexOf("libraryId") ).toInt() );
 
         if(parameter.id() != -1){
@@ -223,13 +233,18 @@ bool ParameterStorage::createTable(const ParameterStorage::ParameterTable &table
                         "maximum REAL,"
                         "library_id INTEGER"
                         ")").arg(TABLE_NAME_PARAMETERS);
+    }else{
+        return false;
     }
 
 
-    if(!sqlQuery.isEmpty()){
-
+    QSqlQuery q(sqlQuery,db());
+    if(!q.exec()){
+        setLastError(q.lastError().text());
+        return false;
     }
 
+    return true;
 }
 
 void ParameterStorage::saveToCache(const LibraryModel &library) {

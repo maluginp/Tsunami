@@ -9,13 +9,13 @@ class LibraryModel : public Model {
 public:
     LibraryModel();
 
-    const QString& name() const;
-    const int& id() const;
-    const int& projectId() const;
-    const int& userId() const;
-    const QDateTime& createAt() const;
-    const QDateTime& changeAt() const;
-    const bool& enable() const;
+    inline const QString& name() const        { return name_;      }
+    inline const int& id() const              { return libraryId_; }
+    inline const int& projectId() const       { return projectId_; }
+    inline const int& userId() const          { return userId_;    }
+    inline const QDateTime& createAt() const  { return createAt_;  }
+    inline const QDateTime& changeAt() const  { return changeAt_;  }
+    inline const bool& enable() const         { return enable_;    }
 
     LibraryModel& setId(const int& id);
     LibraryModel& setProjectId(const int& projectId);
