@@ -59,7 +59,11 @@ enum AnalysisItemType{
 class IAnalysisItem{
 public:
     void parseJson( const QString& json ) = 0;
+    AnalysisItemType getType() = 0;
+
 
 };
+
+
 
 #endif // ANALYSISMODEL_H
