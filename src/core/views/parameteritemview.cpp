@@ -34,7 +34,7 @@ int ParameterItemView::columnCount(const QModelIndex &parent) const {
     return columns_.size();
 }
 
-QVariant ParameterItemView::data(const QModelIndex &index, int role) {
+QVariant ParameterItemView::data(const QModelIndex &index, int role) const {
     if(role != Qt::EditRole && role != Qt::DisplayRole){
         return QVariant();
     }

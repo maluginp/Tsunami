@@ -4,15 +4,11 @@
 #
 #-------------------------------------------------
 
-QT       += core sql
-
 QT       -= gui
 
 TARGET   =  core
-CONFIG   += console
-CONFIG   -= app_bundle
-
-TEMPLATE = app
+CONFIG+= staticlib
+TEMPLATE = lib
 
 SOURCES += main.cpp \
     components/json.cpp \

@@ -1,6 +1,6 @@
 include(../../Tsunami.pri)
 
-CONFIG += gui qt sql
+CONFIG += gui
 
 CONFIG(debug, debug|release) {
     DESTDIR=$$SOLUTION_DIR/build/debug
@@ -9,6 +9,7 @@ CONFIG(release,debug|release){
     DESTDIR=$$SOLUTION_DIR/build/release
 }
 
+LIBS += -L $$DESTDIR -lcore
 
 HEADERS += \
     ../../include/defines.h \

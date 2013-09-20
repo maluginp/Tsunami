@@ -2,6 +2,9 @@
 #define MEASUREDATAWINDOW_H
 
 #include <QMainWindow>
+#include <views/parameteritemview.h>
+#include <views/measureitemview.h>
+
 
 namespace Ui {
 class MeasureDataWindow;
@@ -17,6 +20,10 @@ public:
 
 private:
     Ui::MeasureDataWindow *ui;
+
+
+    ParameterItemView* parameterView_;
+
 };
 
 #endif // MEASUREDATAWINDOW_H
