@@ -1,10 +1,17 @@
 #include "analysisitems.h"
-#include "../components/json.h"
 
 AnalysisItems::AnalysisItems()
 {
 }
 
+
+void IAnalysisItem::setMode(const IAnalysisItem::ModeType &mode) {
+    mode_ = mode;
+}
+
+void IAnalysisItem::setNode(const QString &node) {
+    node_ = node;
+}
 
 QString IAnalysisItem::name() const {
     QString itemName("");
@@ -44,6 +51,66 @@ void AnalysisItemConst::parseJson(const QString &json) {
 
 }
 
+QVariantMap AnalysisItemConst::json() {
+    QVariantMap attrs;
+    attrs.insert( "type", "const" );
+    attrs.insert( "node", node() );
+
+    if( mode() == VOLTAGE  ){
+        attrs.insert( "mode", "voltage" );
+    }else if( mode() == CURRENT ){
+        attrs.insert( "mode", "current" );
+    }
+
+    attrs.insert("const",constant());
+
+    return attrs;
+}
+
+void AnalysisItemConst::setConstant(const double &constant) {
+    constant_ = constant;
+}
+
+
+void AnalysisItemSweep::setNumber(const int &number) {
+    number_ = number;
+}
+
+void AnalysisItemSweep::setMethod(const QString &method) {
+    method_ = method;
+}
+
+void AnalysisItemSweep::setStart(const double &start) {
+    start_ = start;
+}
+
+void AnalysisItemSweep::setStop(const double &stop) {
+    stop_ = stop;
+}
+
+void AnalysisItemSweep::setStep(const double &step) {
+    step_ = step;
+}
+
+QVariantMap AnalysisItemSweep::json() {
+    QVariantMap attrs;
+    attrs.insert( "type", "sweep" );
+    attrs.insert( "node", node() );
+
+    if( mode() == VOLTAGE  ){
+        attrs.insert( "mode", "voltage" );
+    }else if( mode() == CURRENT ){
+        attrs.insert( "mode", "current" );
+    }
+
+    attrs.insert("number", number());
+    attrs.insert("method", method() );
+    attrs.insert("start",  start());
+    attrs.insert("stop",   stop() );
+    attrs.insert("step",   step());
+
+    return attrs;
+}
 
 void AnalysisItemSweep::parseJson(const QString &json) {
    QVariantMap attrs = QtJson::parse( json ).toMap();
@@ -78,6 +145,10 @@ void AnalysisItemSweep::parseJson(const QString &json) {
 }
 
 
+void AnalysisItemOutput::setValue(const double &value) {
+    value_ = value;
+}
+
 void AnalysisItemOutput::parseJson(const QString &json) {
     QVariantMap attrs = QtJson::parse( json ).toMap();
     foreach(QString key, attrs.keys()){
@@ -94,4 +165,18 @@ void AnalysisItemOutput::parseJson(const QString &json) {
         }
     }
 
+}
+
+QVariantMap AnalysisItemOutput::json() {
+    QVariantMap attrs;
+    attrs.insert( "type", "output" );
+    attrs.insert( "node", node() );
+
+    if( mode() == VOLTAGE  ){
+        attrs.insert( "mode", "voltage" );
+    }else if( mode() == CURRENT ){
+        attrs.insert( "mode", "current" );
+    }
+
+    return attrs;
 }

@@ -2,6 +2,7 @@
 #define ANALYSISMODEL_H
 
 #include <Model.h>
+#include "analysisitems.h"
 
 class AnalysisModel : public Model
 {
@@ -37,6 +38,11 @@ public:
     AnalysisModel& setChangeAt( const QDateTime& changeAt );
     AnalysisModel& setEnable( const bool& enable );
 
+protected:
+    void parseJsonInput( const QString& json );
+    void parseJsonOutput( const QString& json );
+    QString jsonInput();
+    QString jsonOutput();
 private:
     int analysisId_;
     int projectId_;
@@ -48,22 +54,5 @@ private:
     QDateTime changeAt_;
     bool enable_;
 };
-
-enum AnalysisItemType{
-    ANALYSIS_ITEM_NONE,
-    ANALYSIS_ITEM_CONST,
-    ANALYSIS_ITEM_SWEEP,
-    ANALYSIS_ITEM_FUNC
-};
-
-class IAnalysisItem{
-public:
-    void parseJson( const QString& json ) = 0;
-    AnalysisItemType getType() = 0;
-
-
-};
-
-
 
 #endif // ANALYSISMODEL_H

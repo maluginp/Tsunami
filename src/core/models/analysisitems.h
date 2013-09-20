@@ -1,6 +1,7 @@
 #ifndef ANALYSISITEMS_H
 #define ANALYSISITEMS_H
 #include <QString>
+#include <QVariant>
 
 enum AnalysisItemType{
     ANALYSIS_ITEM_NONE,
@@ -25,6 +26,8 @@ public:
 
     QString name() const;
 
+    QVariantMap json() = 0;
+
     void parseJson( const QString& json ) = 0;
     AnalysisItemType getItemType() const{
         return ANALYSIS_ITEM_NONE;
@@ -42,7 +45,7 @@ public:
     }
 
     void parseJson( const QString& json );
-
+    QVariantMap json();
     const double& constant() const { return constant_; }
     void setConstant( const double& constant );
 private:
@@ -66,7 +69,7 @@ public:
     void setStop( const double& stop);
     void setStep( const double& step);
 
-
+    QVariantMap json();
     void parseJson(const QString &json);
 private:
     int number_;
@@ -84,6 +87,7 @@ public:
     const double& value() const { return value_; }
     void setValue( const double& value );
     void parseJson(const QString &json);
+    QVariantMap json();
 private:
     double value_;
 
