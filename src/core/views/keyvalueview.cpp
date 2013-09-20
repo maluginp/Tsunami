@@ -66,9 +66,9 @@ bool KeyValueView::setData(const QModelIndex &index, const QVariant &value, int 
 QVariant KeyValueView::headerData(int section, Qt::Orientation orientation, int role) const {
     if( role == Qt::DisplayRole && orientation == Qt::Horizontal ){
         if(section == 0){
-            return QVariant("Ключ");
+            return QVariant(tr("Key"));
         }else if(section == 1){
-            return QVariant("Значение");
+            return QVariant(tr("Value"));
         }
     }
     return QVariant();
