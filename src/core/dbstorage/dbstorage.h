@@ -28,10 +28,9 @@ class DbStorage : public QObject {
 public:
 
     bool isOpen();
-    QString lastError();
+    const QString& lastError() const;
     virtual QString dbName() const = 0;
-
-    const QString& sql(const char* sql) const;
+    QString sql(const char* sql) const;
 
 protected:
     explicit DbStorage(QObject *parent = 0);

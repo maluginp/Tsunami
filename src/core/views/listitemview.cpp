@@ -18,14 +18,17 @@ QModelIndex ListItemView::index(int row, int column, const QModelIndex &parent) 
 }
 
 QModelIndex ListItemView::parent(const QModelIndex &child) const {
+    Q_UNUSED(child)
     return QModelIndex();
 }
 
 int ListItemView::rowCount(const QModelIndex &parent) const {
+    Q_UNUSED(parent)
     return 0;
 }
 
 int ListItemView::columnCount(const QModelIndex &parent) const {
+    Q_UNUSED(parent)
     return 0;
 }
 

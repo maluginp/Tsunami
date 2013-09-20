@@ -167,7 +167,7 @@ int MeasureModel::dataColumns() {
     return data_.columns.size();
 }
 
-const QVariant& MeasureModel::getColumnName(const int &section) const {
+QVariant MeasureModel::getColumnName(const int &section) const {
     if( section < data_.columns.size() ){
         return data_.columns.at( section );
     }
@@ -232,11 +232,18 @@ MeasureModel &MeasureModel::setChangeAt(const QDateTime &changeAt) {
     return *this;
 }
 
-double &MeasureModel::item(const int &row, const int &column) {
+MeasureModel &MeasureModel::setItem(const int &row, const int &column, const double &value) {
+
+    data_.items[row][column] = value;
+    return *this;
+}
+
+double MeasureModel::item(const int &row, const int &column) const {
+    // assert
     return data_.items[row][column];
 }
 
-const QVariant &MeasureModel::itemAt(const QModelIndex &index) const{
+QVariant MeasureModel::itemAt(const QModelIndex &index) const{
     QVariant value = data_.items[index.row()][index.column()];
     return value;
 }

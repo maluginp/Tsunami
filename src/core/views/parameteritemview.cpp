@@ -20,14 +20,17 @@ QModelIndex ParameterItemView::index(int row, int column, const QModelIndex &par
 }
 
 QModelIndex ParameterItemView::parent(const QModelIndex &child) const {
+    Q_UNUSED(child);
     return QModelIndex();
 }
 
 int ParameterItemView::rowCount(const QModelIndex &parent) const {
+    Q_UNUSED(parent);
     return rows_;
 }
 
 int ParameterItemView::columnCount(const QModelIndex &parent) const {
+    Q_UNUSED(parent);
     return columns_.size();
 }
 
@@ -53,7 +56,7 @@ void ParameterItemView::openParameters(const int &libraryId) {
 }
 
 bool ParameterItemView::saveParameters() {
-    storage_->saveLibrary( library_ );
+    return storage_->saveLibrary( library_ );
 }
 
 
@@ -63,10 +66,16 @@ void ParameterItemView::restoreParameters() {
 
 
 bool ParameterItemView::setData(const QModelIndex &index, const QVariant &value, int role) {
+    if(role != Qt::EditRole){
+        return false;
+    }
     return library_.setParameterValue( index, value );
 }
 
 QVariant ParameterItemView::headerData(int section, Qt::Orientation orientation, int role) {
+    if( role != Qt::DisplayRole ){
+        return QVariant();
+    }
 
     if(orientation == Qt::Horizontal){
         return columns_.at(section);

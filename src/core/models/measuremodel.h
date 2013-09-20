@@ -39,25 +39,24 @@ public:
     MeasureModel();
     inline const int& id() const                              { return measureId_;  }
     inline const int& projectId() const                       { return projectId_;  }
+    inline const int&  userId() const                         { return userId_;     }
     inline const MeasureHeader& header() const                { return header_;     }
     inline const QList<MeasureHeaderData>& headerData() const { return headerData_; }
     inline const MeasureData& data() const                    { return data_;       }
     inline const bool& enable() const                         { return enable_;     }
-    inline const int&  userId() const                         { return userId_;     }
     inline const QDateTime& createAt() const                  { return createAt_;   }
     inline const QDateTime& changeAt() const                  { return changeAt_;   }
     const MeasureHeaderData& headerData(const int& index) const;
 
+    double item(const int &row, const int &column) const;
 
 
-
-    double &item(const int &row, const int &column);
-    const QVariant& itemAt(const QModelIndex& index) const;
+    QVariant itemAt(const QModelIndex& index) const;
 
     int dataRows();
     int dataColumns();
 
-    const QVariant& getColumnName(const int& section) const;
+    QVariant getColumnName(const int& section) const;
 
     MeasureModel& setId(const int& id);
     MeasureModel& setProjectId(const int& projectId);
@@ -70,6 +69,7 @@ public:
     MeasureModel& setUserId( const int& userId );
     MeasureModel& setCreateAt( const QDateTime& createAt);
     MeasureModel& setChangeAt( const QDateTime& changeAt);
+    MeasureModel& setItem(const int &row, const int &column, const double& value);
 
 private:
     void parseJsonHeader(const QString& header);

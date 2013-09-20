@@ -25,18 +25,21 @@ QModelIndex MeasureItemView::index(int row, int column, const QModelIndex &paren
 }
 
 QModelIndex MeasureItemView::parent(const QModelIndex &child) const {
+    Q_UNUSED(child)
     return QModelIndex();
 }
 
 int MeasureItemView::rowCount(const QModelIndex &parent) const {
+    Q_UNUSED(parent)
     return rows_;
 }
 
 int MeasureItemView::columnCount(const QModelIndex &parent) const {
+    Q_UNUSED(parent)
     return columns_;
 }
 
-QVariant MeasureItemView::data(const QModelIndex &index, int role)  {
+QVariant MeasureItemView::data(const QModelIndex &index, int role) const  {
     if(role != Qt::EditRole && role != Qt::DisplayRole){
         return QVariant();
     }
@@ -46,13 +49,14 @@ QVariant MeasureItemView::data(const QModelIndex &index, int role)  {
 }
 
 Qt::ItemFlags MeasureItemView::flags(const QModelIndex &index) const {
+    Q_UNUSED(index)
     return (Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled);
 }
 
 bool MeasureItemView::setData(const QModelIndex &index, const QVariant &value, int role) {
     bool ok;
     if(role == Qt::EditRole){
-        measure_.item( index.row(), index.column() ) = value.toDouble(&ok);
+        measure_.setItem( index.row(), index.column(), value.toDouble(&ok));
     }
     return false;
 }

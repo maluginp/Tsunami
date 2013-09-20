@@ -15,11 +15,11 @@ bool DbStorage::isOpen() {
     return db().isOpen();
 }
 
-QString DbStorage::lastError() {
+const QString &DbStorage::lastError() const {
     return *lastErrors_.localData();
 }
 
-const QString &DbStorage::sql(const char *sql) const {
+QString DbStorage::sql(const char *sql) const {
     return QString::fromLatin1( sql );
 }
 
