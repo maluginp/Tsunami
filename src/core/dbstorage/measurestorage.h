@@ -18,7 +18,7 @@ public:
 
     bool saveMeasure();
     bool saveMeasure(const MeasureModel& measure);
-    const MeasureModel& openMeasure(const int& measureId) const;
+    MeasureModel openMeasure(const int& measureId);
 
 
 protected:

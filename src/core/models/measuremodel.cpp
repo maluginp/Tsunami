@@ -2,7 +2,7 @@
 #include "../components/json.h"
 
 MeasureModel::MeasureModel()
-    : measureId_(-1),projectId_(-1),enable_(false),userId_(-1) {
+    : measureId_(-1),projectId_(-1),enable_(false),userId_(-1),Model() {
 }
 
 const MeasureHeaderData &MeasureModel::headerData(const int &index) const {

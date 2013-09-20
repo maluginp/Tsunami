@@ -1,4 +1,5 @@
 #include "dbstorage.h"
+
 QString DbStorage::DBASE_COMMON_NAME = QString("base.db");
 
 

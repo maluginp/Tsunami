@@ -4,8 +4,9 @@
 #include <QModelIndex>
 
 class Model{
+public:
+    Model() {}
 protected:
-    Model();
     bool compare(const QString& str1, const QString& str2 ){
         return (str1.compare(str2, Qt::CaseInsensitive ) == 0);
     }

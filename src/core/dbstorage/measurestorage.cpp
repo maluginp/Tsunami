@@ -103,7 +103,7 @@ bool MeasureStorage::createTable(const MeasureTable &table) {
     return true;
 }
 
-void MeasureStorage::saveCache(const MeasureModel &measure) {
+void MeasureStorage::saveCache(const MeasureModel &measure) const {
     if( cachedMeasures_.contains( measure.id() ) ){
         cachedMeasures_[measure.id()] = measure;
         return;
