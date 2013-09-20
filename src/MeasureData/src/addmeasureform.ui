@@ -19,13 +19,13 @@
      <item>
       <widget class="QTabWidget" name="measureTabs">
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tabHeader">
         <attribute name="title">
          <string>Описание</string>
         </attribute>
-        <widget class="QTableView" name="tableHeaderView">
+        <widget class="QTableView" name="headerTableView">
          <property name="geometry">
           <rect>
            <x>9</x>
@@ -53,7 +53,7 @@
           <string>TextLabel</string>
          </property>
         </widget>
-        <widget class="QTableView" name="tableDataView">
+        <widget class="QTableView" name="dataTableView">
          <property name="geometry">
           <rect>
            <x>10</x>

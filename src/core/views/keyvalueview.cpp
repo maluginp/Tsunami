@@ -25,7 +25,7 @@ QModelIndex KeyValueView::parent(const QModelIndex &child) const {
 int KeyValueView::rowCount(const QModelIndex &parent) const {
     Q_UNUSED(parent)
 
-    return keyValues_.size();
+    return pairs_.size();
 }
 
 int KeyValueView::columnCount(const QModelIndex &parent) const {
@@ -56,7 +56,7 @@ Qt::ItemFlags KeyValueView::flags(const QModelIndex &index) const {
 
 bool KeyValueView::setData(const QModelIndex &index, const QVariant &value, int role) {
     if( role == Qt::EditRole && index.column() == 1 ){
-        keyValues_[index.row()].value = value;
+        pairs_[index.row()].value = value;
         return true;
     }
 
@@ -74,7 +74,46 @@ QVariant KeyValueView::headerData(int section, Qt::Orientation orientation, int 
     return QVariant();
 }
 
+void KeyValueView::addPairs(const KeyValuePair *pairs, const int &num) {
+
+    for(int i=0; i < num; ++i){
+        addPair( pairs[i] );
+    }
+
+}
+
+void KeyValueView::addPair(const QString &key, const QVariant &value, const KeyValuePair::ValueType &type) {
+    KeyValuePair pair(key,value,type);
+    addPair(pair);
+}
+
+void KeyValueView::addPair(const KeyValuePair &pair) {
+    pairs_.append( pair );
+}
+
+void KeyValueView::setValue(const QString &key, const QVariant &value) {
+    int nPairs = pairs_.size();
+    for(int i=0; i < nPairs; ++i){
+        if( pairs_[i].key.compare(key,Qt::CaseInsensitive) == 0){
+            pairs_[i].value = value;
+            break;
+        }
+    }
+    return;
+}
+
+void KeyValueView::setPair(const QString &key, const KeyValuePair &pair) {
+    int nPairs = pairs_.size();
+    for(int i=0; i < nPairs; ++i){
+        if( pairs_[i].key.compare(key,Qt::CaseInsensitive) == 0){
+            pairs_[i] = pair;
+            break;
+        }
+    }
+    return;
+}
+
 
 const KeyValuePair &KeyValueView::getPair(const int &index) const {
-    return keyValues_.at(index);
+    return pairs_.at(index);
 }

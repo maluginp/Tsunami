@@ -1,8 +1,9 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    src/MeasureData \
-    src/core
+    src/core \
+    src/MeasureData
+
 
 OTHER_FILES += \
     Tsunami.pri

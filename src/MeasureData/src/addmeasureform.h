@@ -2,6 +2,8 @@
 #define ADDMEASUREFORM_H
 
 #include <QWidget>
+#include <views/keyvalueview.h>
+
 
 namespace Ui {
 class addMeasureForm;
@@ -17,6 +19,12 @@ public:
     
 private:
     Ui::addMeasureForm *ui;
+
+    KeyValueView* headerView_;
+
+    static KeyValuePair headerPairs_[];
+    static const int nPairs_;
+
 };
 
 #endif // ADDMEASUREFORM_H

@@ -2,28 +2,33 @@
 #define KEYVALUEVIEW_H
 
 #include <QAbstractItemModel>
+#include <QString>
 
 struct KeyValuePair{
-    QString  key;
-    QVariant value;
-    KeyValueView::ValueType type;
-
-    KeyValuePair() :
-        key(QString()),value(QVariant()),type(KeyValueView::TYPE_TEXT) {}
-    KeyValuePair(const KeyValuePair& pair):
-        key(pair.key),value(pair.value),type(pair.type) {}
-};
-
-class KeyValueView : public QAbstractItemModel
-{
-    Q_OBJECT
-public:
     enum ValueType{
         TYPE_TEXT,
         TYPE_CHECKBOX,
-        TYPE_READONLY
+        TYPE_READONLY,
+        TYPE_DATE
     };
 
+    QString  key;
+    QVariant value;
+    ValueType type;
+
+    KeyValuePair( const QString& keyPair, const QVariant& valuePair, const ValueType& typePair)
+        : key(keyPair), value(valuePair), type(typePair) { }
+
+    KeyValuePair() :
+        key(QString()),value(QVariant()),type(KeyValuePair::TYPE_TEXT) {}
+    KeyValuePair(const KeyValuePair& pair):
+        key(pair.key),value(pair.value),type(pair.type) {}
+
+};
+
+class KeyValueView : public QAbstractItemModel {
+    Q_OBJECT
+public:
     explicit KeyValueView(QObject *parent = 0);
 
     // Model
@@ -37,15 +42,14 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
     QVariant headerData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
 
-
-
     // API
     void addPairs( const KeyValuePair* pairs,  const int& num );
-    void addPair( const QString& key, const QVariant& value, const ValueType& type );
+    void addPair ( const QString& key, const QVariant& value, const KeyValuePair::ValueType& type );
+    void addPair ( const KeyValuePair& pair );
     void setValue( const QString& key, const QVariant& value );
-    void setPair( const QString& key, const KeyValuePair& pair );
+    void setPair ( const QString& key, const KeyValuePair& pair );
 
-    const QList<KeyValuePair>& getPairs() const { return keyValues_; }
+    const QList<KeyValuePair>& getPairs() const { return pairs_; }
     const KeyValuePair& getPair( const int& index ) const;
 
 
@@ -53,9 +57,9 @@ signals:
     
 public slots:
 private:
-    QList<KeyValuePair> keyValues_;
-
+    QList<KeyValuePair> pairs_;
 
 };
+
 
 #endif // KEYVALUEVIEW_H

@@ -12,7 +12,6 @@ CONFIG(release,debug|release){
 LIBS += -L $$DESTDIR -lcore
 
 HEADERS += \
-    ../../include/defines.h \
     src/measuredatawindow.h \
     src/addmeasureform.h
 
