@@ -26,7 +26,9 @@ public:
     QString name() const;
 
     void parseJson( const QString& json ) = 0;
-    AnalysisItemType getItemType() const = 0;
+    AnalysisItemType getItemType() const{
+        return ANALYSIS_ITEM_NONE;
+    }
 private:
     ModeType mode_;
     QString node_;
@@ -48,9 +50,23 @@ private:
 };
 
 class AnalysisItemSweep : public IAnalysisItem {
+public:
     AnalysisItemType getType() const {
         return ANALYSIS_ITEM_SWEEP;
     }
+    const int& number() const { return number_; }
+    const QString& method() const { return method_; }
+    const double& start() const { return start_; }
+    const double& stop() const { return stop_; }
+    const double& step() const { return step_; }
+
+    void setNumber( const int& number );
+    void setMethod( const QString& method );
+    void setStart( const double& start );
+    void setStop( const double& stop);
+    void setStep( const double& step);
+
+
     void parseJson(const QString &json);
 private:
     int number_;
@@ -58,6 +74,19 @@ private:
     double start_;
     double stop_;
     double step_;
+};
+
+class AnalysisItemOutput : public IAnalysisItem {
+public:
+    AnalysisItemType getType() const {
+        return ANALYSIS_ITEM_OUTPUT;
+    }
+    const double& value() const { return value_; }
+    void setValue( const double& value );
+    void parseJson(const QString &json);
+private:
+    double value_;
+
 };
 
 #endif // ANALYSISITEMS_H

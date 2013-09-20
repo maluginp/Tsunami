@@ -60,6 +60,38 @@ void AnalysisItemSweep::parseJson(const QString &json) {
            setNode( value );
        } else if( key.compare("number") == 0){
            int value = attrs.value( key ).toInt();
+           setNumber(value);
+       } else if( key.compare("method") == 0){
+           QString value = attrs.value( key ).toString();
+           setMethod( value );
+       } else if( key.compare("start") == 0){
+           double value = attrs.value( key ).toDouble();
+           setStart(value);
+       } else if( key.compare("stop") == 0){
+           double value = attrs.value( key ).toDouble();
+           setStop(value);
+       } else if( key.compare("step") == 0){
+           double value = attrs.value( key ).toDouble();
+           setStep( value );
        }
    }
+}
+
+
+void AnalysisItemOutput::parseJson(const QString &json) {
+    QVariantMap attrs = QtJson::parse( json ).toMap();
+    foreach(QString key, attrs.keys()){
+        if( key.compare( "mode" ) == 0 ){
+            QString value = attrs.value( key ).toString();
+            if(value.compare( "voltage" ) == 0 ){
+                setMode( VOLTAGE );
+            } else if(value.compare("current") == 0){
+                setMode( CURRENT );
+            }
+        } else if( key.compare("node") == 0){
+            QString value = attrs.value( key ).toString();
+            setNode( value );
+        }
+    }
+
 }
