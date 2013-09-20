@@ -14,12 +14,12 @@ LIBS += -L $$DESTDIR -lcore
 HEADERS += \
     ../../include/defines.h \
     src/measuredatawindow.h \
-    addmeasureform.h
+    src/addmeasureform.h
 
 SOURCES += src/main.cpp \
     src/measuredatawindow.cpp \
-    addmeasureform.cpp
+    src/addmeasureform.cpp
 
 FORMS += \
     src/measuredatawindow.ui \
-    addmeasureform.ui
+    src/addmeasureform.ui
