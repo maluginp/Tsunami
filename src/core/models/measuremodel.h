@@ -8,8 +8,8 @@ class MeasureStorage;
 
 typedef QVector< QVector<double> > QMatrixDouble;
 
-enum MeasureType{TYPE_DC,TYPE_AC,TYPE_TRAN};
-enum MeasureSource{SOURCE_VOLTAGE,SOURCE_CURRENT,SOURCE_GND};
+enum MeasureType{TYPE_DC,TYPE_AC,TYPE_TRAN,TYPE_UNKNOWN};
+enum MeasureSource{SOURCE_VOLTAGE,SOURCE_CURRENT,SOURCE_GND,SOURCE_UNKNOWN};
 
 struct MeasureHeader{
     MeasureType type;
@@ -18,18 +18,55 @@ struct MeasureHeader{
     QDate fabricationDate;
     bool dubious;
     QVariantMap attributes;
+    MeasureHeader()
+        : type(TYPE_UNKNOWN), comment(QString()), userDate(QDate::currentDate()),
+          fabricationDate(QDate::currentDate()), dubious(false),
+          attributes(QVariantMap()) {
+
+    }
+
+    MeasureHeader(const MeasureHeader& other)
+        : type(other.type), comment(other.comment),
+          userDate(other.userDate), dubious(other.dubious),
+          fabricationDate(other.fabricationDate),
+          attributes(other.attributes) {
+
+    }
 };
 
 struct MeasureHeaderData{
     QString source;
     MeasureSource type;
     QString method;
+
+    MeasureHeaderData()
+        :source(QString()), type(SOURCE_UNKNOWN), method(QString()){
+
+    }
+
+    MeasureHeaderData(const MeasureHeaderData& other)
+        : source(other.source), method(other.type), type(other.type) {
+
+    }
 };
 
 struct MeasureData{
     QVariantList columns;
     QMatrixDouble items;
 
+    MeasureData():
+        columns(QVariantList()), items(QMatrixDouble()){
+
+    }
+
+    MeasureData(const MeasureData& other)
+        :columns(other.columns),items(other.items) {
+    }
+    MeasureData& operator=(const MeasureData& other){
+        columns = other.columns;
+        items   = other.items;
+        return *this;
+    }
 };
 
 class MeasureModel : public Model {
@@ -42,7 +79,7 @@ public:
     inline const int&  userId() const                         { return userId_;     }
     inline const MeasureHeader& header() const                { return header_;     }
     inline const QList<MeasureHeaderData>& headerData() const { return headerData_; }
-    inline const MeasureData& data() const                    { return data_;       }
+    inline const MeasureData& measureData() const             { return data_;       }
     inline const bool& enable() const                         { return enable_;     }
     inline const QDateTime& createAt() const                  { return createAt_;   }
     inline const QDateTime& changeAt() const                  { return changeAt_;   }
@@ -53,8 +90,8 @@ public:
 
     QVariant itemAt(const QModelIndex& index) const;
 
-    int dataRows();
-    int dataColumns();
+    int dataRows() const;
+    int dataColumns() const;
 
     QVariant getColumnName(const int& section) const;
 
@@ -64,7 +101,7 @@ public:
     MeasureModel& setHeaderData( const QList<MeasureHeaderData>& headerData);
     MeasureModel& setHeaderData( const MeasureHeaderData& headerData);
     MeasureModel& appendHeaderData( const MeasureHeaderData& headerData );
-    MeasureModel& setMeasureData( const MeasureData& data);
+    MeasureModel& setMeasureData( const MeasureData& measureData);
     MeasureModel& setEnable( const bool& enable );
     MeasureModel& setUserId( const int& userId );
     MeasureModel& setCreateAt( const QDateTime& createAt);

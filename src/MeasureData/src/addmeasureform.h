@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <views/keyvalueview.h>
-
+#include <views/measureitemview.h>
 
 namespace Ui {
 class addMeasureForm;
@@ -21,6 +21,7 @@ private:
     Ui::addMeasureForm *ui;
 
     KeyValueView* headerView_;
+    MeasureItemView* measureView_;
 
     static KeyValuePair headerPairs_[];
     static const int nPairs_;

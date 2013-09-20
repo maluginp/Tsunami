@@ -31,12 +31,12 @@ QModelIndex MeasureItemView::parent(const QModelIndex &child) const {
 
 int MeasureItemView::rowCount(const QModelIndex &parent) const {
     Q_UNUSED(parent)
-    return rows_;
+    return measure_.dataRows();
 }
 
 int MeasureItemView::columnCount(const QModelIndex &parent) const {
     Q_UNUSED(parent)
-    return columns_;
+    return measure_.dataColumns();
 }
 
 QVariant MeasureItemView::data(const QModelIndex &index, int role) const  {
@@ -77,6 +77,11 @@ bool MeasureItemView::saveMeasure() {
 
 
 void MeasureItemView::openMeasure(const int &measureId) {
+
+    if(measureId == -1){
+        return;
+    }
+
     measure_ = storage_->openMeasure( measureId );
     storeMeasure_ = measure_;
 

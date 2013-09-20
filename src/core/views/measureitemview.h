@@ -20,6 +20,10 @@ public:
 
     void openMeasure( const int& measureId );
 
+    const MeasureModel& model() const { return measure_; }
+
+    MeasureModel& model(){ return measure_;}
+
 signals:
     
 public slots:

@@ -159,11 +159,11 @@ QString MeasureModel::jsonData() const {
 }
 
 
-int MeasureModel::dataRows() {
+int MeasureModel::dataRows() const {
     return data_.items.size();
 }
 
-int MeasureModel::dataColumns() {
+int MeasureModel::dataColumns() const {
     return data_.columns.size();
 }
 
