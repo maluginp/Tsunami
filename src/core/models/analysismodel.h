@@ -17,7 +17,7 @@ public:
     AnalysisModel();
 
     const int& id() const     { return analysisId_; }
-    const int& projectId() const { return projectId_; }
+    const int& deviceId() const { return deviceId_; }
     const QString& name() const { return name_; }
     const AnalysisType& type() const { return type_; }
     const QList<IAnalysisItem*>& inputs() const { return inputs_; }
@@ -27,7 +27,7 @@ public:
     const bool& enable() const { return enable_; }
 
     AnalysisModel& setId( const int& analysisId );
-    AnalysisModel& setProjectId( const int& projectId );
+    AnalysisModel& setDeviceId( const int& deviceId );
     AnalysisModel& setName( const QString& name);
     AnalysisModel& setType( const AnalysisType& type);
     AnalysisModel& setInputs( const QList<IAnalysisItem*>& inputs );
@@ -45,7 +45,7 @@ protected:
     QString jsonOutput();
 private:
     int analysisId_;
-    int projectId_;
+    int deviceId_;
     QString name_;
     AnalysisType type_;
     QList<IAnalysisItem *> inputs_;

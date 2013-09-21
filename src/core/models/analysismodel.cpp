@@ -10,8 +10,8 @@ AnalysisModel &AnalysisModel::setId(const int &analysisId) {
     return *this;
 }
 
-AnalysisModel &AnalysisModel::setProjectId(const int &projectId) {
-    projectId_ = projectId;
+AnalysisModel &AnalysisModel::setDeviceId(const int &deviceId) {
+    deviceId_ = deviceId;
     return *this;
 }
 
