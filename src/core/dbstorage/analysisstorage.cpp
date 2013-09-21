@@ -11,6 +11,18 @@ QString AnalysisStorage::dbName() const {
     return DBASE_COMMON_NAME;
 }
 
+bool AnalysisStorage::saveAnalysis() {
+    return saveAnalysisImpl( currentAnalysis_ );
+}
+
+bool AnalysisStorage::saveAnalysis(const AnalysisModel &analysis) {
+    return saveAnalysisImpl(analysis);
+}
+
+AnalysisModel AnalysisStorage::openAnalysis(const int &analysisId) {
+    return openAnalysisImpl(analysisId);
+}
+
 bool AnalysisStorage::saveAnalysisImpl(const AnalysisModel &analysis) {
     AnalysisModel model = analysis;
     QString sqlQuery();
@@ -105,6 +117,10 @@ AnalysisModel AnalysisStorage::openAnalysisImpl(const int &analysisId) {
     model.setChangeAt( q.value(rec.indexOf("changeAt")).toDateTime() );
 
     model.setEnable( q.value(rec.indexOf("enable")).toBool() );
+
+    currentAnalysis_ = model;
+
+    saveCache( model );
 
     return model;
 }
