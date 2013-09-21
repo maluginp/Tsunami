@@ -81,6 +81,10 @@ bool AnalysisStorage::saveAnalysisImpl(const AnalysisModel &analysis) {
 AnalysisModel AnalysisStorage::openAnalysisImpl(const int &analysisId) {
     QString sqlQuery;
 
+    if( analysisId == -1 ){
+        return AnalysisModel();
+    }
+
     sqlQuery = sql("SELECT * FROM %1 WHERE analysis_id=:id")
             .arg(TABLE_NAME_ANALYSES);
 

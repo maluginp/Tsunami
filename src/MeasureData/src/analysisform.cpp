@@ -49,6 +49,7 @@ void AnalysisForm::prepareItemsOutput() {
 }
 
 void AnalysisForm::openAnalysis(const int &analysisId) {
+
     model_ =  storage_->openAnalysis( analysisId );
 
     ui->nameAnalysisText->setText( model_.name() );

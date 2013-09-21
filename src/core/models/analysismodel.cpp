@@ -1,8 +1,10 @@
 #include "analysismodel.h"
 #include "../components/json.h"
 
-AnalysisModel::AnalysisModel()
-{
+AnalysisModel::AnalysisModel() :
+    analysisId_(-1), deviceId_(-1),name_(QString()), type_(ANALYSIS_UNKNOWN),
+    createAt(QDateTime::currentDateTime()), changeAt_(QDateTime::currentDateTime()),
+    enable_(false) {
 }
 
 AnalysisModel &AnalysisModel::setId(const int &analysisId) {
