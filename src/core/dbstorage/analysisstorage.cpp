@@ -23,9 +23,13 @@ AnalysisModel AnalysisStorage::openAnalysis(const int &analysisId) {
     return openAnalysisImpl(analysisId);
 }
 
+QString AnalysisStorage::connectionName() const {
+    return CONNECTION_NAME_ANALYSIS;
+}
+
 bool AnalysisStorage::saveAnalysisImpl(const AnalysisModel &analysis) {
     AnalysisModel model = analysis;
-    QString sqlQuery();
+    QString sqlQuery;
 
     if(!beginTransaction()){
         return false;
@@ -152,4 +156,8 @@ bool AnalysisStorage::createTable(const AnalysisStorage::AnalysisTable &table) {
     }
 
     return true;
+}
+
+void AnalysisStorage::saveCache(const AnalysisModel &analysis) {
+
 }

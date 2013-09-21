@@ -1,8 +1,10 @@
 #ifndef ANALYSISMODEL_H
 #define ANALYSISMODEL_H
-
 #include <Model.h>
+#include <QDateTime>
 #include "analysisitems.h"
+
+//typedef QList<IAnalysisItem*> AnalysisItems;
 
 class AnalysisModel : public Model {
     friend class AnalysisStorage;

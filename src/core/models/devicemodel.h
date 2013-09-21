@@ -14,7 +14,7 @@ public:
     inline const int& id() const                 { return deviceId_; }
     inline const QString& name() const           { return name_; }
     inline const QStringList& nodes() const      { return nodes_; }
-    inline const QVariantMap& attributes() const { return attributes_; }
+    inline const QStringList& attributes() const { return attributes_; }
 
     DeviceModel& setId( const int& deviceId );
     DeviceModel& setName( const QString& name );

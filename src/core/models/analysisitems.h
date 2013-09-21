@@ -26,10 +26,10 @@ public:
 
     QString name() const;
 
-    QVariantMap json() = 0;
+    virtual QVariantMap json() = 0;
 
-    void parseJson( const QString& json ) = 0;
-    AnalysisItemType getItemType() const{
+    virtual void parseJson( const QString& json ) = 0;
+    virtual AnalysisItemType getItemType() const{
         return ANALYSIS_ITEM_NONE;
     }
 private:

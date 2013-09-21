@@ -1,9 +1,5 @@
 #include "analysisitems.h"
-
-AnalysisItems::AnalysisItems()
-{
-}
-
+#include "../components/json.h"
 
 void IAnalysisItem::setMode(const IAnalysisItem::ModeType &mode) {
     mode_ = mode;
