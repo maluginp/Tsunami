@@ -26,6 +26,7 @@ private:
     AnalysisModel openAnalysisImpl(const int& analysisId);
     bool createTable(const AnalysisTable& table);
 
+    void saveCache(const AnalysisModel& analysis);
 
     AnalysisModel currentAnalysis_;
     static QString CONNECTION_NAME_ANALYSIS;

@@ -4,8 +4,8 @@
 #include <Model.h>
 #include "analysisitems.h"
 
-class AnalysisModel : public Model
-{
+class AnalysisModel : public Model {
+    friend class AnalysisStorage;
 public:
     enum AnalysisType{
         ANALYSIS_UNKNOWN,
