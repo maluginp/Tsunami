@@ -9,7 +9,7 @@ CONFIG(release,debug|release){
     DESTDIR=$$SOLUTION_DIR/build/release
 }
 
-LIBS += -L $$DESTDIR -lcore
+LIBS += -L$$DESTDIR -lcore
 
 HEADERS += \
     src/measuredatawindow.h \

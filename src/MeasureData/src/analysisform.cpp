@@ -2,9 +2,9 @@
 #include "ui_analysisform.h"
 
 KeyValuePair AnalysisForm::ITEM_TYPE_SWEEP[] = {
-    KeyValuePair("number",QVariant(),KeyValuePair::TYPE_TEXT, tr("Number")),
+    KeyValuePair("number",QVariant(1),KeyValuePair::TYPE_TEXT, tr("Number")),
     KeyValuePair("node",  QVariant(),KeyValuePair::TYPE_TEXT, tr("Node")),
-    KeyValuePair("mode",  QVariant(),KeyValuePair::TYPE_LIST, tr("Type")),
+    KeyValuePair("mode",  QVariant("voltage"),KeyValuePair::TYPE_LIST, tr("Type")),
     KeyValuePair("method",QVariant(),KeyValuePair::TYPE_TEXT, tr("Method")),
     KeyValuePair("start", QVariant(),KeyValuePair::TYPE_TEXT, tr("Start")),
     KeyValuePair("stop",  QVariant(),KeyValuePair::TYPE_TEXT, tr("Stop")),
@@ -133,9 +133,8 @@ void AnalysisForm::changeTypeItemInput(const int &index) {
     // Sweep and const
     if( key.compare("sweep") == 0 ){
         itemValueInputView_->setPairs( ITEM_TYPE_SWEEP, 7 );
-        itemValueInputView_->setPairData( "mode", mapModes );
+        itemValueInputView_->setPairData( QString("mode"), mapModes );
         itemValueInputView_->fillDelegates( ui->itemInputTableView );
-
     } else if( key.compare("const") == 0 ){
         itemValueInputView_->setPairs( ITEM_TYPE_CONST, 3 );
     }

@@ -7,12 +7,12 @@
 QT       -= gui
 
 TARGET   =  core
-#CONFIG(debug, debug|release) {
-#    CONFIG+= lib
-#}
-#CONFIG(release, debug|release) {
+CONFIG(debug, debug|release) {
+    CONFIG+= lib
+}
+CONFIG(release, debug|release) {
     CONFIG+= staticlib
-#}
+}
 TEMPLATE = lib
 
 SOURCES += main.cpp \

@@ -61,6 +61,10 @@ bool KeyValueView::setData(const QModelIndex &index, const QVariant &value, int 
         pairs_[index.row()].value = value;
         return true;
     }
+    if( role == Qt::DisplayRole && index.column() == 1){
+        pairs_[index.row()].value = value ;
+    }
+
 
     return false;
 }

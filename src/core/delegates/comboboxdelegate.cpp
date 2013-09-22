@@ -31,13 +31,16 @@ void ComboBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) 
 
 void ComboBoxDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const {
     if( index.row() == rowItem_ && index.column() == columnItem_ ){
-
-        QString key = items_.key(index.data(Qt::UserRole));
-        qDebug() << key;
         QComboBox *comboBox = static_cast<QComboBox*>(editor);
-        model->setData(index, comboBox->currentIndex(), Qt::EditRole);
-        model->setData(index, index.data(Qt::UserRole), Qt::UserRole );
-        model->setData(index, key, Qt::DisplayRole);
+        QString key = items_.key(comboBox->itemData( comboBox->currentIndex(), Qt::UserRole ));
+        qDebug() <<  QString("Key:%1, User:%2, Display:%3, Edit:%4")
+                     .arg(key)
+                     .arg(comboBox->itemData( comboBox->currentIndex(), Qt::UserRole ).toString())
+                     .arg(comboBox->itemData( comboBox->currentIndex(), Qt::DisplayRole ).toString())
+                     .arg(comboBox->itemData( comboBox->currentIndex(), Qt::EditRole ).toString());
+
+        model->setData(index, comboBox->itemData( comboBox->currentIndex(), Qt::UserRole ), Qt::DisplayRole );
+//        model->setData(index , key, Qt::DisplayRole);
     }else{
         QItemDelegate::setModelData(editor,model,index);
     }
