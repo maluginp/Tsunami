@@ -1,6 +1,17 @@
 #include "analysisitems.h"
 #include "../components/json.h"
 
+void IAnalysisItem::setMode(const QString &mode) {
+    if(mode.compare("voltage") == 0){
+        mode_ = VOLTAGE;
+    }else if( mode.compare("current") == 0 ){
+        mode_ = CURRENT;
+    }else{
+        mode_ = UNKNOWN;
+    }
+
+}
+
 void IAnalysisItem::setMode(const IAnalysisItem::ModeType &mode) {
     mode_ = mode;
 }

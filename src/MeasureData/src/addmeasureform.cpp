@@ -4,9 +4,7 @@
 
 const int addMeasureForm::nPairs_ = 3;
 KeyValuePair addMeasureForm::headerPairs_[] = {
-    KeyValuePair("test",  QVariant(""),  KeyValuePair::TYPE_TEXT),
-    KeyValuePair("date",  QDate::currentDate(), KeyValuePair::TYPE_DATE),
-    KeyValuePair("test1", true, KeyValuePair::TYPE_CHECKBOX )
+    KeyValuePair("test",  QVariant(),  KeyValuePair::TYPE_TEXT, tr("Test")),
 };
 
 

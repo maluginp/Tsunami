@@ -3,7 +3,7 @@
 
 AnalysisModel::AnalysisModel() :
     analysisId_(-1), deviceId_(-1),name_(QString()), type_(ANALYSIS_UNKNOWN),
-    createAt(QDateTime::currentDateTime()), changeAt_(QDateTime::currentDateTime()),
+    createAt_(QDateTime::currentDateTime()), changeAt_(QDateTime::currentDateTime()),
     enable_(false) {
 }
 

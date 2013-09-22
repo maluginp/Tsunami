@@ -5,7 +5,7 @@ QAbstractItemModel(parent) {
 
 }
 
-ListItemView::ListItemView(const QVariantMap &items, QObject *parent) :
+ListItemView::ListItemView(const QList<QPair<QString, QVariant> > &items, QObject *parent) :
     QAbstractItemModel(parent) {
     setItems( items );
 }
@@ -76,28 +76,24 @@ QVariant ListItemView::headerData(int section, Qt::Orientation orientation, int 
     return QVariant();
 }
 
-void ListItemView::setItems(const QVariantMap &items) {
+ListItemView &ListItemView::setItems(const QList<QPair<QString, QVariant> > &items) {
+    beginResetModel();
     items_ = items;
+    endResetModel();
+    return *this;
+}
+
+ListItemView& ListItemView::addItem(const QPair<QString, QVariant> &item) {
+    beginResetModel();
+    items_.append( item );
+    endResetModel();
+    return *this;
 }
 
 QVariant ListItemView::itemAt(const int &index) const {
-    int row=0;
-    foreach(QVariant item, items_.values()){
-        if(row == index){
-            return item;
-        }
-        ++row;
-    }
-    return QVariant();
+    return items_.at(index).second;
 }
 
 QString ListItemView::keyAt(const int &index) const {
-    int row=0;
-    foreach(QString item, items_.keys()){
-        if(row == index){
-            return item;
-        }
-        ++row;
-    }
-    return QString();
+    return items_.at(index).first;
 }

@@ -13,16 +13,17 @@ struct KeyValuePair{
     };
 
     QString  key;
+    QString  title;
     QVariant value;
     ValueType type;
 
-    KeyValuePair( const QString& keyPair, const QVariant& valuePair, const ValueType& typePair)
-        : key(keyPair), value(valuePair), type(typePair) { }
+    KeyValuePair( const QString& keyPair, const QVariant& valuePair, const ValueType& typePair, const QString& titlePair)
+        : key(keyPair), value(valuePair), type(typePair), title(titlePair) { }
 
     KeyValuePair() :
         key(QString()),value(QVariant()),type(KeyValuePair::TYPE_TEXT) {}
     KeyValuePair(const KeyValuePair& pair):
-        key(pair.key),value(pair.value),type(pair.type) {}
+        key(pair.key),value(pair.value),type(pair.type),title(pair.title) {}
 
 };
 
@@ -44,14 +45,14 @@ public:
 
     // API
     void addPairs( const KeyValuePair* pairs,  const int& num );
-    void addPair ( const QString& key, const QVariant& value, const KeyValuePair::ValueType& type );
+    void addPair ( const QString& key, const QVariant& value, const KeyValuePair::ValueType& type, const QString& title );
     void addPair ( const KeyValuePair& pair );
     void setValue( const QString& key, const QVariant& value );
     void setPair ( const QString& key, const KeyValuePair& pair );
 
     const QList<KeyValuePair>& getPairs() const { return pairs_; }
     const KeyValuePair& getPair( const int& index ) const;
-
+    const KeyValuePair& getPair(const QString& key) const;
 
 signals:
     

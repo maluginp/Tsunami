@@ -39,7 +39,7 @@ QVariant KeyValueView::data(const QModelIndex &index, int role) const {
     if(role == Qt::EditRole || role == Qt::DisplayRole){
         pair = getPair( index.row() );
         if(index.column() == 0){
-            return QVariant( pair.key );
+            return QVariant( pair.title );
         }else if(index.column() == 1){
             return pair.value;
         }
@@ -82,8 +82,8 @@ void KeyValueView::addPairs(const KeyValuePair *pairs, const int &num) {
 
 }
 
-void KeyValueView::addPair(const QString &key, const QVariant &value, const KeyValuePair::ValueType &type) {
-    KeyValuePair pair(key,value,type);
+void KeyValueView::addPair(const QString &key, const QVariant &value, const KeyValuePair::ValueType &type, const QString &title) {
+    KeyValuePair pair(key,value,type,title);
     addPair(pair);
 }
 
@@ -116,4 +116,14 @@ void KeyValueView::setPair(const QString &key, const KeyValuePair &pair) {
 
 const KeyValuePair &KeyValueView::getPair(const int &index) const {
     return pairs_.at(index);
+}
+
+const KeyValuePair &KeyValueView::getPair(const QString &key) const {
+     int nPairs = pairs_.size();
+     for(int i=0; i < nPairs; ++i){
+         if(pairs_[i].key.compare(key) == 0){
+             return pairs_[i];
+         }
+     }
+     return KeyValuePair();
 }

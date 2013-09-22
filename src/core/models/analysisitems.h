@@ -15,12 +15,14 @@ class IAnalysisItem{
 public:
     enum ModeType{
         VOLTAGE,
-        CURRENT
+        CURRENT,
+        UNKNOWN
     };
 
     const ModeType& mode() const { return mode_; }
     const QString& node() const { return node_; }
 
+    void setMode( const QString& mode);
     void setMode( const ModeType& mode );
     void setNode( const QString& node );
 
@@ -54,6 +56,8 @@ private:
 
 class AnalysisItemSweep : public IAnalysisItem {
 public:
+    AnalysisItemSweep(){}
+
     AnalysisItemType getType() const {
         return ANALYSIS_ITEM_SWEEP;
     }
