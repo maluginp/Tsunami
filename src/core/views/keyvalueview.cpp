@@ -1,7 +1,7 @@
 #include "keyvalueview.h"
 #include <QAbstractItemView>
 #include "../delegates/comboboxdelegate.h"
-
+#include <QDebug>
 KeyValueView::KeyValueView(QObject *parent) :
     QAbstractItemModel(parent)
 {
@@ -43,6 +43,9 @@ QVariant KeyValueView::data(const QModelIndex &index, int role) const {
         if(index.column() == 0){
             return QVariant( pair.title );
         }else if(index.column() == 1){
+            if(pair.type == KeyValuePair::TYPE_LIST){
+                qDebug() << "data(): " <<  pair.value;
+            }
             return pair.value;
         }
     }

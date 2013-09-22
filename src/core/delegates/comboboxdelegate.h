@@ -21,6 +21,8 @@ public:
 
   void setItems( const QVariantMap& items );
 
+
+  int itemIndex( const QVariant& value ) const;
 private:
     QVariantMap items_;
     int rowItem_;

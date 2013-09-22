@@ -22,8 +22,9 @@ QWidget *ComboBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewI
 void ComboBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const {
     if( index.row() == rowItem_ && index.column() == columnItem_ ){
         QComboBox *comboBox = static_cast<QComboBox*>(editor);
-        int value = index.model()->data(index, Qt::EditRole).toUInt();
-        comboBox->setCurrentIndex(value);
+        QVariant value  = index.model()->data(index, Qt::EditRole);
+        qDebug() << value;
+        comboBox->setCurrentIndex(  itemIndex(value)  );
     }else{
         QItemDelegate::setEditorData(editor,index);
     }
@@ -69,5 +70,16 @@ void ComboBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
 
 void ComboBoxDelegate::setItems(const QVariantMap &items) {
     items_ = items;
+}
+
+int ComboBoxDelegate::itemIndex(const QVariant &value) const {
+    int row=0;
+    foreach(QVariant item,items_.values()){
+        if(value == item){
+            return row;
+        }
+        ++row;
+    }
+    return -1;
 }
 
