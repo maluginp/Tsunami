@@ -24,8 +24,8 @@ QString IAnalysisItem::name() const {
     QString itemName("");
 
     switch( mode() ){
-    case VOLTAGE: itemName.append("I"); break;
-    case CURRENT: itemName.append("V"); break;
+    case VOLTAGE: itemName.append("V"); break;
+    case CURRENT: itemName.append("I"); break;
     default:
         return QString();
     }

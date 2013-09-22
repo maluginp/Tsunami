@@ -1,7 +1,7 @@
 #include <QApplication>
 //#include "measuredatawindow.h"
 //#include "addmeasureform.h"
-
+#include "analysisform.h"
 
 
 int main(int argc, char *argv[]) {
@@ -10,7 +10,8 @@ int main(int argc, char *argv[]) {
 //    mainWindow.show();
 
 //    addMeasureForm form(0);
-//    form.show();
+    AnalysisForm form;
+    form.show();
 
     return a.exec();
 }

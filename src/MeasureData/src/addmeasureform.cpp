@@ -16,7 +16,7 @@ addMeasureForm::addMeasureForm(QWidget *parent) :
 
 
     headerView_ = new KeyValueView();
-    headerView_->addPairs( headerPairs_, nPairs_ );
+    headerView_->setPairs( headerPairs_, nPairs_ );
 
     ui->headerTableView->setModel( headerView_ );
 

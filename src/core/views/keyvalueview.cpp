@@ -1,4 +1,6 @@
 #include "keyvalueview.h"
+#include <QAbstractItemView>
+#include "../delegates/comboboxdelegate.h"
 
 KeyValueView::KeyValueView(QObject *parent) :
     QAbstractItemModel(parent)
@@ -74,12 +76,15 @@ QVariant KeyValueView::headerData(int section, Qt::Orientation orientation, int 
     return QVariant();
 }
 
-void KeyValueView::addPairs(const KeyValuePair *pairs, const int &num) {
+void KeyValueView::setPairs(const KeyValuePair *pairs, const int &num) {
+    beginResetModel();
 
+    pairs_.clear();
     for(int i=0; i < num; ++i){
         addPair( pairs[i] );
     }
-
+    endResetModel();
+    reset();
 }
 
 void KeyValueView::addPair(const QString &key, const QVariant &value, const KeyValuePair::ValueType &type, const QString &title) {
@@ -97,6 +102,16 @@ void KeyValueView::setValue(const QString &key, const QVariant &value) {
         if( pairs_[i].key.compare(key,Qt::CaseInsensitive) == 0){
             pairs_[i].value = value;
             break;
+        }
+    }
+    return;
+}
+
+void KeyValueView::setPairData(const QString &key, const QVariant &data){
+    int nPairs = pairs_.size();
+    for(int i=0; i < nPairs; ++i){
+        if( pairs_[i].key.compare(key,Qt::CaseInsensitive) == 0){
+            pairs_[i].data = data;
         }
     }
     return;
@@ -126,4 +141,16 @@ const KeyValuePair &KeyValueView::getPair(const QString &key) const {
          }
      }
      return KeyValuePair();
+}
+
+void KeyValueView::fillDelegates(QAbstractItemView *view) {
+    int nPairs = pairs_.size();
+    for(int i=0; i < nPairs; ++i){
+        if( pairs_[i].type == KeyValuePair::TYPE_LIST ){
+            ComboBoxDelegate *item = new ComboBoxDelegate( i, 1, view );
+            item->setItems( pairs_[i].data.toMap() );
+
+            view->setItemDelegate( item );
+        }
+    }
 }

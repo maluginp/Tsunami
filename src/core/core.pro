@@ -7,7 +7,12 @@
 QT       -= gui
 
 TARGET   =  core
-CONFIG+= staticlib
+#CONFIG(debug, debug|release) {
+#    CONFIG+= lib
+#}
+#CONFIG(release, debug|release) {
+    CONFIG+= staticlib
+#}
 TEMPLATE = lib
 
 SOURCES += main.cpp \
@@ -28,7 +33,8 @@ SOURCES += main.cpp \
     models/devicemodel.cpp \
     models/analysismodel.cpp \
     models/analysisitems.cpp \
-    dbstorage/analysisstorage.cpp
+    dbstorage/analysisstorage.cpp \
+    delegates/comboboxdelegate.cpp
 
 HEADERS += \
     components/json.h \
@@ -48,7 +54,8 @@ HEADERS += \
     models/devicemodel.h \
     models/analysismodel.h \
     models/analysisitems.h \
-    dbstorage/analysisstorage.h
+    dbstorage/analysisstorage.h \
+    delegates/comboboxdelegate.h
 
 include(../../Tsunami.pri)
 

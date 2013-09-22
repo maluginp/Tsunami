@@ -4,7 +4,7 @@
 KeyValuePair AnalysisForm::ITEM_TYPE_SWEEP[] = {
     KeyValuePair("number",QVariant(),KeyValuePair::TYPE_TEXT, tr("Number")),
     KeyValuePair("node",  QVariant(),KeyValuePair::TYPE_TEXT, tr("Node")),
-    KeyValuePair("mode",  QVariant(),KeyValuePair::TYPE_TEXT, tr("Type")),
+    KeyValuePair("mode",  QVariant(),KeyValuePair::TYPE_LIST, tr("Type")),
     KeyValuePair("method",QVariant(),KeyValuePair::TYPE_TEXT, tr("Method")),
     KeyValuePair("start", QVariant(),KeyValuePair::TYPE_TEXT, tr("Start")),
     KeyValuePair("stop",  QVariant(),KeyValuePair::TYPE_TEXT, tr("Stop")),
@@ -13,11 +13,11 @@ KeyValuePair AnalysisForm::ITEM_TYPE_SWEEP[] = {
 
 KeyValuePair AnalysisForm::ITEM_TYPE_CONST[] = {
     KeyValuePair("node",  QVariant(),KeyValuePair::TYPE_TEXT, tr("Node")),
-    KeyValuePair("mode",  QVariant(),KeyValuePair::TYPE_TEXT, tr("Type")),
+    KeyValuePair("mode",  QVariant(),KeyValuePair::TYPE_LIST, tr("Type")),
     KeyValuePair("const",QVariant(),KeyValuePair::TYPE_TEXT, tr("Constant"))
 };
 KeyValuePair AnalysisForm::ITEM_TYPE_OUTPUT[] = {
-    KeyValuePair("mode",  QVariant(),KeyValuePair::TYPE_TEXT, tr("Type")),
+    KeyValuePair("mode",  QVariant(),KeyValuePair::TYPE_LIST, tr("Type")),
     KeyValuePair("node",  QVariant(),KeyValuePair::TYPE_TEXT, tr("Node"))
 };
 
@@ -31,6 +31,9 @@ AnalysisForm::AnalysisForm(QWidget *parent) :
     storage_ = AnalysisStorage::instance();
     itemsInputView_ = new ListItemView();
     itemsOutputView_ = new ListItemView();
+    itemValueInputView_ = new KeyValueView();
+    itemValueOutputView_ = new KeyValueView();
+
 
     ui->typeInputItemComboBox->addItem( tr("Sweep"), "sweep" );
     ui->typeInputItemComboBox->addItem( tr("Constant"), "const" );
@@ -48,6 +51,12 @@ AnalysisForm::AnalysisForm(QWidget *parent) :
     ui->inputSplitter->widget(1)->setMaximumWidth( 250 );
     ui->outputSplitter->widget(1)->setMaximumWidth( 250 );
 
+
+
+    ui->itemInputTableView->setModel( itemValueInputView_ );
+    ui->itemOutputTableView->setModel( itemValueOutputView_ );
+    ui->inputItemsListView->setModel( itemsInputView_ );
+    ui->outputItemsListView->setModel( itemsOutputView_ );
 
     // CONNECTS
     // INPUTS TAB
@@ -117,11 +126,18 @@ void AnalysisForm::openAnalysis(const int &analysisId) {
 void AnalysisForm::changeTypeItemInput(const int &index) {
     QString key = ui->typeInputItemComboBox->itemData( index ).toString();
 
+    QVariantMap mapModes;
+    mapModes.insert( "Voltage", "voltage" );
+    mapModes.insert( "Current", "current" );
+
     // Sweep and const
     if( key.compare("sweep") == 0 ){
-        itemValueInputView_->addPairs( ITEM_TYPE_SWEEP, 7 );
+        itemValueInputView_->setPairs( ITEM_TYPE_SWEEP, 7 );
+        itemValueInputView_->setPairData( "mode", mapModes );
+        itemValueInputView_->fillDelegates( ui->itemInputTableView );
+
     } else if( key.compare("const") == 0 ){
-        itemValueInputView_->addPairs( ITEM_TYPE_CONST, 3 );
+        itemValueInputView_->setPairs( ITEM_TYPE_CONST, 3 );
     }
 }
 
@@ -129,8 +145,8 @@ void AnalysisForm::changeTypeItemOutput(const int &index) {
     QString key = ui->typeOutputItemComboBox->itemData( index ).toString();
 
     if( key.compare("output") == 0 ){
-        itemValueInputView_->addPairs( ITEM_TYPE_OUTPUT, 2 );
-    } else{
+        itemValueInputView_->setPairs( ITEM_TYPE_OUTPUT, 2 );
+    } else {
     }
 }
 
