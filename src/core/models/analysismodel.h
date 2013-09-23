@@ -28,10 +28,14 @@ public:
     const QDateTime& changeAt() const { return changeAt_; }
     const bool& enable() const { return enable_; }
 
+    void removeItemInput( const QString& nameItem );
+    void removeItemOutput(const QString& nameItem );
+
     AnalysisModel& setId( const int& analysisId );
     AnalysisModel& setDeviceId( const int& deviceId );
     AnalysisModel& setName( const QString& name);
     AnalysisModel& setType( const AnalysisType& type);
+    AnalysisModel& setType( const QString& type);
     AnalysisModel& setInputs( const QList<IAnalysisItem*>& inputs );
     AnalysisModel& addInput( IAnalysisItem* input );
     AnalysisModel& setOutputs( const QList<IAnalysisItem*>& outputs );
@@ -46,6 +50,8 @@ protected:
     QString jsonInput();
     QString jsonOutput();
 private:
+    bool inputExists( const QString& name );
+    bool outputExists( const QString& name );
     int analysisId_;
     int deviceId_;
     QString name_;

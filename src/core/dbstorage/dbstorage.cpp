@@ -1,5 +1,5 @@
 #include "dbstorage.h"
-
+#include <QDebug>
 QString DbStorage::DBASE_COMMON_NAME = QString("base.db");
 
 
@@ -53,6 +53,7 @@ void DbStorage::closeAll() {
 }
 
 void DbStorage::setLastError(const QString &msg){
+    qDebug() << "Sql error: "<<msg;
     lastErrors_.setLocalData( new QString(msg) );
 }
 

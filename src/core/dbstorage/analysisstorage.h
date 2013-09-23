@@ -14,14 +14,14 @@ public:
     QString dbName() const;
 
     bool saveAnalysis();
-    bool saveAnalysis(const AnalysisModel& analysis);
+    bool saveAnalysis(AnalysisModel& analysis);
 
     AnalysisModel openAnalysis(const int& analysisId);
 
 protected:
     QString connectionName() const;
 private:
-    bool saveAnalysisImpl(const AnalysisModel& analysis);
+    bool saveAnalysisImpl(AnalysisModel& model);
 
     AnalysisModel openAnalysisImpl(const int& analysisId);
     bool createTable(const AnalysisTable& table);

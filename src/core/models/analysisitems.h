@@ -20,7 +20,9 @@ public:
     };
 
     const ModeType& mode() const { return mode_; }
+    QVariant modeToVariant() const;
     const QString& node() const { return node_; }
+
 
     void setMode( const QString& mode);
     void setMode( const ModeType& mode );
@@ -31,7 +33,7 @@ public:
     virtual QVariantMap json() = 0;
 
     virtual void parseJson( const QString& json ) = 0;
-    virtual AnalysisItemType getItemType() const{
+    virtual AnalysisItemType getItemType() const {
         return ANALYSIS_ITEM_NONE;
     }
 private:
@@ -42,7 +44,7 @@ private:
 class AnalysisItemConst : public IAnalysisItem {
 public:
 
-    AnalysisItemType getType() const{
+    AnalysisItemType getItemType() const{
         return ANALYSIS_ITEM_CONST;
     }
 
@@ -57,8 +59,20 @@ private:
 class AnalysisItemSweep : public IAnalysisItem {
 public:
     AnalysisItemSweep(){}
+    AnalysisItemSweep(const QString& node,const QString& mode, const int& number,
+                      const QString& method, const double& start, const double& stop,
+                      const double& step) :
+        node_(node),number_(number),method_(method),start_(start),stop_(stop),step_(step)
+    {
+        if(mode == "voltage"){
+            mode_ = VOLTAGE;
+        }else if(mode == "current"){
+            mode_ = CURRENT;
+        }
 
-    AnalysisItemType getType() const {
+    }
+
+    AnalysisItemType getItemType() const {
         return ANALYSIS_ITEM_SWEEP;
     }
     const int& number() const { return number_; }
@@ -85,7 +99,7 @@ private:
 
 class AnalysisItemOutput : public IAnalysisItem {
 public:
-    AnalysisItemType getType() const {
+    AnalysisItemType getItemType() const {
         return ANALYSIS_ITEM_OUTPUT;
     }
     const double& value() const { return value_; }

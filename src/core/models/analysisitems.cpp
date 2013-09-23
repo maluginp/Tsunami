@@ -1,6 +1,15 @@
 #include "analysisitems.h"
 #include "../components/json.h"
 
+QVariant IAnalysisItem::modeToVariant() const {
+    if( mode_ == CURRENT ){
+        return QVariant("current");
+    }else if(mode_ == VOLTAGE){
+        return QVariant("voltage");
+    }
+    return QVariant("");
+}
+
 void IAnalysisItem::setMode(const QString &mode) {
     if(mode.compare("voltage") == 0){
         mode_ = VOLTAGE;

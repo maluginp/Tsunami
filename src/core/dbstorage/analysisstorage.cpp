@@ -3,8 +3,10 @@
 QString AnalysisStorage::CONNECTION_NAME_ANALYSIS = QString("connection_analysis");
 QString AnalysisStorage::TABLE_NAME_ANALYSES      = QString("analyses");
 
-AnalysisStorage::AnalysisStorage()
-{
+AnalysisStorage::AnalysisStorage() {
+    if(!tableExists( TABLE_NAME_ANALYSES )){
+        createTable( TABLE_ANALYSES );
+    }
 }
 
 QString AnalysisStorage::dbName() const {
@@ -15,7 +17,7 @@ bool AnalysisStorage::saveAnalysis() {
     return saveAnalysisImpl( currentAnalysis_ );
 }
 
-bool AnalysisStorage::saveAnalysis(const AnalysisModel &analysis) {
+bool AnalysisStorage::saveAnalysis(AnalysisModel &analysis) {
     return saveAnalysisImpl(analysis);
 }
 
@@ -27,8 +29,8 @@ QString AnalysisStorage::connectionName() const {
     return CONNECTION_NAME_ANALYSIS;
 }
 
-bool AnalysisStorage::saveAnalysisImpl(const AnalysisModel &analysis) {
-    AnalysisModel model = analysis;
+bool AnalysisStorage::saveAnalysisImpl(AnalysisModel &model) {
+
     QString sqlQuery;
 
     if(!beginTransaction()){
@@ -37,7 +39,7 @@ bool AnalysisStorage::saveAnalysisImpl(const AnalysisModel &analysis) {
 
     sqlQuery=sql("INSERT OR REPLACE INTO %1(analysis_id,device_id,name,type,"
                  "inputs,outputs,createAt,changeAt,enable) "
-                 "VALUES(:analysis_id,:device_id,:name,:type,:inputs,:outputs,"
+                 "VALUES (:analysis_id,:device_id,:name,:type,:inputs,:outputs,"
                  ":createAt,:changeAt,:enable)").arg(TABLE_NAME_ANALYSES);
 
     QSqlQuery q(sqlQuery,db());
@@ -67,6 +69,7 @@ bool AnalysisStorage::saveAnalysisImpl(const AnalysisModel &analysis) {
 
     if(!q.exec()){
         setLastError(q.lastError().text());
+        qDebug() << q.lastQuery();
         rollback();
         return false;
     }
@@ -137,7 +140,7 @@ bool AnalysisStorage::createTable(const AnalysisStorage::AnalysisTable &table) {
     QString sqlQuery;
     if(table == TABLE_ANALYSES){
         sqlQuery = sql("CREATE TABLE IF NOT EXISTS %1 ("
-                       "measure_id INTEGER PRIMARY KEY ON CONFLICT REPLACE,"
+                       "analysis_id INTEGER PRIMARY KEY ON CONFLICT REPLACE,"
                        "device_id INTEGER,"
                        "name TEXT,"
                        "type TEXT,"

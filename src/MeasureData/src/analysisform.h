@@ -16,11 +16,12 @@ class AnalysisForm : public QWidget
 
 public:
     explicit AnalysisForm(QWidget *parent = 0);
-    ~AnalysisForm();  
+    void openAnalysis(const int& analysisId);
+    ~AnalysisForm();
 private:
     void prepareItemsInput();
     void prepareItemsOutput();
-    void openAnalysis(const int& analysisId);
+    void openAnalysisImpl(const AnalysisModel& model);
 
 
     Ui::AnalysisForm *ui;
@@ -31,6 +32,7 @@ private:
     KeyValueView* itemValueOutputView_;
 
     AnalysisModel model_;
+    AnalysisModel storedModel_;
 
     AnalysisStorage* storage_;
 
@@ -41,14 +43,21 @@ private:
 
 
 private slots:
+
     void changeTypeItemInput( const int& index );
     void changeTypeItemOutput( const int& index );
     void insertInputItemClick();
     void removeInputItemRemove();
+    void selectedItemInput( const QModelIndex& index );
+
+    void changeNameAnalysis(const QString& name);
+    void changeTypeAnalysis(const int& index);
 
     void insertOutputItemClick();
     void removeOutputItemClick();
 
+    void saveAnalysis();
+    void restoreAnalysis();
 };
 
 #endif // ANALYSISFORM_H

@@ -44,9 +44,6 @@ QVariant KeyValueView::data(const QModelIndex &index, int role) const {
         if(index.column() == 0){
             return QVariant( pair.title );
         }else if(index.column() == 1){
-            if(pair.type == KeyValuePair::TYPE_LIST){
-                qDebug() << "data(): " <<  pair.value;
-            }
             return pair.value;
         }
     }
@@ -138,6 +135,7 @@ void KeyValueView::setPair(const QString &key, const KeyValuePair &pair) {
 
 
 const KeyValuePair &KeyValueView::getPair(const int &index) const {
+    Q_ASSERT( index <= pairs_.size() );
     return pairs_.at(index);
 }
 

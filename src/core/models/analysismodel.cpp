@@ -1,10 +1,26 @@
 #include "analysismodel.h"
 #include "../components/json.h"
-
+#include <QDebug>
 AnalysisModel::AnalysisModel() :
     analysisId_(-1), deviceId_(-1),name_(QString()), type_(ANALYSIS_UNKNOWN),
     createAt_(QDateTime::currentDateTime()), changeAt_(QDateTime::currentDateTime()),
     enable_(false) {
+}
+
+void AnalysisModel::removeItemInput(const QString &nameItem) {
+    foreach(IAnalysisItem* item,inputs_){
+        if(item->name().compare(nameItem,Qt::CaseInsensitive) == 0){
+            inputs_.removeOne( item );
+        }
+    }
+}
+
+void AnalysisModel::removeItemOutput(const QString &nameItem) {
+    foreach(IAnalysisItem* item,outputs_){
+        if(item->name().compare(nameItem,Qt::CaseInsensitive) == 0){
+            outputs_.removeOne( item );
+        }
+    }
 }
 
 AnalysisModel &AnalysisModel::setId(const int &analysisId) {
@@ -27,13 +43,38 @@ AnalysisModel &AnalysisModel::setType(const AnalysisModel::AnalysisType &type) {
     return *this;
 }
 
+AnalysisModel &AnalysisModel::setType(const QString &type) {
+    if(type.compare("dc") == 0){
+        type_ = ANALYSIS_DC;
+    }else if(type.compare("ac") == 0){
+        type_ = ANALYSIS_AC;
+    }else if(type.compare("tran") == 0){
+        type_ = ANALYSIS_TRAN;
+    }else{
+        type_ = ANALYSIS_UNKNOWN;
+    }
+    return *this;
+}
+
 AnalysisModel &AnalysisModel::setInputs(const QList<IAnalysisItem *> &inputs) {
     inputs_ = inputs;
     return *this;
 }
 
 AnalysisModel &AnalysisModel::addInput(IAnalysisItem *input) {
-    inputs_.append( input );
+    if( !inputExists( input->name() ) ){
+        inputs_.append( input );
+    }else{
+        int nInputItems = inputs_.size();
+        for(int i=0; i < nInputItems; ++i){
+            if(inputs_[i]->name() == input->name()){
+                delete inputs_[i];
+                inputs_[i] = input;
+            }
+        }
+    }
+
+
     return *this;
 }
 
@@ -71,7 +112,13 @@ void AnalysisModel::parseJsonInput(const QString &json) {
         QString type = inputItemAttrs.value( "type" ).toString();
 
         if(type.compare("sweep") == 0){
-            item = new AnalysisItemSweep();
+            item = new AnalysisItemSweep( inputItemAttrs.value( "node" ).toString(),
+                                          inputItemAttrs.value( "mode" ).toString(),
+                                          inputItemAttrs.value( "number" ).toInt(),
+                                          inputItemAttrs.value("method").toString(),
+                                          inputItemAttrs);
+
+
         }else if(type.compare("const") == 0){
             item = new AnalysisItemConst();
         }
@@ -98,9 +145,9 @@ void AnalysisModel::parseJsonOutput(const QString &json) {
         if(type.compare("output") == 0){
             item = new AnalysisItemOutput();
         }
-//        else if(type.compare("func") == 0){
-//            item = new AnalysisItem
-//        }
+        //        else if(type.compare("func") == 0){
+        //            item = new AnalysisItem
+        //        }
         item->parseJson( outputItem.toString() );
         if(item != NULL){
             outputs_.append( item );
@@ -115,8 +162,9 @@ QString AnalysisModel::jsonInput() {
     foreach( IAnalysisItem* item, inputs_ ){
         inputs.append( item->json() );
     }
-
-    return QtJson::serializeStr( inputs );
+    QString serialized = QtJson::serializeStr( inputs );
+    qDebug() << serialized;
+    return serialized;
 }
 
 QString AnalysisModel::jsonOutput() {
@@ -128,4 +176,22 @@ QString AnalysisModel::jsonOutput() {
 
     return QtJson::serializeStr( outputs );
 
+}
+
+bool AnalysisModel::inputExists(const QString &name) {
+    foreach(IAnalysisItem* item,inputs_){
+        if(item->name() == name){
+            return true;
+        }
+    }
+    return false;
+}
+
+bool AnalysisModel::outputExists(const QString &name) {
+    foreach(IAnalysisItem* item,outputs_){
+        if(item->name() == name){
+            return true;
+        }
+    }
+    return false;
 }

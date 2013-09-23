@@ -1,7 +1,7 @@
 #include "listitemview.h"
 
 ListItemView::ListItemView(QObject *parent) :
-QAbstractItemModel(parent) {
+    QAbstractItemModel(parent), editable_(false) {
 
 }
 
@@ -42,7 +42,7 @@ QVariant ListItemView::data(const QModelIndex &index, int role) const {
         return QVariant();
     }
 
-    if( editable_ && role == Qt::EditRole ){
+    if( editable_ && (role == Qt::EditRole || role == Qt::UserRole) ){
         return itemAt( index.row() );
     }
 
@@ -69,6 +69,8 @@ bool ListItemView::setData(const QModelIndex &index, const QVariant &value, int 
         return false;
     }
 
+
+
     return true;
 }
 
@@ -91,9 +93,11 @@ ListItemView& ListItemView::addItem(const QPair<QString, QVariant> &item) {
 }
 
 QVariant ListItemView::itemAt(const int &index) const {
+    Q_ASSERT( index <= items_.size() );
     return items_.at(index).second;
 }
 
 QString ListItemView::keyAt(const int &index) const {
+    Q_ASSERT( index <= items_.size() );
     return items_.at(index).first;
 }

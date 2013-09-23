@@ -78,6 +78,7 @@ QVariant ParameterItemView::headerData(int section, Qt::Orientation orientation,
     }
 
     if(orientation == Qt::Horizontal){
+        qDebug() << "section:" << section;
         return columns_.at(section);
     }
 
