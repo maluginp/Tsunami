@@ -34,7 +34,6 @@ SOURCES += main.cpp \
     models/analysismodel.cpp \
     models/analysisitems.cpp \
     dbstorage/analysisstorage.cpp \
-    delegates/comboboxdelegate.cpp \
     delegates/keyvaluedelegate.cpp
 
 HEADERS += \
@@ -56,7 +55,6 @@ HEADERS += \
     models/analysismodel.h \
     models/analysisitems.h \
     dbstorage/analysisstorage.h \
-    delegates/comboboxdelegate.h \
     delegates/keyvaluedelegate.h
 
 include(../../Tsunami.pri)
