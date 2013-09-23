@@ -58,7 +58,7 @@ void ComboBoxDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionV
 void ComboBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const {
     if( index.row() == rowItem_ && index.column() == columnItem_ ){
         QStyleOptionViewItemV4 myOption = option;
-        QString text = items_.key(index.data(Qt::UserRole));
+        QString text = items_.key(index.data(Qt::DisplayRole));
 
         myOption.text = text;
 

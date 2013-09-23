@@ -67,7 +67,7 @@ bool KeyValueView::setData(const QModelIndex &index, const QVariant &value, int 
     if( role == Qt::DisplayRole && index.column() == 1){
         pairs_[index.row()].value = value ;
     }
-
+    emit dataChanged( index, index );
 
     return false;
 }
@@ -151,8 +151,13 @@ const KeyValuePair &KeyValueView::getPair(const QString &key) const {
 }
 
 void KeyValueView::fillDelegates(QAbstractItemView *view) {
+
+    view->itemDelegate()->deleteLater();
+    view->setItemDelegate( NULL );
+
     int nPairs = pairs_.size();
     for(int i=0; i < nPairs; ++i){
+
         if( pairs_[i].type == KeyValuePair::TYPE_LIST ){
             ComboBoxDelegate *item = new ComboBoxDelegate( i, 1, view );
             item->setItems( pairs_[i].data.toMap() );
@@ -160,4 +165,5 @@ void KeyValueView::fillDelegates(QAbstractItemView *view) {
             view->setItemDelegate( item );
         }
     }
+
 }

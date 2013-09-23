@@ -34,12 +34,11 @@ AnalysisForm::AnalysisForm(QWidget *parent) :
     itemValueInputView_ = new KeyValueView();
     itemValueOutputView_ = new KeyValueView();
 
-
     ui->typeInputItemComboBox->addItem( tr("Sweep"), "sweep" );
     ui->typeInputItemComboBox->addItem( tr("Constant"), "const" );
     ui->typeOutputItemComboBox->addItem( tr("Output"), "output" );
     ui->typeOutputItemComboBox->addItem( tr("Function"), "func" );
-
+    changeTypeItemInput(0);
 
     // Analysis types
     ui->typeAnalysisComboBox->addItem( tr("DC"),  "dc"  );
