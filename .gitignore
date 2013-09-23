@@ -1,5 +1,6 @@
 Makefile.*
 *.pro.user
+*.pro.user.*
 .DS_Store
 moc_*.cpp
 qrc_*.cpp
