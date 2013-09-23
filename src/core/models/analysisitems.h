@@ -29,6 +29,8 @@ public:
     void setNode( const QString& node );
 
     QString name() const;
+    virtual QString title() const = 0;
+
 
     virtual QVariantMap json() = 0;
 
@@ -36,13 +38,28 @@ public:
     virtual AnalysisItemType getItemType() const {
         return ANALYSIS_ITEM_NONE;
     }
-private:
+protected:
     ModeType mode_;
     QString node_;
 };
 
 class AnalysisItemConst : public IAnalysisItem {
 public:
+    AnalysisItemConst() {}
+    AnalysisItemConst(const QString& node,const QString& mode,
+                      const double& constant) {
+        setNode( node );
+        if(mode == "voltage"){
+            mode_ = VOLTAGE;
+        }else if(mode == "current"){
+            mode_ = CURRENT;
+        }
+        setConstant( constant );
+    }
+
+    QString title() const{
+        return QString("%1 CONST=%2").arg(name()).arg(constant());
+    }
 
     AnalysisItemType getItemType() const{
         return ANALYSIS_ITEM_CONST;
@@ -62,8 +79,9 @@ public:
     AnalysisItemSweep(const QString& node,const QString& mode, const int& number,
                       const QString& method, const double& start, const double& stop,
                       const double& step) :
-        node_(node),number_(number),method_(method),start_(start),stop_(stop),step_(step)
+       number_(number),method_(method),start_(start),stop_(stop),step_(step)
     {
+        setNode( node );
         if(mode == "voltage"){
             mode_ = VOLTAGE;
         }else if(mode == "current"){
@@ -71,7 +89,9 @@ public:
         }
 
     }
-
+    QString title() const{
+        return QString("%1 %2").arg(name()).arg(method());
+    }
     AnalysisItemType getItemType() const {
         return ANALYSIS_ITEM_SWEEP;
     }
@@ -99,6 +119,19 @@ private:
 
 class AnalysisItemOutput : public IAnalysisItem {
 public:
+    AnalysisItemOutput() {}
+    AnalysisItemOutput( const QString& node,const QString& mode){
+        setNode( node );
+        if(mode == "voltage"){
+            mode_ = VOLTAGE;
+        }else if(mode == "current"){
+            mode_ = CURRENT;
+        }
+    }
+    QString title() const{
+        return QString("%1 OUTPUT").arg(name());
+    }
+
     AnalysisItemType getItemType() const {
         return ANALYSIS_ITEM_OUTPUT;
     }

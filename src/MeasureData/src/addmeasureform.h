@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <views/keyvalueview.h>
 #include <views/measureitemview.h>
-
+class AnalysisModel;
 namespace Ui {
 class addMeasureForm;
 }
@@ -14,7 +14,7 @@ class addMeasureForm : public QWidget
     Q_OBJECT
     
 public:
-    explicit addMeasureForm(QWidget *parent = 0);
+    explicit addMeasureForm(const int& analysisId, QWidget *parent = 0);
     ~addMeasureForm();
     
 private:

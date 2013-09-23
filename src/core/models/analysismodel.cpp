@@ -116,11 +116,15 @@ void AnalysisModel::parseJsonInput(const QString &json) {
                                           inputItemAttrs.value( "mode" ).toString(),
                                           inputItemAttrs.value( "number" ).toInt(),
                                           inputItemAttrs.value("method").toString(),
-                                          inputItemAttrs);
+                                          inputItemAttrs.value("start").toDouble(),
+                                          inputItemAttrs.value("stop").toDouble(),
+                                          inputItemAttrs.value("step").toDouble());
 
 
         }else if(type.compare("const") == 0){
-            item = new AnalysisItemConst();
+            item = new AnalysisItemConst(inputItemAttrs.value( "node" ).toString(),
+                                         inputItemAttrs.value( "mode" ).toString(),
+                                         inputItemAttrs.value( "const" ).toDouble());
         }
 
         item->parseJson( inputItem.toString() );
@@ -143,7 +147,8 @@ void AnalysisModel::parseJsonOutput(const QString &json) {
         QString type = outputItemAttrs.value( "type" ).toString();
 
         if(type.compare("output") == 0){
-            item = new AnalysisItemOutput();
+            item = new AnalysisItemOutput(outputItemAttrs.value( "node" ).toString(),
+                                          outputItemAttrs.value( "mode" ).toString());
         }
         //        else if(type.compare("func") == 0){
         //            item = new AnalysisItem

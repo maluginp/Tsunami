@@ -49,6 +49,7 @@ private slots:
     void insertInputItemClick();
     void removeInputItemRemove();
     void selectedItemInput( const QModelIndex& index );
+    void selectedItemOutput( const QModelIndex& index );
 
     void changeNameAnalysis(const QString& name);
     void changeTypeAnalysis(const int& index);

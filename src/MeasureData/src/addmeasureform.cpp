@@ -1,19 +1,21 @@
 #include "addmeasureform.h"
 #include "ui_addmeasureform.h"
 #include <QtCore>
+#include <dbstorage/analysisstorage.h>
 
-const int addMeasureForm::nPairs_ = 3;
+const int addMeasureForm::nPairs_ = 0;
 KeyValuePair addMeasureForm::headerPairs_[] = {
     KeyValuePair("test",  QVariant(),  KeyValuePair::TYPE_TEXT, tr("Test")),
 };
 
 
-addMeasureForm::addMeasureForm(QWidget *parent) :
+addMeasureForm::addMeasureForm(const int &analysisId, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::addMeasureForm)
-{
-    ui->setupUi(this);
+    ui(new Ui::addMeasureForm) {
 
+    AnalysisModel analysis = AnalysisStorage::instance()->openAnalysis( analysisId );
+
+    ui->setupUi(this);
 
     headerView_ = new KeyValueView();
     headerView_->setPairs( headerPairs_, nPairs_ );
@@ -24,14 +26,20 @@ addMeasureForm::addMeasureForm(QWidget *parent) :
 
     MeasureData data = measureView_->model().measureData();
 
-    data.columns.append( "aa" );
-    data.columns.append( "bb" );
+    foreach(IAnalysisItem* item, analysis.inputs()){
+        data.columns.append( item->name() );
+    }
+    foreach(IAnalysisItem* item, analysis.outputs()){
+        data.columns.append( item->name() );
+    }
 
-    data.items.append( QVector<double>() << 1.0 << 2.0 );
+
+//    data.items.append( QVector<double>() << 1.0 << 2.0 );
 
     measureView_->model().setMeasureData( data );
 
     ui->dataTableView->setModel( measureView_ );
+
 
 }
 
