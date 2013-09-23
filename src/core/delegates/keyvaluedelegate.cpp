@@ -38,10 +38,10 @@ void KeyValueDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, 
     if( index.column() == 1 && index.row() < pairs_.size() ){
         KeyValuePair pair = pairs_[index.row()];
         if(pair.type == KeyValuePair::TYPE_LIST){
-            QComboBox *comboBox = static_cast<QComboBox*>(editor);
-            //            QString key = items_.key(comboBox->itemData( comboBox->currentIndex(), Qt::UserRole ));
 
+            QComboBox *comboBox = static_cast<QComboBox*>(editor);
             model->setData(index, comboBox->itemData( comboBox->currentIndex(), Qt::UserRole ), Qt::DisplayRole );
+
         }
     }
 
