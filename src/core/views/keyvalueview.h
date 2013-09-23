@@ -22,13 +22,24 @@ struct KeyValuePair{
     ValueType type;
     QVariant data;
 
-    KeyValuePair( const QString& keyPair, const QVariant& valuePair, const ValueType& typePair, const QString& titlePair)
-        : key(keyPair), value(valuePair), type(typePair), title(titlePair) { }
+    KeyValuePair( const QString& keyPair, const QVariant& valuePair,
+                  const ValueType& typePair, const QString& titlePair,
+                  const QVariant& dataPair=QVariant())
+        : key(keyPair), value(valuePair), type(typePair), title(titlePair), data(dataPair) { }
 
     KeyValuePair() :
         key(QString()),value(QVariant()),type(KeyValuePair::TYPE_TEXT) {}
     KeyValuePair(const KeyValuePair& pair):
-        key(pair.key),value(pair.value),type(pair.type),title(pair.title) {}
+        key(pair.key),value(pair.value),type(pair.type),title(pair.title),data(pair.data) {}
+    KeyValuePair& operator=(const KeyValuePair& pair){
+        key = pair.key;
+        value= pair.value;
+        type=pair.type;
+        title=pair.title;
+        data=pair.data;
+        return *this;
+    }
+
 
 };
 

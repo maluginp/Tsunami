@@ -132,7 +132,7 @@ void AnalysisForm::changeTypeItemInput(const int &index) {
     // Sweep and const
     if( key.compare("sweep") == 0 ){
         itemValueInputView_->setPairs( ITEM_TYPE_SWEEP, 7 );
-        itemValueInputView_->setPairData( QString("mode"), mapModes );
+        itemValueInputView_->setPairData( "mode", mapModes );
         itemValueInputView_->fillDelegates( ui->itemInputTableView );
     } else if( key.compare("const") == 0 ){
         itemValueInputView_->setPairs( ITEM_TYPE_CONST, 3 );

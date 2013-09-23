@@ -1,6 +1,7 @@
 #include "keyvalueview.h"
 #include <QAbstractItemView>
-#include "../delegates/comboboxdelegate.h"
+#include "../delegates/keyvaluedelegate.h"
+
 #include <QDebug>
 KeyValueView::KeyValueView(QObject *parent) :
     QAbstractItemModel(parent)
@@ -155,15 +156,6 @@ void KeyValueView::fillDelegates(QAbstractItemView *view) {
     view->itemDelegate()->deleteLater();
     view->setItemDelegate( NULL );
 
-    int nPairs = pairs_.size();
-    for(int i=0; i < nPairs; ++i){
-
-        if( pairs_[i].type == KeyValuePair::TYPE_LIST ){
-            ComboBoxDelegate *item = new ComboBoxDelegate( i, 1, view );
-            item->setItems( pairs_[i].data.toMap() );
-
-            view->setItemDelegate( item );
-        }
-    }
+    view->setItemDelegate( new KeyValueDelegate( pairs_, view ) );
 
 }

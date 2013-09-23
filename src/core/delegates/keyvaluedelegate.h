@@ -14,8 +14,10 @@ public:
     void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
-    int itemIndex( const QVariant& value ) const;
 private:
+     int itemIndex(const KeyValuePair& pair, const QVariant& value ) const;
+
+
     QList<KeyValuePair> pairs_;
 };
 
