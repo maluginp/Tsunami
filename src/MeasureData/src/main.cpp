@@ -1,7 +1,7 @@
 #include <QApplication>
 //#include "measuredatawindow.h"
 #include "addmeasureform.h"
-//#include "analysisform.h"
+#include "analysisform.h"
 
 
 int main(int argc, char *argv[]) {

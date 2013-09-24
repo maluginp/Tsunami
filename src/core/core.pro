@@ -34,7 +34,8 @@ SOURCES += main.cpp \
     models/analysismodel.cpp \
     models/analysisitems.cpp \
     dbstorage/analysisstorage.cpp \
-    delegates/keyvaluedelegate.cpp
+    delegates/keyvaluedelegate.cpp \
+    delegates/delegatereadonly.cpp
 
 HEADERS += \
     components/json.h \
@@ -55,7 +56,8 @@ HEADERS += \
     models/analysismodel.h \
     models/analysisitems.h \
     dbstorage/analysisstorage.h \
-    delegates/keyvaluedelegate.h
+    delegates/keyvaluedelegate.h \
+    delegates/delegatereadonly.h
 
 include(../../Tsunami.pri)
 
