@@ -14,14 +14,17 @@ LIBS += -L$$DESTDIR -lcore
 HEADERS += \
     src/measuredatawindow.h \
     src/addmeasureform.h \
-    src/analysisform.h
+    src/analysisform.h \
+    choiceanalysisdialog.h
 
 SOURCES += src/main.cpp \
     src/measuredatawindow.cpp \
     src/addmeasureform.cpp \
-    src/analysisform.cpp
+    src/analysisform.cpp \
+    choiceanalysisdialog.cpp
 
 FORMS += \
     src/measuredatawindow.ui \
     src/addmeasureform.ui \
-    src/analysisform.ui
+    src/analysisform.ui \
+    choiceanalysisdialog.ui

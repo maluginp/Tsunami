@@ -18,6 +18,8 @@ public:
 
     AnalysisModel openAnalysis(const int& analysisId);
 
+    QMap<int,QString> listAnalysis();
+
 protected:
     QString connectionName() const;
 private:
@@ -25,7 +27,7 @@ private:
 
     AnalysisModel openAnalysisImpl(const int& analysisId);
     bool createTable(const AnalysisTable& table);
-
+    QMap<int,QString> listAnalysisImpl();
     void saveCache(const AnalysisModel& analysis);
 
     AnalysisModel currentAnalysis_;

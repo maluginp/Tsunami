@@ -25,6 +25,10 @@ AnalysisModel AnalysisStorage::openAnalysis(const int &analysisId) {
     return openAnalysisImpl(analysisId);
 }
 
+QMap<int, QString> AnalysisStorage::listAnalysis(){
+    return listAnalysisImpl();
+}
+
 QString AnalysisStorage::connectionName() const {
     return CONNECTION_NAME_ANALYSIS;
 }
@@ -163,6 +167,25 @@ bool AnalysisStorage::createTable(const AnalysisStorage::AnalysisTable &table) {
     }
 
     return true;
+}
+
+QMap<int, QString> AnalysisStorage::listAnalysisImpl() {
+    QString sqlQuery;
+    QMap<int,QString> analyses;
+    sqlQuery = sql("SELECT analysis_id,name FROM %1").arg(TABLE_NAME_ANALYSES);
+
+    QSqlQuery q(sqlQuery,db());
+    if(!q.exec()){
+        return QMap<int,QString>();
+    }
+
+    while( q.next() ){
+        QSqlRecord rec( q.record() );
+        analyses.insert( q.value(rec.indexOf("analysis_id")).toInt(),
+                         q.value(rec.indexOf("name")).toString() );
+    }
+
+    return analyses;
 }
 
 void AnalysisStorage::saveCache(const AnalysisModel &analysis) {
