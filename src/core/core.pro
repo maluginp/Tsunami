@@ -35,7 +35,10 @@ SOURCES += main.cpp \
     models/analysisitems.cpp \
     dbstorage/analysisstorage.cpp \
     delegates/keyvaluedelegate.cpp \
-    delegates/delegatereadonly.cpp
+    delegates/delegatereadonly.cpp \
+    plots/tsunamiplot.cpp \
+    components/qcustomplot.cpp \
+    plots/graphicitem.cpp
 
 HEADERS += \
     components/json.h \
@@ -57,7 +60,10 @@ HEADERS += \
     models/analysisitems.h \
     dbstorage/analysisstorage.h \
     delegates/keyvaluedelegate.h \
-    delegates/delegatereadonly.h
+    delegates/delegatereadonly.h \
+    plots/tsunamiplot.h \
+    components/qcustomplot.h \
+    plots/graphicitem.h
 
 include(../../Tsunami.pri)
 

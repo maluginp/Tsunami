@@ -15,16 +15,19 @@ HEADERS += \
     src/measuredatawindow.h \
     src/addmeasureform.h \
     src/analysisform.h \
-    choiceanalysisdialog.h
+    choiceanalysisdialog.h \
+    src/plotdatawindow.h
 
 SOURCES += src/main.cpp \
     src/measuredatawindow.cpp \
     src/addmeasureform.cpp \
     src/analysisform.cpp \
-    choiceanalysisdialog.cpp
+    choiceanalysisdialog.cpp \
+    src/plotdatawindow.cpp
 
 FORMS += \
     src/measuredatawindow.ui \
     src/addmeasureform.ui \
     src/analysisform.ui \
-    choiceanalysisdialog.ui
+    choiceanalysisdialog.ui \
+    src/plotdatawindow.ui
