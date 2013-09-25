@@ -31,11 +31,14 @@ private:
     Ui::addMeasureForm *ui;
 
     KeyValueView* headerView_;
+    KeyValueView* attributesView_;
     MeasureItemView* measureView_;
+
 
     static KeyValuePair headerPairs_[];
     static const int nPairs_;
-
+private slots:
+    void addButtonClick();
 };
 
 #endif // ADDMEASUREFORM_H

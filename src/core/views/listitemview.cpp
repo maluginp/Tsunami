@@ -92,6 +92,11 @@ ListItemView& ListItemView::addItem(const QPair<QString, QVariant> &item) {
     return *this;
 }
 
+ListItemView &ListItemView::addItem(const QString &key, const QVariant &value) {
+    QPair<QString,QVariant> pair(key,value);
+    return addItem(pair);
+}
+
 QVariant ListItemView::itemAt(const int &index) const {
     Q_ASSERT( index <= items_.size() );
     return items_.at(index).second;

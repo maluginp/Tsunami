@@ -22,7 +22,7 @@ public:
 
     ListItemView& setItems(const  QList< QPair<QString,QVariant> > &items);
     ListItemView& addItem( const QPair<QString,QVariant>& item );
-
+    ListItemView& addItem( const QString& key, const QVariant& value);
 
 signals:
 public slots:
