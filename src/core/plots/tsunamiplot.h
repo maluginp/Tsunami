@@ -24,6 +24,8 @@ public:
 
 
 private:
+    GraphicItem* findGraphicItem( const QString& key);
+
     void hideGraphicImpl( const QString& key, bool hide );
     QList<GraphicItem*> graphics_;
 
