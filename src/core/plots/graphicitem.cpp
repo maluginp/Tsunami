@@ -3,11 +3,28 @@
 #include "tsunamiplot.h"
 
 
-GraphicItem::GraphicItem(TsunamiPlot *plotter)
-    : plotter_(plotter) {
+GraphicItem::GraphicItem(const QString &key, TsunamiPlot *plotter) :
+    plotter_(plotter), key_(key),enableMeasure_(false),enableSimulation_(false){
+}
+
+GraphicItem::GraphicItem(const QString &key, TsunamiPlot *plotter, QVector<double> keys,
+                         QVector<double> measured, bool build) :
+
+{
+}
 
 
+void GraphicItem::setData(QVector<double> keys, QVector<double> measured, QVector<double> simulated) {
+    keys_      = keys;
+    measured_  = measured;
+    simulated_ = simulated;
+}
 
+void GraphicItem::setData(QVector<double> keys, QVector<double> measured) {
+    keys_      = keys;
+    measured_  = measured;
+    // FIXME temporary solution
+    simulated_ = QVector<double>(keys.size(),0.0);
 }
 
 void GraphicItem::setAxis(QCPAxis *axisX, QCPAxis *axisY) {
@@ -20,6 +37,10 @@ void GraphicItem::setAxisX(QCPAxis *axis) {
 
 void GraphicItem::setAxisY(QCPAxis *axis) {
     setAxisImpl( NULL, axis );
+}
+
+const QString &GraphicItem::key() {
+    return key_;
 }
 
 void GraphicItem::enableGraphicImpl(const QString &type, bool isShow)
@@ -104,3 +125,27 @@ QCPGraph *GraphicItem::findGraphic(const QString &type, int &position) {
 
 }
 
+
+GraphicItem &GraphicItem::addData(double key, double measured) {
+    keys_.append( key );
+    measured_.append( measured );
+    //FIXME temporary solution
+    simulated_.append( 0.0 );
+    return *this;
+}
+
+GraphicItem &GraphicItem::addData(double key, double measured, double simulated) {
+    keys_.append( key );
+    measured_.append( measured );
+    simulated_.append( simulated );
+
+    return *this;
+}
+
+void GraphicItem::showGraphic(const QString &type) {
+    enableGraphicImpl( type, true );
+}
+
+void GraphicItem::hideGraphic(const QString &type) {
+    enableGraphicImpl( type, false );
+}

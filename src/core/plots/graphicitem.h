@@ -8,7 +8,15 @@ class TsunamiPlot;
 
 class GraphicItem {
 public:
-    GraphicItem(TsunamiPlot* plotter);
+    GraphicItem(const QString& key,TsunamiPlot* plotter);
+    GraphicItem(const QString& key,TsunamiPlot* plotter,QVector<double> keys,
+                QVector<double> measured, bool build = false );
+    GraphicItem(const QString& key,TsunamiPlot* plotter,QVector<double> keys,
+                QVector<double> measured, QVector<double> simulated, bool build = false );
+    GraphicItem(const QString& key,TsunamiPlot *plotter, QVector<double> keys,
+                QVector<double> measured, QVector<double> simulated,
+                QCPAxis* axisX, QCPAxis* axisY);
+
 
     void setData( QVector<double> keys, QVector<double> measured,
                   QVector<double> simulated );
@@ -18,8 +26,7 @@ public:
     GraphicItem& addData(double key, double measured,double simulated);
 
     void showGraphic(const QString& type);
-    void showGraphicMeasure();
-    void showGraphicSimulation();
+    void hideGraphic(const QString& type);
 
 
     void setAxis( QCPAxis* axisX, QCPAxis* axisY );
