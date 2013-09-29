@@ -5,6 +5,12 @@ TsunamiPlot::TsunamiPlot()
 }
 
 void TsunamiPlot::addGraphic(const QString &key, QVector<double> keys,
+                             QVector<double> measured, QVector<double> simulated) {
+    GraphicItem* graph = new GraphicItem(key,this, keys, measured,simulated);
+    graphics_.append( graph );
+}
+
+void TsunamiPlot::addGraphic(const QString &key, QVector<double> keys,
                              QVector<double> measured) {
     GraphicItem* graph = new GraphicItem( key, this, keys, measured, true );
     graphics_.append( graph );
@@ -34,6 +40,10 @@ void TsunamiPlot::showGraphics() {
     foreach(GraphicItem* graph, graphics_){
         graph->showGraphics();
     }
+}
+
+void TsunamiPlot::setCurrentGraph(const QString &key) {
+    currentGraphic_ = findGraphicItem( key );
 }
 
 GraphicItem *TsunamiPlot::findGraphicItem(const QString &key) {

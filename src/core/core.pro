@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       -= gui
+include(../../Tsunami.pri)
 
 TARGET   =  core
 CONFIG(debug, debug|release) {
@@ -65,7 +65,6 @@ HEADERS += \
     components/qcustomplot.h \
     plots/graphicitem.h
 
-include(../../Tsunami.pri)
 
 CONFIG(debug, debug|release) {
     DESTDIR=$$SOLUTION_DIR/build/debug

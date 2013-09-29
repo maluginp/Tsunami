@@ -20,12 +20,13 @@ public:
     void hideGraphics();
     void showGraphics();
 
+    void setCurrentGraph(const QString& key);
 
 
 
 private:
-    GraphicItem* findGraphicItem( const QString& key);
 
+    GraphicItem* findGraphicItem( const QString& key);
     QList<GraphicItem*> graphics_;
 
     GraphicItem* currentGraphic_;

@@ -83,7 +83,7 @@ public:
     inline const bool& enable() const                         { return enable_;     }
     inline const QDateTime& createAt() const                  { return createAt_;   }
     inline const QDateTime& changeAt() const                  { return changeAt_;   }
-    const MeasureHeaderData& headerData(const int& index) const;
+    MeasureHeaderData headerData(const int& index) const;
 
     double item(const int &row, const int &column) const;
 

@@ -8,9 +8,19 @@ GraphicItem::GraphicItem(const QString &key, TsunamiPlot *plotter) :
 }
 
 GraphicItem::GraphicItem(const QString &key, TsunamiPlot *plotter, QVector<double> keys,
-                         QVector<double> measured, bool build) :
-
+                         QVector<double> measured, QVector<double> simulated,
+                         QCPAxis *axisX, QCPAxis *axisY)
 {
+
+}
+
+GraphicItem::GraphicItem(const QString &key, TsunamiPlot *plotter, QVector<double> keys,
+                         QVector<double> measured, bool build){
+}
+
+GraphicItem::GraphicItem(const QString &key, TsunamiPlot *plotter, QVector<double> keys,
+                         QVector<double> measured, QVector<double> simulated, bool build){
+
 }
 
 

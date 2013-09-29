@@ -1,5 +1,11 @@
 #include "keyvalueview.h"
+#include <QtGlobal>
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 #include <QAbstractItemView>
+#else
+#include <QtWidgets/QAbstractItemView>
+#endif
 #include "../delegates/keyvaluedelegate.h"
 
 #include <QDebug>
@@ -89,7 +95,7 @@ void KeyValueView::setPairs(const KeyValuePair *pairs, const int &num) {
         addPair( pairs[i] );
     }
     endResetModel();
-    reset();
+//    reset()
 }
 
 void KeyValueView::addPair(const QString &key, const QVariant &value, const KeyValuePair::ValueType &type, const QString &title) {

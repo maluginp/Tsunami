@@ -1,7 +1,13 @@
 #ifndef KEYVALUEDELEGATE_H
 #define KEYVALUEDELEGATE_H
 
+#include <QtGlobal>
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 #include <QItemDelegate>
+#else
+#include <QtWidgets/QItemDelegate>
+#endif
 #include "../views/keyvalueview.h"
 
 class KeyValueDelegate : public QItemDelegate

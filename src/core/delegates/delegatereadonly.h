@@ -1,8 +1,13 @@
 #ifndef DELEGATEREADONLY_H
 #define DELEGATEREADONLY_H
 
-#include <QItemDelegate>
+#include <QtGlobal>
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+#include <QItemDelegate>
+#else
+#include <QtWidgets/QItemDelegate>
+#endif
 class DelegateReadOnly : public QItemDelegate
 {
 public:

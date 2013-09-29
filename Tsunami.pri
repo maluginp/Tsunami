@@ -10,3 +10,5 @@ INCLUDEPATH += $$SOLUTION_DIR/include \
 
 DEFINES += DEBUG
 QT += core sql gui
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += printsupport

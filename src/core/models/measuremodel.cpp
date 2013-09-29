@@ -5,7 +5,7 @@ MeasureModel::MeasureModel()
     : measureId_(-1),projectId_(-1),enable_(false),userId_(-1),Model() {
 }
 
-const MeasureHeaderData &MeasureModel::headerData(const int &index) const {
+MeasureHeaderData MeasureModel::headerData(const int &index) const {
     if( index < 0 || index >= headerData_.size() ){
         return MeasureHeaderData();
     }

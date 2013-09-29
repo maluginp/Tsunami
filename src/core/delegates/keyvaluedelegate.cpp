@@ -1,9 +1,18 @@
 #include "keyvaluedelegate.h"
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 #include <QComboBox>
 #include <QCheckBox>
 #include <QApplication>
-#include <QMouseEvent>
 #include <QDateEdit>
+#else
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QDateEdit>
+#endif
+
+#include <QMouseEvent>
 #include <QPainter>
 
 static QRect CheckBoxRect(const QStyleOptionViewItem &view_item_style_options) {

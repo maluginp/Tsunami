@@ -16,7 +16,7 @@ public:
     ~choiceAnalysisDialog();
     
     int getAnalysisId();
-    static int open();
+    static int openDialog();
 private: 
     Ui::choiceAnalysisDialog *ui;
 

@@ -33,7 +33,7 @@
 
 #include <QObject>
 #include <QWeakPointer>
-#include <QWidget>
+#include <QtWidgets/QWidget>
 #include <QPainter>
 #include <QPaintEvent>
 #include <QMouseEvent>
@@ -55,7 +55,7 @@
 #  include <QPrinter>
 #else
 #  include <QtNumeric>
-#  include <QPrinter>
+#  include <QtPrintSupport/QPrinter>
 #endif
 
 class QCPPainter;

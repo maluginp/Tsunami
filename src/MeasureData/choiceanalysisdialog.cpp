@@ -41,7 +41,7 @@ int choiceAnalysisDialog::getAnalysisId() {
 
 }
 
-int choiceAnalysisDialog::open() {
+int choiceAnalysisDialog::openDialog() {
     choiceAnalysisDialog dialog(0);
     if(dialog.exec() == QDialog::Accepted){
         return dialog.getAnalysisId();

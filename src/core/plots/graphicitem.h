@@ -2,6 +2,8 @@
 #define GRAPICHITEM_H
 
 #include <QVector>
+#include <QString>
+
 class QCPGraph;
 class QCPAxis;
 class TsunamiPlot;

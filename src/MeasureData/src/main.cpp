@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
     PlotDataWindow plot;
     plot.show();
 
-//    int analysisId = choiceAnalysisDialog::open();
+//    int analysisId = choiceAnalysisDialog::openDialog();
 //    qDebug() << analysisId;
 //    if(analysisId == -1){ return 0;}
 
