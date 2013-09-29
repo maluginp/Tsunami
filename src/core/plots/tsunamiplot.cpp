@@ -1,12 +1,12 @@
 #include "tsunamiplot.h"
 
-TsunamiPlot::TsunamiPlot()
-{
+TsunamiPlot::TsunamiPlot() {
+
 }
 
 void TsunamiPlot::addGraphic(const QString &key, QVector<double> keys,
                              QVector<double> measured, QVector<double> simulated) {
-    GraphicItem* graph = new GraphicItem(key,this, keys, measured,simulated);
+    GraphicItem* graph = new GraphicItem(key,this, keys, measured,simulated,true);
     graphics_.append( graph );
 }
 

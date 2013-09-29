@@ -4,22 +4,47 @@
 
 
 GraphicItem::GraphicItem(const QString &key, TsunamiPlot *plotter) :
-    plotter_(plotter), key_(key),enableMeasure_(false),enableSimulation_(false){
+    plotter_(plotter), key_(key),enableMeasure_(false),enableSimulation_(false),
+    axisX_(NULL),axisY_(NULL),graphMeasure_(NULL),graphSimulation_(NULL) {
+
 }
 
 GraphicItem::GraphicItem(const QString &key, TsunamiPlot *plotter, QVector<double> keys,
                          QVector<double> measured, QVector<double> simulated,
-                         QCPAxis *axisX, QCPAxis *axisY)
-{
+                         QCPAxis *axisX, QCPAxis *axisY, bool build) :
+    plotter_(plotter), key_(key),keys_(keys), measured_(measured),
+    enableMeasure_(true),enableSimulation_(false), axisX_(axisX),axisY_(axisY),
+    graphMeasure_(NULL),graphSimulation_(NULL) {
+
+    if(build) {
+        buildGraphicImpl("measure" );
+        buildGraphicImpl("simulation" );
+    }
 
 }
 
 GraphicItem::GraphicItem(const QString &key, TsunamiPlot *plotter, QVector<double> keys,
-                         QVector<double> measured, bool build){
+                         QVector<double> measured, bool build) :
+    plotter_(plotter), key_(key),keys_(keys), measured_(measured),
+    enableMeasure_(true),enableSimulation_(false), axisX_(NULL),axisY_(NULL),
+    graphMeasure_(NULL),graphSimulation_(NULL) {
+
+    if(build){
+        buildGraphicImpl( "measure" );
+    }
+
 }
 
 GraphicItem::GraphicItem(const QString &key, TsunamiPlot *plotter, QVector<double> keys,
-                         QVector<double> measured, QVector<double> simulated, bool build){
+                         QVector<double> measured, QVector<double> simulated, bool build) :
+    plotter_(plotter), key_(key),keys_(keys), measured_(measured), simulated_(simulated),
+    enableMeasure_(true), enableSimulation_(true), axisX_(NULL),axisY_(NULL),
+    graphMeasure_(NULL), graphSimulation_(NULL) {
+
+    if(build) {
+        buildGraphicImpl("measure" );
+        buildGraphicImpl("simulation" );
+    }
 
 }
 
@@ -73,6 +98,17 @@ void GraphicItem::enableGraphicImpl(const QString &type, bool isShow)
 }
 
 bool GraphicItem::buildGraphicImpl(const QString &type) {
+
+    if(type.compare("measure",Qt::CaseInsensitive) == 0){
+        if( measured_.size() <= 2 ){
+            return false;
+        }
+    }else if(type.compare("simulation",Qt::CaseInsensitive) == 0){
+        if( simulated_.size() <= 2){
+            return false;
+        }
+    }
+
     removeGraphicImpl( type );
     if(type.compare("measure",Qt::CaseInsensitive) == 0){
         graphMeasure_    = plotter_->addGraph( axisX_, axisY_ );

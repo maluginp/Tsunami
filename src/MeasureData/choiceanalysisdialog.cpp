@@ -4,10 +4,8 @@
 
 choiceAnalysisDialog::choiceAnalysisDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::choiceAnalysisDialog)
-{
+    ui(new Ui::choiceAnalysisDialog) {
     ui->setupUi(this);
-
 
     QMap<int,QString> analyses = AnalysisStorage::instance()->listAnalysis();
 
@@ -18,12 +16,10 @@ choiceAnalysisDialog::choiceAnalysisDialog(QWidget *parent) :
         ui->choiceComboxBox->addItem( value, analyses.key( value ) );
     }
 
-
     connect(ui->choiceButton,SIGNAL(clicked()),this,SLOT(accept()));
 }
 
-choiceAnalysisDialog::~choiceAnalysisDialog()
-{
+choiceAnalysisDialog::~choiceAnalysisDialog() {
     delete ui;
 }
 
@@ -38,7 +34,6 @@ int choiceAnalysisDialog::getAnalysisId() {
     }
 
     return analysisId;
-
 }
 
 int choiceAnalysisDialog::openDialog() {

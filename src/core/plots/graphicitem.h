@@ -17,7 +17,7 @@ public:
                 QVector<double> measured, QVector<double> simulated, bool build = false );
     GraphicItem(const QString& key,TsunamiPlot *plotter, QVector<double> keys,
                 QVector<double> measured, QVector<double> simulated,
-                QCPAxis* axisX, QCPAxis* axisY);
+                QCPAxis* axisX, QCPAxis* axisY, bool build = false);
 
 
     void setData( QVector<double> keys, QVector<double> measured,

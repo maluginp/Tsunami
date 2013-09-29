@@ -5,8 +5,7 @@
 
 #include "graphicitem.h"
 
-class TsunamiPlot : public QCustomPlot
-{
+class TsunamiPlot : public QCustomPlot {
 public:
     TsunamiPlot();
 
@@ -22,13 +21,10 @@ public:
 
     void setCurrentGraph(const QString& key);
 
-
-
 private:
-
     GraphicItem* findGraphicItem( const QString& key);
-    QList<GraphicItem*> graphics_;
 
+    QList<GraphicItem*> graphics_;
     GraphicItem* currentGraphic_;
 };
 
