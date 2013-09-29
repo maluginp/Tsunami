@@ -2,6 +2,7 @@
 #define PLOTDATAWINDOW_H
 
 #include <QMainWindow>
+class ParameterPlotView;
 
 namespace Ui {
 class PlotDataWindow;
@@ -17,6 +18,8 @@ public:
     
 private:
     Ui::PlotDataWindow *ui;
+    ParameterPlotView* paramPlotView_;
+
 };
 
 #endif // PLOTDATAWINDOW_H

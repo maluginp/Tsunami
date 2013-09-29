@@ -38,7 +38,8 @@ SOURCES += main.cpp \
     delegates/delegatereadonly.cpp \
     plots/tsunamiplot.cpp \
     components/qcustomplot.cpp \
-    plots/graphicitem.cpp
+    plots/graphicitem.cpp \
+    views/parameterplotview.cpp
 
 HEADERS += \
     components/json.h \
@@ -63,7 +64,8 @@ HEADERS += \
     delegates/delegatereadonly.h \
     plots/tsunamiplot.h \
     components/qcustomplot.h \
-    plots/graphicitem.h
+    plots/graphicitem.h \
+    views/parameterplotview.h
 
 
 CONFIG(debug, debug|release) {
