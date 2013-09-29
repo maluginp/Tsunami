@@ -26,8 +26,9 @@ public:
     GraphicItem& addData(double key, double measured,double simulated);
 
     void showGraphic(const QString& type);
+    void showGraphics();
     void hideGraphic(const QString& type);
-
+    void hideGraphics();
 
     void setAxis( QCPAxis* axisX, QCPAxis* axisY );
     void setAxisX(QCPAxis* axis);

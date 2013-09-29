@@ -10,15 +10,15 @@ class TsunamiPlot : public QCustomPlot
 public:
     TsunamiPlot();
 
-    void addGraphic( QVector<double> keys, QVector<double> measured,
+    void addGraphic( const QString& key, QVector<double> keys, QVector<double> measured,
                      QVector<double> simulated);
-    void addGraphic( QVector<double> keys, QVector<double> measured);
+    void addGraphic( const QString& key, QVector<double> keys, QVector<double> measured);
 
     void hideGraphic(const QString& key);
     void showGraphic(const QString& key);
 
-    void hideGraphics( );
-
+    void hideGraphics();
+    void showGraphics();
 
 
 
@@ -26,7 +26,6 @@ public:
 private:
     GraphicItem* findGraphicItem( const QString& key);
 
-    void hideGraphicImpl( const QString& key, bool hide );
     QList<GraphicItem*> graphics_;
 
     GraphicItem* currentGraphic_;

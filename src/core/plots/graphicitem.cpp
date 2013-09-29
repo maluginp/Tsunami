@@ -113,8 +113,8 @@ QCPGraph *GraphicItem::findGraphic(const QString &type, int &position) {
                     plotter_->graph(i)->property("type").toString().compare("measure") == 0){
                 position = i;
                 return plotter_->graph(i);
-            }else if(type.compare("measure",Qt::CaseInsensitive) == 0 &&
-                     plotter_->graph(i)->property("type").toString().compare("measure") == 0){
+            }else if(type.compare("simulation",Qt::CaseInsensitive) == 0 &&
+                     plotter_->graph(i)->property("type").toString().compare("simulation") == 0){
                 position = i;
                 return plotter_->graph(i);
             }
@@ -146,6 +146,16 @@ void GraphicItem::showGraphic(const QString &type) {
     enableGraphicImpl( type, true );
 }
 
+void GraphicItem::showGraphics() {
+    enableGraphicImpl( "measure", true );
+    enableGraphicImpl( "simulation", true );
+}
+
 void GraphicItem::hideGraphic(const QString &type) {
     enableGraphicImpl( type, false );
+}
+
+void GraphicItem::hideGraphics() {
+    enableGraphicImpl( "measure",    false );
+    enableGraphicImpl( "simulation", false );
 }
