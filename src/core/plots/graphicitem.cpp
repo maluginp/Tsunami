@@ -135,10 +135,11 @@ void GraphicItem::removeGraphicImpl(const QString &type) {
 }
 
 void GraphicItem::setAxisImpl(QCPAxis *axisX, QCPAxis *axisY) {
-    if(!axisX){
+    if(axisX){
         axisX_ = axisY;
+//        this->setAxisX( a );
     }
-    if(!axisY){
+    if(axisY){
         axisY_ = axisY;
     }
 
@@ -168,7 +169,6 @@ QCPGraph *GraphicItem::findGraphic(const QString &type, int &position) {
     }
 
     return NULL;
-
 }
 
 
