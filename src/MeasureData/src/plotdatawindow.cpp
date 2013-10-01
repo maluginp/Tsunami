@@ -13,7 +13,7 @@ PlotDataWindow::PlotDataWindow(QWidget *parent) :
     ui->splitter_2->widget(1)->setMaximumWidth(300);
 
     QVariantMap params;
-    params.insert("aaa",4.0);
+    params.insert("aaa",1e-16);
     params.insert("bbb",5.0);
     params.insert("ccc",10.0);
     params.insert("ddd",11.0);

@@ -31,19 +31,22 @@ int ParameterPlotView::columnCount(const QModelIndex &parent) const {
 }
 
 QVariant ParameterPlotView::data(const QModelIndex &index, int role) const {
+    if(role != Qt::DisplayRole && role != Qt::EditRole){
+        return QVariant();
+    }
     if( index.column() == 0){
         return itemAt(index.row()).second;
     }else if(index.column() == 1){
-        return changeAt(index.row()).second;
+        return changeAt(index.row()).second.toString();
     }
     return QVariant();
 }
 
 Qt::ItemFlags ParameterPlotView::flags(const QModelIndex &index) const {
     if(index.column()==0){
-        return Qt::ItemIsSelectable;
+        return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
     }
-    return Qt::ItemIsEditable | Qt::ItemIsSelectable;
+    return Qt::ItemIsEditable | Qt::ItemIsSelectable | Qt::ItemIsEnabled;
 }
 
 bool ParameterPlotView::setData(const QModelIndex &index, const QVariant &value, int role) {

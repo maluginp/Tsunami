@@ -33,7 +33,7 @@
 
 #include <QObject>
 #include <QWeakPointer>
-#include <QtWidgets/QWidget>
+
 #include <QPainter>
 #include <QPaintEvent>
 #include <QMouseEvent>
@@ -51,9 +51,11 @@
 #include <qmath.h>
 #include <limits>
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+#  include <QWidget>
 #  include <qnumeric.h>
 #  include <QPrinter>
 #else
+#  include <QtWidgets/QWidget>
 #  include <QtNumeric>
 #  include <QtPrintSupport/QPrinter>
 #endif
