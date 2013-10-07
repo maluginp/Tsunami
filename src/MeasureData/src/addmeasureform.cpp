@@ -36,6 +36,8 @@ addMeasureForm::addMeasureForm(const int &analysisId, QWidget *parent) :
 
 
 
+
+
     // Nodes
     ListItemView* nodesView = new ListItemView();
     nodesView->addItem( trUtf8("И"), "s"  ).
@@ -137,6 +139,20 @@ void addMeasureForm::prepareAnalysis(const int &analysisId) {
             }
             dc2 += static_cast<AnalysisItemSweep*>(items[0])->step();
         }
+    }else if(maxSweepNumber == 1){
+        double dc1 = static_cast<AnalysisItemSweep*>(items[0])->start();
+        while( dc1 <= static_cast<AnalysisItemSweep*>(items[0])->stop()){
+            rowItems[0] = dc1;
+
+            for(int i=0; i < nColumns; ++i){
+                if(items[i]->getItemType() == ANALYSIS_ITEM_CONST){
+                    rowItems[i] = static_cast<AnalysisItemConst*>(items[i])->constant();
+                }
+            }
+
+            dataItems.append( rowItems );
+            dc1+=static_cast<AnalysisItemSweep*>(items[0])->step();
+        }
     }
 
     data.columns.clear();
@@ -173,8 +189,41 @@ int addMeasureForm::countAnalysisItem(const QList<IAnalysisItem *> &items, const
 
 void addMeasureForm::addButtonClick() {
 
-    qDebug() << "Add button click";
-    qDebug() << headerView_->getPair( "dubious" ).value;
+    MeasureHeader header;
+    qDebug() << headerView_->getPair("type").value.toString();
+    if(headerView_->getPair("type").value.toString().compare("dc")==0){
+        header.type = TYPE_DC;
+    }else if(headerView_->getPair("type").value.toString().compare("ac")==0){
+        header.type = TYPE_AC;
+    }else if(headerView_->getPair("type").value.toString().compare("tran")==0){
+        header.type = TYPE_TRAN;
+    }else{
+        header.type = TYPE_UNKNOWN;
+    }
+
+    QVariantMap attributes;
+    for(int i=0;i < attributesView_->rowCount(); ++i){
+        attributes.insert( attributesView_->getPair( i  ).key,
+                           attributesView_->getPair( i  ).value);
+
+    }
+
+    header.attributes = attributes;
+
+    header.comment = headerView_->getPair( "comment" ).value.toString();
+    header.userDate = headerView_->getPair( "user_date" ).value.toDate();
+    header.fabricationDate = headerView_->getPair("fabric_date").value.toDate();
+    header.dubious = headerView_->getPair("dubious").value.toBool();
+
+    measureView_->model().setChangeAt( QDateTime::currentDateTime() );
+    measureView_->model().setCreateAt( QDateTime::currentDateTime() );
+    measureView_->model().setEnable( true );
+    measureView_->model().setHeader( header );
+
+    if(!measureView_->saveMeasure()){
+        qDebug() << "Measurement did not save to db.";
+    }
+
 }
 
 
