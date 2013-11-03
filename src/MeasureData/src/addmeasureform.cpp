@@ -63,8 +63,6 @@ addMeasureForm::addMeasureForm(const int &analysisId, QWidget *parent) :
 
 
     connect(ui->addButton,SIGNAL(clicked()),this,SLOT(addButtonClick()));
-
-
 }
 
 addMeasureForm::~addMeasureForm()
