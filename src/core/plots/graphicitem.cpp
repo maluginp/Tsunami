@@ -12,9 +12,10 @@ GraphicItem::GraphicItem(const QString &key, TsunamiPlot *plotter) :
 GraphicItem::GraphicItem(const QString &key, TsunamiPlot *plotter, QVector<double> keys,
                          QVector<double> measured, QVector<double> simulated,
                          QCPAxis *axisX, QCPAxis *axisY, bool build) :
-    plotter_(plotter), key_(key),keys_(keys), measured_(measured),
+    plotter_(plotter), key_(key),keys_(keys), measured_(measured),simulated_(simulated),
     enableMeasure_(true),enableSimulation_(false), axisX_(axisX),axisY_(axisY),
     graphMeasure_(NULL),graphSimulation_(NULL) {
+
 
     if(build) {
         buildGraphicImpl("measure" );

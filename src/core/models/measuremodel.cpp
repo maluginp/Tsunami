@@ -148,7 +148,7 @@ QString MeasureModel::jsonData() const {
         for(int j=0; j < columns; ++j){
             rowItems.append( QVariant(data_.items.at(i).at(j)) );
         }
-        items.append( rowItems );
+        items.append( QVariant(rowItems) );
     }
     data.insert( "items", items );
 

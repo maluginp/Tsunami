@@ -20,7 +20,8 @@ public:
     QPair<QString,QVariant> itemAt(int index) const;
     QPair<QString,QVariant> changeAt(int index) const;
 
-
+signals:
+    void changeParameters();
 private:
     QVariantMap items_;
     QVariantMap changes_;
