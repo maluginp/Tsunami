@@ -3,8 +3,7 @@ TEMPLATE = subdirs
 SUBDIRS += \
     src/core \
     src/MeasureData \
-    src/freeda \
-    src/spice
+    src/freeda
 
 
 OTHER_FILES += \
