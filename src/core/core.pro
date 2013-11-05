@@ -43,7 +43,8 @@ SOURCES += main.cpp \
     spice/parameterset.cpp \
     spice/source.cpp \
     spice/device.cpp \
-    spice/simulator.cpp
+    spice/simulator.cpp \
+    spice/ngspicesimulator.cpp
 
 HEADERS += \
     components/json.h \
@@ -73,7 +74,8 @@ HEADERS += \
     spice/parameterset.h \
     spice/source.h \
     spice/device.h \
-    spice/simulator.h
+    spice/simulator.h \
+    spice/ngspicesimulator.h
 
 
 CONFIG(debug, debug|release) {

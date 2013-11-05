@@ -1,12 +1,19 @@
 #ifndef DEVICE_H
 #define DEVICE_H
 
-enum TypeDevice{
-    NBJT,PBJT,NFET,PFET,NMOS,PMOS,DIODE
-};
+#include <QString>
+
+namespace tsunami{
+namespace core{
+
+class ParameterSet;
 
 class Device {
 public:
+    enum TypeDevice{
+        UNKNOWN=-1,NBJT,PBJT,NFET,PFET,NMOS,PMOS,DIODE
+    };
+
     Device();
     Device( const QString& name, TypeDevice type, const QString& model);
     Device( const Device& other );
@@ -28,4 +35,7 @@ private:
     QString model_;
     ParameterSet parameters_;
 };
+
+}
+}
 #endif // DEVICE_H
