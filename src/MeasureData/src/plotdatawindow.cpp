@@ -21,6 +21,8 @@ PlotDataWindow::PlotDataWindow(QWidget *parent) :
     paramPlotView_ = new ParameterPlotView( params );
 
     ui->parameterTableView->setModel( paramPlotView_ );
+
+
 }
 
 PlotDataWindow::~PlotDataWindow()
