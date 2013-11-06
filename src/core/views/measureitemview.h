@@ -18,7 +18,8 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
     QVariant headerData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
 
-    void openMeasure( const int& measureId );
+    void openMeasure( const int& measureId );  
+
 
     const MeasureModel& model() const { return measure_; }
 

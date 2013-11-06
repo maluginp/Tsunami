@@ -87,7 +87,7 @@ bool MeasureStorage::createTable(const MeasureTable &table) {
                        "data TEXT,"
                        "create_at NUMERIC,"
                        "change_at NUMERIC,"
-                       "enable NUMERIC,"
+                       "enable NUMERIC"
                        ")").arg(TABLE_NAME_MEASURES);
 
     }else{
@@ -123,7 +123,7 @@ bool MeasureStorage::saveMeasureImpl(const MeasureModel &measure) {
 
     QString sqlQuery;
 
-    MeasureModel model = measure;
+    MeasureModel model(measure);
 
 
     if(!beginTransaction()){
@@ -142,14 +142,14 @@ bool MeasureStorage::saveMeasureImpl(const MeasureModel &measure) {
         model.setId( lastInsertId );
     }
 
-    q.bindValue(":measure_id", measure.id() );
-    q.bindValue(":project_id",  measure.projectId());
-    q.bindValue(":header", measure.jsonHeader());
-    q.bindValue(":header_data",measure.jsonHeaderData());
-    q.bindValue(":data",measure.jsonData());
-    q.bindValue(":create_at",measure.createAt());
-    q.bindValue(":change_at",measure.changeAt());
-    q.bindValue(":enable",measure.enable());
+    q.bindValue(":measure_id", model.id() );
+    q.bindValue(":project_id",  model.projectId());
+    q.bindValue(":header", model.jsonHeader());
+    q.bindValue(":header_data",model.jsonHeaderData());
+    q.bindValue(":data",model.jsonData());
+    q.bindValue(":create_at",model.createAt());
+    q.bindValue(":change_at",model.changeAt());
+    q.bindValue(":enable",model.enable());
 
     if(!q.exec()){
         setLastError( q.lastError().text() );

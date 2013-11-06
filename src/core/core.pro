@@ -39,7 +39,12 @@ SOURCES += main.cpp \
     plots/tsunamiplot.cpp \
     components/qcustomplot.cpp \
     plots/graphicitem.cpp \
-    views/parameterplotview.cpp
+    views/parameterplotview.cpp \
+    spice/parameterset.cpp \
+    spice/source.cpp \
+    spice/device.cpp \
+    spice/simulator.cpp \
+    spice/ngspicesimulator.cpp
 
 HEADERS += \
     components/json.h \
@@ -65,7 +70,12 @@ HEADERS += \
     plots/tsunamiplot.h \
     components/qcustomplot.h \
     plots/graphicitem.h \
-    views/parameterplotview.h
+    views/parameterplotview.h \
+    spice/parameterset.h \
+    spice/source.h \
+    spice/device.h \
+    spice/simulator.h \
+    spice/ngspicesimulator.h
 
 
 CONFIG(debug, debug|release) {
