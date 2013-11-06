@@ -1,39 +1,56 @@
 #ifndef DEVICE_H
 #define DEVICE_H
 
+#include <QVariantMap>
 #include <QString>
+#include "graphnode.h"
 
 namespace tsunami{
 namespace core{
 
-class ParameterSet;
+enum{
+    DEVICE_NO_FLAG      = 0,
+    DEVICE_FLAG_SOURCE  = 1 << 0
+};
+typedef unsigned long DeviceFlag;
 
-class Device {
+class SpiceModel;
+class Terminal;
+class Device : public GraphNode  {
 public:
     enum TypeDevice{
         UNKNOWN=-1,NBJT,PBJT,NFET,PFET,NMOS,PMOS,DIODE
     };
+    enum TypeSource{
+        SOURCE_UNKNOWN,
+        SOURCE_CONST,
+        SOURCE_AC,
+        SOURCE_DC,
+        SOURCE_TRAN
+    };
 
-    Device();
-    Device( const QString& name, TypeDevice type, const QString& model);
-    Device( const Device& other );
-    Device& operator=(const Device& other);
+    Device( const QString& name,TypeDevice device = UNKNOWN);
 
-    void parameters( const ParameterSet& parameters );
-    void model( const QString& model );
-    void name( const QString& name );
-    void type( TypeDevice type );
+    void setSource( TypeSource source, const QVariantMap& options );
 
-    const QString& model() const;
-    const QString& name()  const;
-    const ParameterSet& parameters() const;
-    const TypeDevice& type() const;
+    bool isFlagged( DeviceFlag flag );
+    void setFlag( DeviceFlag flag );
+    void addFlag( DeviceFlag flag );
+
+    void connect( Terminal* terminal );
+    void disconnect( Terminal* terminal );
+    void setModel( SpiceModel* model );
+    SpiceModel* model();
+
+    QVector<Terminal*> getTerminals();
+
 
 private:
-    QString name_;
-    TypeDevice type_;
-    QString model_;
-    ParameterSet parameters_;
+    SpiceModel* model_;
+    TypeDevice device_;
+    TypeSource source_;
+    DeviceFlag flags_;
+    QVariantMap sourceOptions_;
 };
 
 }

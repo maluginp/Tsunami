@@ -40,11 +40,13 @@ SOURCES += main.cpp \
     components/qcustomplot.cpp \
     plots/graphicitem.cpp \
     views/parameterplotview.cpp \
-    spice/parameterset.cpp \
-    spice/source.cpp \
     spice/device.cpp \
     spice/simulator.cpp \
-    spice/ngspicesimulator.cpp
+    spice/ngspicesimulator.cpp \
+    spice/graphnode.cpp \
+    spice/terminal.cpp \
+    spice/spicemodel.cpp \
+    spice/circuit.cpp
 
 HEADERS += \
     components/json.h \
@@ -71,11 +73,13 @@ HEADERS += \
     components/qcustomplot.h \
     plots/graphicitem.h \
     views/parameterplotview.h \
-    spice/parameterset.h \
-    spice/source.h \
     spice/device.h \
     spice/simulator.h \
-    spice/ngspicesimulator.h
+    spice/ngspicesimulator.h \
+    spice/graphnode.h \
+    spice/terminal.h \
+    spice/spicemodel.h \
+    spice/circuit.h
 
 
 CONFIG(debug, debug|release) {
