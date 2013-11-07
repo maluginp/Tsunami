@@ -15,7 +15,7 @@ public:
     void unlink( GraphNode* node);
 
     QVector<GraphNode*> getNodes();
-    GraphNode* getNode(int i) const;
+    GraphNode* getNode(int i);
     int countConnectedNodes();
 
     const QString& name() const;

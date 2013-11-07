@@ -15,7 +15,21 @@ Circuit::Circuit(const QString &name)
 
 }
 
-int Circuit::addDevice(const QString &name, Device::TypeDevice type) {
+bool Circuit::generateNetList(QByteArray &netlist) {
+
+    // print
+
+}
+
+void Circuit::typeAnalysis(TypeAnalysis analysis) {
+    typeAnalysis_ = analysis;
+}
+
+const TypeAnalysis &Circuit::typeAnalysis() {
+    return typeAnalysis_;
+}
+
+int Circuit::addDevice(const QString &name, TypeDevice type) {
     Device* device = new Device(name,type);
 
     devices_.insert( device->id(), device );
@@ -110,7 +124,7 @@ Terminal *Circuit::getTerminal(const QString &name) {
 }
 
 Terminal *Circuit::getTerminal(int terminalId) {
-    TerminalMap::Iterator it = terminals_.find( terminalId_ );
+    TerminalMap::Iterator it = terminals_.find( terminalId );
     if(it != terminals_.end()){
         Terminal* terminal = static_cast<Terminal*>(it.value());
         return terminal;
@@ -126,7 +140,7 @@ Terminal *Circuit::nextTerminal() {
 
         Terminal* terminal = static_cast<Terminal*>(currentTerminal_.value());
         currentTerminal_++;
-        return termuinal;
+        return terminal;
     }
 
     Q_ASSERT(false);
@@ -161,7 +175,7 @@ void Circuit::addSpiceModel(SpiceModel *model) {
 SpiceModel *Circuit::getModel(const QString &name) {
     ModelList::Iterator it = models_.begin();
     for(;it != models_.end(); it++){
-        SpiceModel* model = static_cast<SpiceModel*>(it.reference);
+        SpiceModel* model = static_cast<SpiceModel*>(*it);
         if(model->name().compare(name,Qt::CaseInsensitive) == 0){
             return model;
         }
@@ -178,7 +192,7 @@ void Circuit::beginModel() {
 void Circuit::removeModel(const QString &name) {
     ModelList::Iterator it = models_.begin();
     for(;it != models_.end(); it++){
-        SpiceModel* model = static_cast<SpiceModel*>(it.reference);
+        SpiceModel* model = static_cast<SpiceModel*>(*it);
         if(model->name().compare(name,Qt::CaseInsensitive) == 0){
             models_.erase( it );
             break;
@@ -190,7 +204,7 @@ void Circuit::removeModel(const QString &name) {
 
 SpiceModel *Circuit::nextModel() {
     if(currentModel_ != models_.end()){
-        SpiceModel* model = static_cast<SpiceModel*>(currentModel_.reference);
+        SpiceModel* model = static_cast<SpiceModel*>(*currentModel_);
         currentModel_++;
         return model;
     }
@@ -211,6 +225,10 @@ void Circuit::connect(int deviceId, int terminalId) {
     device->connect( terminal );
 }
 
+const QString &Circuit::name() const {
+    return name_;
+}
+
 bool Circuit::isModelExist(const QString &name) {
     foreach(SpiceModel* model, models_){
         if(model->name().compare(name,Qt::CaseInsensitive) == 0){
@@ -218,6 +236,32 @@ bool Circuit::isModelExist(const QString &name) {
         }
     }
     return false;
+}
+
+
+bool Circuit::correct() {
+    return true;
+    // DC analysis
+    if(typeAnalysis() == ANALYSIS_DC){
+        int countSource = 0;
+        beginDevice( DEVICE_FLAG_SOURCE );
+        Device* device = nextDevice();
+
+        while(device){
+            if(device->getSource() == typeAnalysis()){
+                countSource++;
+            }
+
+            device = nextDevice();
+        }
+
+        if(countSource > 2 || countSource < 1){
+            return false;
+        }
+    }
+
+    return true;
+
 }
 
 

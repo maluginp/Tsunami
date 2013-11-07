@@ -32,8 +32,9 @@ QVector<GraphNode *> GraphNode::getNodes() {
     return nodes_;
 }
 
-GraphNode *GraphNode::getNode(int i) const {
-    Q_ASSERT( i>=0 && i < countConnectedNodes() );
+GraphNode *GraphNode::getNode(int i) {
+    int c = countConnectedNodes();
+    Q_ASSERT( i>=0 && i < c);
     return nodes_[i];
 }
 

@@ -11,6 +11,9 @@ public:
     NgSpiceSimulator( const QString& path );
 
     bool simulate();
+protected:
+    QByteArray generateNetListModels( );
+    QByteArray generateNetList();
 private:
     bool isCorrectForParse();
 

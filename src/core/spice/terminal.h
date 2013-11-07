@@ -6,7 +6,7 @@
 namespace tsunami{
 namespace core{
 
-class Terminal : GraphNode  {
+class Terminal : public GraphNode  {
 public:
     Terminal(const QString& name);
 
@@ -14,7 +14,7 @@ public:
     void detachDevice(GraphNode* node);
 
     void setRef();
-    void isRef();
+    bool isRef();
 private:
     bool isRef_;
 

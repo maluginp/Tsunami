@@ -21,7 +21,7 @@ void Terminal::setRef() {
     isRef_ = true;
 }
 
-void Terminal::isRef() {
+bool Terminal::isRef() {
     return isRef_;
 }
 

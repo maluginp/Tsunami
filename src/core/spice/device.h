@@ -3,39 +3,31 @@
 
 #include <QVariantMap>
 #include <QString>
+#include <QStringList>
 #include "graphnode.h"
+#include "defines.h"
 
 namespace tsunami{
 namespace core{
 
-enum{
-    DEVICE_NO_FLAG      = 0,
-    DEVICE_FLAG_SOURCE  = 1 << 0
-};
-typedef unsigned long DeviceFlag;
 
 class SpiceModel;
 class Terminal;
 class Device : public GraphNode  {
 public:
-    enum TypeDevice{
-        UNKNOWN=-1,NBJT,PBJT,NFET,PFET,NMOS,PMOS,DIODE
-    };
-    enum TypeSource{
-        SOURCE_UNKNOWN,
-        SOURCE_CONST,
-        SOURCE_AC,
-        SOURCE_DC,
-        SOURCE_TRAN
-    };
 
-    Device( const QString& name,TypeDevice device = UNKNOWN);
+    Device( const QString& name,TypeDevice device = DEVICE_UNKNOWN);
 
     void setSource( TypeSource source, const QVariantMap& options );
+    const TypeSource& getSource() const;
 
     bool isFlagged( DeviceFlag flag );
     void setFlag( DeviceFlag flag );
     void addFlag( DeviceFlag flag );
+
+    bool hasModel();
+
+    void setParameters( const QStringList& parameters );
 
     void connect( Terminal* terminal );
     void disconnect( Terminal* terminal );
@@ -43,7 +35,10 @@ public:
     SpiceModel* model();
 
     QVector<Terminal*> getTerminals();
+    Terminal* terminal(int num);
 
+    QByteArray netList();
+    QByteArray sourceNetlist();
 
 private:
     SpiceModel* model_;
@@ -51,6 +46,8 @@ private:
     TypeSource source_;
     DeviceFlag flags_;
     QVariantMap sourceOptions_;
+
+    QStringList parameters_;
 };
 
 }

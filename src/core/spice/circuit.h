@@ -2,6 +2,7 @@
 #define CIRCUIT_H
 #include <QString>
 #include <QVariantMap>
+#include "defines.h"
 
 namespace tsunami{
 namespace core{
@@ -14,13 +15,16 @@ typedef QMap<int,Device*> DeviceMap;
 typedef QMap<int,Terminal*> TerminalMap;
 typedef QList<SpiceModel*> ModelList;
 
-class Circuit
-{
+class Circuit {
 public:
     Circuit(const QString& name);
 
+    virtual bool generateNetList(QByteArray& netlist);
+
+    void typeAnalysis( TypeAnalysis analysis );
+    const TypeAnalysis& typeAnalysis();
 //    int addDevice( Device* device );
-    int addDevice( const QString& name, Device::TypeDevice type );
+    int addDevice( const QString& name, TypeDevice type );
     void removeDevice( int id );
     Device* getDevice( const QString& name );
     Device* getDevice( int deviceId );
@@ -46,14 +50,21 @@ public:
     void setRefTerminal( int terminalId );
 
     void connect(int deviceId, int terminalId);
-private:
 
+    const QString& name() const;
+    bool correct();
+protected:
+
+private:
     bool isModelExist( const QString& name );
+
 
     QString name_;
     DeviceMap devices_;
     TerminalMap terminals_;
     ModelList models_;
+
+    TypeAnalysis typeAnalysis_;
 
     DeviceFlag flag_;
     DeviceMap::Iterator currentDevice_;

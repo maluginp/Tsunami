@@ -79,7 +79,8 @@ HEADERS += \
     spice/graphnode.h \
     spice/terminal.h \
     spice/spicemodel.h \
-    spice/circuit.h
+    spice/circuit.h \
+    defines.h
 
 
 CONFIG(debug, debug|release) {
