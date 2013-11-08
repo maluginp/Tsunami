@@ -7,15 +7,16 @@ template<class T>
 class Vector
 {
 public:
-    Vector();
+    Vector(int rows);
     Vector(const Vector<T>& other);
     Vector<T>& operator=(const Vector<T>& other);
     Vector<T>& operator+(const Vector<T>& other);
     Vector<T>& operator*(T scalar);
     Vector<T>& operator/(T scalar);
 
+    T& operator[](int row);
 
-
+    int rows();
 private:
     T* vector_;
 };
