@@ -46,7 +46,10 @@ SOURCES += main.cpp \
     spice/graphnode.cpp \
     spice/terminal.cpp \
     spice/spicemodel.cpp \
-    spice/circuit.cpp
+    spice/circuit.cpp \
+    optimize/optimizebase.cpp \
+    math/matrix.cpp \
+    math/vector.cpp
 
 HEADERS += \
     components/json.h \
@@ -80,7 +83,10 @@ HEADERS += \
     spice/terminal.h \
     spice/spicemodel.h \
     spice/circuit.h \
-    defines.h
+    defines.h \
+    optimize/optimizebase.h \
+    math/matrix.h \
+    math/vector.h
 
 
 CONFIG(debug, debug|release) {

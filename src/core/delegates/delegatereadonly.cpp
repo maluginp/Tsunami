@@ -1,7 +1,7 @@
 #include "delegatereadonly.h"
 #include <QtGui>
-DelegateReadOnly::DelegateReadOnly(QObject *parent)
-{
+DelegateReadOnly::DelegateReadOnly(QObject *parent) {
+    Q_UNUSED(parent);
 }
 
 QWidget *DelegateReadOnly::createEditor(QWidget *, const QStyleOptionViewItem &, const QModelIndex &) const

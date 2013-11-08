@@ -104,6 +104,9 @@ QString MeasureModel::jsonHeader() const {
     case TYPE_DC: header.insert("type",   QVariant("dc"));   break;
     case TYPE_AC: header.insert("type",   QVariant("ac"));    break;
     case TYPE_TRAN: header.insert("type", QVariant("tran")); break;
+    case TYPE_UNKNOWN:
+    default:
+        header.insert("type",QVariant("unknown"));
     }
     header.insert("comment",     QVariant(header_.comment));
     header.insert("user_date",   QVariant(header_.userDate) );
@@ -126,6 +129,9 @@ QString MeasureModel::jsonHeaderData() const {
         case SOURCE_VOLTAGE: header.insert( "type", QVariant("voltage") ); break;
         case SOURCE_CURRENT: header.insert( "type", QVariant("current")); break;
         case SOURCE_GND:     header.insert( "type", QVariant("gnd")); break;
+        case SOURCE_UNKNOWN:
+        default:
+            header.insert("type",QVariant("unknown")); break;
         }
         header.insert( "method", QVariant(headerData.method) );
         headers.append( header );

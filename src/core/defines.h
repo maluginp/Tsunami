@@ -1,6 +1,9 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
+#include "math/matrix.h"
+#include "math/vector.h"
+
 namespace tsunami{
 namespace core{
 
@@ -35,6 +38,11 @@ enum TypeSource{
     SOURCE_CONST,
     SOURCE_LINEAR
 };
+
+typedef Matrix<double> MatrixDouble;
+typedef Matrix<int>    MatrixInt;
+typedef Vector<double> VectorDouble;
+typedef Vector<int>    VectorInt;
 
 
 }

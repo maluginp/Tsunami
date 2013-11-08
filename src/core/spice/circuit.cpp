@@ -15,12 +15,6 @@ Circuit::Circuit(const QString &name)
 
 }
 
-bool Circuit::generateNetList(QByteArray &netlist) {
-
-    // print
-
-}
-
 void Circuit::typeAnalysis(TypeAnalysis analysis) {
     typeAnalysis_ = analysis;
 }
@@ -160,7 +154,7 @@ void Circuit::addSpiceModel(const QString &name, const QVariantMap &parameters) 
 
     SpiceModel* model = new SpiceModel( name );
     if(parameters.size() > 0){
-        model->addParameter( parameters );
+        model->add( parameters );
     }
 
 }

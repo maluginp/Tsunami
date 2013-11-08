@@ -79,6 +79,11 @@ QByteArray NgSpiceSimulator::generateNetListModels(){
             break;
         case DEVICE_PBJT:
             deviceName = "PBJT";
+            break;
+        case DEVICE_UNKNOWN:
+        default:
+            Q_ASSERT(false);
+//            break;
         }
 
         cards.append( QString(".model %1 %2")
@@ -133,6 +138,9 @@ QByteArray NgSpiceSimulator::generateNetList() {
     case ANALYSIS_TRAN:
         source =".tran";
         break;
+    case ANALYSIS_UNKNOWN:
+    default:
+        Q_ASSERT(false);
     }
 
     circuit()->beginDevice(DEVICE_FLAG_SOURCE);
@@ -144,6 +152,8 @@ QByteArray NgSpiceSimulator::generateNetList() {
     source.append("\n");
 
     netlist.append(source).append( generateNetListModels() );
+
+    return netlist;
 }
 
 bool NgSpiceSimulator::isCorrectForParse() {

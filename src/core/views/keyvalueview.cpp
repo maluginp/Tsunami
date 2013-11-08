@@ -147,12 +147,14 @@ const KeyValuePair &KeyValueView::getPair(const int &index) const {
 
 const KeyValuePair &KeyValueView::getPair(const QString &key) const {
      int nPairs = pairs_.size();
+     int foundPair = -1;
      for(int i=0; i < nPairs; ++i){
          if(pairs_[i].key.compare(key) == 0){
-             return pairs_[i];
+             foundPair = i;
+             break;
          }
      }
-     return KeyValuePair();
+     return getPair(foundPair);
 }
 
 void KeyValueView::fillDelegates(QAbstractItemView *view) {

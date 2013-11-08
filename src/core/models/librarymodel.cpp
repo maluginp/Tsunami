@@ -110,23 +110,23 @@ bool LibraryModel::setParameterValue(const QModelIndex &index, const QVariant &v
     return true;
 }
 
-const ParameterModel &LibraryModel::parameter(const QString &parameter) const {
+const ParameterModel &LibraryModel::parameter(const QString &param) const {
     int rows = parameters_.size();
+    int foundIndex = -1;
     for(int row=0; row < rows; ++row){
-        if(parameters_[row].name() == parameter){
-            return parameters_[row];
+        if(parameters_[row].name() == param){
+            foundIndex = row;
+            break;
         }
     }
 
-    return ParameterModel();
+    return parameter( foundIndex );
 }
 
 const ParameterModel &LibraryModel::parameter(const int &nParameter) const {
 
     int rows = parameters_.size();
-    if(nParameter < 0 || nParameter >= rows){
-        return ParameterModel();
-    }
+    Q_ASSERT(nParameter >= 0 || nParameter < rows);
 
     return parameters_[nParameter];
 

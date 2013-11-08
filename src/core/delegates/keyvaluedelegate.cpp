@@ -27,6 +27,7 @@ static QRect CheckBoxRect(const QStyleOptionViewItem &view_item_style_options) {
     return QRect(check_box_point, check_box_rect.size());
 }
 KeyValueDelegate::KeyValueDelegate(const QList<KeyValuePair> &pairs, QObject *parent) {
+    Q_UNUSED(parent);
     pairs_ = pairs;
 }
 
@@ -206,6 +207,7 @@ bool KeyValueDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, con
             return model->setData(index, !checked, Qt::EditRole);
         }
     }
+    return true;
 }
 
 int KeyValueDelegate::itemIndex(const KeyValuePair &pair, const QVariant &value) const {

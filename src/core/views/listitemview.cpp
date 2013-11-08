@@ -54,6 +54,7 @@ QVariant ListItemView::data(const QModelIndex &index, int role) const {
 }
 
 Qt::ItemFlags ListItemView::flags(const QModelIndex &index) const {
+    Q_UNUSED(index);
     Qt::ItemFlags flags;
     flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
     if( editable_ ){
@@ -75,6 +76,9 @@ bool ListItemView::setData(const QModelIndex &index, const QVariant &value, int 
 }
 
 QVariant ListItemView::headerData(int section, Qt::Orientation orientation, int role) const {
+    Q_UNUSED(section);
+    Q_UNUSED(orientation);
+    Q_UNUSED(role);
     return QVariant();
 }
 

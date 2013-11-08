@@ -19,14 +19,17 @@ QModelIndex ParameterPlotView::index(int row, int column, const QModelIndex &par
 }
 
 QModelIndex ParameterPlotView::parent(const QModelIndex &child) const {
+    Q_UNUSED(child);
     return QModelIndex();
 }
 
 int ParameterPlotView::rowCount(const QModelIndex &parent) const {
+    Q_UNUSED(parent);
     return items_.count();
 }
 
 int ParameterPlotView::columnCount(const QModelIndex &parent) const {
+    Q_UNUSED(parent);
     return 2;
 }
 
@@ -50,6 +53,7 @@ Qt::ItemFlags ParameterPlotView::flags(const QModelIndex &index) const {
 }
 
 bool ParameterPlotView::setData(const QModelIndex &index, const QVariant &value, int role) {
+    Q_UNUSED(role);
     QString key;
     if( index.column() == 1 ){
         key = changeAt(index.row()).first;

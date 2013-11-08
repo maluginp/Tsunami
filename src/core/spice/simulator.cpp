@@ -68,7 +68,8 @@ bool Simulator::exec(QByteArray& data, const QStringList &arguments){
 }
 
 QString Simulator::randomName(int num) {
-    return QString("Mock");
+
+    return QString("Mock%1").arg(num);
 }
 
 }

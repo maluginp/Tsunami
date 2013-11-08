@@ -19,8 +19,6 @@ class Circuit {
 public:
     Circuit(const QString& name);
 
-    virtual bool generateNetList(QByteArray& netlist);
-
     void typeAnalysis( TypeAnalysis analysis );
     const TypeAnalysis& typeAnalysis();
 //    int addDevice( Device* device );

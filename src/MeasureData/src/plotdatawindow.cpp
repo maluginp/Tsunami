@@ -27,9 +27,6 @@ PlotDataWindow::PlotDataWindow(QWidget *parent) :
     ui->measureTableView->setModel( measureView_ );
     ui->parameterTableView->setModel( paramPlotView_ );
 
-
-
-
     connect(ui->parameterFilterText,SIGNAL(textChanged(QString)),this,SLOT(findParameter(QString)));
 
 }
