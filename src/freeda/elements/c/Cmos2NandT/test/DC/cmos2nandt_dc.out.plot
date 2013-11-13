@@ -1,3 +1,0 @@
-vout_300k_20k.out
-junctiontemp_300k_20k.out
-iheat_300k_20k.out

@@ -49,7 +49,8 @@ SOURCES += main.cpp \
     spice/circuit.cpp \
     optimize/optimizebase.cpp \
     math/matrix.cpp \
-    math/vector.cpp
+    math/vector.cpp \
+    optimize/hookejeevesmethod.cpp
 
 HEADERS += \
     components/json.h \
@@ -83,10 +84,12 @@ HEADERS += \
     spice/terminal.h \
     spice/spicemodel.h \
     spice/circuit.h \
+    math/matrix.h \
+    math/vector.h \
     defines.h \
     optimize/optimizebase.h \
-    math/matrix.h \
-    math/vector.h
+    optimize/hookejeevesmethod.h
+
 
 
 CONFIG(debug, debug|release) {

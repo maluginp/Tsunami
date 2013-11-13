@@ -1,11 +1,15 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
-#include "math/matrix.h"
-#include "math/vector.h"
+//#include "math/matrix.h"
+//#include "math/vector.h"
 
 namespace tsunami{
 namespace core{
+
+template<class T> class Matrix;
+template<class T> class Vector;
+
 
 enum{
     DEVICE_NO_FLAG      = 0,

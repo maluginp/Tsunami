@@ -11,13 +11,16 @@ public:
     Vector(const Vector<T>& other);
     Vector<T>& operator=(const Vector<T>& other);
     Vector<T>& operator+(const Vector<T>& other);
+    Vector<T>& operator-(const Vector<T>& other);
     Vector<T>& operator*(T scalar);
     Vector<T>& operator/(T scalar);
+    ~Vector();
 
     T& operator[](int row);
 
-    int rows();
+    const int &rows();
 private:
+    int rows_;
     T* vector_;
 };
 

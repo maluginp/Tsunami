@@ -40,9 +40,9 @@ protected:
 
     void nextIteration();
 
-    void saveGradient( const MatrixDouble& gradient );
-    void saveHessian( const MatrixDouble& hessian);
-    void saveFunctionError( double functionError );
+//    void saveGradient( const MatrixDouble& gradient );
+//    void saveHessian( const MatrixDouble& hessian);
+//    void saveFunctionError( double functionError );
 
 
 
@@ -57,8 +57,8 @@ private:
     double toleranceFunction_;
     double toleranceGradient_;
 
-    MatrixDouble lastGradient_, currentGradient_;
-    MatrixDouble lastHessian_,  currentHessian_;
+//    MatrixDouble lastGradient_, currentGradient_;
+//    MatrixDouble lastHessian_,  currentHessian_;
     double lastFunctionError_, currentFunctionError_;
 
 
