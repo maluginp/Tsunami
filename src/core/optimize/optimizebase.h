@@ -57,7 +57,7 @@ private:
     double toleranceFunction_;
     double toleranceGradient_;
 
-//    MatrixDouble lastGradient_, currentGradient_;
+    MatrixDouble lastGradient_, currentGradient_;
 //    MatrixDouble lastHessian_,  currentHessian_;
     double lastFunctionError_, currentFunctionError_;
 
