@@ -115,7 +115,7 @@ void addMeasureForm::prepareAnalysis(const int &analysisId) {
     int maxSweepNumber = countAnalysisItem( items, ANALYSIS_ITEM_SWEEP );
     QVector<double> current;
 
-
+    // TODO bullshit code, need change
     // MAX[number()] <= 2
     if( maxSweepNumber == 2){
         double dc2 = static_cast<AnalysisItemSweep*>(items[1])->start();
