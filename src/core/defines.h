@@ -40,9 +40,6 @@ enum SourceMethod{
     SOURCE_METHOD_LIST
 };
 
-
-
-
 typedef Matrix<double> MatrixDouble;
 typedef Matrix<int>    MatrixInt;
 typedef Vector<double> VectorDouble;

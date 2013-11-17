@@ -3,10 +3,13 @@
 #include <QString>
 #include <QList>
 #include <QVariantMap>
-#include "models/measuremodel.h"
+//#include "models/measuremodel.h"
 #include "defines.h"
 
 namespace tsunami{
+namespace db{
+class MeasureModel;
+}
 namespace core{
 
 class Dataset {
@@ -16,9 +19,10 @@ public:
     bool load( AnalysisType type, DeviceType device,
                const QVariantMap& attr = QVariantMap() );
 
+
     void begin();
     bool isNext();
-    db::MeasureModel next();
+    const db::MeasureModel &next() const;
 private:
     QList<db::MeasureModel> measures_;
     QList<db::MeasureModel>::iterator currentMeasure_;

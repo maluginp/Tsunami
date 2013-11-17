@@ -7,11 +7,12 @@ namespace tsunami{
 namespace core{
 
 
-//class HookeJeevesMethod : public OptimizeBase
-//{
-//public:
-//    HookeJeevesMethod();
-//};
+class HookeJeevesMethod : public OptimizeBase {
+public:
+    HookeJeevesMethod();
+
+
+};
 
 }
 }

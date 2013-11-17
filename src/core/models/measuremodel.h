@@ -64,6 +64,12 @@ public:
     const int& userId() const { return userId_; }
 
     bool hasAttr( const QString& key, const QVariant& value = QVariant() );
+    QMap<QString, double> get( int i);
+
+    int countSource();
+
+    QMap<QString,double> find( const  QMap<QString,double>& data );
+
 
 private:
     int measureId_;

@@ -6,7 +6,7 @@
 namespace tsunami{
 namespace core{
 
-class Simulator;
+class Extractor;
 
 class OptimizeBase {
 public:
@@ -17,16 +17,16 @@ public:
         TOLERANCE_GRADIENT
     };
 
-    OptimizeBase(Simulator* simulator, int maxIteration);
+    OptimizeBase(Extractor* extractor, int maxIteration);
     virtual void run() = 0;
-    Simulator* simulator();
+    Extractor* extractor();
 
     void setEps( double eps );
     const double& eps();
 
+    void setExtractor( Extractor* extractor );
 //    void setStepWeight( const QString& name, double weight );
 //    double stepWeight( const QString& name);
-
 
     void setTolerance( TypeTolerance tol, double value );
     const double& tolerance( TypeTolerance tol );
@@ -35,23 +35,23 @@ public:
     const double& step( const QString& param);
 
 protected:
+    virtual double functionError();
+
     bool checkConvergence();
     double computeError();
 
     void nextIteration();
 
-//    void saveGradient( const MatrixDouble& gradient );
-//    void saveHessian( const MatrixDouble& hessian);
-//    void saveFunctionError( double functionError );
-
-
+    void saveGradient( const MatrixDouble& gradient );
+    void saveHessian( const MatrixDouble& hessian);
+    void saveFunctionError( double functionError );
 
 private:
     int maxIteration_;
 
     int iteration_;
     QMap<QString,double> steps_;
-//    QMap<QString,double> stepWeights_;
+
     double eps_;
     double toleranceStep_;
     double toleranceFunction_;
@@ -62,7 +62,7 @@ private:
     double lastFunctionError_, currentFunctionError_;
 
 
-    Simulator* simulator_;
+    Extractor* extractor_;
 };
 
 }

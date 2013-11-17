@@ -2,19 +2,19 @@
 #include <float.h>
 #include <QString>
 #include "../math/matrix.h"
-
+#include "extractor/extractor.h"
 namespace tsunami{
 namespace core{
 
-OptimizeBase::OptimizeBase(Simulator *simulator, int maxIteration)
-    : simulator_(simulator)
+OptimizeBase::OptimizeBase(Extractor *extractor, int maxIteration)
+    : simulator_(extractor)
     , maxIteration_(maxIteration)
     , iteration_(0) {
 
 }
 
-Simulator *OptimizeBase::simulator() {
-    return simulator_;
+Extractor *OptimizeBase::extractor() {
+    return extractor_;
 }
 
 void OptimizeBase::setEps(double eps) {
@@ -64,6 +64,14 @@ const double &OptimizeBase::step(const QString &param) {
     return steps_[param];
 }
 
+double OptimizeBase::functionError() {
+    if(extractor()){
+        return extractor()->functionError();
+    }
+
+    return DBL_MAX;
+}
+
 bool OptimizeBase::checkConvergence() {
     return false;
 }
@@ -77,32 +85,32 @@ void OptimizeBase::nextIteration() {
 
 }
 
-//void OptimizeBase::saveGradient(const MatrixDouble &gradient) {
-//    if(lastGradient_.isEmpty()){
-//        lastGradient_ = gradient;
-//    }else{
-//        lastGradient_ = currentGradient_;
-//    }
+void OptimizeBase::saveGradient(const MatrixDouble &gradient) {
+    if(lastGradient_.isEmpty()){
+        lastGradient_ = gradient;
+    }else{
+        lastGradient_ = currentGradient_;
+    }
 
-//    currentGradient_ = gradient;
-//}
+    currentGradient_ = gradient;
+}
 
-//void OptimizeBase::saveHessian(const MatrixDouble &hessian)
-//{
-//    if(lastHessian_.isVector()){
-//        lastHessian_ = hessian;
-//    }else{
-//        lastHessian_ = currentHessian_;
-//    }
+void OptimizeBase::saveHessian(const MatrixDouble &hessian)
+{
+    if(lastHessian_.isVector()){
+        lastHessian_ = hessian;
+    }else{
+        lastHessian_ = currentHessian_;
+    }
 
-//    currentHessian_ = hessian;
-//}
+    currentHessian_ = hessian;
+}
 
-//void OptimizeBase::saveFunctionError(double functionError) {
-//    if(lastFunctionError_ == DBL_MAX){
+void OptimizeBase::saveFunctionError(double functionError) {
+    if(lastFunctionError_ == DBL_MAX){
 
-//    }
-//}
+    }
+}
 
 }
 }

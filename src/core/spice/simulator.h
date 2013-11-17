@@ -27,7 +27,6 @@ public:
     bool updateParameters(const QString& library, QList<db::ParameterModel> parameters );
 
     virtual bool simulate() = 0;
-
     virtual db::MeasureModel simulatedData();
 
 protected:

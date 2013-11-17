@@ -61,6 +61,23 @@ bool Dataset::load(AnalysisType type, DeviceType device, const QVariantMap &attr
 
 }
 
+void Dataset::begin() {
+    currentMeasure_ = measures_.begin();
+}
+
+bool Dataset::isNext() {
+    return ( currentMeasure_ != measures_.end() );
+}
+
+const db::MeasureModel& Dataset::next() const {
+     db::MeasureModel* measure = currentMeasure_.pointer();
+     currentMeasure_++;
+
+     return *measure;
+
+
+}
+
 
 }
 }

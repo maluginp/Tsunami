@@ -36,6 +36,8 @@ public:
     Terminal* nextTerminal();
     void beginTerminal();
 
+    void setSpiceModel( DeviceType* device, SpiceModel* model);
+
     void addSpiceModel(const QString& name,
                         const QVariantMap& parameters = QVariantMap() );
     void addSpiceModel( SpiceModel* model );
@@ -51,10 +53,24 @@ public:
 
     const QString& name() const;
     bool correct();
+
+    static Circuit* createCircuitDevice(DeviceType type, const QList<Source>& sources);
+//    static Circuit* createCircuitAC(DeviceType type);
+//    static Circuit* createCircuitTran(DeviceType type);
+
+
 protected:
 
 private:
+    void createBjt(Circuit *circuit, AnalysisType type);
+    void createRes(Circuit* circuit, AnalysisType type);
+    void createCap(Circuit* circuit, AnalysisType type);
+    void createDiode(Circuit* circuit, AnalysisType type);
+    void createFet(Circuit *circuit, AnalysisType type);
+    void createMosfet(Circuit *circuit, AnalysisType type);
+
     bool isModelExist( const QString& name );
+    QString formSourceName( SourceMode mode, QString node );
 
 
     QString name_;
@@ -68,6 +84,10 @@ private:
     DeviceMap::Iterator currentDevice_;
     TerminalMap::Iterator currentTerminal_;
     ModelList::Iterator  currentModel_;
+
+
+
+
 };
 
 }

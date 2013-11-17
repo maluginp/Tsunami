@@ -51,7 +51,8 @@ SOURCES += main.cpp \
     math/vector.cpp \
     optimize/hookejeevesmethod.cpp \
     extractor/extractor.cpp \
-    extractor/dataset.cpp
+    extractor/dataset.cpp \
+    extractor/extractorglobal.cpp
 
 HEADERS += \
     components/json.h \
@@ -91,7 +92,8 @@ HEADERS += \
     optimize/optimizebase.h \
     optimize/hookejeevesmethod.h \
     extractor/extractor.h \
-    extractor/dataset.h
+    extractor/dataset.h \
+    extractor/extractorglobal.h
 
 
 
