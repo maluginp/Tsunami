@@ -7,7 +7,7 @@ namespace db{
 QString MeasureStorage::TABLE_NAME_MEASURES = QString("measures");
 QString MeasureStorage::CONNECTION_NAME_MEASURE = QString("measure_connection");
 
-#define ITEM(column) q.value(rec.indexOf(column))
+
 
 MeasureStorage::MeasureStorage() {
 

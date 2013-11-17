@@ -1,6 +1,9 @@
 #include "parameterstorage.h"
 #include "../models/librarymodel.h"
 
+namespace tsunami{
+namespace db{
+
 QString ParameterStorage::TABLE_NAME_PARAMETERS = QString("parameters");
 QString ParameterStorage::TABLE_NAME_LIBRARIES  = QString("libraries");
 QString ParameterStorage::CONNECTION_NAME_PARAMETER = QString("parameter_connection");
@@ -273,3 +276,49 @@ void ParameterStorage::saveCache(const LibraryModel &library) const {
     cachedLibraries_.insert( library.id(), library );
 
 }
+
+
+bool ParameterStorage::createTable(const ParameterStorage::ParameterTable &table) {
+    QString sqlQuery;
+    if(table == ParameterStorage::TABLE_LIBRARIES){
+        sqlQuery = sql("CREATE TABLE IF NOT EXISTS %1 ("
+                       "id INTEGER PRIMARY KEY ON CONFLICT REPLACE,"
+                       "device_id INTEGER,"
+                       "name TEXT,"
+                       "created_at NUMERIC,"
+                       "changed_at NUMERIC,"
+                       "enable NUMERIC"
+                       ")").arg(TABLE_NAME_LIBRARIES);
+
+    }else if(table == ParameterStorage::TABLE_PARAMETERS){
+        sqlQuery = sql("CREATE TABLE IF NOT EXISTS %1 ("
+                       "id INTEGER PRIMARY KEY ON CONFLICT REPLACE,"
+                       "library_id INTEGER,"
+                       "name TEXT,"
+                       "initial REAL,"
+                       "fitted REAL,"
+                       "minimum REAL,"
+                       "maximum REAL,"
+                       "fixed NUMERIC,"
+                       "enable NUMERIC"
+                       ")").arg(TABLE_NAME_PARAMETERS);
+
+    }else{
+        return false;
+    }
+
+
+    QSqlQuery q(sqlQuery,db());
+    if(!q.exec()){
+        setLastError( q.lastError().text() );
+        return false;
+    }
+
+    return true;
+
+}
+
+
+}
+}
+

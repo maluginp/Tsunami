@@ -10,6 +10,8 @@
 namespace tsunami{
 namespace db{
 
+#define ITEM(column) q.value(rec.indexOf(column))
+
 namespace detail {
     template <class T>
     struct proxy{
