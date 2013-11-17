@@ -224,43 +224,6 @@ bool ParameterStorage::addParameterToLibraryImpl(const ParameterModel &parameter
 
 }
 
-bool ParameterStorage::createTable(const ParameterStorage::ParameterTable &table) {
-    QString sqlQuery("");
-    if(table == ParameterStorage::TABLE_LIBRARIES){
-        sqlQuery = sql( "CREATE TABLE IF NOT EXISTS %1 ("
-                        "library_id INTEGER PRIMARY KEY ON CONFLICT REPLACE,"
-                        "name TEXT,"
-                        "project_id INTEGER,"
-                        "user_id INTEGER,"
-                        "create_at NUMERIC,"
-                        "change_at NUMERIC,"
-                        "enable NUMERIC"
-                        ")").arg(TABLE_NAME_LIBRARIES);
-
-    }else if(table == ParameterStorage::TABLE_PARAMETERS){
-        sqlQuery = sql( "CREATE TABLE IF NOT EXISTS %1 ("
-                        "param_id INTEGER PRIMARY KEY ON CONFLICT REPLACE,"
-                        "name TEXT,"
-                        "initial REAL,"
-                        "minimum REAL,"
-                        "maximum REAL,"
-                        "library_id INTEGER"
-                        ")").arg(TABLE_NAME_PARAMETERS);
-    }else{
-        return false;
-    }
-
-
-    QSqlQuery q(sqlQuery,db());
-    if(!q.exec()){
-        setLastError(q.lastError().text());
-        return false;
-    }
-
-    return true;
-}
-
-
 void ParameterStorage::saveCache(const LibraryModel &library) const {
 
     //! Если содержится в кэше, то обновляем
