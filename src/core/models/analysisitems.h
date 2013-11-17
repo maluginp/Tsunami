@@ -3,6 +3,10 @@
 #include <QString>
 #include <QVariant>
 
+namespace tsunami {
+namespace gui{
+
+
 enum AnalysisItemType{
     ANALYSIS_ITEM_NONE,
     ANALYSIS_ITEM_SWEEP,
@@ -144,4 +148,6 @@ private:
 
 };
 
+}
+}
 #endif // ANALYSISITEMS_H

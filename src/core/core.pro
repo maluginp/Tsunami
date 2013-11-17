@@ -49,7 +49,9 @@ SOURCES += main.cpp \
     spice/circuit.cpp \
     optimize/optimizebase.cpp \
     math/vector.cpp \
-    optimize/hookejeevesmethod.cpp
+    optimize/hookejeevesmethod.cpp \
+    extractor/extractor.cpp \
+    extractor/dataset.cpp
 
 HEADERS += \
     components/json.h \
@@ -87,7 +89,9 @@ HEADERS += \
     math/vector.h \
     defines.h \
     optimize/optimizebase.h \
-    optimize/hookejeevesmethod.h
+    optimize/hookejeevesmethod.h \
+    extractor/extractor.h \
+    extractor/dataset.h
 
 
 

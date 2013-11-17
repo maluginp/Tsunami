@@ -6,6 +6,10 @@
 
 class QAbstractItemView;
 
+namespace tsunami {
+namespace gui{
+
+
 struct KeyValuePair{
     enum ValueType{
         TYPE_TEXT,
@@ -79,5 +83,6 @@ private:
 
 };
 
-
+}
+}
 #endif // KEYVALUEVIEW_H

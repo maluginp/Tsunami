@@ -3,6 +3,8 @@
 #include <QtCore>
 #include <singleton.h>
 #include "dbstorage.h"
+namespace tsunami{
+namespace db{
 
 class SettingStorage : public DbStorage, public Singleton<SettingStorage> {
     enum SettingTable{
@@ -29,5 +31,9 @@ private:
     static QString CONNECTION_NAME_SETTING;
 
 };
+
+}
+}
+
 
 #endif // SETTINGSTORAGE_H

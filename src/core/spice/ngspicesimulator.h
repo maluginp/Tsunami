@@ -4,7 +4,7 @@
 #include "simulator.h"
 
 namespace tsunami{
-namespace core{
+namespace spice{
 
 class NgSpiceSimulator : public Simulator {
 public:
@@ -21,4 +21,5 @@ private:
 
 }
 }
+
 #endif // NGSPICESIMULATOR_H

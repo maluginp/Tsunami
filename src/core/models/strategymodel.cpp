@@ -1,6 +1,12 @@
 #include "strategymodel.h"
 
-StrategyModel::StrategyModel()
-{
+//namespace tsunami {
+//namespace gui{
 
-}
+//StrategyModel::StrategyModel()
+//{
+
+//}
+
+//}
+//}

@@ -4,35 +4,45 @@
 #include <QString>
 #include <QVariant>
 //class LibraryModel;
+namespace tsunami {
+namespace db{
 
 class ParameterModel {
 public:
     ParameterModel();
+    void id(int parameterId);
+    void libraryId(int libraryId);
+    void name(const QString& name);
+    void initial(double initial);
+    void fitted( double fitted );
+    void minimum(double minimum );
+    void maximum(double maximum);
+    void fixed(bool fixed);
+    void enable(bool enable);
 
-    inline const int&     id()        const { return paramId_;   }
-    inline const int&     libraryId() const { return libraryId_; }
-    inline const QString& name()      const { return name_;      }
-    inline const double&  initial()   const { return initial_;   }
-    inline const double&  minimum()   const { return minimum_;   }
-    inline const double&  maximum()   const { return maximum_;   }
+    const int& id() const;
+    const int& libraryId() const;
+    const QString&  name() const;
+    const double& initial() const;
+    const double& fitted() const;
+    const double& minimum() const;
+    const double& maximum() const;
+    const bool& fixed() const;
+    const bool& enable() const;
 
-    ParameterModel& setId(const int& id);
-    ParameterModel& setLibraryId(const int& libraryId);
-    ParameterModel& setName(const QString& name);
-    ParameterModel& setInitial(const double& initial);
-    ParameterModel& setMinimum(const double& minimum);
-    ParameterModel& setMaximum(const double& maximum);
-
-
-    static QVariantList getColumns();
 private:
     int libraryId_;
-    int paramId_;
+    int parameterId_;
     QString name_;
     double initial_;
+    double fitted_;
     double minimum_;
     double maximum_;
+    bool fixed_;
+    bool enable_;
 
 };
 
+}
+}
 #endif // PARAMETERMODEL_H

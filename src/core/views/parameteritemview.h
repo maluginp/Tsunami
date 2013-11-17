@@ -4,6 +4,9 @@
 #include <QAbstractItemModel>
 #include "../dbstorage/parameterstorage.h"
 
+namespace tsunami {
+namespace gui{
+
 class LibraryModel;
 
 class ParameterItemView : public QAbstractItemModel
@@ -37,5 +40,8 @@ private:
 
     ParameterStorage* storage_;
 };
+
+}
+}
 
 #endif // PARAMETERITEMVIEW_H

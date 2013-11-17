@@ -1,5 +1,8 @@
 #include "delegatereadonly.h"
 #include <QtGui>
+namespace tsunami{
+namespace gui{
+
 DelegateReadOnly::DelegateReadOnly(QObject *parent) {
     Q_UNUSED(parent);
 }
@@ -22,4 +25,7 @@ void DelegateReadOnly::paint(QPainter *painter, const QStyleOptionViewItem &opti
 
     painter->setBackground(background);
     QItemDelegate::paint(painter, opt, index);
+}
+
+}
 }

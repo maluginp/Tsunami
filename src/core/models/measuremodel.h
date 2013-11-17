@@ -3,131 +3,89 @@
 
 #include <QtCore>
 #include <model.h>
+#include "defines.h"
 
-class MeasureStorage;
-
-typedef QVector< QVector<double> > QMatrixDouble;
-
-enum MeasureType{TYPE_DC,TYPE_AC,TYPE_TRAN,TYPE_UNKNOWN};
-enum MeasureSource{SOURCE_VOLTAGE,SOURCE_CURRENT,SOURCE_GND,SOURCE_UNKNOWN};
+namespace tsunami {
+namespace db{
 
 struct MeasureHeader{
-    MeasureType type;
     QString comment;
-    QDate userDate;
     QDate fabricationDate;
+    QDate userDate;
     bool dubious;
-    QVariantMap attributes;
-    MeasureHeader()
-        : type(TYPE_UNKNOWN), comment(QString()), userDate(QDate::currentDate()),
-          fabricationDate(QDate::currentDate()), dubious(false),
-          attributes(QVariantMap()) {
-
-    }
-
-    MeasureHeader(const MeasureHeader& other)
-        : type(other.type), comment(other.comment),
-          userDate(other.userDate), dubious(other.dubious),
-          fabricationDate(other.fabricationDate),
-          attributes(other.attributes) {
-
-    }
-};
-
-struct MeasureHeaderData{
-    QString source;
-    MeasureSource type;
-    QString method;
-
-    MeasureHeaderData()
-        :source(QString()), type(SOURCE_UNKNOWN), method(QString()){
-
-    }
-
-    MeasureHeaderData(const MeasureHeaderData& other)
-        : source(other.source), method(other.type), type(other.type) {
-
-    }
-};
-
-struct MeasureData{
-    QVariantList columns;
-    QMatrixDouble items;
-
-    MeasureData():
-        columns(QVariantList()), items(QMatrixDouble()){
-
-    }
-
-    MeasureData(const MeasureData& other)
-        :columns(other.columns),items(other.items) {
-    }
-    MeasureData& operator=(const MeasureData& other){
-        columns = other.columns;
-        items   = other.items;
-        return *this;
-    }
 };
 
 class MeasureModel : public Model {
-friend class MeasureStorage;
-
+//friend class MeasureStorage;
 public:
     MeasureModel();
-    inline const int& id() const                              { return measureId_;  }
-    inline const int& projectId() const                       { return projectId_;  }
-    inline const int&  userId() const                         { return userId_;     }
-    inline const MeasureHeader& header() const                { return header_;     }
-    inline const QList<MeasureHeaderData>& headerData() const { return headerData_; }
-    inline const MeasureData& measureData() const             { return data_;       }
-    inline const bool& enable() const                         { return enable_;     }
-    inline const QDateTime& createAt() const                  { return createAt_;   }
-    inline const QDateTime& changeAt() const                  { return changeAt_;   }
-    MeasureHeaderData headerData(const int& index) const;
+    void id( int measureId ) { measureId_ = measureId; }
+    void deviceId( int deviceId ) { deviceId_ = deviceId; }
+    void name( const QString& name ) { name_ = name; }
+    void type( AnalysisType type ) { type_ = type; }
+    void type( const QString& type);
+    void attrs( const QVariantMap& attributes ) { attributes_ = attributes; }
+    void attrsJson( const QString& json );
+    void addAttr( const QString& key, const QVariant& value )  { attributes_.insert( key,value ); }
+    void sources( const QList<Source>& sources ) { sources_ = sources; }
+    void sourcesJson( const QString& json);
+    void addSource( const Source& source ) { sources_.append( source ); }
+    void header( const MeasureHeader& header ) { header_ = header; }
+    void header( const QString& comment, const QDate& fabrication, const QDate& user,
+                 bool dubious );
+    void headerJson( const QString& json );
 
-    double item(const int &row, const int &column) const;
+    void columns( const QStringList& columns ) { columns_ = columns; }
+    void addColumn( const QString& column ) { columns_.append( column ); }
+    void dataJson( const QString& json );
+//    void data( double *data )
+    void createAt( const QDate& createAt ) { createdAt_ = createAt; }
+    void changeAt( const QDate& changeAt ) { changedAt_ = changeAt; }
+
+    void enable(bool enable) { enable_ = enable; }
+    void userId( int userId ) { userId_ = userId; }
+
+    int rows() { return rows_; }
 
 
-    QVariant itemAt(const QModelIndex& index) const;
+    const int& id() const { return measureId_; }
+    const int& deviceId() const { return deviceId_; }
+    const QString& name() const { return name_; }
+    const AnalysisType& type() const { return type_; }
+    const QVariantMap& attrs() const { return attributes_; }
+    const QList<Source>& sources() const { return sources_; }
+    const MeasureHeader& header() const { return header_; }
+    QString headerJson();
+    QString dataJson();
 
-    int dataRows() const;
-    int dataColumns() const;
+    const QStringList& columns() const { return columns_; }
+    const QDate& createAt() const { return createdAt_; }
+    const QDate& changeAt() const { return changedAt_; }
+    const int& userId() const { return userId_; }
 
-    QVariant getColumnName(const int& section) const;
-
-    MeasureModel& setId(const int& id);
-    MeasureModel& setProjectId(const int& projectId);
-    MeasureModel& setHeader( const MeasureHeader& header );
-    MeasureModel& setHeaderData( const QList<MeasureHeaderData>& headerData);
-    MeasureModel& setHeaderData( const MeasureHeaderData& headerData);
-    MeasureModel& appendHeaderData( const MeasureHeaderData& headerData );
-    MeasureModel& setMeasureData( const MeasureData& measureData);
-    MeasureModel& setEnable( const bool& enable );
-    MeasureModel& setUserId( const int& userId );
-    MeasureModel& setCreateAt( const QDateTime& createAt);
-    MeasureModel& setChangeAt( const QDateTime& changeAt);
-    MeasureModel& setItem(const int &row, const int &column, const double& value);
+    bool hasAttr( const QString& key, const QVariant& value = QVariant() );
 
 private:
-    void parseJsonHeader(const QString& header);
-    void parseJsonHeaderData(const QString& headerData);
-    void parseJsonData(const QString& jsonData );
-
-    QString jsonHeader() const;
-    QString jsonHeaderData() const;
-    QString jsonData() const;
-
     int measureId_;
-    int projectId_;
+    int deviceId_;
+    QString name_;
+    AnalysisType type_;
+    QVariantMap attributes_;
+    QList<Source> sources_;
     MeasureHeader header_;
-    QList<MeasureHeaderData> headerData_;
-    MeasureData data_;
+    QStringList columns_;
 
-    QDateTime createAt_;
-    QDateTime changeAt_;
-
+    double* data_;
+    QDate createdAt_;
+    QDate changedAt_;
     bool enable_;
     int userId_;
+
+    int rows_;
+
+
 };
 
+}
+}
 #endif // MEASUREMODEL_H

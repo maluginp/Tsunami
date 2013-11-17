@@ -9,6 +9,11 @@
 #include "../delegates/keyvaluedelegate.h"
 
 #include <QDebug>
+
+namespace tsunami {
+namespace gui{
+
+
 KeyValueView::KeyValueView(QObject *parent) :
     QAbstractItemModel(parent)
 {
@@ -164,4 +169,7 @@ void KeyValueView::fillDelegates(QAbstractItemView *view) {
 
     view->setItemDelegate( new KeyValueDelegate( pairs_, view ) );
 
+}
+
+}
 }

@@ -5,7 +5,7 @@
 #include <QVariantMap>
 #include "defines.h"
 namespace tsunami{
-namespace core{
+namespace spice{
 
 
 struct ConstraintSpiceParameter{
@@ -18,7 +18,7 @@ struct ConstraintSpiceParameter{
 
 class SpiceModel {
 public:
-    SpiceModel(const QString& name,TypeDevice typeDevice = DEVICE_UNKNOWN);
+    SpiceModel(const QString& name,DeviceType typeDevice = DEVICE_UNKNOWN);
     void add( const QString& name, const QVariant& value);
     void add( const QVariantMap& parameters );
 
@@ -29,8 +29,8 @@ public:
 
     const QVariantMap& parameters() const;
     const QString& name() const;
-    const TypeDevice& typeDevice() const;
-    void typeDevice(TypeDevice type);
+    const DeviceType& typeDevice() const;
+    void typeDevice(DeviceType type);
     void clear();
 
     bool isFixed(const QString& parameter);
@@ -39,7 +39,7 @@ public:
 private:
     QString name_;
     QVariantMap parameters_;
-    TypeDevice type_;
+    DeviceType type_;
     QMap<QString, ConstraintSpiceParameter> constraints_;
 };
 

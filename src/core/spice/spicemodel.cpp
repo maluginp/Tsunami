@@ -1,9 +1,9 @@
 #include "spicemodel.h"
 
 namespace tsunami{
-namespace core{
+namespace spice{
 
-SpiceModel::SpiceModel(const QString &name, TypeDevice type)
+SpiceModel::SpiceModel(const QString &name, DeviceType type)
     : name_(name)
     , type_(type){
 
@@ -39,11 +39,11 @@ const QString &SpiceModel::name() const {
     return name_;
 }
 
-const TypeDevice &SpiceModel::typeDevice() const {
+const DeviceType &SpiceModel::typeDevice() const {
     return type_;
 }
 
-void SpiceModel::typeDevice(TypeDevice type) {
+void SpiceModel::typeDevice(DeviceType type) {
     type_ = type;
 }
 

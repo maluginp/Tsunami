@@ -1,6 +1,9 @@
 #include "parameterplotview.h"
 #include <QPair>
 
+namespace tsunami {
+namespace gui{
+
 ParameterPlotView::ParameterPlotView(QVariantMap parameters, QObject *parent) :
     QAbstractItemModel(parent) {
     items_ = parameters;
@@ -106,4 +109,7 @@ QPair<QString, QVariant> ParameterPlotView::changeAt(int index) const {
         ++row;
     }
     return QPair<QString,QVariant>();
+}
+
+}
 }

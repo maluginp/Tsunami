@@ -8,6 +8,11 @@
 #else
 #include <QtWidgets/QItemDelegate>
 #endif
+
+namespace tsunami{
+namespace gui{
+
+
 class DelegateReadOnly : public QItemDelegate
 {
 public:
@@ -16,5 +21,8 @@ public:
     void paint(QPainter *painter, const QStyleOptionViewItem &option,const QModelIndex &index) const;
 
 };
+
+}
+}
 
 #endif // DELEGATEREADONLY_H

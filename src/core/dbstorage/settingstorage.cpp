@@ -1,5 +1,9 @@
 #include "settingstorage.h"
 
+namespace tsunami{
+namespace db{
+
+
 QString SettingStorage::TABLE_NAME_SETTINGS = QString("settings");
 QString SettingStorage::CONNECTION_NAME_SETTING = QString("connection_settings");
 
@@ -89,4 +93,7 @@ bool SettingStorage::createTable(const SettingStorage::SettingTable &table){
     }
 
     return true;
+}
+
+}
 }

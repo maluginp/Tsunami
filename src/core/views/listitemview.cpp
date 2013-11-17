@@ -1,5 +1,9 @@
 #include "listitemview.h"
 
+namespace tsunami {
+namespace gui{
+
+
 ListItemView::ListItemView(QObject *parent) :
     QAbstractItemModel(parent), editable_(false) {
 
@@ -109,4 +113,7 @@ QVariant ListItemView::itemAt(const int &index) const {
 QString ListItemView::keyAt(const int &index) const {
     Q_ASSERT( index <= items_.size() );
     return items_.at(index).first;
+}
+
+}
 }

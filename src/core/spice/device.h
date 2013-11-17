@@ -8,7 +8,7 @@
 #include "defines.h"
 
 namespace tsunami{
-namespace core{
+namespace spice{
 
 
 class SpiceModel;
@@ -16,7 +16,7 @@ class Terminal;
 class Device : public GraphNode  {
 public:
 
-    Device( const QString& name,TypeDevice device = DEVICE_UNKNOWN);
+    Device( const QString& name,DeviceType device = DEVICE_UNKNOWN);
 
     void setSource( TypeSource source, const QVariantMap& options );
     const TypeSource& getSource() const;
@@ -42,7 +42,7 @@ public:
 
 private:
     SpiceModel* model_;
-    TypeDevice device_;
+    DeviceType device_;
     TypeSource source_;
     DeviceFlag flags_;
     QVariantMap sourceOptions_;

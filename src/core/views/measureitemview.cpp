@@ -1,6 +1,8 @@
 #include "measureitemview.h"
 #include "../dbstorage/measurestorage.h"
 #include "../models/measuremodel.h"
+namespace tsunami {
+namespace gui{
 
 MeasureItemView::MeasureItemView(const int &measureId, QObject *parent) :
     QAbstractItemModel(parent),rows_(0),columns_(0) {
@@ -91,4 +93,7 @@ void MeasureItemView::openMeasure(const int &measureId) {
 
 void MeasureItemView::restoreMeasure() {
     measure_ = storeMeasure_;
+}
+
+}
 }

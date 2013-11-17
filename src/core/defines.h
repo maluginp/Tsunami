@@ -3,13 +3,9 @@
 
 #include "math/matrix.h"
 #include "math/vector.h"
+#include <QVariantMap>
 
 namespace tsunami{
-namespace core{
-
-//template<class T> class Matrix;
-//template<class T> class Vector;
-
 
 enum{
     DEVICE_NO_FLAG      = 0,
@@ -17,7 +13,7 @@ enum{
 };
 typedef unsigned long DeviceFlag;
 
-enum TypeDevice{
+enum DeviceType{
     DEVICE_UNKNOWN=-1,
     DEVICE_NBJT,
     DEVICE_PBJT,
@@ -30,26 +26,42 @@ enum TypeDevice{
     DEVICE_SOURCE,
     DEVICE_CAPACITOR
 };
-enum TypeAnalysis{
+enum AnalysisType{
     ANALYSIS_UNKNOWN,
     ANALYSIS_AC,
     ANALYSIS_DC,
     ANALYSIS_TRAN
 };
 
-enum TypeSource{
-    SOURCE_UNKNOWN,
-    SOURCE_CONST,
-    SOURCE_LINEAR
+enum SourceMethod{
+    SOURCE_METHOD_UNKNOWN,
+    SOURCE_METHOD_CONST,
+    SOURCE_METHOD_LINEAR,
+    SOURCE_METHOD_LIST
 };
+
+
+
 
 typedef Matrix<double> MatrixDouble;
 typedef Matrix<int>    MatrixInt;
 typedef Vector<double> VectorDouble;
 typedef Vector<int>    VectorInt;
 
+enum SourceMode{
+    SOURCE_MODE_VOLTAGE,
+    SOURCE_MODE_CURRENT,
+    SOURCE_MODE_GND
+};
 
-}
+struct Source{
+    SourceMode mode;
+    SourceMethod method;
+    QVariantMap configuration;
+    QString node; // TODO Node is QString ??
+
+};
+
 }
 
 #endif // DEFINES_H

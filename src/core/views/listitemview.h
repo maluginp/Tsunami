@@ -4,6 +4,11 @@
 #include <QAbstractItemModel>
 #include <QPair>
 #include <QList>
+
+namespace tsunami {
+namespace gui{
+
+
 class ListItemView : public QAbstractItemModel
 {
     Q_OBJECT
@@ -33,5 +38,8 @@ private:
     QList< QPair<QString,QVariant> > items_;
     bool editable_;
 };
+
+}
+}
 
 #endif // LISTITEMVIEW_H

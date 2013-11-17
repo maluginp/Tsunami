@@ -4,7 +4,7 @@
 #include "graphnode.h"
 
 namespace tsunami{
-namespace core{
+namespace spice{
 
 class Terminal : public GraphNode  {
 public:

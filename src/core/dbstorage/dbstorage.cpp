@@ -1,5 +1,9 @@
 #include "dbstorage.h"
 #include <QDebug>
+
+namespace tsunami{
+namespace db{
+
 QString DbStorage::DBASE_COMMON_NAME = QString("base.db");
 
 
@@ -134,5 +138,5 @@ QSqlDatabase DbStorage::allocateDb() {
 }
 
 
-
-
+}
+}

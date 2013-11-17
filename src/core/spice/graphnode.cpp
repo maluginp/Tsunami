@@ -1,7 +1,7 @@
 #include "graphnode.h"
 
 namespace tsunami{
-namespace core{
+namespace spice{
 
 int GraphNode::nextId_ = 1;
 

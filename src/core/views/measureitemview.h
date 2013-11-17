@@ -4,6 +4,9 @@
 #include <QAbstractItemModel>
 #include "../dbstorage/measurestorage.h"
 
+namespace tsunami {
+namespace gui{
+
 class MeasureItemView : public QAbstractItemModel {
     Q_OBJECT
 public:
@@ -40,4 +43,6 @@ private:
     MeasureModel storeMeasure_;
 };
 
+}
+}
 #endif // MEASUREITEMVIEW_H

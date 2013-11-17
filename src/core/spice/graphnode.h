@@ -5,7 +5,7 @@
 #include <QVector>
 
 namespace tsunami{
-namespace core{
+namespace spice{
 
 class GraphNode
 {

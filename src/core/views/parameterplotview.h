@@ -3,6 +3,10 @@
 
 #include <QAbstractItemModel>
 
+namespace tsunami {
+namespace gui{
+
+
 class ParameterPlotView : public QAbstractItemModel {
 Q_OBJECT
 public:
@@ -26,5 +30,8 @@ private:
     QVariantMap items_;
     QVariantMap changes_;
 };
+
+}
+}
 
 #endif // PARAMETERPLOTVIEW_H

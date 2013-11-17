@@ -1,7 +1,7 @@
 #include "simulator.h"
 #include <QProcess>
 namespace tsunami{
-namespace core{
+namespace spice{
 
 
 Simulator::Simulator()

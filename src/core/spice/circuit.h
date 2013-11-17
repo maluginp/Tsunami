@@ -5,7 +5,7 @@
 #include "defines.h"
 
 namespace tsunami{
-namespace core{
+namespace spice{
 
 class Terminal;
 class Device;
@@ -22,7 +22,7 @@ public:
     void typeAnalysis( TypeAnalysis analysis );
     const TypeAnalysis& typeAnalysis();
 //    int addDevice( Device* device );
-    int addDevice( const QString& name, TypeDevice type );
+    int addDevice( const QString& name, DeviceType type );
     void removeDevice( int id );
     Device* getDevice( const QString& name );
     Device* getDevice( int deviceId );

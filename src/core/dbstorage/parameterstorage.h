@@ -7,7 +7,13 @@
 #include "../models/librarymodel.h"
 #include "../models/parametermodel.h"
 
+namespace tsunami{
+namespace db{
+
 #define CACHE_SIZE_PARAMETER_STORAGE 10
+
+// TODO changed parameters storage
+
 class ParameterStorage : public DbStorage, public Singleton<ParameterStorage> {
     enum ParameterTable{
         TABLE_PARAMETERS,
@@ -20,18 +26,21 @@ public:
     const LibraryModel& library() const;
     bool saveLibrary( );
     bool saveLibrary( const LibraryModel& library );
-    bool addParameterToLibrary( const ParameterModel& parameter );
+
+    QList<ParameterModel> parameters(int libraryId);
+
+
+
+//    bool addParameterToLibrary( const ParameterModel& parameter );
     LibraryModel openLibrary( const int& libraryId );
     void setCurrentLibrary(  const int& libraryId );
 
 protected:
     QString connectionName() const;
 private:
-
-
     bool saveLibraryImpl( const LibraryModel& library );
-    LibraryModel openLibraryImpl( const int& libraryId );
-    bool addParameterToLibraryImpl( const ParameterModel& parameter );
+    LibraryModel openLibraryImpl( int libraryId );
+//    bool addParameterToLibraryImpl( const ParameterModel& parameter );
 
     bool createTable( const ParameterTable& table);
 
@@ -44,5 +53,9 @@ private:
     static QString TABLE_NAME_LIBRARIES;
     static QString CONNECTION_NAME_PARAMETER;
 };
+
+}
+}
+
 
 #endif // PARAMETERSTORAGE_H

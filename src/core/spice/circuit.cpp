@@ -4,7 +4,7 @@
 #include "terminal.h"
 #include "spicemodel.h"
 namespace tsunami{
-namespace core{
+namespace spice{
 
 
 
@@ -23,7 +23,7 @@ const TypeAnalysis &Circuit::typeAnalysis() {
     return typeAnalysis_;
 }
 
-int Circuit::addDevice(const QString &name, TypeDevice type) {
+int Circuit::addDevice(const QString &name, DeviceType type) {
     Device* device = new Device(name,type);
 
     devices_.insert( device->id(), device );

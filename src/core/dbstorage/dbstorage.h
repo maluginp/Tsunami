@@ -7,6 +7,8 @@
 #include <QtSql/QSqlError>
 #include <QtSql/QSqlRecord>
 
+namespace tsunami{
+namespace db{
 
 namespace detail {
     template <class T>
@@ -51,11 +53,17 @@ protected:
 
     QMutex dbMutex_;
     static QString DBASE_COMMON_NAME;
+
 private:
+
     QSqlDatabase allocateDb();
 
     QHash<Qt::HANDLE, QSqlDatabase> databases_;
     QThreadStorage<QString*> lastErrors_;
 };
+
+}
+}
+
 
 #endif // DBSTORAGE_H

@@ -2,7 +2,11 @@
 #define SIMULATOR_H
 #include <QStringList>
 namespace tsunami{
-namespace core{
+namespace db{
+    class MeasureModel;
+    class ParameterModel;
+}
+namespace spice{
 
 class Circuit;
 class SpiceModel;
@@ -20,8 +24,11 @@ public:
     void external( bool external );
     void path( const QString& path );
 
+    bool updateParameters(const QString& library, QList<db::ParameterModel> parameters );
+
     virtual bool simulate() = 0;
 
+    virtual db::MeasureModel simulatedData();
 
 protected:
     virtual bool exec(QByteArray &data,const QStringList& arguments = QStringList());
@@ -29,6 +36,7 @@ protected:
     virtual QByteArray generateNetList() = 0;
 
     QString randomName(int num);
+
 
 private:
     bool external_;

@@ -10,6 +10,9 @@
 #endif
 #include "../views/keyvalueview.h"
 
+namespace tsunami {
+namespace gui{
+
 class KeyValueDelegate : public QItemDelegate
 {
 public:
@@ -28,5 +31,8 @@ private:
 
     QList<KeyValuePair> pairs_;
 };
+
+}
+}
 
 #endif // KEYVALUEDELEGATE_H

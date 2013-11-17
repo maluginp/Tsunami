@@ -5,7 +5,7 @@
 #include "device.h"
 
 namespace tsunami{
-namespace core{
+namespace spice{
 
 NgSpiceSimulator::NgSpiceSimulator(const QString &path) :
     Simulator(path) {

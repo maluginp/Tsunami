@@ -3,9 +3,9 @@
 #include "spicemodel.h"
 
 namespace tsunami{
-namespace core{
+namespace spice{
 
-Device::Device(const QString &name, TypeDevice device)
+Device::Device(const QString &name, DeviceType device)
     : GraphNode(name)
     , device_(device)
     , model_(NULL)

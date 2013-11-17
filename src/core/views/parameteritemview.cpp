@@ -1,5 +1,8 @@
 #include "parameteritemview.h"
 
+namespace tsunami {
+namespace gui{
+
 ParameterItemView::ParameterItemView(const int& libraryId,QObject *parent) :
     QAbstractItemModel(parent) {
 
@@ -87,4 +90,7 @@ QVariant ParameterItemView::headerData(int section, Qt::Orientation orientation,
     }
 
     return QVariant();
+}
+
+}
 }

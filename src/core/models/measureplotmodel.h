@@ -3,15 +3,19 @@
 #include <QVariant>
 #include <Model.h>
 
-class MeasurePlotModel : public Model
-{
-public:
-    MeasurePlotModel();
+//namespace tsunami {
+//namespace gui{
 
-private:
-    QVariant plotX_;
-    QVariant plotY_;
-    QVariant grouped_;
-};
+//class MeasurePlotModel : public Model
+//{
+//public:
+//    MeasurePlotModel();
 
+//private:
+//    QVariant plotX_;
+//    QVariant plotY_;
+//    QVariant grouped_;
+//};
+//}
+//}
 #endif // MEASUREPLOTMODEL_H

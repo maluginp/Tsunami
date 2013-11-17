@@ -1,8 +1,13 @@
 #include "measurestorage.h"
 #include "../models/measuremodel.h"
 
+namespace tsunami{
+namespace db{
+
 QString MeasureStorage::TABLE_NAME_MEASURES = QString("measures");
 QString MeasureStorage::CONNECTION_NAME_MEASURE = QString("measure_connection");
+
+#define ITEM(column) q.value(rec.indexOf(column))
 
 MeasureStorage::MeasureStorage() {
 
@@ -53,18 +58,21 @@ MeasureModel MeasureStorage::openMeasureImpl(const int &measureId) {
     }
 
     QSqlRecord rec( q.record() );
-
     MeasureModel model;
 
 
-    model.setId( q.value(rec.indexOf("measure_id")).toInt() );
-    model.setProjectId( q.value(rec.indexOf("project_id")).toInt() );
-    model.parseJsonHeader( q.value(rec.indexOf("header")).toString() );
-    model.parseJsonHeaderData( q.value(rec.indexOf("header_data")).toString());
-    model.parseJsonData( q.value(rec.indexOf("data")).toString() );
-    model.setCreateAt( q.value(rec.indexOf("create_at")).toDateTime() );
-    model.setChangeAt( q.value(rec.indexOf("change_at")).toDateTime() );
-    model.setEnable( q.value(rec.indexOf("enable")).toBool() );
+    model.id(          ITEM("id").toInt()  );
+    model.deviceId(    ITEM("device_id").toInt() );
+    model.name(        ITEM("name").toString() );
+    model.type(        ITEM("analysis").toString());
+    model.attrsJson(   ITEM("attributes").toString());
+    model.sourcesJson( ITEM("sources").toString());
+    model.columnsJson( ITEM("columns").toString());
+    model.dataJson(    ITEM("data").toString());
+    model.createAt(    ITEM("created_at").toDate());
+    model.changeAt(    ITEM("changet_at").toDate());
+    model.enable(      ITEM("enable").toBool());
+    model.userId(      ITEM("user_id").toInt());
 
 
     currentMeasure_ = model;
@@ -80,19 +88,25 @@ bool MeasureStorage::createTable(const MeasureTable &table) {
     QString sqlQuery;
     if(table == MeasureStorage::TABLE_MEASURES){
         sqlQuery = sql("CREATE TABLE IF NOT EXISTS %1 ("
-                       "measure_id INTEGER PRIMARY KEY ON CONFLICT REPLACE,"
-                       "project_id INTEGER,"
+                       "id INTEGER PRIMARY KEY ON CONFLICT REPLACE,"
+                       "device_id INTEGER,"
+                       "name TEXT,"
+                       "analysis TEXT,"
+                       "attributes TEXT,"
+                       "sources TEXT,"
                        "header TEXT,"
-                       "header_data TEXT,"
+                       "columns TEXT,"
                        "data TEXT,"
-                       "create_at NUMERIC,"
-                       "change_at NUMERIC,"
+                       "user_id INTEGER,"
+                       "created_at NUMERIC,"
+                       "changed_at NUMERIC,"
                        "enable NUMERIC"
                        ")").arg(TABLE_NAME_MEASURES);
 
     }else{
         return false;
     }
+
 
     QSqlQuery q(sqlQuery,db());
     if(!q.exec()){
@@ -121,53 +135,63 @@ void MeasureStorage::saveCache(const MeasureModel &measure) const {
 
 bool MeasureStorage::saveMeasureImpl(const MeasureModel &measure) {
 
+    Q_ASSERT(false);
+    return false;
     QString sqlQuery;
 
-    MeasureModel model(measure);
+//    MeasureModel model(measure);
 
 
-    if(!beginTransaction()){
-        return false;
-    }
+//    if(!beginTransaction()){
+//        return false;
+//    }
 
-    sqlQuery = sql("INSERT OR REPLACE INTO %1(measure_id,project_id,header,"
-                   "header_data,data,create_at,change_at,enable) "
-                   "VALUES (:measure_id,:project_id,:header,:header_data,:data,"
-                   ":create_at,:change_at,:enable)").arg(TABLE_NAME_MEASURES);
+//    sqlQuery = sql("INSERT OR REPLACE INTO %1(,"
+//                   ") "
+//                   "VALUES (:measure_id,:project_id,:header,:header_data,:data,"
+//                   ":create_at,:change_at,:enable)").arg(TABLE_NAME_MEASURES);
 
-    QSqlQuery q(sqlQuery,db());
+//    QSqlQuery q(sqlQuery,db());
 
-    if(model.id() == -1){
-        int lastInsertId = q.lastInsertId().toInt() + 1;
-        model.setId( lastInsertId );
-    }
+//    if(model.id() == -1){
+//        int lastInsertId = q.lastInsertId().toInt() + 1;
+//        model.setId( lastInsertId );
+//    }
 
-    q.bindValue(":measure_id", model.id() );
-    q.bindValue(":project_id",  model.projectId());
-    q.bindValue(":header", model.jsonHeader());
-    q.bindValue(":header_data",model.jsonHeaderData());
-    q.bindValue(":data",model.jsonData());
-    q.bindValue(":create_at",model.createAt());
-    q.bindValue(":change_at",model.changeAt());
-    q.bindValue(":enable",model.enable());
+//    q.bindValue(":measure_id", model.id() );
+//    q.bindValue(":project_id",  model.projectId());
+//    q.bindValue(":header", model.jsonHeader());
+//    q.bindValue(":header_data",model.jsonHeaderData());
+//    q.bindValue(":data",model.jsonData());
+//    q.bindValue(":create_at",model.createAt());
+//    q.bindValue(":change_at",model.changeAt());
+//    q.bindValue(":enable",model.enable());
 
-    if(!q.exec()){
-        setLastError( q.lastError().text() );
-        rollback();
-        return false;
-    }
+//    if(!q.exec()){
+//        setLastError( q.lastError().text() );
+//        rollback();
+//        return false;
+//    }
 
-    if(!endTransaction()){
-//        roolback();
-        return false;
-    }
+//    if(!endTransaction()){
+////        roolback();
+//        return false;
+//    }
 
-    saveCache( model );
+//    saveCache( model );
 
-    return true;
+//    return true;
 }
 
 
 MeasureModel MeasureStorage::openMeasure(const int &measureId) {
     return openMeasureImpl( measureId );
+}
+
+QList<MeasureModel> MeasureStorage::findMeasures(TypeAnalysis type, DeviceType device) {
+
+
+}
+
+}
 }

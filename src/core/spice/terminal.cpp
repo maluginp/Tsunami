@@ -1,7 +1,7 @@
 #include "terminal.h"
 
 namespace tsunami{
-namespace core{
+namespace spice{
 
 Terminal::Terminal(const QString &name)
     : GraphNode(name)

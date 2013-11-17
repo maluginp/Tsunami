@@ -2,10 +2,13 @@
 #define MEASURESTORAGE_H
 #include "dbstorage.h"
 #include <singleton.h>
-
+#include <QList>
 #include "../models/measuremodel.h"
+#include "defines.h"
 
 #define CACHE_SIZE_MEASURE_STORAGE 10
+namespace tsunami{
+namespace db{
 
 class MeasureStorage : public DbStorage, public Singleton<MeasureStorage> {
 public:
@@ -20,6 +23,7 @@ public:
     bool saveMeasure(const MeasureModel& measure);
     MeasureModel openMeasure(const int& measureId);
 
+    QList<MeasureModel> findMeasure( const QVariantMap& criteria );
 
 protected:
     QString connectionName() const;
@@ -40,5 +44,6 @@ private:
     static QString TABLE_NAME_MEASURES;
 };
 
-
+}
+}
 #endif // MEASURESTORAGE_H

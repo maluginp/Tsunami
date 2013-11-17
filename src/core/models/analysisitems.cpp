@@ -1,5 +1,7 @@
 #include "analysisitems.h"
 #include "../components/json.h"
+namespace tsunami {
+namespace gui{
 
 QVariant IAnalysisItem::modeToVariant() const {
     if( mode_ == CURRENT ){
@@ -195,4 +197,7 @@ QVariantMap AnalysisItemOutput::json() {
     }
 
     return attrs;
+}
+
+}
 }
