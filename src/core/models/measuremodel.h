@@ -64,11 +64,14 @@ public:
     const int& userId() const { return userId_; }
 
     bool hasAttr( const QString& key, const QVariant& value = QVariant() );
-    QMap<QString, double> get( int i);
+    QMap<QString, double> get(int row);
 
-    int countSource();
+    int countSource(  );
 
     QMap<QString,double> find( const  QMap<QString,double>& data );
+
+    double at(int row, const QString& name);
+    double at(int row, int column);
 
 
 private:

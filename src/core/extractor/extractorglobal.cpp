@@ -15,6 +15,7 @@ double ExtractorGlobal::computeError(db::MeasureModel *measure) {
     int rows = measure->rows();
     double error;
 
+
     for(int i=0; i < rows; ++i){
         QMap<QString, double> measured  = measure->get(i);
         QMap<QString, double> simulated = simulate.find(measured);
@@ -24,6 +25,13 @@ double ExtractorGlobal::computeError(db::MeasureModel *measure) {
             error += subDataValue(simulated.value("Ie"),measured.value("Ie"));
             error += subDataValue(simulated.value("Ib"),measured.value("Ib"));
             error += subDataValue(simulated.value("Ic"),measured.value("Ic"));
+        }else if(type_ == DEVICE_NMOS || type_ == DEVICE_PMOS
+                 || type_ == DEVICE_NFET || type_ == DEVICE_PFET){
+            error += subDataValue(simulated.value("Is"),measured.value("Is"));
+            error += subDataValue(simulated.value("Ig"),measured.value("Ig"));
+            error += subDataValue(simulated.value("Id"),measured.value("Id"));
+            error += subDataValue(simulated.value("Ib"),measured.value("Ib"));
+
         }
     }
 
@@ -32,7 +40,7 @@ double ExtractorGlobal::computeError(db::MeasureModel *measure) {
 //    delete model;
 //    delete circuit;
 
-
+    return error;
 
 }
 
