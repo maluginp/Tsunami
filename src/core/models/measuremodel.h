@@ -36,6 +36,7 @@ public:
     void headerJson( const QString& json );
 
     void columns( const QStringList& columns ) { columns_ = columns; }
+    void columnsJson( const QString& json);
     void addColumn( const QString& column ) { columns_.append( column ); }
     void dataJson( const QString& json );
 //    void data( double *data )
@@ -46,7 +47,6 @@ public:
     void userId( int userId ) { userId_ = userId; }
 
     int rows() { return rows_; }
-
 
     const int& id() const { return measureId_; }
     const int& deviceId() const { return deviceId_; }
@@ -66,13 +66,12 @@ public:
     bool hasAttr( const QString& key, const QVariant& value = QVariant() );
     QMap<QString, double> get(int row);
 
-    int countSource(  );
+    int countSource( );
 
     QMap<QString,double> find( const  QMap<QString,double>& data );
 
     double at(int row, const QString& name);
     double at(int row, int column);
-
 
 private:
     int measureId_;

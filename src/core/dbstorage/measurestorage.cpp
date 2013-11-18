@@ -188,10 +188,10 @@ MeasureModel MeasureStorage::openMeasure(const int &measureId) {
     return openMeasureImpl( measureId );
 }
 
-QList<MeasureModel> MeasureStorage::findMeasures(TypeAnalysis type, DeviceType device) {
-
-
+QList<MeasureModel> MeasureStorage::findMeasure(const QVariantMap &criteria) {
+    // TODO List of measure model
 }
+
 
 }
 }

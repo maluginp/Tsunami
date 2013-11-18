@@ -35,10 +35,10 @@ private:
     int rows_;
     QVariantList columns_;
 
-    LibraryModel library_;
-    LibraryModel storeLibrary_;
+    db::LibraryModel library_;
+    db::LibraryModel storeLibrary_;
 
-    ParameterStorage* storage_;
+    db::ParameterStorage* storage_;
 };
 
 }

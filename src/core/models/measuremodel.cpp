@@ -3,6 +3,23 @@
 namespace tsunami{
 namespace db{
 
+void MeasureModel::type( const QString& type){
+
+    if(type.compare("dc",Qt::CaseInsensitive) == 0){
+        type_ = ANALYSIS_DC;
+    }else if(type.compare("ac",Qt::CaseInsensitive) == 0){
+        type_ = ANALYSIS_AC;
+    }else if(type.compare("tran",Qt::CaseInsensitive) == 0){
+        type_ = ANALYSIS_TRAN;
+    }else{
+        Q_ASSERT(false);
+        type_ = ANALYSIS_UNKNOWN;
+    }
+
+
+
+}
+
 void MeasureModel::header(const QString &comment, const QDate &fabrication, const QDate &user, bool dubious) {
     MeasureHeader header;
     header.comment = comment;
@@ -12,13 +29,34 @@ void MeasureModel::header(const QString &comment, const QDate &fabrication, cons
     header_ = header;
 }
 
+void MeasureModel::attrsJson( const QString& json ){
+    // TODO Attributes is extracted from json
+}
+
+void MeasureModel::sourcesJson(const QString &json) {
+    // TODO Sources is extracted from json
+}
 
 void MeasureModel::headerJson( const QString& json ){
     // TODO Header is extracted from json
 }
 
+void MeasureModel::columnsJson(const QString &json) {
+    // TODO Columns is extracted from json
+
+}
+
+void MeasureModel::dataJson(const QString &json) {
+    // TODO Data is extracted from json
+}
+
 QString MeasureModel::headerJson() {
-    // TODO JSON is formed from header struct
+    // TODO JSON is formed from header
+}
+
+QString MeasureModel::dataJson() {
+    // TODO JSON is formed from data
+
 }
 
 bool MeasureModel::hasAttr(const QString &key, const QVariant &value) {
@@ -35,7 +73,7 @@ bool MeasureModel::hasAttr(const QString &key, const QVariant &value) {
 QMap<QString, double> MeasureModel::get(int row) {
     QMap<QString, double> data;
     foreach(QString column,columns_){
-        data.insert( name, at(row,column) );
+        data.insert( column, at(row,column) );
     }
 
     return data;

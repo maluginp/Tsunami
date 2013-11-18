@@ -12,6 +12,8 @@ class ParameterModel;
 class LibraryModel : public Model {
 //    friend class ParameterStorage;
 public:
+    LibraryModel();
+
     void id(int libraryId);
     void deviceId(int deviceId);
     void name(const QString& name);
@@ -26,6 +28,23 @@ public:
     const QDate& changeAt() const;
     const bool& enable() const;
 
+    const ParameterModel& parameter(const QString& name) const;
+    const ParameterModel& parameter(int index) const;
+
+    ParameterModel& parameter(const QString& name);
+    ParameterModel& parameter(int index);
+
+    const QList<ParameterModel>& parameters() const;
+
+
+    void addParameter( const ParameterModel& parameter );
+    bool parameterExists( const QString& name );
+    void setParameter(const QString& name, const ParameterModel& parameter);
+
+protected:
+    ParameterModel& find(const QString& name);
+    ParameterModel& find(int index);
+
 private:
     int libraryId_;
     int deviceId_;
@@ -33,6 +52,8 @@ private:
     QDate createdAt_;
     QDate changedAt_;
     bool enable_;
+
+    QList<ParameterModel> parameters_;
 };
 
 }

@@ -7,7 +7,7 @@ namespace tsunami{
 namespace core{
 
 OptimizeBase::OptimizeBase(Extractor *extractor, int maxIteration)
-    : simulator_(extractor)
+    : extractor_(extractor)
     , maxIteration_(maxIteration)
     , iteration_(0) {
 
@@ -95,15 +95,15 @@ void OptimizeBase::saveGradient(const MatrixDouble &gradient) {
     currentGradient_ = gradient;
 }
 
-void OptimizeBase::saveHessian(const MatrixDouble &hessian)
-{
-    if(lastHessian_.isVector()){
-        lastHessian_ = hessian;
-    }else{
-        lastHessian_ = currentHessian_;
-    }
+void OptimizeBase::saveHessian(const MatrixDouble &hessian) {
+    Q_ASSERT(false);
+//    if(lastHessian_.isVector()){
+//        lastHessian_ = hessian;
+//    }else{
+//        lastHessian_ = currentHessian_;
+//    }
 
-    currentHessian_ = hessian;
+//    currentHessian_ = hessian;
 }
 
 void OptimizeBase::saveFunctionError(double functionError) {

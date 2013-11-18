@@ -19,8 +19,8 @@ class Circuit {
 public:
     Circuit(const QString& name);
 
-    void typeAnalysis( TypeAnalysis analysis );
-    const TypeAnalysis& typeAnalysis();
+    void typeAnalysis( AnalysisType analysis );
+    const AnalysisType& typeAnalysis();
 //    int addDevice( Device* device );
     int addDevice( const QString& name, DeviceType type );
     void removeDevice( int id );
@@ -58,19 +58,19 @@ public:
 //    static Circuit* createCircuitAC(DeviceType type);
 //    static Circuit* createCircuitTran(DeviceType type);
 
-
+    static QString formSourceName( SourceMode mode, QString node );
 protected:
 
 private:
-    void createBjt(Circuit *circuit, AnalysisType type);
-    void createRes(Circuit* circuit, AnalysisType type);
-    void createCap(Circuit* circuit, AnalysisType type);
-    void createDiode(Circuit* circuit, AnalysisType type);
-    void createFet(Circuit *circuit, AnalysisType type);
-    void createMosfet(Circuit *circuit, AnalysisType type);
+    void createBjt(    Circuit *circuit, DeviceType type);
+    void createRes(    Circuit* circuit, DeviceType type);
+    void createCap(    Circuit* circuit, DeviceType type);
+    void createDiode(  Circuit* circuit, DeviceType type);
+    void createFet(    Circuit *circuit, DeviceType type);
+    void createMosfet( Circuit *circuit, DeviceType type);
 
     bool isModelExist( const QString& name );
-    QString formSourceName( SourceMode mode, QString node );
+
 
 
     QString name_;
@@ -78,7 +78,7 @@ private:
     TerminalMap terminals_;
     ModelList models_;
 
-    TypeAnalysis typeAnalysis_;
+    AnalysisType typeAnalysis_;
 
     DeviceFlag flag_;
     DeviceMap::Iterator currentDevice_;

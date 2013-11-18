@@ -21,12 +21,12 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
     QVariant headerData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
 
-    void openMeasure( const int& measureId );  
+    void openMeasure(int measureId );
 
 
-    const MeasureModel& model() const { return measure_; }
+    const db::MeasureModel& model() const { return measure_; }
 
-    MeasureModel& model(){ return measure_;}
+    db::MeasureModel& model(){ return measure_;}
 
 signals:
     
@@ -38,9 +38,9 @@ private:
     int rows_;
     int columns_;
 
-    MeasureStorage* storage_;
-    MeasureModel measure_;
-    MeasureModel storeMeasure_;
+    db::MeasureStorage* storage_;
+    db::MeasureModel measure_;
+    db::MeasureModel storeMeasure_;
 };
 
 }

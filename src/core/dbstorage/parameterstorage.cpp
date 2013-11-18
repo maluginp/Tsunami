@@ -42,11 +42,11 @@ bool ParameterStorage::saveLibrary(const LibraryModel &library) {
     return res;
 }
 
-bool ParameterStorage::addParameterToLibrary(const ParameterModel &parameter) {
-    return addParameterToLibraryImpl( parameter );
+bool ParameterStorage::addParameter(const ParameterModel &parameter) {
+    return addParameterImpl( parameter );
 }
 
-LibraryModel ParameterStorage::openLibrary(const int &libraryId){
+LibraryModel ParameterStorage::openLibrary(int libraryId){
     return openLibraryImpl(libraryId);
 }
 
@@ -77,27 +77,26 @@ bool ParameterStorage::saveLibraryImpl(const LibraryModel &library) {
         return false;
     }
 
-    sqlQuery = sql("INSERT OR REPLACE INTO %1( library_id, name, project_id, user_id, create_at, change_at, enable) "
-                   "       VALUES (:library_id,:name,:project_id,:user_id,:create_at,:change_at,:enable)")
+
+    sqlQuery = sql( "INSERT OR REPLACE INTO %1(id,device_id,name,created_at,changed_at,enable) "
+                    "VALUES(:id,:device_id,:name,:created_at,:changed_at,:enable)")
             .arg(TABLE_NAME_LIBRARIES);
+
 
 
     QSqlQuery q( sqlQuery, db() );
 
-    q.bindValue(":name",       currentLibrary_.name());
-    q.bindValue(":project_id", currentLibrary_.projectId() );
-    q.bindValue(":user_id",    currentLibrary_.userId() );
-    q.bindValue(":create_at",  currentLibrary_.createAt());
-    q.bindValue(":change_at",  currentLibrary_.changeAt());
-    q.bindValue(":enable",     currentLibrary_.enable());
-
-    //! TODO: strong check
     if(currentLibrary_.id() == -1){
-        lastInsertId = q.lastInsertId().toInt();
-        currentLibrary_.setId(lastInsertId);
+        int lastInsertId = q.lastInsertId().toInt();
+        currentLibrary_.id( lastInsertId );
     }
 
-    q.bindValue(":library_id", currentLibrary_.id() );
+    q.bindValue(":id",          currentLibrary_.id());
+    q.bindValue(":device_id",   currentLibrary_.deviceId());
+    q.bindValue(":name",        currentLibrary_.name());
+    q.bindValue(":created_at",  currentLibrary_.createAt());
+    q.bindValue(":changed_at",  currentLibrary_.changeAt());
+    q.bindValue(":enable",      currentLibrary_.enable());
 
     if(!q.exec()){
         setLastError( q.lastError().text() );
@@ -107,26 +106,32 @@ bool ParameterStorage::saveLibraryImpl(const LibraryModel &library) {
 
 
 
-    sqlQuery = sql("INSERT OR REPLACE INTO %1(param_id, name, initial, minimum, maximum, library_id)"
-                   "        VALUES(:param_id,:name,:initial,:minimum,:maximum,:library_id")
+    sqlQuery = sql("INSERT OR REPLACE INTO "
+                   "%1(id,library_id,name,initial,fitted,minimum,maximum,fixed,enable) "
+                   "VALUES "
+                   "(:id,:library_id,:name,:initial,:fitted,:minimum,:maximum,:fixed,:enable)")
             .arg(TABLE_NAME_PARAMETERS);
 
     foreach(ParameterModel parameter,currentLibrary_.parameters()){
         q = QSqlQuery( sqlQuery, db() );
 
-        if(parameter.id() != -1 ){
-            lastInsertId = -1;
-            parameter.setId(  lastInsertId  );
+        if(parameter.id() == -1 ){
+            int lastInsertId = q.lastInsertId().toInt();
+            parameter.id(  lastInsertId  );
 
             currentLibrary_.setParameter( parameter.name(), parameter );
         }
 
-        q.bindValue(":name",parameter.name());
-        q.bindValue(":initial",parameter.initial());
-        q.bindValue(":minimum",parameter.initial());
-        q.bindValue(":maximum",parameter.maximum());
-        q.bindValue(":library_id",parameter.libraryId());
-        q.bindValue(":param_id",parameter.id());
+        q.bindValue(":id",         parameter.id() );
+        q.bindValue(":library_id", parameter.libraryId());
+        q.bindValue(":name",       parameter.name());
+        q.bindValue(":initial",    parameter.initial());
+        q.bindValue(":fitted",     parameter.fitted());
+        q.bindValue(":minimum",    parameter.initial());
+        q.bindValue(":maximum",    parameter.maximum());
+        q.bindValue(":fixed",      parameter.fixed());
+        q.bindValue(":enable",     parameter.enable());
+
         if(!q.exec()){
             setLastError( q.lastError().text() );
             rollback();
@@ -146,7 +151,7 @@ bool ParameterStorage::saveLibraryImpl(const LibraryModel &library) {
     return true;
 }
 
-LibraryModel ParameterStorage::openLibraryImpl(const int &libraryId) {
+LibraryModel ParameterStorage::openLibraryImpl(int libraryId) {
     setLastError(QString());
 
     if(cachedLibraries_.contains(libraryId)){
@@ -154,12 +159,12 @@ LibraryModel ParameterStorage::openLibraryImpl(const int &libraryId) {
     }
 
     QString sqlQuery;
+    // Load Library
     LibraryModel library;
-    sqlQuery = sql("SELECT * FROM %1 WHERE library_id=:library_id").arg(TABLE_NAME_LIBRARIES);
+    sqlQuery = sql("SELECT * FROM %1 WHERE id=:id").arg(TABLE_NAME_LIBRARIES);
 
     QSqlQuery q(sqlQuery,db());
-
-    q.bindValue(":library_id",libraryId);
+    q.bindValue(":id",libraryId);
 
     if(!q.exec() || !q.next()){
         setLastError( q.lastError().text() );
@@ -168,17 +173,18 @@ LibraryModel ParameterStorage::openLibraryImpl(const int &libraryId) {
 
     QSqlRecord rec(q.record());
 
-    library.setId(        q.value(rec.indexOf("library_id" )).toInt()    );
-    library.setName(      q.value(rec.indexOf("name")).toString()        );
-    library.setProjectId( q.value(rec.indexOf("project_id")).toInt()     );
-    library.setUserId(    q.value(rec.indexOf("user_id")).toInt()        );
-    library.setCreateAt(  q.value(rec.indexOf("create_at")).toDateTime() );
-    library.setChangeAt(  q.value(rec.indexOf("change_at")).toDateTime() );
-    library.setEnable(    q.value(rec.indexOf("enable")).toBool()        );
+
+    library.id(       ITEM("id").toInt() );
+    library.deviceId( ITEM("device_id").toInt() );
+    library.name(     ITEM("name").toString() );
+    library.createAt( ITEM("created_at").toDate());
+    library.changeAt( ITEM("changed_at").toDate() );
+    library.enable(   ITEM("enable").toBool() );
 
     if(library.id() == -1){
         return LibraryModel();
     }
+
 
     sqlQuery =sql("SELECT * FROM %1 WHERE library_id=:library_id").arg(TABLE_NAME_PARAMETERS);
 
@@ -193,15 +199,19 @@ LibraryModel ParameterStorage::openLibraryImpl(const int &libraryId) {
     while( q.next() ){
         rec = QSqlRecord(q.record());
         ParameterModel parameter;
-        parameter.setId(       q.value( rec.indexOf("param_id")).toInt()   )
-                .setName(      q.value( rec.indexOf("name") ).toString()   )
-                .setInitial(   q.value( rec.indexOf("initial")).toDouble() )
-                .setMinimum(   q.value( rec.indexOf("minimum")).toDouble() )
-                .setMaximum(   q.value( rec.indexOf("maximum")).toDouble() )
-                .setLibraryId( q.value( rec.indexOf("libraryId") ).toInt() );
+
+        parameter.id(        ITEM("id").toInt() );
+        parameter.libraryId( ITEM("library_id").toInt());
+        parameter.name(      ITEM("name").toString());
+        parameter.initial(   ITEM("initial").toDouble());
+        parameter.fitted(    ITEM("fitted").toDouble());
+        parameter.minimum(   ITEM("minimum").toDouble());
+        parameter.maximum(   ITEM("maximum").toDouble());
+        parameter.fixed(     ITEM("fixed").toBool());
+        parameter.enable(    ITEM("enable").toBool());
 
         if(parameter.id() != -1){
-            library.parameters_.append( parameter );
+            library.addParameter( parameter );
         }
     }
 
@@ -212,12 +222,12 @@ LibraryModel ParameterStorage::openLibraryImpl(const int &libraryId) {
     return library;
 }
 
-bool ParameterStorage::addParameterToLibraryImpl(const ParameterModel &parameter) {
+bool ParameterStorage::addParameterImpl(const ParameterModel &parameter) {
     if(currentLibrary_.parameterExists( parameter.name() )){
         return false;
     }
 
-    currentLibrary_.parameters_.append( parameter );
+    currentLibrary_.addParameter( parameter );
     saveLibraryImpl( currentLibrary_ );
     saveCache( currentLibrary_);
     return true;

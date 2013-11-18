@@ -2,6 +2,7 @@
 #define DEVICEMODEL_H
 #include <QStringList>
 #include <Model.h>
+#include <QDate>
 
 #include "defines.h"
 

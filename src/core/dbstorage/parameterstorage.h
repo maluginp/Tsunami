@@ -27,12 +27,12 @@ public:
     bool saveLibrary( );
     bool saveLibrary( const LibraryModel& library );
 
-    QList<ParameterModel> parameters(int libraryId);
+//    QList<ParameterModel> parameters(int libraryId);
 
 
 
-//    bool addParameterToLibrary( const ParameterModel& parameter );
-    LibraryModel openLibrary( const int& libraryId );
+    bool addParameter( const ParameterModel& parameter );
+    LibraryModel openLibrary( int libraryId );
     void setCurrentLibrary(  const int& libraryId );
 
 protected:
@@ -40,7 +40,7 @@ protected:
 private:
     bool saveLibraryImpl( const LibraryModel& library );
     LibraryModel openLibraryImpl( int libraryId );
-//    bool addParameterToLibraryImpl( const ParameterModel& parameter );
+    bool addParameterImpl( const ParameterModel& parameter );
 
     bool createTable( const ParameterTable& table);
 
