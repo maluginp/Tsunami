@@ -19,7 +19,6 @@ Extractor::Extractor(DeviceType type, int libraryId) {
     library_ = storage_->openLibrary( libraryId );
 
 
-
 }
 
 void Extractor::setDataset(Dataset *dataset) {
@@ -197,7 +196,7 @@ void Extractor::config(const QVariantMap &config) {
     configuration_ = config;
 }
 
-double Extractor::subDataValue(double value1, double value2) {
+double Extractor::subtract(double value1, double value2) {
     double subtract = value2 - value1;
     return subtract;
 }

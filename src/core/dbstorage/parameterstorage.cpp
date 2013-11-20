@@ -46,7 +46,7 @@ bool ParameterStorage::addParameter(const ParameterModel &parameter) {
     return addParameterImpl( parameter );
 }
 
-LibraryModel ParameterStorage::openLibrary(int libraryId){
+LibraryModel* ParameterStorage::openLibrary(int libraryId){
     return openLibraryImpl(libraryId);
 }
 
@@ -185,7 +185,7 @@ bool ParameterStorage::saveLibraryImpl(const LibraryModel &library) {
     return true;
 }
 
-LibraryModel ParameterStorage::openLibraryImpl(int libraryId) {
+LibraryModel* ParameterStorage::openLibraryImpl(int libraryId) {
     setLastError(QString());
 
     if(cachedLibraries_.contains(libraryId)){
@@ -194,7 +194,7 @@ LibraryModel ParameterStorage::openLibraryImpl(int libraryId) {
 
     QString sqlQuery;
     // Load Library
-    LibraryModel library;
+    LibraryModel* library = new LibraryModel();
     sqlQuery = sql("SELECT * FROM %1 WHERE id=:id").arg(TABLE_NAME_LIBRARIES);
 
     QSqlQuery q(sqlQuery,db());
@@ -208,14 +208,14 @@ LibraryModel ParameterStorage::openLibraryImpl(int libraryId) {
     QSqlRecord rec(q.record());
 
 
-    library.id(       ITEM("id").toInt() );
-    library.deviceId( ITEM("device_id").toInt() );
-    library.name(     ITEM("name").toString() );
-    library.createAt( ITEM("created_at").toDate());
-    library.changeAt( ITEM("changed_at").toDate() );
-    library.enable(   ITEM("enable").toBool() );
+    library->id(       ITEM("id").toInt() );
+    library->deviceId( ITEM("device_id").toInt() );
+    library->name(     ITEM("name").toString() );
+    library->createAt( ITEM("created_at").toDate());
+    library->changeAt( ITEM("changed_at").toDate() );
+    library->enable(   ITEM("enable").toBool() );
 
-    if(library.id() == -1){
+    if(library->id() == -1){
         return LibraryModel();
     }
 
@@ -245,7 +245,7 @@ LibraryModel ParameterStorage::openLibraryImpl(int libraryId) {
         parameter.enable(    ITEM("enable").toBool());
 
         if(parameter.id() != -1){
-            library.addParameter( parameter );
+            library->addParameter( parameter );
         }
     }
 

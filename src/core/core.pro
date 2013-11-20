@@ -52,7 +52,8 @@ SOURCES += main.cpp \
     optimize/hookejeevesmethod.cpp \
     extractor/extractor.cpp \
     extractor/dataset.cpp \
-    extractor/extractorglobal.cpp
+    extractor/extractorglobal.cpp \
+    dbstorage/devicestorage.cpp
 
 HEADERS += \
     components/json.h \
@@ -93,7 +94,8 @@ HEADERS += \
     optimize/hookejeevesmethod.h \
     extractor/extractor.h \
     extractor/dataset.h \
-    extractor/extractorglobal.h
+    extractor/extractorglobal.h \
+    dbstorage/devicestorage.h
 
 
 

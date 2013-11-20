@@ -29,7 +29,7 @@ public:
 
 //    QList<ParameterModel> parameters(int libraryId);
     bool addParameter( const ParameterModel& parameter );
-    LibraryModel openLibrary( int libraryId );
+    LibraryModel* openLibrary( int libraryId );
     void setCurrentLibrary(  const int& libraryId );
 
 protected:
@@ -38,7 +38,7 @@ private:
     void testData();
 
     bool saveLibraryImpl( const LibraryModel& library );
-    LibraryModel openLibraryImpl( int libraryId );
+    LibraryModel* openLibraryImpl( int libraryId );
     bool addParameterImpl( const ParameterModel& parameter );
 
     bool createTable( const ParameterTable& table);
