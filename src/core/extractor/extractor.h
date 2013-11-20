@@ -61,10 +61,15 @@ public:
 
     virtual double functionError();
 
+    const QVariant& config( const QString& key );
+    void config(const QString& key, const QVariant& value);
+    void config( const QVariantMap& config );
+
+
 protected:
     QVariantMap configuration_;
 
-    double subDataValue(double value1,double value2);
+    double subtract(double value1,double value2);
     virtual double computeError( db::MeasureModel* measured ) = 0;
     DeviceType type_;
     Dataset* dataset() { return dataset_; }

@@ -142,11 +142,13 @@ int Extractor::countParameters() {
 
 }
 
-
 void Extractor::run() {
-    Q_ASSERT(optimize != NULL);
-    optimize_->setExtractor(this);
+    Q_ASSERT(optimize_ != NULL);
+
+    // Go to Mars
     optimize_->run();
+
+
 }
 
 
@@ -177,6 +179,22 @@ double Extractor::functionError() {
     }
 
     return funcError;
+}
+
+const QVariant &Extractor::config(const QString &key) {
+    Q_ASSERT(configuration_.contains(key));
+
+    return configuration_[key];
+}
+
+void Extractor::config(const QString &key, const QVariant &value) {
+    Q_ASSERT(configuration_.contains(key));
+
+    configuration_[key] = value;
+}
+
+void Extractor::config(const QVariantMap &config) {
+    configuration_ = config;
 }
 
 double Extractor::subDataValue(double value1, double value2) {
