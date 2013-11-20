@@ -28,9 +28,6 @@ public:
     bool saveLibrary( const LibraryModel& library );
 
 //    QList<ParameterModel> parameters(int libraryId);
-
-
-
     bool addParameter( const ParameterModel& parameter );
     LibraryModel openLibrary( int libraryId );
     void setCurrentLibrary(  const int& libraryId );
@@ -38,6 +35,8 @@ public:
 protected:
     QString connectionName() const;
 private:
+    void testData();
+
     bool saveLibraryImpl( const LibraryModel& library );
     LibraryModel openLibraryImpl( int libraryId );
     bool addParameterImpl( const ParameterModel& parameter );

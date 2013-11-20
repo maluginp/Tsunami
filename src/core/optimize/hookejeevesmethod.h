@@ -6,10 +6,11 @@
 namespace tsunami{
 namespace core{
 
+class Extractor;
 
 class HookeJeevesMethod : public OptimizeBase {
 public:
-    HookeJeevesMethod();
+    HookeJeevesMethod(Extractor* extractor);
 
 
 };

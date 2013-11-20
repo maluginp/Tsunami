@@ -26,6 +26,7 @@ public:
 
     void setDataset(Dataset* dataset);
     void setMethodOptimize(OptimizeBase* optimize);
+    void setMethodOptimize(const QString& name);
     void setSimulator(spice::Simulator* simulator);
 
     const double& value( const QString& name ) const;

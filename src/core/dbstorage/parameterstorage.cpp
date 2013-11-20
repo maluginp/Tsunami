@@ -66,6 +66,40 @@ QString ParameterStorage::connectionName() const {
     return CONNECTION_NAME_PARAMETER;
 }
 
+void ParameterStorage::testData() {
+
+    LibraryModel library;
+    library.id(1);
+    library.deviceId(1);
+    library.name("LibraryTest");
+    library.createAt(  QDateTime::currentDateTime() );
+    library.changeAt( QDateTime::currentDateTime() );
+    library.enable(true);
+
+    // Parameters
+    for(int i=1; i < 11; ++i){
+
+        ParameterModel parameter;
+        parameter.id( i );
+        parameter.libraryId( library.id() );
+        parameter.name( QString("PARAM_%1").arg(i) );
+        parameter.initial( 1.0+i*1.5 );
+        parameter.fitted( parameter.initial() );
+        parameter.minimum( 0.0 );
+        parameter.maximum( 10.0 + i*2.5 );
+        parameter.fixed(false);
+        parameter.enable(true);
+
+        library.addParameter( parameter );
+
+    }
+
+    if(!saveLibrary(library)){
+        // Error
+    }
+
+}
+
 bool ParameterStorage::saveLibraryImpl(const LibraryModel &library) {
 
     QString sqlQuery;
@@ -286,6 +320,12 @@ bool ParameterStorage::createTable(const ParameterStorage::ParameterTable &table
         setLastError( q.lastError().text() );
         return false;
     }
+
+#ifdef QT_DEBUG
+    if(tableExists(TABLE_NAME_LIBRARIES) && tableExists(TABLE_NAME_PARAMETERS)){
+        testData();
+    }
+#endif
 
     return true;
 

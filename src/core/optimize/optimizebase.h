@@ -17,7 +17,7 @@ public:
         TOLERANCE_GRADIENT
     };
 
-    OptimizeBase(Extractor* extractor, int maxIteration);
+    OptimizeBase(Extractor* extractor, int maxIteration=255);
     virtual void run() = 0;
     Extractor* extractor();
 

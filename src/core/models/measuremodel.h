@@ -13,6 +13,30 @@ struct MeasureHeader{
     QDate fabricationDate;
     QDate userDate;
     bool dubious;
+
+    MeasureHeader(const QString& _comment,
+                  const QDate& _fabricationDate = QDate::currentDate(),
+                  const QDate& _userDate = QDate::currentDate(),
+                  bool _dubious = false
+                  ){
+        comment = _comment;
+        fabricationDate = _fabricationDate;
+        userDate = _userDate;
+        dubious = _dubious;
+    }
+    MeasureHeader(const MeasureHeader& other){
+        comment = other.comment;
+        fabricationDate = other.fabricationDate;
+        userDate = other.userDate;
+        dubious = other.dubious;
+    }
+    MeasureHeader& operator=(const MeasureHeader& other){
+        comment = other.comment;
+        fabricationDate = other.fabricationDate;
+        userDate = other.userDate;
+        dubious = other.dubious;
+        return *this;
+    }
 };
 
 class MeasureModel : public Model {
@@ -38,10 +62,12 @@ public:
     void columns( const QStringList& columns ) { columns_ = columns; }
     void columnsJson( const QString& json);
     void addColumn( const QString& column ) { columns_.append( column ); }
+
     void dataJson( const QString& json );
-//    void data( double *data )
-    void createAt( const QDate& createAt ) { createdAt_ = createAt; }
-    void changeAt( const QDate& changeAt ) { changedAt_ = changeAt; }
+    void data( double *data );
+    void data( const QVector< QVector<double> >& data);
+    void createAt( const QDateTime& createAt ) { createdAt_ = createAt; }
+    void changeAt( const QDateTime& changeAt ) { changedAt_ = changeAt; }
 
     void enable(bool enable) { enable_ = enable; }
     void userId( int userId ) { userId_ = userId; }
@@ -59,8 +85,8 @@ public:
     QString dataJson();
 
     const QStringList& columns() const { return columns_; }
-    const QDate& createAt() const { return createdAt_; }
-    const QDate& changeAt() const { return changedAt_; }
+    const QDateTime& createAt() const { return createdAt_; }
+    const QDateTime& changeAt() const { return changedAt_; }
     const int& userId() const { return userId_; }
 
     bool hasAttr( const QString& key, const QVariant& value = QVariant() );
@@ -84,8 +110,8 @@ private:
     QStringList columns_;
 
     double* data_;
-    QDate createdAt_;
-    QDate changedAt_;
+    QDateTime createdAt_;
+    QDateTime changedAt_;
     bool enable_;
     int userId_;
 

@@ -57,6 +57,28 @@ struct Source{
     QVariantMap configuration;
     QString node; // TODO Node is QString ??
 
+    Source( const QString& _node, SourceMode _mode,
+            SourceMethod _method = SOURCE_METHOD_UNKNOWN,
+            const QVariantMap& configuration_ = QVariantMap()){
+        node = _node;
+        mode = _mode;
+        method = _method;
+        configuration = configuration_;
+    }
+
+    Source(const Source& other){
+        node = other.node;
+        mode = other.mode;
+        method = other.method;
+        configuration = other.configuration;
+    }
+    Source& operator=(const Source& other){
+        node = other.node;
+        mode = other.mode;
+        method = other.method;
+        configuration = other.configuration;
+        return *this;
+    }
 };
 
 }

@@ -6,6 +6,9 @@
 #include "optimize/optimizebase.h"
 #include "dbstorage/parameterstorage.h"
 
+// Optimize methods
+#include "optimize/hookejeevesmethod.h"
+
 namespace tsunami{
 namespace core{
 
@@ -25,6 +28,13 @@ void Extractor::setDataset(Dataset *dataset) {
 
 void Extractor::setMethodOptimize(OptimizeBase *optimize) {
     optimize_ = optimize;
+}
+
+void Extractor::setMethodOptimize(const QString &name) {
+    if(name.compare("hookejeeves", Qt::CaseInsensitive)){
+        optimize_ = new HookeJeevesMethod(this);
+    }
+
 }
 
 void Extractor::setSimulator(spice::Simulator *simulator) {

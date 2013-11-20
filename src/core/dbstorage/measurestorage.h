@@ -30,6 +30,8 @@ protected:
 
 private:
 
+    void testData();
+
     MeasureModel openMeasureImpl(const int& measureId);
     bool saveMeasureImpl(const MeasureModel& measure);
     bool createTable( const MeasureTable& table );

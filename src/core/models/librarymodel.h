@@ -17,15 +17,15 @@ public:
     void id(int libraryId);
     void deviceId(int deviceId);
     void name(const QString& name);
-    void createAt(const QDate& createAt);
-    void changeAt(const QDate& changeAt);
+    void createAt(const QDateTime& createAt);
+    void changeAt(const QDateTime& changeAt);
     void enable(bool enable);
 
     const int& id() const;
     const int& deviceId() const;
     const QString& name() const;
-    const QDate& createAt() const;
-    const QDate& changeAt() const;
+    const QDateTime& createAt() const;
+    const QDateTime& changeAt() const;
     const bool& enable() const;
 
     const ParameterModel& parameter(const QString& name) const;
@@ -49,8 +49,8 @@ private:
     int libraryId_;
     int deviceId_;
     QString name_;
-    QDate createdAt_;
-    QDate changedAt_;
+    QDateTime createdAt_;
+    QDateTime changedAt_;
     bool enable_;
 
     QList<ParameterModel> parameters_;
