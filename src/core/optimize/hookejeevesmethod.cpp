@@ -111,6 +111,20 @@ void HookeJeevesMethod::decreaseSteps() {
 
 }
 
+void HookeJeevesMethod::mask(int index, HookeJeevesMethod::Masks mask) {
+    Q_ASSERT( masks_.contains(index) );
+
+    masks_[index] = mask;
+
+
+}
+
+HookeJeevesMethod::Masks HookeJeevesMethod::mask(int index) {
+    Q_ASSERT( masks_.contains(index) );
+
+    return masks_[index];
+}
+
 
 }
 }

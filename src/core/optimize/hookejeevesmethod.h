@@ -19,8 +19,8 @@ public:
     HookeJeevesMethod(Extractor* extractor);
     void run();
 private:
-    const double& tempFunctionError();
-    void tempFunctionError(double error);
+    const double& tempFunctionError() { return tempFunctionError_; }
+    void tempFunctionError(double error) { tempFunctionError_ = error; }
 
 
     void findBestNearby();
@@ -31,7 +31,7 @@ private:
     Masks mask(int index);
 
     QMap<int,Masks> masks_;
-
+    double tempFunctionError_;
 
 };
 

@@ -58,7 +58,7 @@ protected:
 
     void saveGradient( const MatrixDouble& gradient );
     void saveHessian( const MatrixDouble& hessian);
-    void saveFunctionError( double functionError );
+//    void saveFunctionError( double functionError );
 
 private:
     int maxIteration_;
@@ -73,7 +73,7 @@ private:
 
     MatrixDouble lastGradient_, currentGradient_;
 //    MatrixDouble lastHessian_,  currentHessian_;
-    double lastFunctionError_, currentFunctionError_;
+    double prevFunctionError_, lastFunctionError_;
 
 
     Extractor* extractor_;

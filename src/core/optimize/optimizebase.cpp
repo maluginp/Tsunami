@@ -89,6 +89,15 @@ void OptimizeBase::nextIteration() {
 
 }
 
+const double &OptimizeBase::lastFunctionError() {
+    return lastFunctionError_;
+}
+
+void OptimizeBase::lastFunctionError(double error) {
+    prevFunctionError_ = lastFunctionError_;
+    lastFunctionError_ = error;
+}
+
 void OptimizeBase::saveGradient(const MatrixDouble &gradient) {
     if(lastGradient_.isEmpty()){
         lastGradient_ = gradient;
@@ -110,11 +119,6 @@ void OptimizeBase::saveHessian(const MatrixDouble &hessian) {
 //    currentHessian_ = hessian;
 }
 
-void OptimizeBase::saveFunctionError(double functionError) {
-    if(lastFunctionError_ == DBL_MAX){
-
-    }
-}
 
 }
 }
