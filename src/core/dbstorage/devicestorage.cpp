@@ -31,6 +31,20 @@ QString DeviceStorage::connectionName() const {
     return CONNECTION_NAME_DEVICES;
 }
 
+void DeviceStorage::testData() {
+    DeviceModel* device = new DeviceModel();
+
+    device->id(1);
+    device->name("TEST BJT");
+    device->type( DEVICE_NBJT );
+    device->createAt( QDateTime::currentDateTime() );
+    device->changeAt(QDateTime::currentDateTime() );
+    device->enable( true );
+
+    saveDevice( device );
+
+}
+
 bool DeviceStorage::createTable(DeviceStorage::DeviceTable table) {
     setLastError( QString() );
     QString sqlQuery("");
@@ -54,6 +68,10 @@ bool DeviceStorage::createTable(DeviceStorage::DeviceTable table) {
         setLastError( q.lastError().text() );
         return false;
     }
+
+#ifdef QT_DEBUG
+    testData();
+#endif
 
     return true;
 }

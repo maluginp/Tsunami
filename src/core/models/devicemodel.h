@@ -27,6 +27,8 @@ public:
     const bool& enable() const { return enable_; }
 
 private:
+    void testData();
+
     int deviceId_;
     QString name_;
     DeviceType type_;
