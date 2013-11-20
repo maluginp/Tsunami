@@ -64,6 +64,10 @@ const double &OptimizeBase::step(const QString &param) {
     return steps_[param];
 }
 
+int OptimizeBase::countParameters() {
+    return extractor()->countParameters();
+}
+
 double OptimizeBase::functionError() {
     if(extractor()){
         return extractor()->functionError();

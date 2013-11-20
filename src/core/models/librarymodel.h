@@ -41,6 +41,8 @@ public:
     bool parameterExists( const QString& name );
     void setParameter(const QString& name, const ParameterModel& parameter);
 
+    int countParamaters();
+
 protected:
     ParameterModel& find(const QString& name);
     ParameterModel& find(int index);

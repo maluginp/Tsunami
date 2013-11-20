@@ -17,6 +17,10 @@ void LibraryModel::setParameter(const QString &name, const ParameterModel &param
 
 }
 
+int LibraryModel::countParamaters() {
+    return parameters_.size();
+}
+
 ParameterModel &LibraryModel::find(const QString &name) {
     int rows = parameters_.size();
 

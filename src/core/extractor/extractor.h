@@ -55,6 +55,7 @@ public:
     void enable(const QString& name, bool enable);
     void enable(int index,bool enable);
 
+    int countParameters();
 
     void run();
 
