@@ -124,8 +124,8 @@ MeasureModel MeasureStorage::openMeasureImpl(const int &measureId) {
     model.sourcesJson( ITEM("sources").toString());
     model.columnsJson( ITEM("columns").toString());
     model.dataJson(    ITEM("data").toString());
-    model.createAt(    ITEM("created_at").toDate());
-    model.changeAt(    ITEM("changet_at").toDate());
+    model.createAt(    ITEM("created_at").toDateTime());
+    model.changeAt(    ITEM("changet_at").toDateTime());
     model.enable(      ITEM("enable").toBool());
     model.userId(      ITEM("user_id").toInt());
 

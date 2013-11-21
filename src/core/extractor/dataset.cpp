@@ -17,6 +17,7 @@ bool Dataset::load(AnalysisType type, DeviceType device, const QVariantMap &attr
     case ANALYSIS_DC: criteria.insert("analysis","dc"); break;
     case ANALYSIS_TRAN: criteria.insert("analysis","tran"); break;
     default:
+        break;
 //        Q_ASSERT(false);
     }
 
@@ -69,11 +70,11 @@ bool Dataset::isNext() {
     return ( currentMeasure_ != measures_.end() );
 }
 
-const db::MeasureModel& Dataset::next() const {
-     db::MeasureModel* measure = currentMeasure_.pointer();
+const db::MeasureModel& Dataset::next(){
+     db::MeasureModel measure = *currentMeasure_; //.pointer();
      currentMeasure_++;
 
-     return *measure;
+     return measure;
 
 
 }

@@ -1,5 +1,7 @@
 #include "simulator.h"
 #include <QProcess>
+#include "models/measuremodel.h"
+
 namespace tsunami{
 namespace spice{
 
@@ -44,6 +46,10 @@ void Simulator::external(bool external) {
 
 void Simulator::path(const QString &path) {
     path_ = path;
+}
+
+db::MeasureModel Simulator::simulatedData(){
+Q_ASSERT(false);
 }
 
 bool Simulator::exec(QByteArray& data, const QStringList &arguments){

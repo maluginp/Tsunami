@@ -16,15 +16,15 @@ DeviceStorage::~DeviceStorage(){
 
 }
 
-QString DeviceStorage::dbName(){
+QString DeviceStorage::dbName() const{
     return DBASE_COMMON_NAME;
 }
 
 DeviceModel* DeviceStorage::openDevice(int deviceId){
     return openDeviceImpl(deviceId);
 }
-void DeviceStorage::saveDevice(DeviceModel *device){
-    saveDeviceImpl(device);
+bool DeviceStorage::saveDevice(DeviceModel *device){
+    return saveDeviceImpl(device);
 }
 
 QString DeviceStorage::connectionName() const {
@@ -57,7 +57,7 @@ bool DeviceStorage::createTable(DeviceStorage::DeviceTable table) {
                         "created_at NUMERIC,"
                         "changed_at NUMERIC,"
                         "enable NUMERIC"
-                        ")");
+                        ")")
                 .arg( TABLE_NAME_DEVICES );
     }else{
         return false;

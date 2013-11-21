@@ -21,6 +21,9 @@ public:
 protected:
     QString connectionName() const;
 private:
+
+    void testData();
+
     bool createTable(DeviceTable table);
 
     DeviceModel* openDeviceImpl(int deviceId);

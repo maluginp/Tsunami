@@ -2,7 +2,6 @@
 #define MEASUREMODEL_H
 
 #include <QtCore>
-#include <model.h>
 #include "defines.h"
 
 namespace tsunami {
@@ -13,6 +12,12 @@ struct MeasureHeader{
     QDate fabricationDate;
     QDate userDate;
     bool dubious;
+    MeasureHeader() :
+        fabricationDate(QDate::currentDate()),
+        userDate( QDate::currentDate() ),
+        dubious(false){
+
+    }
 
     MeasureHeader(const QString& _comment,
                   const QDate& _fabricationDate = QDate::currentDate(),
@@ -39,10 +44,12 @@ struct MeasureHeader{
     }
 };
 
-class MeasureModel : public Model {
+class MeasureModel {
 //friend class MeasureStorage;
 public:
     MeasureModel();
+    MeasureModel(const MeasureModel& other);
+    MeasureModel& operator=(const MeasureModel& other);
     void id( int measureId ) { measureId_ = measureId; }
     void deviceId( int deviceId ) { deviceId_ = deviceId; }
     void name( const QString& name ) { name_ = name; }

@@ -146,6 +146,11 @@ void Circuit::beginTerminal() {
     currentTerminal_ = terminals_.begin();
 }
 
+void Circuit::setSpiceModel(DeviceType device, SpiceModel *model) {
+    Q_ASSERT(false);
+
+}
+
 void Circuit::addSpiceModel(const QString &name, const QVariantMap &parameters) {
 
     if( isModelExist(name) ){

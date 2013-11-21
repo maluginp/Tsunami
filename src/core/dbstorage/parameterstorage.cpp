@@ -51,6 +51,7 @@ LibraryModel* ParameterStorage::openLibrary(int libraryId){
 }
 
 void ParameterStorage::setCurrentLibrary(const int &libraryId) {
+    Q_ASSERT(false);
     if(currentLibrary_.id() == libraryId){
         return;
     }
@@ -58,7 +59,7 @@ void ParameterStorage::setCurrentLibrary(const int &libraryId) {
     if( cachedLibraries_.contains(libraryId) ){
         currentLibrary_ = cachedLibraries_[libraryId];
     }else{
-        currentLibrary_ = openLibrary( libraryId );
+//        currentLibrary_ = openLibrary( libraryId );
     }
 }
 
@@ -188,9 +189,9 @@ bool ParameterStorage::saveLibraryImpl(const LibraryModel &library) {
 LibraryModel* ParameterStorage::openLibraryImpl(int libraryId) {
     setLastError(QString());
 
-    if(cachedLibraries_.contains(libraryId)){
-        return cachedLibraries_[libraryId];
-    }
+//    if(cachedLibraries_.contains(libraryId)){
+//        return cachedLibraries_[libraryId];
+//    }
 
     QString sqlQuery;
     // Load Library
@@ -202,7 +203,7 @@ LibraryModel* ParameterStorage::openLibraryImpl(int libraryId) {
 
     if(!q.exec() || !q.next()){
         setLastError( q.lastError().text() );
-        return LibraryModel();
+        return NULL;
     }
 
     QSqlRecord rec(q.record());
@@ -211,23 +212,23 @@ LibraryModel* ParameterStorage::openLibraryImpl(int libraryId) {
     library->id(       ITEM("id").toInt() );
     library->deviceId( ITEM("device_id").toInt() );
     library->name(     ITEM("name").toString() );
-    library->createAt( ITEM("created_at").toDate());
-    library->changeAt( ITEM("changed_at").toDate() );
+    library->createAt( ITEM("created_at").toDateTime());
+    library->changeAt( ITEM("changed_at").toDateTime() );
     library->enable(   ITEM("enable").toBool() );
 
     if(library->id() == -1){
-        return LibraryModel();
+        return NULL;
     }
 
 
     sqlQuery =sql("SELECT * FROM %1 WHERE library_id=:library_id").arg(TABLE_NAME_PARAMETERS);
 
     q = QSqlQuery(sqlQuery,db());
-    q.bindValue( ":library_id", library.id() );
+    q.bindValue( ":library_id", library->id() );
 
     if(!q.exec()){
         setLastError( q.lastError().text() );
-        return LibraryModel();
+        return NULL;
     }
 
     while( q.next() ){
@@ -250,8 +251,8 @@ LibraryModel* ParameterStorage::openLibraryImpl(int libraryId) {
     }
 
 
-    currentLibrary_ = library;
-    saveCache( library );
+//    currentLibrary_ = library;
+//    saveCache( library );
 
     return library;
 }
@@ -269,6 +270,7 @@ bool ParameterStorage::addParameterImpl(const ParameterModel &parameter) {
 }
 
 void ParameterStorage::saveCache(const LibraryModel &library) const {
+    Q_ASSERT(false);
 
     //! Если содержится в кэше, то обновляем
     if( cachedLibraries_.contains(library.id()) ){

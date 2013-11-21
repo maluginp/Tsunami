@@ -57,6 +57,10 @@ ParameterModel &LibraryModel::find(int index) {
 //    return QVariant();
 //}
 
+LibraryModel::LibraryModel() {
+    Q_ASSERT(false);
+}
+
 const ParameterModel &LibraryModel::parameter(const QString &name) const {
     int rows = parameters_.size();
 
@@ -99,6 +103,10 @@ ParameterModel &LibraryModel::parameter(int index) {
 
 const QList<ParameterModel> &LibraryModel::parameters() const {
     return parameters_;
+}
+
+void LibraryModel::addParameter(const ParameterModel &parameter) {
+    parameters_.append( parameter );
 }
 
 bool LibraryModel::parameterExists(const QString &name) {

@@ -37,7 +37,7 @@ void HookeJeevesMethod::run() {
 
 // TODO: странная вещь но всегда все параметры enable
 // необходимо доработка
-void HookeJeevesMethod::findBestNearby() {
+bool HookeJeevesMethod::findBestNearby() {
     double error;
 
     tempFunctionError( lastFunctionError() );
@@ -94,7 +94,7 @@ void HookeJeevesMethod::patternStep() {
     return;
 }
 
-void HookeJeevesMethod::decreaseSteps() {
+bool HookeJeevesMethod::decreaseSteps() {
     double factor = 0.5;
     int nParameters = countParameters();
 
@@ -103,11 +103,11 @@ void HookeJeevesMethod::decreaseSteps() {
     for(int i=0; i < nParameters; ++i){
         if( !extractor()->fixed(i) ){
             // TODO: Change algorithm decrease step, is fuck code =(
-            step(i, step() * factor );
+            step(i, step(i) * factor );
         }
     }
 
-    return;
+    return true;
 
 }
 

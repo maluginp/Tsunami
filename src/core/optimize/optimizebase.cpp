@@ -56,16 +56,24 @@ const double &OptimizeBase::tolerance(OptimizeBase::TypeTolerance tol) {
 
 }
 
-void OptimizeBase::setStep(const QString &param, double step) {
-    steps_.insert( param, step );
+const double &OptimizeBase::step(int index) {
+    Q_ASSERT( index >=0 && index < steps_.count() );
+    return steps_[index];
 }
 
-const double &OptimizeBase::step(const QString &param) {
-    return steps_[param];
+void OptimizeBase::step(int index, double step){
+    Q_ASSERT( index >=0 && index < steps_.count() );
+    steps_[index] = step;
 }
+
+
 
 int OptimizeBase::countParameters() {
     return extractor()->countParameters();
+}
+
+void OptimizeBase::saveSteps() {
+    Q_ASSERT(false);
 }
 
 double OptimizeBase::functionError() {

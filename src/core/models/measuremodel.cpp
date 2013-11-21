@@ -3,6 +3,21 @@
 namespace tsunami{
 namespace db{
 
+MeasureModel::MeasureModel(){
+
+}
+MeasureModel::MeasureModel(const MeasureModel& other){
+    Q_ASSERT(false);
+}
+
+MeasureModel &MeasureModel::operator=(const MeasureModel &other)
+{
+    Q_ASSERT(false);
+    return *this;
+}
+
+
+
 void MeasureModel::type( const QString& type){
 
     if(type.compare("dc",Qt::CaseInsensitive) == 0){
@@ -48,6 +63,10 @@ void MeasureModel::columnsJson(const QString &json) {
 
 void MeasureModel::dataJson(const QString &json) {
     // TODO Data is extracted from json
+}
+
+void MeasureModel::data(const QVector<QVector<double> > &data) {
+    Q_ASSERT(false);
 }
 
 QString MeasureModel::headerJson() {

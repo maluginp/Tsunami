@@ -1,10 +1,12 @@
 #include "extractorglobal.h"
+#include "spice/simulator.h"
+#include "models/measuremodel.h"
 
 namespace tsunami{
 namespace core{
 
 
-ExtractorGlobal::ExtractorGlobal() {
+ExtractorGlobal::ExtractorGlobal(DeviceType type, int libraryId) : Extractor(type,libraryId) {
 }
 
 double ExtractorGlobal::computeError(db::MeasureModel *measure) {
@@ -22,15 +24,15 @@ double ExtractorGlobal::computeError(db::MeasureModel *measure) {
 
 
         if(type_ == DEVICE_PBJT || type_ == DEVICE_NBJT){
-            error += subDataValue(measured.value("Ie"),simulated.value("Ie"));
-            error += subDataValue(measured.value("Ib"),simulated.value("Ib"));
-            error += subDataValue(measured.value("Ic"),simulated.value("Ic"));
+            error += subtract(measured.value("Ie"),simulated.value("Ie"));
+            error += subtract(measured.value("Ib"),simulated.value("Ib"));
+            error += subtract(measured.value("Ic"),simulated.value("Ic"));
         }else if(type_ == DEVICE_NMOS || type_ == DEVICE_PMOS
                  || type_ == DEVICE_NFET || type_ == DEVICE_PFET){
-            error += subDataValue(measured.value("Is"),simulated.value("Is"));
-            error += subDataValue(measured.value("Ig"),simulated.value("Ig"));
-            error += subDataValue(measured.value("Id"),simulated.value("Id"));
-            error += subDataValue(measured.value("Ib"),simulated.value("Ib"));
+            error += subtract(measured.value("Is"),simulated.value("Is"));
+            error += subtract(measured.value("Ig"),simulated.value("Ig"));
+            error += subtract(measured.value("Id"),simulated.value("Id"));
+            error += subtract(measured.value("Ib"),simulated.value("Ib"));
         }
     }
 

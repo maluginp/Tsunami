@@ -6,7 +6,7 @@ namespace core{
 
 class ExtractorGlobal : public Extractor {
 public:
-    ExtractorGlobal();
+    ExtractorGlobal(DeviceType type, int libraryId);
 protected:
     double computeError(db::MeasureModel *measure);
 };

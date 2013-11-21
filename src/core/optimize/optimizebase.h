@@ -31,8 +31,6 @@ public:
     void setTolerance( TypeTolerance tol, double value );
     const double& tolerance( TypeTolerance tol );
 
-    void setStep(const QString& param, double step);
-    const double& step( const QString& param);
     const double& step( int index);
     void step(int index, double step);
 

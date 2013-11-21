@@ -36,7 +36,7 @@ public:
     Terminal* nextTerminal();
     void beginTerminal();
 
-    void setSpiceModel( DeviceType* device, SpiceModel* model);
+    void setSpiceModel( DeviceType device, SpiceModel* model);
 
     void addSpiceModel(const QString& name,
                         const QVariantMap& parameters = QVariantMap() );

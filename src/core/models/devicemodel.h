@@ -1,7 +1,6 @@
 #ifndef DEVICEMODEL_H
 #define DEVICEMODEL_H
 #include <QStringList>
-#include <Model.h>
 #include <QDate>
 
 #include "defines.h"
@@ -9,12 +8,12 @@
 namespace tsunami {
 namespace db{
 
-class DeviceModel : public Model {
+class DeviceModel {
 public:
 
     void id( int deviceId ) { deviceId_ = deviceId; }
     void name( const QString& name) { name_ = name; }
-    void type( DeviceType& type) { type_ = type; }
+    void type( DeviceType type) { type_ = type; }
     void createAt(const QDateTime& createAt)  { createdAt_ = createAt; }
     void changeAt(const QDateTime& changeAt ) { changedAt_ = changeAt; }
     void enable( bool enable ) { enable_ = enable; }
@@ -27,7 +26,6 @@ public:
     const bool& enable() const { return enable_; }
 
 private:
-    void testData();
 
     int deviceId_;
     QString name_;

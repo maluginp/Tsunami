@@ -50,10 +50,10 @@ public:
     Matrix<T>& operator-( const Matrix<T>& other);
 
     T& operator()(int row, int column);
-//    const T& operator()(int row, int column) const;
+    const T& operator()(int row, int column) const;
 
     T& at(int row, int column);
-
+    const T& at(int row, int column) const;
     bool inverse();
     void transpose();
 
@@ -147,7 +147,7 @@ Matrix<T> &Matrix<T>::operator =(const Matrix<T> &other) {
     initialize(MATRIX_ZERO);
     for(int i=0; i < rows_; ++i){
         for(int j=0; j < columns_; ++j){
-            matrix_[i*columns_+j] = other(i,j);
+            matrix_[i*columns_+j] = other.at(i,j);
         }
     }
     return *this;
@@ -168,6 +168,12 @@ T &Matrix<T>::operator ()(int row, int column) {
     return at(row,column);
 }
 
+template<class T>
+const T &Matrix<T>::operator()(int row, int column) const {
+    return at(row,column);
+
+}
+
 //template<class T>
 //const T& operator()(int row, int column) const{
 //    return at
@@ -175,6 +181,13 @@ T &Matrix<T>::operator ()(int row, int column) {
 
 template<class T>
 T &Matrix<T>::at(int row, int column) {
+    assert( row >= rows_ || row < 0 || column > columns_ || column < 0 );
+
+    return matrix_[ row*columns_ + column ];
+}
+
+template<class T>
+const T &Matrix<T>::at(int row, int column) const{
     assert( row >= rows_ || row < 0 || column > columns_ || column < 0 );
 
     return matrix_[ row*columns_ + column ];

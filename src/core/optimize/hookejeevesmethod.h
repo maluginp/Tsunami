@@ -23,9 +23,9 @@ private:
     void tempFunctionError(double error) { tempFunctionError_ = error; }
 
 
-    void findBestNearby();
+    bool findBestNearby();
     void patternStep();
-    void decreaseSteps();
+    bool decreaseSteps();
 
     void mask(int index, Masks mask);
     Masks mask(int index);

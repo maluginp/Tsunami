@@ -1,8 +1,11 @@
 #include "extractor.h"
 #include "dataset.h"
 #include "spice/simulator.h"
+#include "spice/circuit.h"
+#include "spice/spicemodel.h"
 #include "models/librarymodel.h"
 #include "models/parametermodel.h"
+#include "models/measuremodel.h"
 #include "optimize/optimizebase.h"
 #include "dbstorage/parameterstorage.h"
 
@@ -159,13 +162,13 @@ double Extractor::functionError() {
     Q_ASSERT(dataset_   != NULL);
 
     dataset()->begin();
-    while(dataset->isNext()){
+    while(dataset()->isNext()){
         db::MeasureModel measure = dataset()->next();
         spice::Circuit *circuit = spice::Circuit::createCircuitDevice( type_,
                                                                        measure.sources() );
 
         spice::SpiceModel* model = new spice::SpiceModel("device");
-        foreach(db::ParameterModel parameter, parameters_){
+        foreach(db::ParameterModel parameter, library_->parameters()){
             model->add( parameter.name(), parameter.fitted() );
         }
 

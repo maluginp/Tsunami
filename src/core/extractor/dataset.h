@@ -22,7 +22,7 @@ public:
 
     void begin();
     bool isNext();
-    const db::MeasureModel &next() const;
+    const db::MeasureModel &next();
 private:
     QList<db::MeasureModel> measures_;
     QList<db::MeasureModel>::iterator currentMeasure_;
