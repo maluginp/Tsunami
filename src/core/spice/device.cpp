@@ -10,18 +10,18 @@ Device::Device(const QString &name, DeviceType device)
     , device_(device)
     , model_(NULL)
     , flags_(0x0)
-    , source_(SOURCE_UNKNOWN) {
+    , source_(SOURCE_METHOD_UNKNOWN) {
 
 }
 
-void Device::setSource(TypeSource source, const QVariantMap &options) {
+void Device::setSource(SourceMethod source, const QVariantMap &options) {
 //    if( source != SOURCE_UNKNOWN ){
         setFlag( DEVICE_FLAG_SOURCE  );
         sourceOptions_ = options;
 //    }
 }
 
-const TypeSource &Device::getSource() const {
+const SourceMethod &Device::getSource() const {
     return source_;
 }
 
@@ -88,11 +88,11 @@ QByteArray Device::netList() {
 
     QStringList temp;
 
-    if(source_ != SOURCE_UNKNOWN){
-        if(source_ == SOURCE_CONST && source_ == SOURCE_LINEAR){
-            if(source_ == SOURCE_CONST){
+    if(source_ != SOURCE_METHOD_UNKNOWN){
+        if(source_ == SOURCE_METHOD_CONST && source_ == SOURCE_METHOD_LINEAR){
+            if(source_ == SOURCE_METHOD_CONST){
                 temp.append( QString("dc %1").arg( sourceOptions_.value("const").toDouble() ) );
-            }else if(source_ == SOURCE_LINEAR){
+            }else if(source_ == SOURCE_METHOD_LINEAR){
                 temp.append( QString("dc %1").arg(sourceOptions_.value("start").toDouble()) );
             }
         }
@@ -133,7 +133,7 @@ QByteArray Device::netList() {
 
 QByteArray Device::sourceNetlist() {
     QByteArray netlist;
-    if( source_ == SOURCE_LINEAR ){
+    if( source_ == SOURCE_METHOD_LINEAR ){
         netlist.append( QString("%1 %2 %3 %4").arg(name())
                         .arg(sourceOptions_.value("start").toDouble())
                         .arg(sourceOptions_.value("end").toDouble())

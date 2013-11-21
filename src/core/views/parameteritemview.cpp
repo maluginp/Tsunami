@@ -1,4 +1,5 @@
 #include "parameteritemview.h"
+#include "dbstorage/parameterstorage.h"
 
 namespace tsunami {
 namespace gui{
@@ -6,7 +7,7 @@ namespace gui{
 ParameterItemView::ParameterItemView(const int& libraryId,QObject *parent) :
     QAbstractItemModel(parent) {
 
-    storage_ = ParameterStorage::instance();
+    storage_ = db::ParameterStorage::instance();
     openParameters( libraryId );
 }
 
@@ -42,7 +43,8 @@ QVariant ParameterItemView::data(const QModelIndex &index, int role) const {
         return QVariant();
     }
 
-    return library_.parameterValue( index );
+    Q_ASSERT(false);
+//    return library_.parameterValue( index );
 }
 
 Qt::ItemFlags ParameterItemView::flags(const QModelIndex &index) const {
@@ -52,10 +54,12 @@ Qt::ItemFlags ParameterItemView::flags(const QModelIndex &index) const {
 
 
 void ParameterItemView::openParameters(const int &libraryId) {
-    library_ = storage_->openLibrary( libraryId );
-    storeLibrary_ = library_;
-    rows_ = library_.parameters().size();
-    columns_ = ParameterModel::getColumns();
+    Q_ASSERT(false);
+    //    library_ = storage_->openLibrary( libraryId );
+//    storeLibrary_ = library_;
+//    rows_ = library_.parameters().size();
+
+//    columns_ = db::ParameterModel::getColumns();
 }
 
 bool ParameterItemView::saveParameters() {
@@ -69,10 +73,11 @@ void ParameterItemView::restoreParameters() {
 
 
 bool ParameterItemView::setData(const QModelIndex &index, const QVariant &value, int role) {
-    if(role != Qt::EditRole){
-        return false;
-    }
-    return library_.setParameterValue( index, value );
+    Q_ASSERT(false);
+//    if(role != Qt::EditRole){
+//        return false;
+//    }
+//    return library_.setParameterValue( index, value );
 }
 
 QVariant ParameterItemView::headerData(int section, Qt::Orientation orientation, int role) {

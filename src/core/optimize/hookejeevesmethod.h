@@ -6,11 +6,32 @@
 namespace tsunami{
 namespace core{
 
+class Extractor;
 
 class HookeJeevesMethod : public OptimizeBase {
 public:
-    HookeJeevesMethod();
+    enum Masks{
+        HJ_DEC,
+        HJ_INC,
+        HJ_HOLD
+    };
 
+    HookeJeevesMethod(Extractor* extractor);
+    void run();
+private:
+    const double& tempFunctionError() { return tempFunctionError_; }
+    void tempFunctionError(double error) { tempFunctionError_ = error; }
+
+
+    void findBestNearby();
+    void patternStep();
+    void decreaseSteps();
+
+    void mask(int index, Masks mask);
+    Masks mask(int index);
+
+    QMap<int,Masks> masks_;
+    double tempFunctionError_;
 
 };
 

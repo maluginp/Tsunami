@@ -17,7 +17,7 @@ public:
         TOLERANCE_GRADIENT
     };
 
-    OptimizeBase(Extractor* extractor, int maxIteration);
+    OptimizeBase(Extractor* extractor, int maxIteration=255);
     virtual void run() = 0;
     Extractor* extractor();
 
@@ -33,6 +33,16 @@ public:
 
     void setStep(const QString& param, double step);
     const double& step( const QString& param);
+    const double& step( int index);
+    void step(int index, double step);
+
+
+    void value(int index, double value);
+    double value(int index);
+    bool isFixed( int index );
+
+    int countParameters();
+    void saveSteps();
 
 protected:
     virtual double functionError();
@@ -42,16 +52,20 @@ protected:
 
     void nextIteration();
 
+    const double& lastFunctionError();
+    void lastFunctionError(double error);
+
+
     void saveGradient( const MatrixDouble& gradient );
     void saveHessian( const MatrixDouble& hessian);
-    void saveFunctionError( double functionError );
+//    void saveFunctionError( double functionError );
 
 private:
     int maxIteration_;
 
     int iteration_;
-    QMap<QString,double> steps_;
-
+    QMap<int,double> steps_;
+    QMap<int,double> prevSteps_;
     double eps_;
     double toleranceStep_;
     double toleranceFunction_;
@@ -59,7 +73,7 @@ private:
 
     MatrixDouble lastGradient_, currentGradient_;
 //    MatrixDouble lastHessian_,  currentHessian_;
-    double lastFunctionError_, currentFunctionError_;
+    double prevFunctionError_, lastFunctionError_;
 
 
     Extractor* extractor_;

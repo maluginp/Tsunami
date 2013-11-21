@@ -15,11 +15,11 @@ Circuit::Circuit(const QString &name)
 
 }
 
-void Circuit::typeAnalysis(TypeAnalysis analysis) {
+void Circuit::typeAnalysis(AnalysisType analysis) {
     typeAnalysis_ = analysis;
 }
 
-const TypeAnalysis &Circuit::typeAnalysis() {
+const AnalysisType &Circuit::typeAnalysis() {
     return typeAnalysis_;
 }
 
@@ -280,32 +280,32 @@ Circuit *Circuit::createCircuitDevice(DeviceType type, const QList<Source> &sour
             Q_ASSERT(false);
         }
 
-        createBjt( circuit,type );
+        circuit->createBjt( circuit,type );
     }else if( type == DEVICE_NFET || type == DEVICE_PFET ){
         if(sources.count() != 4){
             Q_ASSERT(false);
         }
-        createFet( circuit, type );
+        circuit->createFet( circuit, type );
     }else if( type == DEVICE_NMOS || type == DEVICE_PMOS){
         if(sources.count() != 4){
             Q_ASSERT(false);
         }
-        createMosfet(circuit, type);
+        circuit->createMosfet(circuit, type);
     }else if( type == DEVICE_DIODE ){
         if(sources.count() != 2){
             Q_ASSERT(false);
         }
-        createDiode( circuit,type );
+        circuit->createDiode( circuit,type );
     }else if(type== DEVICE_CAPACITOR){
         if(sources.count() != 2){
             Q_ASSERT(false);
         }
-        createCap(circuit,type);
+        circuit->createCap(circuit,type);
     }else if(type == DEVICE_RESISTOR){
         if(sources.count() != 2){
             Q_ASSERT(false);
         }
-        createRes(circuit,type);
+        circuit->createRes(circuit,type);
     }else{
         Q_ASSERT(false);
     }
@@ -338,20 +338,20 @@ Circuit *Circuit::createCircuitDevice(DeviceType type, const QList<Source> &sour
     }
 }
 
-void Circuit::createBjt(Circuit* circuit, AnalysisType type) {
+void Circuit::createBjt(Circuit* circuit, DeviceType type) {
     int bjtId = circuit->addDevice( "BJT", type );
     QStringList terms;
     terms << "E" << "B" << "C";
 
     // Terminals
     foreach(QString term, terms){
-        circuit->connect( bjtId, circuit->addTerminal(term); );
+        circuit->connect( bjtId, circuit->addTerminal(term) );
     }
 
 
 }
 
-void Circuit::createRes(Circuit *circuit, AnalysisType type) {
+void Circuit::createRes(Circuit *circuit, DeviceType type) {
     int resId = circuit->addDevice("RES", type);
 
     QStringList terms;
@@ -359,11 +359,11 @@ void Circuit::createRes(Circuit *circuit, AnalysisType type) {
 
     // Terminals
     foreach(QString term, terms) {
-        circuit->connect( resId, circuit->addTerminal(term); );
+        circuit->connect( resId, circuit->addTerminal(term) );
     }
 }
 
-void Circuit::createCap(Circuit *circuit, AnalysisType type) {
+void Circuit::createCap(Circuit *circuit, DeviceType type) {
     int capId = circuit->addDevice("CAP", type);
 
     QStringList terms;
@@ -371,11 +371,11 @@ void Circuit::createCap(Circuit *circuit, AnalysisType type) {
 
     // Terminals
     foreach(QString term, terms) {
-        circuit->connect( capId, circuit->addTerminal(term); );
+        circuit->connect( capId, circuit->addTerminal(term) );
     }
 }
 
-void Circuit::createDiode(Circuit *circuit, AnalysisType type) {
+void Circuit::createDiode(Circuit *circuit, DeviceType type) {
     int fetId = circuit->addDevice("DIODE", type);
 
     QStringList terms;
@@ -383,12 +383,12 @@ void Circuit::createDiode(Circuit *circuit, AnalysisType type) {
 
     // Terminals
     foreach(QString term, terms) {
-        circuit->connect( fetId, circuit->addTerminal(term); );
+        circuit->connect( fetId, circuit->addTerminal(term) );
     }
 
 }
 
-void Circuit::createFet(Circuit *circuit, AnalysisType type) {
+void Circuit::createFet(Circuit *circuit, DeviceType type) {
     int fetId = circuit->addDevice("FET", type);
 
     QStringList terms;
@@ -396,12 +396,12 @@ void Circuit::createFet(Circuit *circuit, AnalysisType type) {
 
     // Terminals
     foreach(QString term, terms){
-        circuit->connect( fetId, circuit->addTerminal(term); );
+        circuit->connect( fetId, circuit->addTerminal(term) );
     }
 
 }
 
-void Circuit::createMosfet(Circuit *circuit, AnalysisType type) {
+void Circuit::createMosfet(Circuit *circuit, DeviceType type) {
     int fetId = circuit->addDevice("MOSFET", type);
 
     QStringList terms;
@@ -409,7 +409,7 @@ void Circuit::createMosfet(Circuit *circuit, AnalysisType type) {
 
     // Terminals
     foreach(QString term, terms){
-        circuit->connect( fetId, circuit->addTerminal(term); );
+        circuit->connect( fetId, circuit->addTerminal(term) );
     }
 
 }

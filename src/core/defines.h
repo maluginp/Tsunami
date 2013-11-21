@@ -40,10 +40,10 @@ enum SourceMethod{
     SOURCE_METHOD_LIST
 };
 
-typedef Matrix<double> MatrixDouble;
-typedef Matrix<int>    MatrixInt;
-typedef Vector<double> VectorDouble;
-typedef Vector<int>    VectorInt;
+typedef core::Matrix<double> MatrixDouble;
+typedef core::Matrix<int>    MatrixInt;
+typedef core::Vector<double> VectorDouble;
+typedef core::Vector<int>    VectorInt;
 
 enum SourceMode{
     SOURCE_MODE_VOLTAGE,
@@ -57,6 +57,28 @@ struct Source{
     QVariantMap configuration;
     QString node; // TODO Node is QString ??
 
+    Source( const QString& _node, SourceMode _mode,
+            SourceMethod _method = SOURCE_METHOD_UNKNOWN,
+            const QVariantMap& configuration_ = QVariantMap()){
+        node = _node;
+        mode = _mode;
+        method = _method;
+        configuration = configuration_;
+    }
+
+    Source(const Source& other){
+        node = other.node;
+        mode = other.mode;
+        method = other.method;
+        configuration = other.configuration;
+    }
+    Source& operator=(const Source& other){
+        node = other.node;
+        mode = other.mode;
+        method = other.method;
+        configuration = other.configuration;
+        return *this;
+    }
 };
 
 }

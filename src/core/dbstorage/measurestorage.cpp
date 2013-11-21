@@ -39,6 +39,61 @@ QString MeasureStorage::connectionName() const {
     return CONNECTION_NAME_MEASURE;
 }
 
+void MeasureStorage::testData() {
+    MeasureModel model;
+    model.id(1);
+    model.deviceId(1);
+    model.name( "Test measures" );
+
+    // BJT
+
+    model.type(ANALYSIS_DC);
+
+    // Create Sources
+    model.addSource(Source("E",SOURCE_MODE_GND));
+    QVariantMap configuration;
+    configuration.insert("start", 0.0);
+    configuration.insert("end",10.0);
+    configuration.insert("step", 1.0);
+    model.addSource( Source("C",SOURCE_MODE_VOLTAGE,SOURCE_METHOD_LINEAR, configuration) );
+
+    configuration.clear();
+
+    configuration.insert("start", 0.0);
+    configuration.insert("end",1.0);
+    configuration.insert("step", 0.1);
+    model.addSource( Source("B",SOURCE_MODE_VOLTAGE,SOURCE_METHOD_LINEAR, configuration) );
+
+    model.header( MeasureHeader("No comment, althought test date =)") );
+
+    QStringList columns;
+    columns << "Vc" << "Vb" << "Ve" << "Ib" << "Ic" ;
+    model.columns(columns);
+
+    QVector< QVector<double> > data;
+
+    for(double val1=0.0; val1 <= 10.0; val1 += 1.0){
+        QVector<double> row;
+        for(double val2=0.0; val2 <= 1.0; val2 += 0.1){
+            row << val1 << val2 << 0.0 <<  val1+val2 << 2*(val1+val2);
+        }
+        data.append( row );
+    }
+
+    model.data(data);
+
+    model.createAt( QDateTime::currentDateTime() );
+    model.changeAt( QDateTime::currentDateTime() );
+    model.enable(true);
+    model.userId(1);
+
+    if(saveMeasure( model )){
+        // Error
+    }
+
+
+}
+
 MeasureModel MeasureStorage::openMeasureImpl(const int &measureId) {
     setLastError( QString() );
 
@@ -114,6 +169,10 @@ bool MeasureStorage::createTable(const MeasureTable &table) {
         return false;
     }
 
+#ifdef QT_DEBUG
+    testData();
+#endif
+
     return true;
 }
 
@@ -188,10 +247,10 @@ MeasureModel MeasureStorage::openMeasure(const int &measureId) {
     return openMeasureImpl( measureId );
 }
 
-QList<MeasureModel> MeasureStorage::findMeasures(TypeAnalysis type, DeviceType device) {
-
-
+QList<MeasureModel> MeasureStorage::findMeasure(const QVariantMap &criteria) {
+    // TODO List of measure model
 }
+
 
 }
 }

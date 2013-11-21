@@ -50,6 +50,8 @@ public:
     Matrix<T>& operator-( const Matrix<T>& other);
 
     T& operator()(int row, int column);
+//    const T& operator()(int row, int column) const;
+
     T& at(int row, int column);
 
     bool inverse();
@@ -165,6 +167,11 @@ template<class T>
 T &Matrix<T>::operator ()(int row, int column) {
     return at(row,column);
 }
+
+//template<class T>
+//const T& operator()(int row, int column) const{
+//    return at
+//}
 
 template<class T>
 T &Matrix<T>::at(int row, int column) {

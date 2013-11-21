@@ -1,139 +1,118 @@
 #include "librarymodel.h"
 #include "parametermodel.h"
+namespace tsunami{
+namespace db{
 
-LibraryModel::LibraryModel() :
-    libraryId_(-1),projectId_(-1),userId_(-1),createAt_(QDateTime::currentDateTime()),
-    changeAt_(QDateTime::currentDateTime()),enable_(false)
-{
-}
-
-LibraryModel::~LibraryModel()
-{
-}
-
-LibraryModel &LibraryModel::setId(const int &id) {
-    libraryId_ = id;
+void LibraryModel::setParameter(const QString &name, const ParameterModel &parameter) {
 
     int rows = parameters_.size();
     for(int row=0; row < rows; ++row){
-        parameters_[row].setLibraryId(id);
-    }
-
-
-    return *this;
-}
-
-LibraryModel &LibraryModel::setName(const QString &name) {
-    name_ = name;
-    return *this;
-}
-
-LibraryModel &LibraryModel::setProjectId(const int &projectId) {
-    projectId_ = projectId;
-    return *this;
-}
-
-LibraryModel &LibraryModel::setUserId(const int &userId) {
-    userId_ = userId;
-    return *this;
-}
-
-LibraryModel &LibraryModel::setCreateAt(const QDateTime &createAt) {
-    createAt_ = createAt;
-    return *this;
-}
-
-LibraryModel &LibraryModel::setChangeAt(const QDateTime &changeAt) {
-    changeAt_ = changeAt;
-    return *this;
-}
-
-LibraryModel &LibraryModel::setEnable(const bool &enable) {
-    enable_ = enable;
-    return *this;
-}
-
-void LibraryModel::setParameter(const QString &parameter, const ParameterModel &model) {
-
-    int rows = parameters_.size();
-    for(int row=0; row < rows; ++row){
-        if(parameters_[row].name() == parameter){
-            parameters_[row] = model;
+        if(parameters_[row].name().compare(name, Qt::CaseInsensitive) == 0) {
+            parameters_[row] = parameter;
             return;
         }
     }
 
-    parameters_ << model;
+    parameters_.append( parameter );
 
 }
 
-
-bool LibraryModel::parameterExists(const QString &parameter) const {
-    foreach(ParameterModel param, parameters_){
-        if(param.name() == parameter){
-            return true;
-        }
-    }
-
-    return false;
+int LibraryModel::countParamaters() {
+    return parameters_.size();
 }
 
-
-QVariant LibraryModel::parameterValue(const QModelIndex &index) const {
-    ParameterModel parameter = parameters_.value(index.row());
-    switch(index.column()){
-    case 0:  QVariant(parameter.id());
-    case 1: return QVariant(parameter.libraryId());
-    case 2: return QVariant(parameter.name());
-    case 3: return QVariant(parameter.initial());
-    case 4: return QVariant(parameter.minimum());
-    case 5: return QVariant(parameter.maximum());
-    }
-
-    return QVariant();
-}
-
-bool LibraryModel::setParameterValue(const QModelIndex &index, const QVariant &value) {
-    bool ok;
-
-    switch(index.column()){
-    case 0: parameters_[index.row()].setId(        value.toInt(&ok)   ); break;
-    case 1: parameters_[index.row()].setLibraryId( value.toInt(&ok)   ); break;
-    case 2: parameters_[index.row()].setName(      value.toString()   ); break;
-    case 3: parameters_[index.row()].setInitial(   value.toDouble(&ok)); break;
-    case 4: parameters_[index.row()].setMinimum(   value.toDouble(&ok)); break;
-    case 5: parameters_[index.row()].setMaximum(   value.toDouble(&ok)); break;
-    default:
-        return false;
-    }
-
-    return true;
-}
-
-const ParameterModel &LibraryModel::parameter(const QString &param) const {
+ParameterModel &LibraryModel::find(const QString &name) {
     int rows = parameters_.size();
+
     int foundIndex = -1;
     for(int row=0; row < rows; ++row){
-        if(parameters_[row].name() == param){
+        if(parameters_[row].name().compare(name,Qt::CaseInsensitive) == 0){
             foundIndex = row;
             break;
         }
     }
 
-    return parameter( foundIndex );
+    Q_ASSERT(foundIndex != -1);
+
+    return find(foundIndex);
 }
 
-const ParameterModel &LibraryModel::parameter(const int &nParameter) const {
+ParameterModel &LibraryModel::find(int index) {
+     Q_ASSERT(index != -1);
 
+    return parameters_[index];
+}
+
+//QVariant LibraryModel::parameterValue(const QModelIndex &index) const {
+//    ParameterModel parameter = parameters_.value(index.row());
+//    switch(index.column()){
+//    case 0:  QVariant(parameter.id());
+//    case 1: return QVariant(parameter.libraryId());
+//    case 2: return QVariant(parameter.name());
+//    case 3: return QVariant(parameter.initial());
+//    case 4: return QVariant(parameter.minimum());
+//    case 5: return QVariant(parameter.maximum());
+//    }
+
+//    return QVariant();
+//}
+
+const ParameterModel &LibraryModel::parameter(const QString &name) const {
     int rows = parameters_.size();
-    Q_ASSERT(nParameter >= 0 || nParameter < rows);
 
-    return parameters_[nParameter];
+    int foundIndex = -1;
+    for(int row=0; row < rows; ++row){
+        if(parameters_[row].name().compare(name,Qt::CaseInsensitive) == 0){
+            foundIndex = row;
+            break;
+        }
+    }
 
+    Q_ASSERT(foundIndex != -1);
+
+    return parameter(foundIndex);
 }
 
-QList<ParameterModel> LibraryModel::parameters() const {
+const ParameterModel &LibraryModel::parameter(int index) const {
+    return parameters_[index];
+}
+
+ParameterModel &LibraryModel::parameter(const QString &name) {
+    int rows = parameters_.size();
+
+    int foundIndex = -1;
+    for(int row=0; row < rows; ++row){
+        if(parameters_[row].name().compare(name,Qt::CaseInsensitive) == 0){
+            foundIndex = row;
+            break;
+        }
+    }
+
+    Q_ASSERT(foundIndex != -1);
+
+    return parameter(foundIndex);
+}
+
+ParameterModel &LibraryModel::parameter(int index) {
+    return parameters_[index];
+}
+
+const QList<ParameterModel> &LibraryModel::parameters() const {
     return parameters_;
 }
 
+bool LibraryModel::parameterExists(const QString &name) {
+    QList<ParameterModel>::iterator it = parameters_.begin();
 
+    for(;it != parameters_.end(); ++it){
+        if(it->name().compare(name,Qt::CaseInsensitive)){
+            return true;
+        }
+    }
+
+    return false;
+
+}
+
+}
+}

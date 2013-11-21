@@ -167,7 +167,7 @@ void KeyValueView::fillDelegates(QAbstractItemView *view) {
     view->itemDelegate()->deleteLater();
     view->setItemDelegate( NULL );
 
-    view->setItemDelegate( new KeyValueDelegate( pairs_, view ) );
+//    view->setItemDelegate( new KeyValueDelegate( pairs_, view ) );
 
 }
 
