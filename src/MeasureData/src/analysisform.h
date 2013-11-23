@@ -10,6 +10,10 @@ namespace Ui {
 class AnalysisForm;
 }
 
+namespace tsunami{
+namespace gui{
+
+
 class AnalysisForm : public QWidget
 {
     Q_OBJECT
@@ -60,5 +64,9 @@ private slots:
     void saveAnalysis();
     void restoreAnalysis();
 };
+
+}
+}
+
 
 #endif // ANALYSISFORM_H

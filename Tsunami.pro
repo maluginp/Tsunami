@@ -1,8 +1,8 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    src/core  # \
-#    src/MeasureData
+    src/core  \
+    src/MeasureData
    # src/freeda
 
 

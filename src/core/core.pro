@@ -48,7 +48,6 @@ SOURCES += main.cpp \
     spice/spicemodel.cpp \
     spice/circuit.cpp \
     optimize/optimizebase.cpp \
-    math/vector.cpp \
     optimize/hookejeevesmethod.cpp \
     extractor/extractor.cpp \
     extractor/dataset.cpp \

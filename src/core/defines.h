@@ -51,19 +51,31 @@ enum SourceMode{
     SOURCE_MODE_GND
 };
 
+enum SourceDirection{
+    SOURCE_DIRECTION_INPUT,
+    SOURCE_DIRECTION_OUTPUT
+};
+
 struct Source{
     SourceMode mode;
     SourceMethod method;
     QVariantMap configuration;
     QString node; // TODO Node is QString ??
+    SourceDirection direction;
+
+    Source(){
+        Q_ASSERT(false);
+    }
 
     Source( const QString& _node, SourceMode _mode,
+            SourceDirection _direction = SOURCE_DIRECTION_INPUT,
             SourceMethod _method = SOURCE_METHOD_UNKNOWN,
-            const QVariantMap& configuration_ = QVariantMap()){
+            const QVariantMap& _configuration = QVariantMap()){
         node = _node;
         mode = _mode;
         method = _method;
-        configuration = configuration_;
+        configuration = _configuration;
+        direction = _direction;
     }
 
     Source(const Source& other){
@@ -71,12 +83,14 @@ struct Source{
         mode = other.mode;
         method = other.method;
         configuration = other.configuration;
+        direction = other.direction;
     }
     Source& operator=(const Source& other){
         node = other.node;
         mode = other.mode;
         method = other.method;
         configuration = other.configuration;
+        direction = other.direction;
         return *this;
     }
 };

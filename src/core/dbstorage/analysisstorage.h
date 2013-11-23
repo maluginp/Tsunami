@@ -2,37 +2,43 @@
 #define ANALYSISSTORAGE_H
 #include "dbstorage.h"
 #include <singleton.h>
-//#include "../models/analysismodel.h"
 
-//class AnalysisStorage : public DbStorage, public Singleton<AnalysisStorage> {
-//public:
-//    enum AnalysisTable{
-//        TABLE_ANALYSES
-//    };
+namespace tsunami{
+namespace db{
+class AnalysisModel;
 
-//    AnalysisStorage();
-//    QString dbName() const;
+class AnalysisStorage : public DbStorage, public Singleton<AnalysisStorage> {
+public:
+    enum AnalysisTable{
+        TABLE_ANALYSES
+    };
 
-//    bool saveAnalysis();
-//    bool saveAnalysis(AnalysisModel& analysis);
+    AnalysisStorage();
+    QString dbName() const;
 
-//    AnalysisModel openAnalysis(const int& analysisId);
+    bool saveAnalysis( AnalysisModel* model );
+    AnalysisModel* openAnalysis(int analysisId);
 
-//    QMap<int,QString> listAnalysis();
+    QMap<int,QString> listAnalysis();
 
-//protected:
-//    QString connectionName() const;
-//private:
-//    bool saveAnalysisImpl(AnalysisModel& model);
+protected:
+    QString connectionName() const;
+private:
 
-//    AnalysisModel openAnalysisImpl(const int& analysisId);
-//    bool createTable(const AnalysisTable& table);
-//    QMap<int,QString> listAnalysisImpl();
-//    void saveCache(const AnalysisModel& analysis);
+    void testData();
 
-//    AnalysisModel currentAnalysis_;
-//    static QString CONNECTION_NAME_ANALYSIS;
-//    static QString TABLE_NAME_ANALYSES;
-//};
+    bool saveAnalysisImpl( AnalysisModel* model );
+    AnalysisModel* openAnalysisImpl(int analysisId);
+    bool createTable(AnalysisTable table);
+    QMap<int,QString> listAnalysisImpl();
+
+    static QString CONNECTION_NAME_ANALYSIS;
+    static QString TABLE_NAME_ANALYSES;
+};
+
+
+}
+}
+
 
 #endif // ANALYSISSTORAGE_H

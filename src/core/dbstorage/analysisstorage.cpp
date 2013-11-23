@@ -1,193 +1,187 @@
-//#include "analysisstorage.h"
+#include "analysisstorage.h"
+#include "models/analysismodel.h"
 
-//QString AnalysisStorage::CONNECTION_NAME_ANALYSIS = QString("connection_analysis");
-//QString AnalysisStorage::TABLE_NAME_ANALYSES      = QString("analyses");
+namespace tsunami {
+namespace db{
 
-//AnalysisStorage::AnalysisStorage() {
-//    if(!tableExists( TABLE_NAME_ANALYSES )){
-//        createTable( TABLE_ANALYSES );
-//    }
-//}
+QString AnalysisStorage::CONNECTION_NAME_ANALYSIS = QString("connection_analysis");
+QString AnalysisStorage::TABLE_NAME_ANALYSES      = QString("analyses");
 
-//QString AnalysisStorage::dbName() const {
-//    return DBASE_COMMON_NAME;
-//}
+AnalysisStorage::AnalysisStorage() {
+    if(!tableExists( TABLE_NAME_ANALYSES )){
+        createTable( TABLE_ANALYSES );
+    }
+}
+QString AnalysisStorage::dbName() const {
+    return DBASE_COMMON_NAME;
+}
 
-//bool AnalysisStorage::saveAnalysis() {
-//    return saveAnalysisImpl( currentAnalysis_ );
-//}
+bool AnalysisStorage::saveAnalysis(AnalysisModel *model) {
+    return saveAnalysisImpl(model);
+}
 
-//bool AnalysisStorage::saveAnalysis(AnalysisModel &analysis) {
-//    return saveAnalysisImpl(analysis);
-//}
+AnalysisModel *AnalysisStorage::openAnalysis(int analysisId) {
+    return openAnalysisImpl(analysisId);
+}
 
-//AnalysisModel AnalysisStorage::openAnalysis(const int &analysisId) {
-//    return openAnalysisImpl(analysisId);
-//}
+QString AnalysisStorage::connectionName() const {
+    return CONNECTION_NAME_ANALYSIS;
+}
 
-//QMap<int, QString> AnalysisStorage::listAnalysis(){
-//    return listAnalysisImpl();
-//}
+void AnalysisStorage::testData() {
+    // Test Analysis
+    AnalysisModel* model = new AnalysisModel();
+    model->id( 1 );
+    model->type("ac");
+    model->type(ANALYSIS_DC);
+    model->deviceId(1);
+    model->name("Test DC analysis");
+    model->enable(true);
 
-//QString AnalysisStorage::connectionName() const {
-//    return CONNECTION_NAME_ANALYSIS;
-//}
+    // Sources;
 
-//bool AnalysisStorage::saveAnalysisImpl(AnalysisModel &model) {
+    model->addSource(Source("E",SOURCE_MODE_GND));
+    QVariantMap configuration;
+    configuration.insert("start", 0.0);
+    configuration.insert("end",10.0);
+    configuration.insert("step", 1.0);
+    model->addSource( Source("C",SOURCE_MODE_VOLTAGE,SOURCE_METHOD_LINEAR, configuration) );
 
-//    QString sqlQuery;
+    configuration.clear();
 
-//    if(!beginTransaction()){
-//        return false;
-//    }
+    configuration.insert("start", 0.0);
+    configuration.insert("end",1.0);
+    configuration.insert("step", 0.1);
+    model->addSource( Source("B",SOURCE_MODE_VOLTAGE,SOURCE_METHOD_LINEAR, configuration) );
 
-//    sqlQuery=sql("INSERT OR REPLACE INTO %1(analysis_id,device_id,name,type,"
-//                 "inputs,outputs,createAt,changeAt,enable) "
-//                 "VALUES (:analysis_id,:device_id,:name,:type,:inputs,:outputs,"
-//                 ":createAt,:changeAt,:enable)").arg(TABLE_NAME_ANALYSES);
+    if(!saveAnalysis( model )){
+        Q_ASSERT(false);
+    }
 
-//    QSqlQuery q(sqlQuery,db());
+    delete model;
 
-//    if(model.id() == -1){
-//        int lastInsertId = q.lastInsertId().toInt() + 1;
-//        model.setId( lastInsertId );
-//    }
-//    q.bindValue(":analysis_id", model.id());
-//    q.bindValue(":device_id",model.deviceId());
-//    q.bindValue(":name",model.name());
+    return;
 
-//    switch( model.type() ){
-//    case AnalysisModel::ANALYSIS_DC: q.bindValue(":type", "dc" ); break;
-//    case AnalysisModel::ANALYSIS_AC: q.bindValue(":type", "ac" ); break;
-//    case AnalysisModel::ANALYSIS_TRAN: q.bindValue(":type", "tran" ); break;
-//    case AnalysisModel::ANALYSIS_UNKNOWN:
-//    default:
-//        q.bindValue(":type", "" );
-//    }
+}
 
-//    q.bindValue(":inputs",model.jsonInput());
-//    q.bindValue(":outputs",model.jsonOutput());
-//    q.bindValue(":createAt",model.createAt());
-//    q.bindValue(":changeAt",model.changeAt());
-//    q.bindValue(":enable",model.enable());
+bool AnalysisStorage::saveAnalysisImpl(AnalysisModel *model) {
+    setLastError( QString() );
 
-//    if(!q.exec()){
-//        setLastError(q.lastError().text());
-//        qDebug() << q.lastQuery();
-//        rollback();
-//        return false;
-//    }
-//    if(!endTransaction()){
-//        return false;
-//    }
+    int analysisId = model->id();
 
-//    saveCache(model);
-//    return true;
-//}
+    QString sqlQuery;
 
-//AnalysisModel AnalysisStorage::openAnalysisImpl(const int &analysisId) {
-//    QString sqlQuery;
+    if(!beginTransaction()){
+        return false;
+    }
 
-//    if( analysisId == -1 ){
-//        return AnalysisModel();
-//    }
+    sqlQuery = sql("INSERT OR REPLACE INTO %1(id,name,device_id,type,sources,createdAt,changedAt,enable) "
+                   "VALUES(:id,:name,:device_id,:type,:sources,:createdAt,:changedAt,:enable)")
+            .arg(TABLE_NAME_ANALYSES);
 
-//    sqlQuery = sql("SELECT * FROM %1 WHERE analysis_id=:id")
-//            .arg(TABLE_NAME_ANALYSES);
+    QSqlQuery q(sqlQuery,db());
 
-//    QSqlQuery q(sqlQuery, db());
+    if( model->id() == -1 ){
+        analysisId = q.lastInsertId().toInt();
+    }
 
-//    q.bindValue(":id",analysisId);
+    q.bindValue(":id", analysisId);
+
+    q.bindValue(":device_id",model->deviceId());
+    q.bindValue(":name", model->name());
+    q.bindValue(":type",model->typeJson());
+    q.bindValue(":sources",model->sourcesJson());
+    q.bindValue(":createdAt",model->createAt());
+    q.bindValue(":changedAt",model->changeAt());
+    q.bindValue(":enable",model->enable());
+
+    if(!q.exec()){
+        setLastError( q.lastError().text() );
+        rollback();
+        return false;
+    }
+
+    if(!endTransaction()){
+        rollback();
+        return false;
+    }
+
+    model->id( analysisId );
+
+    return true;
+}
+
+AnalysisModel *AnalysisStorage::openAnalysisImpl(int analysisId) {
+    setLastError( QString() );
+
+    QString sqlQuery;
+
+    AnalysisModel* model = new AnalysisModel();
+
+    sqlQuery = sql("SELECT * FROM %1 WHERE id=:id").arg(TABLE_NAME_ANALYSES);
+
+    QSqlQuery q(sqlQuery,db());
+    q.bindValue(":id",analysisId);
+
+    if(!q.exec() || !q.next()){
+        setLastError( q.lastError().text() );
+        Q_ASSERT(false);
+        return NULL;
+    }
+
+    QSqlRecord rec(q.record());
+
+    model->id(          ITEM("id").toInt() );
+    model->deviceId(    ITEM("device_id").toInt());
+    model->name(        ITEM("name").toString() );
+    model->sourcesJson( ITEM("sources").toString() );
+    model->type(        ITEM("type").toString() );
+    model->createAt(    ITEM("createdAt").toDateTime() );
+    model->changeAt(    ITEM("changedAt").toDateTime());
+    model->enable(      ITEM("enable").toBool() );
+
+    if(model->id() == -1){
+        Q_ASSERT(false);
+        return NULL;
+    }
 
 
-//    if(!q.exec() || !q.next()){
-//        return AnalysisModel();
-//    }
+    return model;
+}
 
-//    AnalysisModel model;
+bool AnalysisStorage::createTable(AnalysisTable table) {
+    QString sqlQuery;
+    if(table == AnalysisStorage::TABLE_ANALYSES){
+        sqlQuery = sql("CREATE TABLE IF NOT EXISTS %1 ("
+                       "id INTEGER PRIMARY KEY ON CONFLICT REPLACE,"
+                       "name TEXT,"
+                       "device_id INTEGER,"
+                       "type TEXT,"
+                       "sources TEXT,"
+                       "createdAt NUMERIC,"
+                       "changedAt NUMERIC,"
+                       "enable NUMERIC)"
+                       ).arg(TABLE_NAME_ANALYSES);
+    }else{
+        return false;
+    }
 
-//    QSqlRecord rec(q.record());
+
+    QSqlQuery q(sqlQuery,db());
+    if(!q.exec()){
+        setLastError( q.lastError().text() );
+        return false;
+    }
+
+#ifdef QT_DEBUG
+    testData();
+#endif
+
+    return true;
+}
 
 
-//    model.setId( q.value(rec.indexOf("analysis_id")).toInt() );
-//    model.setDeviceId( q.value(rec.indexOf("device_id")).toInt() );
-//    model.setName( q.value(rec.indexOf("name")).toString() );
 
-//    QString type = q.value(rec.indexOf("type")).toString();
+}
+}
 
-//    if( type.compare("dc") == 0 ){
-//        model.setType( AnalysisModel::ANALYSIS_DC );
-//    } else if(type.compare("ac") == 0){
-//        model.setType( AnalysisModel::ANALYSIS_AC );
-//    } else if(type.compare("tran") == 0){
-//        model.setType( AnalysisModel::ANALYSIS_TRAN );
-//    } else {
-//        model.setType( AnalysisModel::ANALYSIS_UNKNOWN );
-//    }
-
-//    model.parseJsonInput(  q.value(rec.indexOf("inputs")).toString() );
-//    model.parseJsonOutput( q.value(rec.indexOf("outputs")).toString() );
-
-//    model.setCreateAt( q.value(rec.indexOf("createAt")).toDateTime() );
-//    model.setChangeAt( q.value(rec.indexOf("changeAt")).toDateTime() );
-
-//    model.setEnable( q.value(rec.indexOf("enable")).toBool() );
-
-//    currentAnalysis_ = model;
-
-//    saveCache( model );
-
-//    return model;
-//}
-
-//bool AnalysisStorage::createTable(const AnalysisStorage::AnalysisTable &table) {
-//    QString sqlQuery;
-//    if(table == TABLE_ANALYSES){
-//        sqlQuery = sql("CREATE TABLE IF NOT EXISTS %1 ("
-//                       "analysis_id INTEGER PRIMARY KEY ON CONFLICT REPLACE,"
-//                       "device_id INTEGER,"
-//                       "name TEXT,"
-//                       "type TEXT,"
-//                       "inputs TEXT,"
-//                       "outputs TEXT,"
-//                       "createAt NUMERIC,"
-//                       "changeAt NUMERIC,"
-//                       "enable NUMERIC)").arg(TABLE_NAME_ANALYSES);
-//    }
-
-//    if(sqlQuery.isEmpty()){
-//        return false;
-//    }
-
-//    QSqlQuery q(sqlQuery,db());
-
-//    if(!q.exec()){
-//        setLastError(q.lastError().text());
-//        return false;
-//    }
-
-//    return true;
-//}
-
-//QMap<int, QString> AnalysisStorage::listAnalysisImpl() {
-//    QString sqlQuery;
-//    QMap<int,QString> analyses;
-//    sqlQuery = sql("SELECT analysis_id,name FROM %1").arg(TABLE_NAME_ANALYSES);
-
-//    QSqlQuery q(sqlQuery,db());
-//    if(!q.exec()){
-//        return QMap<int,QString>();
-//    }
-
-//    while( q.next() ){
-//        QSqlRecord rec( q.record() );
-//        analyses.insert( q.value(rec.indexOf("analysis_id")).toInt(),
-//                         q.value(rec.indexOf("name")).toString() );
-//    }
-
-//    return analyses;
-//}
-
-//void AnalysisStorage::saveCache(const AnalysisModel &analysis) {
-
-//}
