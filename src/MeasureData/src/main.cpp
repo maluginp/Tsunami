@@ -9,13 +9,13 @@ int main(int argc, char *argv[]) {
     //    MeasureDataWindow mainWindow;
     //    mainWindow.show();
 
-    int deviceId = 1;
-    int analysisId = tsunami::ChoiceAnalysisForm::getAnalysisId( deviceId );
-    if( analysisId == -1){
-        Q_ASSERT(false);
-    }
+//    int deviceId = 1;
+//    int analysisId = tsunami::ChoiceAnalysisForm::getAnalysisId( deviceId );
+//    if( analysisId == -1){
+//        Q_ASSERT(false);
+//    }
 
-    tsunami::addMeasureForm form(analysisId,0);
+    tsunami::addMeasureForm form(tsunami::addMeasureForm::EDIT,1,0);
     form.show();
     return a.exec();
 }

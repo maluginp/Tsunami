@@ -86,6 +86,7 @@ public:
     const AnalysisType& type() const { return type_; }
     QString typeJson();
     const QVariantMap& attrs() const { return attributes_; }
+    QString attrsJson() const;
     const QList<Source>& sources() const { return sources_; }
     const MeasureHeader& header() const { return header_; }
     QString headerJson();

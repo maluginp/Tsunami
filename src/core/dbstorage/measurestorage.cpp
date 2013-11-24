@@ -65,14 +65,20 @@ void MeasureStorage::testData() {
     QVector< QVector<double> > data;
 
     for(double val1=0.0; val1 <= 10.0; val1 += 1.0){
-        QVector<double> row;
+
         for(double val2=0.0; val2 <= 1.0; val2 += 0.1){
+            QVector<double> row;
             row << val1 << val2 << 0.0 <<  val1+val2 << 2*(val1+val2);
+            data.append( row );
         }
-        data.append( row );
+
     }
 
     model->data(data);
+    QVariantMap attributes;
+    attributes.insert("w",1e-6);
+    attributes.insert("l",1e-3);
+    model->attrs( attributes );
 
     model->createAt( QDateTime::currentDateTime() );
     model->changeAt( QDateTime::currentDateTime() );
@@ -93,10 +99,13 @@ MeasureModel *MeasureStorage::openMeasureImpl(int measureId) {
 
     QString sqlQuery;
 
-    sqlQuery = sql("SELECT * FROM %1 WHERE measure_id=:id")
+    sqlQuery = sql("SELECT * FROM %1 WHERE id=:id")
             .arg( TABLE_NAME_MEASURES );
 
     QSqlQuery q(sqlQuery,db());
+
+    q.bindValue(":id",measureId);
+
     if(!q.exec() || !q.next()){
         setLastError( q.lastError().text() );
         return NULL;
@@ -188,7 +197,7 @@ bool MeasureStorage::saveMeasureImpl(MeasureModel *measure) {
     q.bindValue(":device_id", measure->deviceId());
     q.bindValue(":name",measure->name());
     q.bindValue(":analysis", measure->typeJson() );
-    q.bindValue(":attributes",measure->attrs());
+    q.bindValue(":attributes",measure->attrsJson());
     q.bindValue(":sources", measure->sourcesJson());
     q.bindValue(":header",measure->headerJson());
     q.bindValue(":columns", measure->columnsJson());

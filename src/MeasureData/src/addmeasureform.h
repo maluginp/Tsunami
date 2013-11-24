@@ -12,6 +12,8 @@ namespace tsunami{
 
 namespace db{
     class AnalysisModel;
+    class MeasureModel;
+    class MeasureStorage;
 }
 namespace gui{
     class KeyValueView;
@@ -22,22 +24,30 @@ namespace gui{
 class addMeasureForm : public QWidget {
     Q_OBJECT
 public:
-    addMeasureForm(int analysisId, QWidget *parent = 0);
+    enum Action{
+        NEW,
+        EDIT
+    };
+
+    addMeasureForm(Action action, int id, QWidget *parent = 0);
     ~addMeasureForm();
 private:
     int analysisId_;
     void openAnalysis(int analysisId);
+    void openMeasure(int measureId);
     Ui::addMeasureForm *ui;
 
     gui::KeyValueView* headerView_;
     gui::KeyValueView* attributesView_;
     gui::MeasureItemView* measureView_;
 
+    db::MeasureModel* measure_;
+    db::MeasureStorage* measureStorage_;
 
     static gui::KeyValuePair headerPairs_[];
     static const int nPairs_;
 private slots:
-//    void addButtonClick();
+    void addButtonClick();
 };
 
 }

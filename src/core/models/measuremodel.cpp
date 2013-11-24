@@ -49,7 +49,9 @@ void MeasureModel::header(const QString &comment, const QDate &fabrication, cons
 void MeasureModel::attrsJson( const QString& json ){
     // TODO Attributes is extracted from json
     QVariantMap attrs = QtJson::parse(json).toMap();
+    qDebug() << attrs;
     attributes_ = attrs;
+
 }
 
 void MeasureModel::sourcesJson(const QString &json) {
@@ -93,14 +95,14 @@ void MeasureModel::columnsJson(const QString &json) {
 
 void MeasureModel::dataJson(const QString &json) {
     // TODO Data is extracted from json
-    QVariantList dataJson = QtJson::parse(json).toList();
+    QVariantMap dataJson = QtJson::parse(json).toMap();
     rows_ = dataJson.size();
-    int columns = dataJson[0].toList().size();
+    int columns = dataJson.value("0").toList().size();
 
     delete data_;
     data_ = new MatrixDouble(rows_,columns,MatrixDouble::MATRIX_ZERO);
     for(int i=0; i < rows_; ++i){
-        QVariantList rowJson = dataJson[i].toList();
+        QVariantList rowJson = dataJson[ QString::number(i) ].toList();
         for(int j=0; j < columns; ++j){
             data_->at(i,j) = rowJson[j].toDouble();
         }
@@ -134,6 +136,10 @@ QString MeasureModel::typeJson() {
     return QString();
 }
 
+QString MeasureModel::attrsJson() const {
+    return QtJson::serializeStr(attributes_);
+}
+
 QString MeasureModel::headerJson() {
     // TODO JSON is formed from header
 
@@ -154,13 +160,13 @@ QString MeasureModel::dataJson() {
     // TODO JSON is formed from data
     int rows = data_->rows();
     int columns = data_->columns();
-    QVariantList dataJson;
+    QVariantMap dataJson;
     for(int i=0; i < rows; ++i){
         QVariantList rowJson;
         for(int j=0; j < columns; ++j){
             rowJson.append(data_->at(i,j));
         }
-        dataJson.append(rowJson);
+        dataJson.insert( QString::number(i), rowJson );
     }
 
     QString json = QtJson::serializeStr(dataJson);

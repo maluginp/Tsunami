@@ -4,13 +4,10 @@
 namespace tsunami {
 namespace gui{
 
-MeasureItemView::MeasureItemView(const int &measureId, QObject *parent) :
+MeasureItemView::MeasureItemView(db::MeasureModel* model, QObject *parent) :
     QAbstractItemModel(parent),rows_(0),columns_(0) {
 
-    storage_ = db::MeasureStorage::instance();
-
-    openMeasure(measureId);
-
+    measure_ = model;
 
 }
 
@@ -81,24 +78,6 @@ QVariant MeasureItemView::headerData(int section, Qt::Orientation orientation, i
     return QVariant();
 }
 
-bool MeasureItemView::saveMeasure() {
-//    return storage_->saveMeasure( measure_ );
-}
-
-
-void MeasureItemView::openMeasure(int measureId) {
-
-
-    if(measureId == -1){
-        return;
-    }
-
-    measure_ = storage_->openMeasure( measureId );
-//    storeMeasure_ = measure_;
-
-    rows_ = measure_->rows(); // .dataRows();
-    columns_ = measure_->columns().size(); // .dataColumns();
-}
 
 
 

@@ -104,12 +104,17 @@ void KeyValueView::setPairs(const KeyValuePair *pairs, const int &num) {
 }
 
 void KeyValueView::addPair(const QString &key, const QVariant &value, const KeyValuePair::ValueType &type, const QString &title) {
+
     KeyValuePair pair(key,value,type,title);
     addPair(pair);
+
+
 }
 
 void KeyValueView::addPair(const KeyValuePair &pair) {
+    beginResetModel();
     pairs_.append( pair );
+    endResetModel();
 }
 
 void KeyValueView::setValue(const QString &key, const QVariant &value) {

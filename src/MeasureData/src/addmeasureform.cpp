@@ -3,7 +3,7 @@
 #include <views/keyvalueview.h>
 #include <views/measureitemview.h>
 #include <models/analysisitems.h>
-
+#include "dbstorage/measurestorage.h"
 
 namespace tsunami{
 
@@ -12,13 +12,13 @@ gui::KeyValuePair addMeasureForm::headerPairs_[] = {
     gui::KeyValuePair("type",  QVariant("dc"),  gui::KeyValuePair::TYPE_READONLY, QString("Analysis Type")),
     gui::KeyValuePair("user",  QVariant(""),  gui::KeyValuePair::TYPE_TEXT, QString("User")),
     gui::KeyValuePair("user_date",  QVariant(QDate::currentDate()),  gui::KeyValuePair::TYPE_DATE, QString("User date")),
-    gui::KeyValuePair("fabric_date",  QVariant(QDate::currentDate()),  gui::KeyValuePair::TYPE_DATE, QString("Fabrication date")),
+    gui::KeyValuePair("fabricate_date",  QVariant(QDate::currentDate()),  gui::KeyValuePair::TYPE_DATE, QString("Fabrication date")),
     gui::KeyValuePair("comment",  QVariant(""),  gui::KeyValuePair::TYPE_TEXT, QString("Comment")),
     gui::KeyValuePair("dubious",  QVariant(""),  gui::KeyValuePair::TYPE_CHECKBOX, QString("Dubious"))
 };
 
 
-addMeasureForm::addMeasureForm(int analysisId, QWidget *parent) :
+addMeasureForm::addMeasureForm(addMeasureForm::Action action, int id, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::addMeasureForm) {
 
@@ -26,14 +26,22 @@ addMeasureForm::addMeasureForm(int analysisId, QWidget *parent) :
 
     headerView_ = new gui::KeyValueView();
     attributesView_ = new gui::KeyValueView();
-    measureView_ = new gui::MeasureItemView(-1);
+    measureView_ = NULL;
 
     ui->headerTableView->setModel( headerView_ );
     ui->attributesTableView->setModel( attributesView_ );
-    ui->dataTableView->setModel( measureView_ );
 
 
-    openAnalysis( analysisId );
+    if(action == NEW){
+        openAnalysis(id);
+        ui->addButton->setText( tr("Add") );
+    }else if(action == EDIT){
+        openMeasure(id);
+        ui->addButton->setText( tr("Save") );
+    }
+    connect(ui->addButton,SIGNAL(clicked()),this,SLOT(addButtonClick()));
+    connect(ui->cancelButton,SIGNAL(clicked()),this,SLOT(close()));
+//    openAnalysis( analysisId );
 }
 
 addMeasureForm::~addMeasureForm() {
@@ -48,6 +56,42 @@ void addMeasureForm::openAnalysis(int analysisId) {
 
 
 
+}
+
+void addMeasureForm::openMeasure(int measureId) {
+
+    measureStorage_ = db::MeasureStorage::instance();
+    measure_ = measureStorage_->openMeasure( measureId );
+
+    if(measure_ == 0){
+        Q_ASSERT(false);
+    }
+
+    measureView_ = new gui::MeasureItemView( measure_ );
+    ui->dataTableView->setModel( measureView_ );
+
+    headerView_->setPairs( headerPairs_, nPairs_ );
+    headerView_->setValue( "type", measure_->typeJson() );
+    headerView_->setValue( "comment", measure_->header().comment );
+    headerView_->setValue( "user_date", measure_->header().userDate );
+    headerView_->setValue( "fabricate_date", measure_->header().fabricationDate );
+    headerView_->setValue( "dubious", measure_->header().dubious );
+
+    QVariantMap attrs = measure_->attrs();
+    qDebug() << attrs;
+    foreach( QString attrName, attrs.keys() ){
+        attributesView_->addPair( attrName, attrs.value(attrName),
+                                  gui::KeyValuePair::TYPE_TEXT, attrName.toUpper() );
+    }
+
+
+}
+
+void addMeasureForm::addButtonClick() {
+
+    measure_->header( );
+
+    measureStorage_->saveMeasure( measure_ );
 }
 
 
