@@ -4,13 +4,13 @@
 #include <views/measureitemview.h>
 #include <models/analysisitems.h>
 #include "dbstorage/measurestorage.h"
-
+#include "delegates/delegatereadonly.h"
 namespace tsunami{
 
 const int addMeasureForm::nPairs_ = 6;
 gui::KeyValuePair addMeasureForm::headerPairs_[] = {
     gui::KeyValuePair("type",  QVariant("dc"),  gui::KeyValuePair::TYPE_READONLY, QString("Analysis Type")),
-    gui::KeyValuePair("user",  QVariant(""),  gui::KeyValuePair::TYPE_TEXT, QString("User")),
+    gui::KeyValuePair("user",  QVariant(""),  gui::KeyValuePair::TYPE_READONLY, QString("User")),
     gui::KeyValuePair("user_date",  QVariant(QDate::currentDate()),  gui::KeyValuePair::TYPE_DATE, QString("User date")),
     gui::KeyValuePair("fabricate_date",  QVariant(QDate::currentDate()),  gui::KeyValuePair::TYPE_DATE, QString("Fabrication date")),
     gui::KeyValuePair("comment",  QVariant(""),  gui::KeyValuePair::TYPE_TEXT, QString("Comment")),
@@ -28,6 +28,8 @@ addMeasureForm::addMeasureForm(addMeasureForm::Action action, int id, QWidget *p
     attributesView_ = new gui::KeyValueView();
     measureView_ = NULL;
 
+    action_ = action;
+
     ui->headerTableView->setModel( headerView_ );
     ui->attributesTableView->setModel( attributesView_ );
 
@@ -41,12 +43,19 @@ addMeasureForm::addMeasureForm(addMeasureForm::Action action, int id, QWidget *p
     }
     connect(ui->addButton,SIGNAL(clicked()),this,SLOT(addButtonClick()));
     connect(ui->cancelButton,SIGNAL(clicked()),this,SLOT(close()));
-//    openAnalysis( analysisId );
+    //    openAnalysis( analysisId );
 }
 
 addMeasureForm::~addMeasureForm() {
     delete ui;
 
+}
+// TODO: rechange code
+bool addMeasureForm::isReadOnlyColumn(const QString &column) {
+    if(column.startsWith("V")){
+        return true;
+    }
+    return false;
 }
 
 void addMeasureForm::openAnalysis(int analysisId) {
@@ -70,6 +79,17 @@ void addMeasureForm::openMeasure(int measureId) {
     measureView_ = new gui::MeasureItemView( measure_ );
     ui->dataTableView->setModel( measureView_ );
 
+    int col = 0;
+    foreach( QString column, measure_->columns()){
+        if(isReadOnlyColumn(column)){
+            ui->dataTableView->setItemDelegateForColumn(col,new gui::DelegateReadOnly(ui->dataTableView));
+        }
+        col++;
+    }
+
+
+
+
     headerView_->setPairs( headerPairs_, nPairs_ );
     headerView_->setValue( "type", measure_->typeJson() );
     headerView_->setValue( "comment", measure_->header().comment );
@@ -88,8 +108,23 @@ void addMeasureForm::openMeasure(int measureId) {
 }
 
 void addMeasureForm::addButtonClick() {
+    QVariantMap attributes;
+    for(int i=0;i < attributesView_->rowCount(); ++i){
+        attributes.insert( attributesView_->getPair( i  ).key,
+                           attributesView_->getPair( i  ).value);
 
-    measure_->header( );
+    }
+    measure_->attrs(attributes );
+
+    db::MeasureHeader header;
+
+    header.comment = headerView_->getPair( "comment" ).value.toString();
+    header.userDate = headerView_->getPair( "user_date" ).value.toDate();
+    header.fabricationDate = headerView_->getPair("fabricate_date").value.toDate();
+    header.dubious = headerView_->getPair("dubious").value.toBool();
+
+    measure_->header( header );
+    measure_->changeAt( QDateTime::currentDateTime()  );
 
     measureStorage_->saveMeasure( measure_ );
 }
@@ -271,21 +306,9 @@ void addMeasureForm::addButtonClick() {
 //        header.type = TYPE_UNKNOWN;
 //    }
 
-//    QVariantMap attributes;
-//    for(int i=0;i < attributesView_->rowCount(); ++i){
-//        attributes.insert( attributesView_->getPair( i  ).key,
-//                           attributesView_->getPair( i  ).value);
+//
 
-//    }
-
-//    header.attributes = attributes;
-
-//    header.comment = headerView_->getPair( "comment" ).value.toString();
-//    header.userDate = headerView_->getPair( "user_date" ).value.toDate();
-//    header.fabricationDate = headerView_->getPair("fabric_date").value.toDate();
-//    header.dubious = headerView_->getPair("dubious").value.toBool();
-
-//    measureView_->model().setChangeAt( QDateTime::currentDateTime() );
+//    measureView_->model().setChangeAt( );
 //    measureView_->model().setCreateAt( QDateTime::currentDateTime() );
 //    measureView_->model().setEnable( true );
 //    measureView_->model().setHeader( header );

@@ -58,6 +58,12 @@ void MeasureStorage::testData() {
 
     model->header( MeasureHeader("No comment, althought test date =)") );
 
+    // OUTPUT
+
+    model->addSource( Source("B",SOURCE_MODE_CURRENT,SOURCE_DIRECTION_OUTPUT,SOURCE_METHOD_CONST) );
+    model->addSource( Source("C",SOURCE_MODE_CURRENT,SOURCE_DIRECTION_OUTPUT,SOURCE_METHOD_CONST) );
+
+
     QStringList columns;
     columns << "Vc" << "Vb" << "Ve" << "Ib" << "Ic" ;
     model->columns(columns);

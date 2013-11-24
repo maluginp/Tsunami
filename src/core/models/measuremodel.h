@@ -88,6 +88,7 @@ public:
     const QVariantMap& attrs() const { return attributes_; }
     QString attrsJson() const;
     const QList<Source>& sources() const { return sources_; }
+    Source getSource( const QString& name );
     const MeasureHeader& header() const { return header_; }
     QString headerJson();
     QString dataJson();
@@ -113,6 +114,8 @@ public:
 
     int dataRows();
     int dataColumns();
+
+
 
 private:
     int measureId_;

@@ -33,9 +33,12 @@ public:
     ~addMeasureForm();
 private:
     int analysisId_;
+    bool isReadOnlyColumn( const QString& column );
     void openAnalysis(int analysisId);
     void openMeasure(int measureId);
     Ui::addMeasureForm *ui;
+
+    Action action_;
 
     gui::KeyValueView* headerView_;
     gui::KeyValueView* attributesView_;

@@ -140,6 +140,14 @@ QString MeasureModel::attrsJson() const {
     return QtJson::serializeStr(attributes_);
 }
 
+Source MeasureModel::getSource(const QString &name) {
+    QString modeChar = name[0].toLower();
+//    SourceMode mode = SOURCE_MODE_
+//    if(modeChar == "v"){
+
+//    }
+}
+
 QString MeasureModel::headerJson() {
     // TODO JSON is formed from header
 
