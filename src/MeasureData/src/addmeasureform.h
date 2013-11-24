@@ -2,43 +2,46 @@
 #define ADDMEASUREFORM_H
 
 #include <QWidget>
-#include <views/keyvalueview.h>
-#include <views/measureitemview.h>
-#include <models/analysisitems.h>
 
-class AnalysisModel;
 
 namespace Ui {
 class addMeasureForm;
 }
 
-class addMeasureForm : public QWidget
-{
+namespace tsunami{
+
+namespace db{
+    class AnalysisModel;
+}
+namespace gui{
+    class KeyValueView;
+    class MeasureItemView;
+    class KeyValuePair;
+}
+
+class addMeasureForm : public QWidget {
     Q_OBJECT
-    
 public:
-    explicit addMeasureForm(const int& analysisId, QWidget *parent = 0);
+    addMeasureForm(int analysisId, QWidget *parent = 0);
     ~addMeasureForm();
-    
-
 private:
-
-    void prepareAnalysis( const int& analysisId );
-    int countAnalysisItem(const QList<IAnalysisItem*>& items, const AnalysisItemType& type);
-
-//    bool sortItems(IAnalysisItem *item1, IAnalysisItem *item2);
-
+    int analysisId_;
+    void openAnalysis(int analysisId);
     Ui::addMeasureForm *ui;
 
-    KeyValueView* headerView_;
-    KeyValueView* attributesView_;
-    MeasureItemView* measureView_;
+    gui::KeyValueView* headerView_;
+    gui::KeyValueView* attributesView_;
+    gui::MeasureItemView* measureView_;
 
 
-    static KeyValuePair headerPairs_[];
+    static gui::KeyValuePair headerPairs_[];
     static const int nPairs_;
 private slots:
-    void addButtonClick();
+//    void addButtonClick();
 };
+
+}
+
+
 
 #endif // ADDMEASUREFORM_H

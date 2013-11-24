@@ -5,67 +5,66 @@
 #include <views/listitemview.h>
 #include <views/keyvalueview.h>
 #include <dbstorage/analysisstorage.h>
+#include "models/analysismodel.h"
 
 namespace Ui {
-class AnalysisForm;
+    class AnalysisForm;
 }
 
+
 namespace tsunami{
-namespace gui{
 
-
-class AnalysisForm : public QWidget
-{
+class AnalysisForm : public QWidget {
     Q_OBJECT
 
 public:
-    explicit AnalysisForm(QWidget *parent = 0);
-    void openAnalysis(const int& analysisId);
+    explicit AnalysisForm(int analysisId, QWidget *parent = 0);
+    void openAnalysis(int analysisId);
     ~AnalysisForm();
-private:
-    void prepareItemsInput();
-    void prepareItemsOutput();
-    void openAnalysisImpl(const AnalysisModel& model);
 
+
+private:
+    Source defaultSource( SourceDirection direction );
 
     Ui::AnalysisForm *ui;
-    ListItemView* itemsInputView_;
-    ListItemView* itemsOutputView_;
+    gui::ListItemView* itemsInputView_;
+    gui::ListItemView* itemsOutputView_;
 
-    KeyValueView* itemValueInputView_;
-    KeyValueView* itemValueOutputView_;
+    gui::KeyValueView* itemValueInputView_;
+    gui::KeyValueView* itemValueOutputView_;
 
-    AnalysisModel model_;
-    AnalysisModel storedModel_;
+    db::AnalysisModel *model_;
+    db::AnalysisStorage* storage_;
 
-    AnalysisStorage* storage_;
-
-    static KeyValuePair ITEM_TYPE_SWEEP[];
-    static KeyValuePair ITEM_TYPE_CONST[];
-    static KeyValuePair ITEM_TYPE_OUTPUT[];
+    static gui::KeyValuePair ITEM_TYPE_LINEAR[];
+    static int nTypeLinear_;
+    static gui::KeyValuePair ITEM_TYPE_LIST[];
+    static int nTypeList_;
+    static gui::KeyValuePair ITEM_TYPE_CONST[];
+    static int nTypeConst_;
+    static gui::KeyValuePair ITEM_TYPE_OUTPUT[];
+    static int nTypeOutput_;
 //    static KeyValuePair ITEM_TYPE_FUNC[];
 
 
 private slots:
-
-    void changeTypeItemInput( const int& index );
-    void changeTypeItemOutput( const int& index );
-    void insertInputItemClick();
-    void removeInputItemRemove();
     void selectedItemInput( const QModelIndex& index );
     void selectedItemOutput( const QModelIndex& index );
+    void showSource( const Source& source );
+
+
+
+    void changeTypeItemInput( int index );
+    void changeTypeItemOutput( int index );
+    void insertInputItemClick();
+    void removeInputItemRemove();
+
 
     void changeNameAnalysis(const QString& name);
-    void changeTypeAnalysis(const int& index);
+    void changeTypeAnalysis(int index);
 
-    void insertOutputItemClick();
-    void removeOutputItemClick();
-
-    void saveAnalysis();
-    void restoreAnalysis();
 };
 
-}
 }
 
 

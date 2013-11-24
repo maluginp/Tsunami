@@ -55,14 +55,14 @@ void MeasureStorage::testData() {
     configuration.insert("start", 0.0);
     configuration.insert("end",10.0);
     configuration.insert("step", 1.0);
-    model.addSource( Source("C",SOURCE_MODE_VOLTAGE,SOURCE_METHOD_LINEAR, configuration) );
+    model.addSource( Source("C",SOURCE_MODE_VOLTAGE,SOURCE_DIRECTION_INPUT,SOURCE_METHOD_LINEAR, configuration) );
 
     configuration.clear();
 
     configuration.insert("start", 0.0);
     configuration.insert("end",1.0);
     configuration.insert("step", 0.1);
-    model.addSource( Source("B",SOURCE_MODE_VOLTAGE,SOURCE_METHOD_LINEAR, configuration) );
+    model.addSource( Source("B",SOURCE_MODE_VOLTAGE,SOURCE_DIRECTION_INPUT,SOURCE_METHOD_LINEAR, configuration) );
 
     model.header( MeasureHeader("No comment, althought test date =)") );
 

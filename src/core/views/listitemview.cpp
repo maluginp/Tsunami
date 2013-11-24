@@ -105,6 +105,10 @@ ListItemView &ListItemView::addItem(const QString &key, const QVariant &value) {
     return addItem(pair);
 }
 
+void ListItemView::clear() {
+    items_.clear();
+}
+
 QVariant ListItemView::itemAt(const int &index) const {
     Q_ASSERT( index <= items_.size() );
     return items_.at(index).second;

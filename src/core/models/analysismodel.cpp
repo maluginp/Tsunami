@@ -1,6 +1,6 @@
 #include "analysismodel.h"
 #include "../components/json.h"
-#include <QDateTime>
+
 
 namespace tsunami{
 namespace db{
@@ -16,7 +16,40 @@ AnalysisModel::AnalysisModel()
 }
 
 void AnalysisModel::addSource( const Source& source ){
-    sources_.append( source );
+    if(sourceExists(source.node(),source.direction())){
+        int nSources = sources_.size();
+        for(int i=0; i < nSources; i++ ){
+            if(sources_[i].direction() == source.direction() &&
+               sources_[i].node().compare(source.node()) == 0){
+                sources_[i] = source;
+            }
+        }
+    }else{
+        sources_.append( source );
+    }
+}
+
+
+const Source &AnalysisModel::findSource(const QString &node, SourceDirection direction) {
+    int nSources = sources_.size();
+    for(int i=0; i < nSources; i++ ){
+        if(sources_[i].direction() == direction && sources_[i].node().compare(node) == 0){
+            return sources_[i];
+        }
+    }
+    Q_ASSERT(false);
+}
+
+void AnalysisModel::removeSource(const Source &source) {
+
+    QList<Source>::iterator it = sources_.begin();
+    for(; it != sources_.end(); ++it){
+        if(it->direction() == source.direction() && it->node().compare(source.node()) == 0){
+            sources_.erase( it );
+        }
+    }
+
+
 }
 
 void AnalysisModel::type(const QString &type) {
@@ -35,44 +68,14 @@ void AnalysisModel::sourcesJson(const QString &json){
     sources_.clear();
     QVariantList sources = QtJson::parse( json ).toList();
 
-    for(int i=0; i < sources.size(); ++i){
-        QVariantMap sourceJson = sources[i];
+    for(int i=0; i < sources.size(); ++i) {
+        QVariantMap sourceJson = sources[i].toMap();
         Source source;
-        source.node = sourceJson.value( "node" ).toString();
-        QString method = sourceJson.value("method").toString();
-
-        // Set method
-        if(method.compare("linear")==0){
-            source.method = SOURCE_METHOD_LINEAR;
-        }else if(method.compare("list") == 0){
-            source.method = SOURCE_METHOD_LIST;
-        }else if(method.compare("const") == 0){
-            source.method = SOURCE_METHOD_CONST;
-        }else{
-            Q_ASSERT(false);
-        }
-
-        source.configuration = sourceJson.value("configuration",QVariantMap()).toMap();
-
-        QString mode = sourceJson.value("mode").toString();
-        if(mode.compare("voltage") == 0){
-            source.mode = SOURCE_MODE_VOLTAGE;
-        }else if(mode.compare("current") == 0){
-            source.mode = SOURCE_MODE_CURRENT;
-        }else if(mode.compare("gnd") == 0){
-            source.mode = SOURCE_MODE_GND;
-        }else{
-            Q_ASSERT(false);
-        }
-
-        QString direction = sourceJson.value("direction").toString();
-        if(direction.compare("input") == 0){
-            source.direction = SOURCE_DIRECTION_INPUT;
-        }else if(direction.compare("output") == 0){
-            source.direction = SOURCE_DIRECTION_OUTPUT;
-        }else{
-            Q_ASSERT(false);
-        }
+        source.node(sourceJson.value( "node" ).toString());
+        source.method(sourceJson.value("method").toString());
+        source.configuration(sourceJson.value("configuration",QVariantMap()).toMap());
+        source.mode( sourceJson.value("mode").toString() );
+        source.direction(sourceJson.value("direction").toString());
 
         sources_.append(source);
 
@@ -93,39 +96,34 @@ QString AnalysisModel::typeJson() {
     return QString("unknown");
 }
 
-QString AnalysisModel::sourcesJson() {
+QList<Source> AnalysisModel::sources(SourceDirection direction) {
+    QList<Source> sources;
+    int nSources = sources_.size();
+    for(int i=0; i < nSources; ++i){
+        if(sources_[i].direction() == direction){
+            sources.append( sources_[i] );
+        }
+    }
+
+    return sources;
+
+}
+
+QString AnalysisModel::sourcesJson() const {
     QString json;
 
     QVariantList sources;
 
     foreach(Source source, sources_){
         QVariantMap sourceJson;
-        sourceJson.insert( "node", source.node );
+        sourceJson.insert( "node",   source.node() );
+        sourceJson.insert( "method", source.methodJson());
+        sourceJson.insert( "configuration", source.configuration() );
+        sourceJson.insert( "mode",   source.modeJson());
 
-        switch(source.method){
-        case SOURCE_METHOD_CONST:
-            sourceJson.insert("method","const");  break;
-        case SOURCE_METHOD_LINEAR:
-            sourceJson.insert("method","linear"); break;
-        case SOURCE_METHOD_LIST:
-            sourceJson.insert("method", "list"); break;
-        default:
-            Q_ASSERT(false);
-        }
-
-        sourceJson.insert( "configuration", source.configuration );
-
-        switch(source.mode){
-        case SOURCE_MODE_CURRENT: sourceJson.insert("mode", "current"); break;
-        case SOURCE_MODE_VOLTAGE: sourceJson.insert("mode", "voltage"); break;
-        case SOURCE_MODE_GND:     sourceJson.insert("mode", "gnd"); break;
-        default:
-            Q_ASSERT(false);
-        }
-
-        if(source.direction = SOURCE_DIRECTION_INPUT){
+        if(source.direction() == SOURCE_DIRECTION_INPUT){
             sourceJson.insert("direction","input");
-        }else if(source.direction == SOURCE_DIRECTION_OUTPUT){
+        }else if(source.direction() == SOURCE_DIRECTION_OUTPUT){
             sourceJson.insert("direction","output");
         }else{
             Q_ASSERT(false);
@@ -139,6 +137,17 @@ QString AnalysisModel::sourcesJson() {
     json = QtJson::serializeStr( sources );
 
     return json;
+}
+
+bool AnalysisModel::sourceExists(const QString &node, SourceDirection direction) {
+    int nSources = sources_.size();
+    for(int i=0; i < nSources; i++ ){
+        if(sources_[i].direction() == direction && sources_[i].node().compare(node) == 0){
+            return true;
+        }
+    }
+
+    return false;
 }
 
 

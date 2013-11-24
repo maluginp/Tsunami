@@ -1,45 +1,58 @@
 #include "analysisform.h"
 #include "ui_analysisform.h"
 
-KeyValuePair AnalysisForm::ITEM_TYPE_SWEEP[] = {
-    KeyValuePair("number",QVariant(1),KeyValuePair::TYPE_TEXT, tr("Number")),
-    KeyValuePair("node",  QVariant(),KeyValuePair::TYPE_TEXT, tr("Node")),
-    KeyValuePair("mode",  QVariant("voltage"),KeyValuePair::TYPE_LIST, tr("Type")),
-    KeyValuePair("method",QVariant("linear"),KeyValuePair::TYPE_LIST, tr("Method")),
-    KeyValuePair("start", QVariant(),KeyValuePair::TYPE_TEXT, tr("Start")),
-    KeyValuePair("stop",  QVariant(),KeyValuePair::TYPE_TEXT, tr("Stop")),
-    KeyValuePair("step",  QVariant(),KeyValuePair::TYPE_TEXT, tr("Step"))
+namespace tsunami{
+int AnalysisForm::nTypeLinear_ = 7;
+gui::KeyValuePair AnalysisForm::ITEM_TYPE_LINEAR[] = {
+    gui::KeyValuePair("number",QVariant(1),gui::KeyValuePair::TYPE_TEXT, tr("Number")),
+    gui::KeyValuePair("node",  QVariant(),gui::KeyValuePair::TYPE_TEXT, tr("Node")),
+    gui::KeyValuePair("mode",  QVariant("voltage"),gui::KeyValuePair::TYPE_LIST, tr("Type")),
+    gui::KeyValuePair("method",QVariant("linear"),gui::KeyValuePair::TYPE_LIST, tr("Method")),
+    gui::KeyValuePair("start", QVariant(),gui::KeyValuePair::TYPE_TEXT, tr("Start")),
+    gui::KeyValuePair("stop",  QVariant(),gui::KeyValuePair::TYPE_TEXT, tr("Stop")),
+    gui::KeyValuePair("step",  QVariant(),gui::KeyValuePair::TYPE_TEXT, tr("Step"))
+};
+int AnalysisForm::nTypeList_ = 5;
+gui::KeyValuePair AnalysisForm::ITEM_TYPE_LIST[] = {
+    gui::KeyValuePair("number",QVariant(1),gui::KeyValuePair::TYPE_TEXT, tr("Number")),
+    gui::KeyValuePair("node",  QVariant(),gui::KeyValuePair::TYPE_TEXT, tr("Node")),
+    gui::KeyValuePair("mode",  QVariant("voltage"),gui::KeyValuePair::TYPE_LIST, tr("Type")),
+    gui::KeyValuePair("method",QVariant("list"),gui::KeyValuePair::TYPE_LIST, tr("Method")),
+    gui::KeyValuePair("list", QVariant(""),gui::KeyValuePair::TYPE_TEXT, tr("List"))
+};
+int AnalysisForm::nTypeConst_ = 3;
+gui::KeyValuePair AnalysisForm::ITEM_TYPE_CONST[] = {
+    gui::KeyValuePair("node",  QVariant(),gui::KeyValuePair::TYPE_TEXT, tr("Node")),
+    gui::KeyValuePair("mode",  QVariant("voltage"),gui::KeyValuePair::TYPE_LIST, tr("Type")),
+    gui::KeyValuePair("const",QVariant(),gui::KeyValuePair::TYPE_TEXT, tr("Constant"))
+};
+int AnalysisForm::nTypeOutput_ = 2;
+gui::KeyValuePair AnalysisForm::ITEM_TYPE_OUTPUT[] = {
+    gui::KeyValuePair("node",  QVariant(),gui::KeyValuePair::TYPE_TEXT, tr("Node")),
+    gui::KeyValuePair("mode",  QVariant("voltage"),gui::KeyValuePair::TYPE_LIST, tr("Type"))
 };
 
-KeyValuePair AnalysisForm::ITEM_TYPE_CONST[] = {
-    KeyValuePair("node",  QVariant(),KeyValuePair::TYPE_TEXT, tr("Node")),
-    KeyValuePair("mode",  QVariant("voltage"),KeyValuePair::TYPE_LIST, tr("Type")),
-    KeyValuePair("const",QVariant(),KeyValuePair::TYPE_TEXT, tr("Constant"))
-};
-KeyValuePair AnalysisForm::ITEM_TYPE_OUTPUT[] = {
-    KeyValuePair("node",  QVariant(),KeyValuePair::TYPE_TEXT, tr("Node")),
-    KeyValuePair("mode",  QVariant("voltage"),KeyValuePair::TYPE_LIST, tr("Type"))
-};
 
-
-
-AnalysisForm::AnalysisForm(QWidget *parent) :
+AnalysisForm::AnalysisForm(int analysisId, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::AnalysisForm) {
     ui->setupUi(this);
 
-    storage_ = AnalysisStorage::instance();
-    itemsInputView_ = new ListItemView();
-    itemsOutputView_ = new ListItemView();
-    itemValueInputView_ = new KeyValueView();
-    itemValueOutputView_ = new KeyValueView();
 
-    ui->typeInputItemComboBox->addItem( tr("Sweep"), "sweep" );
+    storage_             = db::AnalysisStorage::instance();
+    model_               = NULL;
+    itemsInputView_      = new gui::ListItemView();
+    itemsOutputView_     = new gui::ListItemView();
+    itemValueInputView_  = new gui::KeyValueView();
+    itemValueOutputView_ = new gui::KeyValueView();
+
     ui->typeInputItemComboBox->addItem( tr("Constant"), "const" );
-    ui->typeOutputItemComboBox->addItem( tr("Output"), "output" );
-    ui->typeOutputItemComboBox->addItem( tr("Function"), "func" );
+    ui->typeInputItemComboBox->addItem( tr("Linear"), "linear" );
+    ui->typeInputItemComboBox->addItem( tr("List"), "list" );
+
     changeTypeItemInput(0);
     changeTypeItemOutput(0);
+
 
     // Analysis types
     ui->typeAnalysisComboBox->addItem( tr("DC"),  "dc"  );
@@ -47,13 +60,11 @@ AnalysisForm::AnalysisForm(QWidget *parent) :
     ui->typeAnalysisComboBox->addItem( tr("TRAN"),"tran");
 
     changeTypeAnalysis( 0 );
+    openAnalysis( analysisId );
 
-    openAnalysis( 1 );
-
+    // GUI
     ui->inputSplitter->widget(1)->setMaximumWidth( 250 );
     ui->outputSplitter->widget(1)->setMaximumWidth( 250 );
-
-
 
     ui->itemInputTableView->setModel( itemValueInputView_ );
     ui->itemOutputTableView->setModel( itemValueOutputView_ );
@@ -97,219 +108,213 @@ AnalysisForm::AnalysisForm(QWidget *parent) :
 
 }
 
-
-
-AnalysisForm::~AnalysisForm()
-{
+AnalysisForm::~AnalysisForm() {
     delete ui;
 }
 
-void AnalysisForm::prepareItemsInput() {
-    IAnalysisItem* item = NULL;
-    int noItem = 0;
-    QList< QPair<QString,QVariant> > items;
+Source AnalysisForm::defaultSource(SourceDirection direction) {
+    Source source;
+    if(direction == SOURCE_DIRECTION_INPUT){
+        source.node("");
+        source.direction(SOURCE_DIRECTION_INPUT);
+        source.method(SOURCE_METHOD_CONST);
+        source.addConfiguration( "const", 0.0 );
+        source.mode(SOURCE_MODE_VOLTAGE);
+    }else if(direction == SOURCE_DIRECTION_OUTPUT){
+        source.node("");
+        source.direction(SOURCE_DIRECTION_OUTPUT);
+        source.method(SOURCE_METHOD_CONST);
+        source.mode(SOURCE_MODE_VOLTAGE);
+    }
+    return source;
+}
 
-    foreach(item, model_.inputs()){
-        items << QPair<QString,QVariant>(item->title(), noItem);
-        noItem++;
+void AnalysisForm::openAnalysis(int analysisId) {
+    model_ = storage_->openAnalysis( analysisId );
+
+    QList<Source> sources;
+
+    // Preparing input
+    sources = model_->sources( SOURCE_DIRECTION_INPUT );
+
+    itemsInputView_->clear();
+    foreach(Source source, sources){
+        itemsInputView_->addItem( source.title(), source.node()  );
     }
 
-    itemsInputView_->setItems( items );
-}
-
-void AnalysisForm::prepareItemsOutput() {
-    IAnalysisItem* item = NULL;
-    QList< QPair<QString,QVariant> > items;
-    int noItem=0;
-
-    foreach(item, model_.outputs()){
-        items << QPair<QString,QVariant>(item->name(), noItem);
-        noItem++;
-    }
-
-    itemsOutputView_->setItems( items );
-}
-
-void AnalysisForm::openAnalysis(const int &analysisId) {
-    openAnalysisImpl(storage_->openAnalysis( analysisId ));
-}
-
-void AnalysisForm::openAnalysisImpl(const AnalysisModel &model) {
-
-    model_ = model;
-    storedModel_ = model_;
-    ui->nameAnalysisText->setText( model.name() );
-    switch(model_.type()){
-    case AnalysisModel::ANALYSIS_DC: ui->typeAnalysisComboBox->setCurrentIndex(0); break;
-    case AnalysisModel::ANALYSIS_AC: ui->typeAnalysisComboBox->setCurrentIndex(1); break;
-    case AnalysisModel::ANALYSIS_TRAN: ui->typeAnalysisComboBox->setCurrentIndex(2); break;
-    default:
-        ui->typeAnalysisComboBox->setCurrentIndex(-1);
+    itemsOutputView_->clear();
+    sources = model_->sources( SOURCE_DIRECTION_OUTPUT );
+    foreach(Source source, sources){
+        itemsOutputView_->addItem( source.title(), source.node() );
     }
 
 
-
-    prepareItemsInput();
-    prepareItemsOutput();
-
 }
 
-void AnalysisForm::changeTypeItemInput(const int &index) {
-    if(ui->typeInputItemComboBox->currentIndex() != index){
-        ui->typeInputItemComboBox->setCurrentIndex( index );
-    }
 
+void AnalysisForm::changeTypeItemInput(int index) {
     QString key = ui->typeInputItemComboBox->itemData( index ).toString();
 
-    QVariantMap mapModes;
-    mapModes.insert( "Voltage", "voltage" );
-    mapModes.insert( "Current", "current" );
-    QVariantMap mapSweepMethods;
-    mapSweepMethods.insert("Linear","linear");
-    mapSweepMethods.insert("List","list");
+    QString node = itemValueInputView_->getPair( "node" ).value.toString();
+    SourceDirection direction = SOURCE_DIRECTION_INPUT;
 
-
-    // Sweep and const
-    if( key.compare("sweep") == 0 ){
-        itemValueInputView_->setPairs( ITEM_TYPE_SWEEP, 7 );
-        itemValueInputView_->setPairData("method",mapSweepMethods);
-    } else if( key.compare("const") == 0 ){
-        itemValueInputView_->setPairs( ITEM_TYPE_CONST, 3 );
-    } else{
-        return;
+    Source source;
+    if( model_->sourceExists(node,direction) ){
+        source = model_->findSource(node,direction);
+    }else{
+        source = defaultSource(direction);
+        source.node(node);
     }
 
-    itemValueInputView_->setPairData( "mode", mapModes );
-    itemValueInputView_->fillDelegates( ui->itemInputTableView );
-}
-
-void AnalysisForm::changeTypeItemOutput(const int &index) {
-    if(ui->typeOutputItemComboBox->currentIndex() != index){
-        ui->typeOutputItemComboBox->setCurrentIndex( index );
+    if(key.compare("linear") == 0){
+        if(source.method() != SOURCE_METHOD_LINEAR){
+            source.method(SOURCE_METHOD_LINEAR);
+            source.addConfiguration("start",0.0);
+            source.addConfiguration("stop",5.0);
+            source.addConfiguration("step",1.0);
+        }
+    }else if(key.compare("list") == 0){
+        if(source.method() != SOURCE_METHOD_LIST){
+            source.method(SOURCE_METHOD_LIST);
+            source.addConfiguration("list","");
+        }
+    }else if( key.compare("const") == 0 ){
+        if(source.method() != SOURCE_METHOD_CONST){
+            source.method(SOURCE_METHOD_CONST);
+            source.addConfiguration( "const", 0.0 );
+        }
     }
-    QString key = ui->typeOutputItemComboBox->itemData( index ).toString();
-    QVariantMap mapModes;
-    mapModes.insert( "Voltage", "voltage" );
-    mapModes.insert( "Current", "current" );
 
-    if( key.compare("output") == 0 ){
-        itemValueOutputView_->setPairs( ITEM_TYPE_OUTPUT, 2 );
-    } else {
-        return;
-    }
-
-
-    itemValueOutputView_->setPairData( "mode", mapModes );
-    itemValueOutputView_->fillDelegates( ui->itemOutputTableView );
 }
 
-void AnalysisForm::insertInputItemClick() {
-    QString key = ui->typeInputItemComboBox->itemData(
-                ui->typeInputItemComboBox->currentIndex() ).toString();
-
-    if( key.compare("sweep") == 0 ){
-        AnalysisItemSweep* item = new AnalysisItemSweep();
-        item->setNumber( itemValueInputView_->getPair("number").value.toInt()  );
-        item->setNode(   itemValueInputView_->getPair("node").value.toString() );
-        item->setMode(   itemValueInputView_->getPair("mode").value.toString() );
-        item->setMethod( itemValueInputView_->getPair("method").value.toString());
-        item->setStart(  itemValueInputView_->getPair("start").value.toDouble());
-        item->setStop(   itemValueInputView_->getPair("stop").value.toDouble());
-        item->setStep(   itemValueInputView_->getPair("step").value.toDouble());
-        model_.addInput( item );
-        prepareItemsInput();
-    } else if( key.compare("const") == 0 ){
-        AnalysisItemConst* item = new AnalysisItemConst();
-        item->setConstant( itemValueInputView_->getPair("const").value.toDouble() );
-        item->setNode(   itemValueInputView_->getPair("node").value.toString() );
-        item->setMode(   itemValueInputView_->getPair("mode").value.toString() );
-        model_.addInput( item );
-        prepareItemsInput();
-    }
+void AnalysisForm::changeTypeItemOutput(int index) {
+    Q_ASSERT(false);
 }
 
-void AnalysisForm::removeInputItemRemove() {
-    AnalysisItemOutput item;
-    item.setNode( itemValueInputView_->getPair("node").value.toString() );
-    item.setMode( itemValueInputView_->getPair("mode").value.toString() );
-    model_.removeItemInput( item.name() );
-    prepareItemsInput();
-}
 
 void AnalysisForm::selectedItemInput(const QModelIndex &index) {
-    //    int noItem = index.data( Qt::UserRole ).toInt();
-    int noItem = index.row();
+    QString node = index.data(Qt::EditRole).toString();
 
-    if(model_.inputs().at(noItem)->getItemType() == ANALYSIS_ITEM_SWEEP){
-        changeTypeItemInput( 0 );
-        AnalysisItemSweep* item = static_cast<AnalysisItemSweep*>(model_.inputs().at(noItem));
-        itemValueInputView_->setValue( "number", item->number() );
-        itemValueInputView_->setValue( "node", item->node() );
-        itemValueInputView_->setValue("mode",  item->modeToVariant());
-        itemValueInputView_->setValue( "method", item->method());
-        itemValueInputView_->setValue( "start", item->start() );
-        itemValueInputView_->setValue("stop", item->stop());
-        itemValueInputView_->setValue("step", item->step());
-    }else if( model_.inputs().at(noItem)->getItemType() == ANALYSIS_ITEM_CONST ){
-        changeTypeItemInput( 1 );
-        AnalysisItemConst* item = static_cast<AnalysisItemConst*>(model_.inputs().at(noItem));
-        itemValueInputView_->setValue( "node", item->node() );
-        itemValueInputView_->setValue("mode",  item->modeToVariant());
-        itemValueInputView_->setValue("const",item->constant());
+    QList<Source> sources = model_->sources( SOURCE_DIRECTION_INPUT );
+    int nSources = sources.size();
+    for(int i=0; i < nSources; ++i){
+        if(sources[i].node() == node){
+            showSource( sources[i] );
+            break;
+        }
     }
+
+
+
 }
 
 void AnalysisForm::selectedItemOutput(const QModelIndex &index) {
-    int noItem = index.row();
-    if( model_.outputs().at(noItem)->getItemType() == ANALYSIS_ITEM_OUTPUT ){
-        changeTypeItemOutput( 0 );
-        AnalysisItemOutput* item = static_cast<AnalysisItemOutput*>(model_.outputs().at(noItem));
-        itemValueOutputView_->setValue( "node", item->node() );
-        itemValueOutputView_->setValue("mode",  item->modeToVariant());
+    QString node = index.data(Qt::EditRole).toString();
+
+    QList<Source> sources = model_->sources( SOURCE_DIRECTION_OUTPUT );
+    int nSources = sources.size();
+    for(int i=0; i < nSources; ++i){
+        if(sources[i].node() == node){
+            showSource( sources[i] );
+            break;
+        }
     }
+
+}
+
+void AnalysisForm::showSource(const Source &source) {
+    gui::KeyValueView* items;
+    if(source.direction() == SOURCE_DIRECTION_INPUT){
+        items = itemValueInputView_;
+        if(source.method() == SOURCE_METHOD_LINEAR){
+            items->setPairs( ITEM_TYPE_LINEAR, nTypeLinear_ );
+
+            items->setValue( "number", source.configuration("number") );
+            items->setValue("node",source.node());
+            items->setValue("mode",source.modeJson());
+            items->setValue("method",source.methodJson());
+            items->setValue("start", source.configuration("start"));
+            items->setValue("stop",source.configuration("stop"));
+            items->setValue("step",source.configuration("step"));
+
+        }else if(source.method() == SOURCE_METHOD_CONST){
+
+            items->setPairs( ITEM_TYPE_CONST, nTypeConst_ );
+            items->setValue("node",source.node());
+            items->setValue("mode",source.modeJson());
+            items->setValue("const", source.configuration("const"));
+
+        }else if(source.method() == SOURCE_METHOD_LIST){
+            items->setPairs( ITEM_TYPE_LIST, nTypeList_);
+            items->setValue( "number", source.configuration("number") );
+            items->setValue("node",source.node());
+            items->setValue("mode",source.modeJson());
+            items->setValue("method",source.methodJson());
+            items->setValue("list", source.configuration("list"));
+        }
+
+
+    }else if(source.direction() == SOURCE_DIRECTION_OUTPUT){
+        itemValueOutputView_->setPairs( ITEM_TYPE_OUTPUT, nTypeOutput_ );
+    }else{
+        Q_ASSERT(false);
+    }
+
 
 }
 
 void AnalysisForm::changeNameAnalysis(const QString &name) {
-    model_.setName( name );
+    model_->name(name);
 }
 
-void AnalysisForm::changeTypeAnalysis(const int &index) {
+void AnalysisForm::changeTypeAnalysis(int index) {
     QString key = ui->typeAnalysisComboBox->itemData( index ).toString();
-    model_.setType( key );
+    model_->type( key );
 }
 
-void AnalysisForm::insertOutputItemClick() {
-    QString key = ui->typeOutputItemComboBox->itemData(
-                ui->typeOutputItemComboBox->currentIndex() ).toString();
+void AnalysisForm::insertInputItemClick() {
 
-    if( key.compare("output") == 0 ){
-        AnalysisItemOutput* item = new AnalysisItemOutput();
-        item->setNode(   itemValueOutputView_->getPair("node").value.toString() );
-        item->setMode(   itemValueOutputView_->getPair("mode").value.toString() );
-        model_.addOutput( item );
-        prepareItemsOutput();
-    } else {
+    Source source;
+    source.node( itemValueInputView_->getPair( "node" ).value.toString());
+    source.method( itemValueInputView_->getPair( "method" ).value.toString() );
+    source.mode( itemValueInputView_->getPair( "mode" ).value.toString() );
+    source.direction( SOURCE_DIRECTION_INPUT);
+
+    QVariantMap configuration;
+    switch( source.method() ){
+    case SOURCE_METHOD_CONST:
+        configuration.insert("const", itemValueInputView_->getPair( "const" ).value.toDouble());
+        break;
+    case SOURCE_METHOD_LINEAR:
+        configuration.insert("number", itemValueInputView_->getPair( "number" ).value.toInt());
+        configuration.insert("start", itemValueInputView_->getPair( "start" ).value.toDouble());
+        configuration.insert("stop", itemValueInputView_->getPair( "stop" ).value.toDouble());
+        configuration.insert("step", itemValueInputView_->getPair( "step" ).value.toDouble());
+        break;
+    case SOURCE_METHOD_LIST:
+        configuration.insert("number", itemValueInputView_->getPair( "number" ).value.toInt());
+        configuration.insert("list", itemValueInputView_->getPair( "list" ).value.toString());
+        break;
     }
 
+    source.configuration( configuration );
+
+    model_->addSource( source );
+
+
+
+
 }
 
-void AnalysisForm::removeOutputItemClick() {
-    AnalysisItemOutput item;
-    item.setNode( itemValueOutputView_->getPair("node").value.toString() );
-    item.setMode( itemValueOutputView_->getPair("mode").value.toString() );
-    model_.removeItemOutput( item.name() );
-    prepareItemsOutput();
+void AnalysisForm::removeInputItemRemove() {
+    Source source;
+    source.node( itemValueInputView_->getPair( "node" ).value.toString());
+    source.method( itemValueInputView_->getPair( "method" ).value.toString() );
+    source.mode( itemValueInputView_->getPair( "mode" ).value.toString() );
+    source.direction( SOURCE_DIRECTION_INPUT);
+
+    model_->removeSource(source);
+
 }
 
-void AnalysisForm::saveAnalysis() {
-    if(storage_->saveAnalysis( model_ )){
-        qDebug() << "Analysis saved";
-    }else{
-        qDebug() << "Analysis did not save";
-    }
-}
-
-void AnalysisForm::restoreAnalysis() {
-    openAnalysisImpl( storedModel_ );
 }

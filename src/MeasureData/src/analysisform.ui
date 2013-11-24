@@ -220,6 +220,9 @@
                </item>
                <item>
                 <widget class="QComboBox" name="typeOutputItemComboBox">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
                  <property name="maximumSize">
                   <size>
                    <width>200</width>

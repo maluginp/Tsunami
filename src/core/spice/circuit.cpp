@@ -318,8 +318,8 @@ Circuit *Circuit::createCircuitDevice(DeviceType type, const QList<Source> &sour
     int termGnd = -1;
     // find ground
     foreach(Source source,sources){
-        Terminal* term = circuit->getTerminal( source.node );
-        if( source.mode == SOURCE_MODE_GND ){
+        Terminal* term = circuit->getTerminal( source.node() );
+        if( source.mode() == SOURCE_MODE_GND ){
             term->setRef();
             termGnd = term->id();
         }
@@ -328,16 +328,16 @@ Circuit *Circuit::createCircuitDevice(DeviceType type, const QList<Source> &sour
     Q_ASSERT(termGnd != -1);
 
     foreach(Source source,sources){
-        if(source.mode == SOURCE_MODE_GND){
+        if(source.mode() == SOURCE_MODE_GND){
             continue;
         }
-        QString nameSource = formSourceName( source.mode, source.node );
+        QString nameSource = formSourceName( source.mode(), source.node() );
         if(nameSource.isEmpty()) continue;
 
         int devId = circuit->addDevice( nameSource, DEVICE_SOURCE );
-        circuit->getDevice(devId)->setSource( source.method, source.configuration );
+        circuit->getDevice(devId)->setSource( source.method(), source.configuration() );
 
-        circuit->connect( devId, circuit->getTerminal(source.node)->id()  );
+        circuit->connect( devId, circuit->getTerminal(source.node())->id()  );
         circuit->connect( devId, termGnd);
 
     }

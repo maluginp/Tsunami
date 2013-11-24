@@ -52,7 +52,8 @@ SOURCES += main.cpp \
     extractor/extractor.cpp \
     extractor/dataset.cpp \
     extractor/extractorglobal.cpp \
-    dbstorage/devicestorage.cpp
+    dbstorage/devicestorage.cpp \
+    components/source.cpp
 
 HEADERS += \
     components/json.h \
@@ -94,7 +95,8 @@ HEADERS += \
     extractor/extractor.h \
     extractor/dataset.h \
     extractor/extractorglobal.h \
-    dbstorage/devicestorage.h
+    dbstorage/devicestorage.h \
+    components/source.h
 
 
 

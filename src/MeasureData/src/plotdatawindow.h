@@ -2,12 +2,19 @@
 #define PLOTDATAWINDOW_H
 
 #include <QMainWindow>
-class MeasureItemView;
-class ParameterPlotView;
+
 
 namespace Ui {
 class PlotDataWindow;
 }
+
+namespace tsunami{
+namespace gui{
+    class MeasureItemView;
+    class ParameterPlotView;
+}
+
+
 
 class PlotDataWindow : public QMainWindow
 {
@@ -18,11 +25,12 @@ public:
     ~PlotDataWindow();
 
 private:
-    Ui::PlotDataWindow *ui;
-    ParameterPlotView* paramPlotView_;
-    MeasureItemView* measureView_;
+//    Ui::PlotDataWindow *ui;
+    gui::ParameterPlotView* paramPlotView_;
+    gui::MeasureItemView* measureView_;
 private slots:
     void findParameter( const QString& parameter );
 };
 
+}
 #endif // PLOTDATAWINDOW_H

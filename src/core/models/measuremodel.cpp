@@ -108,10 +108,10 @@ QMap<QString, double> MeasureModel::find(const QMap<QString, double> &data) {
     // Getting sources;
     foreach(Source source, sources_){
         QString name;
-        if(source.mode == SOURCE_MODE_VOLTAGE){
-            name = QString( "V%1" ).arg(source.node);
-        }else if(source.mode == SOURCE_MODE_CURRENT){
-            name = QString("I%1").arg(source.node);
+        if(source.mode() == SOURCE_MODE_VOLTAGE){
+            name = QString( "V%1" ).arg(source.node());
+        }else if(source.mode() == SOURCE_MODE_CURRENT){
+            name = QString("I%1").arg(source.node());
         }
 
         if(!name.isEmpty()){

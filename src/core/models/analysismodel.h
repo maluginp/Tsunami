@@ -1,6 +1,7 @@
 #ifndef ANALYSISMODEL_H
 #define ANALYSISMODEL_H
 // TODO Remove?
+#include <QDateTime>
 #include "defines.h"
 namespace tsunami{
 namespace db{
@@ -15,6 +16,8 @@ public:
     void deviceId( int deviceId ) { deviceId_ = deviceId; }
     void name( const QString& name) { name_ = name; }
     void addSource( const Source& source );
+    const Source& findSource( const QString& node, SourceDirection direction );
+    void removeSource(const Source& source);
     void sources( const QList<Source>& sources  ){ sources_ = sources; }
     void sourcesJson( const QString& json );
     void createAt( const QDateTime& createAt ){ createdAt_ = createAt; }
@@ -25,15 +28,22 @@ public:
     const AnalysisType& type() { return type_; }
     QString typeJson();
     const QList<Source>& sources() { return sources_; }
+    QList<Source> sources(SourceDirection direction);
+
+
     const QString& name() { return name_; }
     const QDateTime& createAt() { return createdAt_; }
     const QDateTime& changeAt() { return changedAt_; }
     const bool& enable() { return enable_; }
     const int& deviceId() { return deviceId_; }
 
-    QString sourcesJson();
+    QString sourcesJson() const;
+    bool sourceExists( const QString& node, SourceDirection direction  );
+
 
 private:
+
+
     int analysisId_;
     int deviceId_;
     AnalysisType type_;

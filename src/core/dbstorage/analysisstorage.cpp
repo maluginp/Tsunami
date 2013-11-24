@@ -24,6 +24,10 @@ AnalysisModel *AnalysisStorage::openAnalysis(int analysisId) {
     return openAnalysisImpl(analysisId);
 }
 
+QMap<int, QString> AnalysisStorage::listAnalysis(int deviceId) {
+    return listAnalysisImpl(deviceId);
+}
+
 QString AnalysisStorage::connectionName() const {
     return CONNECTION_NAME_ANALYSIS;
 }
@@ -45,14 +49,14 @@ void AnalysisStorage::testData() {
     configuration.insert("start", 0.0);
     configuration.insert("end",10.0);
     configuration.insert("step", 1.0);
-    model->addSource( Source("C",SOURCE_MODE_VOLTAGE,SOURCE_METHOD_LINEAR, configuration) );
+    model->addSource( Source("C",SOURCE_MODE_VOLTAGE,SOURCE_DIRECTION_INPUT,SOURCE_METHOD_LINEAR, configuration) );
 
     configuration.clear();
 
     configuration.insert("start", 0.0);
     configuration.insert("end",1.0);
     configuration.insert("step", 0.1);
-    model->addSource( Source("B",SOURCE_MODE_VOLTAGE,SOURCE_METHOD_LINEAR, configuration) );
+    model->addSource( Source("B",SOURCE_MODE_VOLTAGE,SOURCE_DIRECTION_INPUT,SOURCE_METHOD_LINEAR, configuration) );
 
     if(!saveAnalysis( model )){
         Q_ASSERT(false);
@@ -169,6 +173,7 @@ bool AnalysisStorage::createTable(AnalysisTable table) {
 
     QSqlQuery q(sqlQuery,db());
     if(!q.exec()){
+
         setLastError( q.lastError().text() );
         return false;
     }
@@ -178,6 +183,28 @@ bool AnalysisStorage::createTable(AnalysisTable table) {
 #endif
 
     return true;
+}
+
+QMap<int, QString> AnalysisStorage::listAnalysisImpl(int deviceId) {
+    QMap<int, QString> items;
+    QString sqlQuery;
+    sqlQuery = sql("SELECT * FROM %1 WHERE device_id=:device_id").arg(TABLE_NAME_ANALYSES);
+
+    QSqlQuery q(sqlQuery,db());
+    q.bindValue(":device_id", deviceId);
+
+    if(!q.exec()){
+        setLastError( q.lastError().text() );
+        return QMap<int, QString>();
+    }
+
+
+    while(q.next()){
+        QSqlRecord rec(q.record());
+        items.insert( ITEM("id").toInt(), ITEM("name").toString() );
+    }
+
+    return items;
 }
 
 

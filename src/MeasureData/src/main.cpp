@@ -1,29 +1,21 @@
 #include <QApplication>
-//#include "measuredatawindow.h"
+#include "choiceanalysisform.h"
 #include "addmeasureform.h"
-#include "analysisform.h"
-#include "choiceanalysisdialog.h"
-#include "plotdatawindow.h"
+//#include "analysisform.h"
+//#include "plotdatawindow.h"
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
     //    MeasureDataWindow mainWindow;
     //    mainWindow.show();
 
+    int deviceId = 1;
+    int analysisId = tsunami::ChoiceAnalysisForm::getAnalysisId( deviceId );
+    if( analysisId == -1){
+        Q_ASSERT(false);
+    }
 
-//    PlotDataWindow plot;
-//    plot.show();
-
-    int analysisId = choiceAnalysisDialog::openDialog();
-    qDebug() << analysisId;
-    if(analysisId == -1){ return 0;}
-
-    addMeasureForm form(analysisId,0);
+    tsunami::addMeasureForm form(analysisId,0);
     form.show();
-
-//    AnalysisForm form;
-//    form.openAnalysis( 1 );
-//    form.show();
-
     return a.exec();
 }

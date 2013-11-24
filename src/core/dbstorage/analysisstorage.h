@@ -19,7 +19,7 @@ public:
     bool saveAnalysis( AnalysisModel* model );
     AnalysisModel* openAnalysis(int analysisId);
 
-    QMap<int,QString> listAnalysis();
+    QMap<int,QString> listAnalysis(int deviceId);
 
 protected:
     QString connectionName() const;
@@ -30,7 +30,7 @@ private:
     bool saveAnalysisImpl( AnalysisModel* model );
     AnalysisModel* openAnalysisImpl(int analysisId);
     bool createTable(AnalysisTable table);
-    QMap<int,QString> listAnalysisImpl();
+    QMap<int,QString> listAnalysisImpl(int deviceId);
 
     static QString CONNECTION_NAME_ANALYSIS;
     static QString TABLE_NAME_ANALYSES;
