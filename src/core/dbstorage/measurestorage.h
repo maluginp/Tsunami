@@ -19,9 +19,8 @@ public:
     MeasureStorage();
     QString dbName() const;
 
-    bool saveMeasure();
-    bool saveMeasure(const MeasureModel& measure);
-    MeasureModel openMeasure(const int& measureId);
+    bool saveMeasure(MeasureModel* measure);
+    MeasureModel* openMeasure(int measureId);
 
     QList<MeasureModel> findMeasure( const QVariantMap& criteria );
 
@@ -32,15 +31,9 @@ private:
 
     void testData();
 
-    MeasureModel openMeasureImpl(const int& measureId);
-    bool saveMeasureImpl(const MeasureModel& measure);
+    MeasureModel* openMeasureImpl(int measureId);
+    bool saveMeasureImpl(MeasureModel* measure);
     bool createTable( const MeasureTable& table );
-
-    void saveCache( const MeasureModel& measure ) const;
-
-    mutable MeasureModel currentMeasure_;
-
-    mutable QMap<int,MeasureModel> cachedMeasures_;
 
     static QString CONNECTION_NAME_MEASURE;
     static QString TABLE_NAME_MEASURES;

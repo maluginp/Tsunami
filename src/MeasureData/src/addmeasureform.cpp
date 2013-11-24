@@ -28,9 +28,9 @@ addMeasureForm::addMeasureForm(int analysisId, QWidget *parent) :
     attributesView_ = new gui::KeyValueView();
     measureView_ = new gui::MeasureItemView(-1);
 
-//    ui->headerTableView->setModel( headerView_ );
-//    ui->attributesTableView->setModel( attributesView_ );
-//    ui->dataTableView->setModel( measureView_ );
+    ui->headerTableView->setModel( headerView_ );
+    ui->attributesTableView->setModel( attributesView_ );
+    ui->dataTableView->setModel( measureView_ );
 
 
     openAnalysis( analysisId );

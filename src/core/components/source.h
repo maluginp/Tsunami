@@ -23,9 +23,7 @@ enum SourceDirection{
 class Source{
 public:
 
-    Source(){
-        Q_ASSERT(false);
-    }
+    Source();
 
     const QString& node() const { return node_; }
     const SourceMode& mode() const { return mode_; }

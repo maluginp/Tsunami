@@ -106,6 +106,13 @@ const QVariant &Source::configuration(const QString &key) const{
     return configuration_[key];
 }
 
+Source::Source() {
+    mode_ = SOURCE_MODE_GND;
+    method_ = SOURCE_METHOD_UNKNOWN;
+    direction_ = SOURCE_DIRECTION_INPUT;
+
+}
+
 QString Source::modeJson() const{
     if(mode_ == SOURCE_MODE_VOLTAGE){
         return "voltage";

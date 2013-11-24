@@ -71,7 +71,6 @@ public:
     void addColumn( const QString& column ) { columns_.append( column ); }
 
     void dataJson( const QString& json );
-    void data( double *data );
     void data( const QVector< QVector<double> >& data);
     void createAt( const QDateTime& createAt ) { createdAt_ = createAt; }
     void changeAt( const QDateTime& changeAt ) { changedAt_ = changeAt; }
@@ -85,16 +84,19 @@ public:
     const int& deviceId() const { return deviceId_; }
     const QString& name() const { return name_; }
     const AnalysisType& type() const { return type_; }
+    QString typeJson();
     const QVariantMap& attrs() const { return attributes_; }
     const QList<Source>& sources() const { return sources_; }
     const MeasureHeader& header() const { return header_; }
     QString headerJson();
     QString dataJson();
-
+    QString sourcesJson();
     const QStringList& columns() const { return columns_; }
+    QString columnsJson();
     const QDateTime& createAt() const { return createdAt_; }
     const QDateTime& changeAt() const { return changedAt_; }
     const int& userId() const { return userId_; }
+    const bool& enable() const { return enable_; }
 
     bool hasAttr( const QString& key, const QVariant& value = QVariant() );
     QMap<QString, double> get(int row);
@@ -103,8 +105,13 @@ public:
 
     QMap<QString,double> find( const  QMap<QString,double>& data );
 
-    double at(int row, const QString& name);
-    double at(int row, int column);
+    const double &at(int row, const QString& name) const;
+    const double &at(int row, int column) const;
+    double &at(int row, int column);
+    const QString& column( int index ) const;
+
+    int dataRows();
+    int dataColumns();
 
 private:
     int measureId_;
@@ -116,7 +123,7 @@ private:
     MeasureHeader header_;
     QStringList columns_;
 
-    double* data_;
+    MatrixDouble* data_;
     QDateTime createdAt_;
     QDateTime changedAt_;
     bool enable_;

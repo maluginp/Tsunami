@@ -33,13 +33,13 @@ QModelIndex MeasureItemView::parent(const QModelIndex &child) const {
 
 int MeasureItemView::rowCount(const QModelIndex &parent) const {
     Q_UNUSED(parent)
-    Q_ASSERT(false);
+    return measure_->dataRows();
 //    return measure_.dataRows();
 }
 
 int MeasureItemView::columnCount(const QModelIndex &parent) const {
     Q_UNUSED(parent)
-    Q_ASSERT(false);
+    return measure_->dataColumns();
 //    return measure_.dataColumns();
 }
 
@@ -48,7 +48,9 @@ QVariant MeasureItemView::data(const QModelIndex &index, int role) const  {
         return QVariant();
     }
 
-    Q_ASSERT(false);
+    return QVariant( measure_->at( index.row(), index.column() ) );
+
+//    Q_ASSERT(false);
 //    return QVariant(measure_.item( index.row(), index.column() ));
 
 }
@@ -60,47 +62,45 @@ Qt::ItemFlags MeasureItemView::flags(const QModelIndex &index) const {
 
 bool MeasureItemView::setData(const QModelIndex &index, const QVariant &value, int role) {
     bool ok;
-//    if(role == Qt::EditRole){
-//        measure_.setItem( index.row(), index.column(), value.toDouble(&ok));
-//    }
+    if(role == Qt::EditRole){
+        measure_->at(index.row(),index.column())  = value.toDouble();
+        return true;
+    }
 
-    Q_ASSERT(false);
     return false;
 }
 
 QVariant MeasureItemView::headerData(int section, Qt::Orientation orientation, int role) const {
-//    if(role == Qt::DisplayRole){
-//        if(orientation == Qt::Horizontal){
-//            return measure_.getColumnName( section );
-//        }
-//    }
-    Q_ASSERT(false);
+    if(role == Qt::DisplayRole){
+        if(orientation == Qt::Horizontal){
+            return measure_->column(section);
+        }
+    }
+
 
     return QVariant();
 }
 
 bool MeasureItemView::saveMeasure() {
-    return storage_->saveMeasure( measure_ );
+//    return storage_->saveMeasure( measure_ );
 }
 
 
 void MeasureItemView::openMeasure(int measureId) {
 
-    Q_ASSERT(false);
-//    if(measureId == -1){
-//        return;
-//    }
 
-//    measure_ = storage_->openMeasure( measureId );
+    if(measureId == -1){
+        return;
+    }
+
+    measure_ = storage_->openMeasure( measureId );
 //    storeMeasure_ = measure_;
 
-//    rows_ = measure_.dataRows();
-//    columns_ = measure_.dataColumns();
+    rows_ = measure_->rows(); // .dataRows();
+    columns_ = measure_->columns().size(); // .dataColumns();
 }
 
-void MeasureItemView::restoreMeasure() {
-    measure_ = storeMeasure_;
-}
+
 
 }
 }

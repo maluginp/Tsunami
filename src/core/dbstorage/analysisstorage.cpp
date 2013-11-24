@@ -1,6 +1,6 @@
 #include "analysisstorage.h"
 #include "models/analysismodel.h"
-
+#include <QDebug>
 namespace tsunami {
 namespace db{
 
@@ -44,7 +44,7 @@ void AnalysisStorage::testData() {
 
     // Sources;
 
-    model->addSource(Source("E",SOURCE_MODE_GND));
+    model->addSource(Source("E",SOURCE_MODE_GND,SOURCE_DIRECTION_INPUT,SOURCE_METHOD_CONST));
     QVariantMap configuration;
     configuration.insert("start", 0.0);
     configuration.insert("end",10.0);
@@ -79,19 +79,20 @@ bool AnalysisStorage::saveAnalysisImpl(AnalysisModel *model) {
         return false;
     }
 
-    sqlQuery = sql("INSERT OR REPLACE INTO %1(id,name,device_id,type,sources,createdAt,changedAt,enable) "
-                   "VALUES(:id,:name,:device_id,:type,:sources,:createdAt,:changedAt,:enable)")
+    sqlQuery = sql("INSERT OR REPLACE INTO %1(id,device_id,name,type,sources,createdAt,changedAt,enable) "
+                   "VALUES(:id,:device,:name,:type,:sources,:createdAt,:changedAt,:enable)")
             .arg(TABLE_NAME_ANALYSES);
 
     QSqlQuery q(sqlQuery,db());
 
+    qDebug() << sqlQuery;
     if( model->id() == -1 ){
         analysisId = q.lastInsertId().toInt();
     }
 
     q.bindValue(":id", analysisId);
 
-    q.bindValue(":device_id",model->deviceId());
+    q.bindValue(":device",model->deviceId());
     q.bindValue(":name", model->name());
     q.bindValue(":type",model->typeJson());
     q.bindValue(":sources",model->sourcesJson());

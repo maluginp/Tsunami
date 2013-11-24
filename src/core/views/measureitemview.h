@@ -24,23 +24,18 @@ public:
     void openMeasure(int measureId );
 
 
-    const db::MeasureModel& model() const { return measure_; }
-
-    db::MeasureModel& model(){ return measure_;}
-
 signals:
     
 public slots:
     bool saveMeasure( );
-    void restoreMeasure();
 private:
 
     int rows_;
     int columns_;
 
     db::MeasureStorage* storage_;
-    db::MeasureModel measure_;
-    db::MeasureModel storeMeasure_;
+    db::MeasureModel* measure_;
+
 };
 
 }

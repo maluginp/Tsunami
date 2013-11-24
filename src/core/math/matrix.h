@@ -74,13 +74,13 @@ private:
 template<class T>
 Matrix<T>::Matrix()
     : rows_(0)
-    , columns_(0) {
+    , columns_(0), matrix_(0) {
     //
 }
 template<class T>
 Matrix<T>::Matrix(int rows, int columns,TypeMatrix type)
     : rows_(rows)
-    , columns_(columns) {
+    , columns_(columns),matrix_(0) {
 
     initialize(type);
 
@@ -88,14 +88,14 @@ Matrix<T>::Matrix(int rows, int columns,TypeMatrix type)
 template<class T>
 Matrix<T>::Matrix(int square,TypeMatrix type)
     : rows_(square)
-    , columns_(square) {
+    , columns_(square),matrix_(0) {
 
     initialize(type);
 
 
 }
 template<class T>
-Matrix<T>::Matrix(const Matrix<T> &other, OperationMatrix type) {
+Matrix<T>::Matrix(const Matrix<T> &other, OperationMatrix type):matrix_(0) {
 
     rows_ = other.rows_;
     columns_ = other.columns_;
@@ -117,7 +117,7 @@ Matrix<T>::Matrix(const Matrix<T> &other, OperationMatrix type) {
 
 }
 template<class T>
-Matrix<T>::Matrix(const Vector<T> &vector, OperationMatrix type) {
+Matrix<T>::Matrix(const Vector<T> &vector, OperationMatrix type):matrix_(0) {
     rows_ = vector.rows();
     columns_ = 1;
     initialize( MATRIX_ZERO );
@@ -132,7 +132,7 @@ Matrix<T>::Matrix(const Vector<T> &vector, OperationMatrix type) {
 
 }
 template<class T>
-Matrix<T>::Matrix(T scalar) {
+Matrix<T>::Matrix(T scalar):matrix_(0) {
     rows_ = 1;
     columns_ = 1;
     initialize( MATRIX_ZERO );
@@ -181,20 +181,20 @@ const T &Matrix<T>::operator()(int row, int column) const {
 
 template<class T>
 T &Matrix<T>::at(int row, int column) {
-    assert( row >= rows_ || row < 0 || column > columns_ || column < 0 );
+    Q_ASSERT( row >= 0 && row < rows_ && column >=  0 && column < columns_ );
 
     return matrix_[ row*columns_ + column ];
 }
 
 template<class T>
 const T &Matrix<T>::at(int row, int column) const{
-    assert( row >= rows_ || row < 0 || column > columns_ || column < 0 );
+    Q_ASSERT( row >= 0 && row < rows_ && column >=  0 && column < columns_ );
 
     return matrix_[ row*columns_ + column ];
 }
 template<class T>
 bool Matrix<T>::inverse() {
-    assert( rows_ == columns_ );
+    Q_ASSERT( rows_ == columns_ );
     Matrix<T> E(rows_,columns_,MATRIX_IDENTITY);
     Matrix<T> matrix(*this);
 

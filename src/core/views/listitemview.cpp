@@ -46,7 +46,8 @@ QVariant ListItemView::data(const QModelIndex &index, int role) const {
         return QVariant();
     }
 
-    if( editable_ && (role == Qt::EditRole || role == Qt::UserRole) ){
+//    if( editable_ && (role == Qt::EditRole || role == Qt::UserRole) ){
+    if( role == Qt::EditRole || role == Qt::UserRole ){
         return itemAt( index.row() );
     }
 
