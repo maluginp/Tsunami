@@ -2,7 +2,9 @@ TEMPLATE = subdirs
 
 SUBDIRS += \
     src/core  \
+    src/Tsunami \
     src/MeasureData
+
    # src/freeda
 
 

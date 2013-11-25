@@ -87,7 +87,7 @@ bool AnalysisStorage::saveAnalysisImpl(AnalysisModel *model) {
 
     qDebug() << sqlQuery;
     if( model->id() == -1 ){
-        analysisId = q.lastInsertId().toInt();
+        analysisId = q.lastInsertId().toInt()+1;
     }
 
     q.bindValue(":id", analysisId);

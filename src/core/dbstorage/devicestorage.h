@@ -18,6 +18,9 @@ public:
      QString dbName() const;
      DeviceModel* openDevice(int deviceId);
      bool saveDevice( DeviceModel* device );
+
+     QMap<QString,int> listDevices( bool onlyEnabled = true );
+
 protected:
     QString connectionName() const;
 private:

@@ -27,6 +27,34 @@ bool DeviceStorage::saveDevice(DeviceModel *device){
     return saveDeviceImpl(device);
 }
 
+QMap<QString, int> DeviceStorage::listDevices(bool onlyEnabled) {
+    QMap<QString,int> list;
+    QString sqlQuery;
+    if(onlyEnabled){
+        sqlQuery = sql( "SELECT id,name FROM %1 WHERE enable=:enable").arg(TABLE_NAME_DEVICES);
+    }else{
+        sqlQuery = sql( "SELECT id,name FROM %1").arg(TABLE_NAME_DEVICES);
+    }
+
+     QSqlQuery q( sqlQuery, db() );
+     if(onlyEnabled){
+         q.bindValue(":enable", true);
+     }
+     if(!q.exec()){
+         setLastError( q.lastError().text() );
+         return QMap<QString,int>();
+     }
+
+     QSqlRecord rec;
+     while( q.next() ){
+         rec = QSqlRecord(q.record());
+         list.insert( ITEM("name").toString(), ITEM("id").toInt() );
+     }
+
+     return list;
+
+}
+
 QString DeviceStorage::connectionName() const {
     return CONNECTION_NAME_DEVICES;
 }
@@ -77,14 +105,71 @@ bool DeviceStorage::createTable(DeviceStorage::DeviceTable table) {
 }
 
 DeviceModel *DeviceStorage::openDeviceImpl(int deviceId) {
-    Q_ASSERT(false);
-    return NULL;
+    QString sqlQuery;
+    sqlQuery = sql( "SELECT * FROM %1 WHERE id=:id").arg(TABLE_NAME_DEVICES);
+    QSqlQuery q(sqlQuery,db());
+    q.bindValue(":id",deviceId);
+
+    if( !q.exec() || !q.next() ){
+        setLastError( q.lastError().text() );
+        Q_ASSERT(false);
+        return NULL;
+    }
+
+    DeviceModel* device = new  DeviceModel();
+    QSqlRecord rec(q.record() );
+
+    device->id( ITEM("id").toInt() );
+    device->name(ITEM("name").toString());
+    device->type(ITEM("type").toString());
+    device->createAt(ITEM("created_at").toDateTime());
+    device->changeAt(ITEM("changed_at").toDateTime());
+    device->enable(ITEM("enable").toBool());
+
+    return device;
 
 }
 
 bool DeviceStorage::saveDeviceImpl(DeviceModel *device) {
-    Q_ASSERT(false);
-    return NULL;
+    QString sqlQuery;
+    int deviceId = device->id();
+
+    if(!beginTransaction()){
+        return false;
+    }
+
+
+    sqlQuery = sql( "INSERT OR REPLACE INTO %1(id,name,type,created_at,changed_at,enable) "
+                    "VALUES(:id,:name,:type,:created_at,:changed_at,:enable)")
+            .arg(TABLE_NAME_DEVICES);
+
+    QSqlQuery q( sqlQuery, db() );
+
+    if(device->id() == -1){
+        deviceId = q.lastInsertId().toInt()+1;
+    }
+
+    q.bindValue(":id",deviceId);
+    q.bindValue(":name",device->name());
+    q.bindValue(":type",device->typeJson());
+    q.bindValue(":created_at",device->createAt());
+    q.bindValue(":changed_at",device->changeAt());
+    q.bindValue(":enable",device->enable());
+
+    if(!q.exec()){
+        setLastError( q.lastError().text() );
+        rollback();
+        return false;
+    }
+
+    if(!endTransaction()){
+        rollback();
+        return false;
+    }
+
+    device->id( deviceId );
+
+    return true;
 }
 
 
