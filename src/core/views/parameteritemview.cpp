@@ -4,11 +4,14 @@
 namespace tsunami {
 namespace gui{
 
-ParameterItemView::ParameterItemView(const int& libraryId,QObject *parent) :
+ParameterItemView::ParameterItemView(db::LibraryModel* library, QObject *parent) :
     QAbstractItemModel(parent) {
 
-    storage_ = db::ParameterStorage::instance();
-    openParameters( libraryId );
+    library_ = library;
+
+    // enable, name, initital, fitted, minimum, maximum, fixed
+    columns_ = 7;
+
 }
 
 QModelIndex ParameterItemView::index(int row, int column, const QModelIndex &parent) const{
@@ -30,12 +33,12 @@ QModelIndex ParameterItemView::parent(const QModelIndex &child) const {
 
 int ParameterItemView::rowCount(const QModelIndex &parent) const {
     Q_UNUSED(parent);
-    return rows_;
+    return library_->countParameters();
 }
 
 int ParameterItemView::columnCount(const QModelIndex &parent) const {
     Q_UNUSED(parent);
-    return columns_.size();
+    return columns_;
 }
 
 QVariant ParameterItemView::data(const QModelIndex &index, int role) const {
@@ -43,8 +46,21 @@ QVariant ParameterItemView::data(const QModelIndex &index, int role) const {
         return QVariant();
     }
 
-    Q_ASSERT(false);
-//    return library_.parameterValue( index );
+    int row = index.row();
+    int column = index.column();
+
+    switch(column){
+    case 0: return library_->at(row).enable();
+    case 1: return library_->at(row).name();
+    case 2: return library_->at(row).initial();
+    case 3: return library_->at(row).fitted();
+    case 4: return library_->at(row).minimum();
+    case 5: return library_->at(row).maximum();
+    case 6: return library_->at(row).fixed();
+    }
+
+
+    return QVariant();
 }
 
 Qt::ItemFlags ParameterItemView::flags(const QModelIndex &index) const {
@@ -53,45 +69,46 @@ Qt::ItemFlags ParameterItemView::flags(const QModelIndex &index) const {
 }
 
 
-void ParameterItemView::openParameters(const int &libraryId) {
-    Q_ASSERT(false);
-    //    library_ = storage_->openLibrary( libraryId );
-//    storeLibrary_ = library_;
-//    rows_ = library_.parameters().size();
-
-//    columns_ = db::ParameterModel::getColumns();
-}
-
-bool ParameterItemView::saveParameters() {
-    return storage_->saveLibrary( library_ );
-}
-
-
-void ParameterItemView::restoreParameters() {
-    library_ = storeLibrary_;
-}
-
-
 bool ParameterItemView::setData(const QModelIndex &index, const QVariant &value, int role) {
-    Q_ASSERT(false);
-//    if(role != Qt::EditRole){
-//        return false;
-//    }
-//    return library_.setParameterValue( index, value );
-}
-
-QVariant ParameterItemView::headerData(int section, Qt::Orientation orientation, int role) {
-    if( role != Qt::DisplayRole ){
-        return QVariant();
+    if(role != Qt::EditRole){
+        return false;
     }
 
+    int row = index.row();
+    int column = index.column();
+
+    switch(column){
+    case 0: library_->at(row).enable(  value.toBool() ); break;
+    case 1: library_->at(row).name(    value.toString() ); break;
+    case 2: library_->at(row).initial( value.toDouble()); break;
+    case 3: library_->at(row).fitted(  value.toDouble() ); break;
+    case 4: library_->at(row).minimum( value.toDouble()); break;
+    case 5: library_->at(row).maximum( value.toDouble()); break;
+    case 6: library_->at(row).fixed(   value.toBool()); break;
+    default:
+        return false;
+    }
+    return true;
+}
+
+QVariant ParameterItemView::headerData(int section, Qt::Orientation orientation, int role) const {
+    if(role != Qt::DisplayRole){
+        return QVariant();
+    }
     if(orientation == Qt::Horizontal){
-        qDebug() << "section:" << section;
-        return columns_.at(section);
+        switch(section){
+        case 0: return QString("");
+        case 1: return QString("Name");
+        case 2: return QString("Initial");
+        case 3: return QString("Fitted");
+        case 4: return QString("Minimum");
+        case 5: return QString("Maximum");
+        case 6: return QString("Fixed");
+        }
     }
 
     if(orientation == Qt::Vertical){
-        return QVariant(library_.parameter( section ).name());
+        return QVariant();
     }
 
     return QVariant();

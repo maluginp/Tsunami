@@ -140,7 +140,7 @@ void Extractor::enable(int index, bool enable) {
 }
 
 int Extractor::countParameters() {
-    return library_->countParamaters();
+    return library_->countParameters();
 
 }
 

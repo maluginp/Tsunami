@@ -35,12 +35,15 @@ public:
 
     const QList<ParameterModel>& parameters() const;
 
+    const ParameterModel& at(int id) const;
+    ParameterModel& at(int index);
+
 
     void addParameter( const ParameterModel& parameter );
     bool parameterExists( const QString& name );
     void setParameter(const QString& name, const ParameterModel& parameter);
 
-    int countParamaters();
+    int countParameters();
 
 protected:
     ParameterModel& find(const QString& name);

@@ -21,10 +21,13 @@ LIBS += -L$$DESTDIR -lcore
 
 SOURCES += main.cpp\
         devicewindow.cpp \
-    opendevicedialog.cpp
+    opendevicedialog.cpp \
+    librarywindow.cpp
 
 HEADERS  += devicewindow.h \
-    opendevicedialog.h
+    opendevicedialog.h \
+    librarywindow.h
 
 FORMS    += devicewindow.ui \
-    opendevicedialog.ui
+    opendevicedialog.ui \
+    librarywindow.ui

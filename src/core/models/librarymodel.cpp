@@ -17,7 +17,7 @@ void LibraryModel::setParameter(const QString &name, const ParameterModel &param
 
 }
 
-int LibraryModel::countParamaters() {
+int LibraryModel::countParameters() {
     return parameters_.size();
 }
 
@@ -58,7 +58,7 @@ ParameterModel &LibraryModel::find(int index) {
 //}
 
 LibraryModel::LibraryModel() {
-    Q_ASSERT(false);
+
 }
 
 const ParameterModel &LibraryModel::parameter(const QString &name) const {
@@ -103,6 +103,14 @@ ParameterModel &LibraryModel::parameter(int index) {
 
 const QList<ParameterModel> &LibraryModel::parameters() const {
     return parameters_;
+}
+
+const ParameterModel &LibraryModel::at(int id) const {
+    return parameters_[id];
+}
+
+ParameterModel &LibraryModel::at(int index) {
+    return parameters_[index];
 }
 
 void LibraryModel::addParameter(const ParameterModel &parameter) {

@@ -2,7 +2,7 @@
 #include "ui_devicewindow.h"
 #include "opendevicedialog.h"
 #include "models/devicemodel.h"
-
+#include "librarywindow.h"
 namespace tsunami{
 
 DeviceWindow::DeviceWindow(QWidget *parent) :
@@ -12,7 +12,9 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
     ui->setupUi(this);
     storage_ = db::DeviceStorage::instance();
 
+    libraryWindow_ = NULL;
     connect( ui->actionOpen, SIGNAL(triggered()), this, SLOT(clickedOpenDeviceAction()) );
+    connect( ui->actionEditorLibrary,SIGNAL(triggered()),this,SLOT(clickedParametersEditor()));
 }
 
 DeviceWindow::~DeviceWindow() {
@@ -44,6 +46,13 @@ void DeviceWindow::clickedOpenDeviceAction() {
     openDevice(deviceId);
 
 
+}
+
+void DeviceWindow::clickedParametersEditor() {
+    delete libraryWindow_;
+    libraryWindow_ = new LibraryWindow(this);
+
+    libraryWindow_->show();
 }
 
 }

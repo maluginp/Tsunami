@@ -83,7 +83,7 @@
     <property name="title">
      <string>Parameters</string>
     </property>
-    <addaction name="actionEditor"/>
+    <addaction name="actionEditorLibrary"/>
    </widget>
    <addaction name="menuDevice"/>
    <addaction name="menuMeasures"/>
@@ -113,7 +113,7 @@
     <string>Close</string>
    </property>
   </action>
-  <action name="actionEditor">
+  <action name="actionEditorLibrary">
    <property name="text">
     <string>Editor</string>
    </property>

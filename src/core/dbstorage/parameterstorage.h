@@ -24,29 +24,21 @@ public:
     ~ParameterStorage();
     QString dbName() const;
     const LibraryModel& library() const;
-    bool saveLibrary( );
-    bool saveLibrary( const LibraryModel& library );
 
-//    QList<ParameterModel> parameters(int libraryId);
-    bool addParameter( const ParameterModel& parameter );
+    bool saveLibrary( LibraryModel* library );
+
     LibraryModel* openLibrary( int libraryId );
-    void setCurrentLibrary(  const int& libraryId );
+
 
 protected:
     QString connectionName() const;
 private:
     void testData();
 
-    bool saveLibraryImpl( const LibraryModel& library );
+    bool saveLibraryImpl( LibraryModel* library );
     LibraryModel* openLibraryImpl( int libraryId );
-    bool addParameterImpl( const ParameterModel& parameter );
 
     bool createTable( const ParameterTable& table);
-
-    void saveCache( const LibraryModel& library ) const;
-
-    mutable LibraryModel currentLibrary_;
-    mutable QMap<int, LibraryModel> cachedLibraries_;
 
     static QString TABLE_NAME_PARAMETERS;
     static QString TABLE_NAME_LIBRARIES;

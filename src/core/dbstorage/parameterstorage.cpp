@@ -28,39 +28,14 @@ QString ParameterStorage::dbName() const {
 
 }
 
-const LibraryModel &ParameterStorage::library() const{
-    return currentLibrary_;
-}
-
-bool ParameterStorage::saveLibrary() {
-    bool res = saveLibraryImpl( currentLibrary_ );
-    return res;
-}
-
-bool ParameterStorage::saveLibrary(const LibraryModel &library) {
+bool ParameterStorage::saveLibrary(LibraryModel *library) {
     bool res = saveLibraryImpl( library );
     return res;
 }
 
-bool ParameterStorage::addParameter(const ParameterModel &parameter) {
-    return addParameterImpl( parameter );
-}
 
 LibraryModel* ParameterStorage::openLibrary(int libraryId){
     return openLibraryImpl(libraryId);
-}
-
-void ParameterStorage::setCurrentLibrary(const int &libraryId) {
-    Q_ASSERT(false);
-    if(currentLibrary_.id() == libraryId){
-        return;
-    }
-
-    if( cachedLibraries_.contains(libraryId) ){
-        currentLibrary_ = cachedLibraries_[libraryId];
-    }else{
-//        currentLibrary_ = openLibrary( libraryId );
-    }
 }
 
 QString ParameterStorage::connectionName() const {
@@ -69,20 +44,20 @@ QString ParameterStorage::connectionName() const {
 
 void ParameterStorage::testData() {
 
-    LibraryModel library;
-    library.id(1);
-    library.deviceId(1);
-    library.name("LibraryTest");
-    library.createAt(  QDateTime::currentDateTime() );
-    library.changeAt( QDateTime::currentDateTime() );
-    library.enable(true);
+    LibraryModel* library = new LibraryModel();
+    library->id(1);
+    library->deviceId(1);
+    library->name("LibraryTest");
+    library->createAt(  QDateTime::currentDateTime() );
+    library->changeAt( QDateTime::currentDateTime() );
+    library->enable(true);
 
     // Parameters
     for(int i=1; i < 11; ++i){
 
         ParameterModel parameter;
         parameter.id( i );
-        parameter.libraryId( library.id() );
+        parameter.libraryId( library->id() );
         parameter.name( QString("PARAM_%1").arg(i) );
         parameter.initial( 1.0+i*1.5 );
         parameter.fitted( parameter.initial() );
@@ -91,7 +66,7 @@ void ParameterStorage::testData() {
         parameter.fixed(false);
         parameter.enable(true);
 
-        library.addParameter( parameter );
+        library->addParameter( parameter );
 
     }
 
@@ -101,11 +76,10 @@ void ParameterStorage::testData() {
 
 }
 
-bool ParameterStorage::saveLibraryImpl(const LibraryModel &library) {
+bool ParameterStorage::saveLibraryImpl(LibraryModel *library) {
 
     QString sqlQuery;
-    int lastInsertId;
-    currentLibrary_ = library;
+    int libraryId = library->id();
 
     //! Start commit
     if(!beginTransaction()){
@@ -121,17 +95,17 @@ bool ParameterStorage::saveLibraryImpl(const LibraryModel &library) {
 
     QSqlQuery q( sqlQuery, db() );
 
-    if(currentLibrary_.id() == -1){
-        int lastInsertId = q.lastInsertId().toInt();
-        currentLibrary_.id( lastInsertId );
+    if(libraryId == -1){
+        libraryId = q.lastInsertId().toInt() + 1;
+//        currentLibrary_.id( lastInsertId );
     }
 
-    q.bindValue(":id",          currentLibrary_.id());
-    q.bindValue(":device_id",   currentLibrary_.deviceId());
-    q.bindValue(":name",        currentLibrary_.name());
-    q.bindValue(":created_at",  currentLibrary_.createAt());
-    q.bindValue(":changed_at",  currentLibrary_.changeAt());
-    q.bindValue(":enable",      currentLibrary_.enable());
+    q.bindValue(":id",          library->id());
+    q.bindValue(":device_id",   library->deviceId());
+    q.bindValue(":name",        library->name());
+    q.bindValue(":created_at",  library->createAt());
+    q.bindValue(":changed_at",  library->changeAt());
+    q.bindValue(":enable",      library->enable());
 
     if(!q.exec()){
         setLastError( q.lastError().text() );
@@ -147,15 +121,15 @@ bool ParameterStorage::saveLibraryImpl(const LibraryModel &library) {
                    "(:id,:library_id,:name,:initial,:fitted,:minimum,:maximum,:fixed,:enable)")
             .arg(TABLE_NAME_PARAMETERS);
 
-    foreach(ParameterModel parameter,currentLibrary_.parameters()){
+    foreach(ParameterModel parameter,library->parameters()){
         q = QSqlQuery( sqlQuery, db() );
 
         if(parameter.id() == -1 ){
-            int lastInsertId = q.lastInsertId().toInt();
+            int lastInsertId = q.lastInsertId().toInt()+1;
             parameter.id(  lastInsertId  );
-
-            currentLibrary_.setParameter( parameter.name(), parameter );
         }
+
+        library->parameter(parameter.name()) = parameter;
 
         q.bindValue(":id",         parameter.id() );
         q.bindValue(":library_id", parameter.libraryId());
@@ -181,7 +155,7 @@ bool ParameterStorage::saveLibraryImpl(const LibraryModel &library) {
     }
 
 
-    saveCache( currentLibrary_ );
+    library->id( libraryId );
 
     return true;
 }
@@ -256,36 +230,6 @@ LibraryModel* ParameterStorage::openLibraryImpl(int libraryId) {
 
     return library;
 }
-
-bool ParameterStorage::addParameterImpl(const ParameterModel &parameter) {
-    if(currentLibrary_.parameterExists( parameter.name() )){
-        return false;
-    }
-
-    currentLibrary_.addParameter( parameter );
-    saveLibraryImpl( currentLibrary_ );
-    saveCache( currentLibrary_);
-    return true;
-
-}
-
-void ParameterStorage::saveCache(const LibraryModel &library) const {
-    Q_ASSERT(false);
-
-    //! Если содержится в кэше, то обновляем
-    if( cachedLibraries_.contains(library.id()) ){
-        cachedLibraries_[library.id()] = library;
-        return;
-    }
-
-    if(cachedLibraries_.size() > CACHE_SIZE_PARAMETER_STORAGE){
-        //! Удаляем первый элемент кэша
-        cachedLibraries_.erase( cachedLibraries_.begin() );
-    }
-    cachedLibraries_.insert( library.id(), library );
-
-}
-
 
 bool ParameterStorage::createTable(const ParameterStorage::ParameterTable &table) {
     QString sqlQuery;

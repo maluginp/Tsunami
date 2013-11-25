@@ -10,6 +10,8 @@ namespace db{
 class ParameterModel {
 public:
     ParameterModel();
+    ParameterModel(const ParameterModel& other);
+    ParameterModel& operator=(const ParameterModel& other);
     void id(int parameterId) { parameterId_ = parameterId; }
     void libraryId(int libraryId) { libraryId_ = libraryId; }
     void name(const QString& name) { name_ = name; }

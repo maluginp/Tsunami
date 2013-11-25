@@ -8,7 +8,7 @@ namespace Ui {
 class DeviceWindow;
 }
 namespace tsunami{
-
+class LibraryWindow;
 class DeviceWindow : public QMainWindow
 {
     Q_OBJECT
@@ -19,13 +19,15 @@ public:
 
     void openDevice( int deviceId );
 private:
+    LibraryWindow* libraryWindow_;
     Ui::DeviceWindow *ui;
     db::DeviceStorage* storage_;
 
     db::DeviceModel* device_;
 private slots:
-    void clickedOpenDeviceAction();
 
+    void clickedOpenDeviceAction();
+    void clickedParametersEditor();
 };
 }
 

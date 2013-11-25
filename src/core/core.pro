@@ -53,7 +53,8 @@ SOURCES += main.cpp \
     extractor/dataset.cpp \
     extractor/extractorglobal.cpp \
     dbstorage/devicestorage.cpp \
-    components/source.cpp
+    components/source.cpp \
+    delegates/delegatecheckbox.cpp
 
 HEADERS += \
     components/json.h \
@@ -96,7 +97,8 @@ HEADERS += \
     extractor/dataset.h \
     extractor/extractorglobal.h \
     dbstorage/devicestorage.h \
-    components/source.h
+    components/source.h \
+    delegates/delegatecheckbox.h
 
 
 
@@ -106,3 +108,5 @@ CONFIG(debug, debug|release) {
 CONFIG(release,debug|release){
     DESTDIR=$$SOLUTION_DIR/build/release
 }
+
+FORMS +=
