@@ -29,6 +29,7 @@ public:
 
     LibraryModel* openLibrary( int libraryId );
     QMap<int,QString> listLibraries(int deviceId);
+    bool removeLibrary( int libraryId );
 
 protected:
     QString connectionName() const;
@@ -39,6 +40,7 @@ private:
     QMap<int,QString> listLibrariesImpl(int deviceId);
     bool saveLibraryImpl( LibraryModel* library );
     LibraryModel* openLibraryImpl( int libraryId );
+    bool removeLibraryImpl( int libraryId );
 
     bool createTable( const ParameterTable& table);
 

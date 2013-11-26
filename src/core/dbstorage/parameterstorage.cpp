@@ -42,6 +42,11 @@ QMap<int,QString>  ParameterStorage::listLibraries(int deviceId){
     return listLibrariesImpl(deviceId);
 }
 
+bool ParameterStorage::removeLibrary(int libraryId)
+{
+    return removeLibraryImpl(libraryId);
+}
+
 QString ParameterStorage::connectionName() const {
     return CONNECTION_NAME_PARAMETER;
 }
@@ -319,6 +324,47 @@ LibraryModel* ParameterStorage::openLibraryImpl(int libraryId) {
 //    saveCache( library );
 
     return library;
+}
+
+bool ParameterStorage::removeLibraryImpl(int libraryId){
+    if(libraryId == -1){
+        return false;
+    }
+
+    //! Start commit
+    if(!beginTransaction()){
+        return false;
+    }
+
+    QString sqlQuery;
+
+    sqlQuery = sql("DELETE FROM %1 WHERE library_id=:library_id").arg(TABLE_NAME_PARAMETERS);
+
+    QSqlQuery q = QSqlQuery(sqlQuery,db());
+    q.bindValue(":library_id", libraryId);
+    if(!q.exec()){
+        setLastError( q.lastError().text() );
+        rollback();
+        return false;
+    }
+
+    sqlQuery = sql("DELETE FROM %1 WHERE id=:library_id").arg(TABLE_NAME_LIBRARIES);
+
+    q = QSqlQuery(sqlQuery,db());
+    q.bindValue(":library_id", libraryId);
+    if(!q.exec()){
+        setLastError( q.lastError().text() );
+        rollback();
+        return false;
+    }
+
+    if(!endTransaction()){
+        rollback();
+        return false;
+    }
+
+
+    return true;
 }
 
 bool ParameterStorage::createTable(const ParameterStorage::ParameterTable &table) {
