@@ -32,6 +32,25 @@ QString AnalysisStorage::connectionName() const {
     return CONNECTION_NAME_ANALYSIS;
 }
 
+int AnalysisStorage::lastInsertId(const QString &table) {
+    QString sqlQuery;
+    if(table.compare(TABLE_NAME_ANALYSES) == 0){
+        sqlQuery = sql("SELECT MAX(id) FROM %1").arg(table);
+
+        QSqlQuery q( sqlQuery, db() );
+        if(q.exec() && q.next()){
+            bool ok;
+            int id = q.value(0).toInt(&ok);
+            if(ok){
+                return id;
+            }
+        }
+
+    }
+
+    return -1;
+}
+
 void AnalysisStorage::testData() {
     // Test Analysis
     AnalysisModel* model = new AnalysisModel();
@@ -87,7 +106,7 @@ bool AnalysisStorage::saveAnalysisImpl(AnalysisModel *model) {
 
     qDebug() << sqlQuery;
     if( model->id() == -1 ){
-        analysisId = q.lastInsertId().toInt()+1;
+        analysisId = lastInsertId(TABLE_NAME_ANALYSES) +1;
     }
 
     q.bindValue(":id", analysisId);

@@ -23,6 +23,7 @@ public:
 
 protected:
     QString connectionName() const;
+    int lastInsertId(const QString& table);
 private:
 
     void testData();

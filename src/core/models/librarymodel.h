@@ -41,10 +41,13 @@ public:
     const ParameterModel& at(int id) const;
     ParameterModel& at(int index);
 
+    void removeParameters(const QList<int>& indexes );
 
     void addParameter( const ParameterModel& parameter );
     bool parameterExists( const QString& name );
     void setParameter(const QString& name, const ParameterModel& parameter);
+
+    void addEmptyParameter(  );
 
     int countParameters();
 

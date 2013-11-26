@@ -19,16 +19,25 @@ class LibraryWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit LibraryWindow(QWidget *parent = 0);
+    explicit LibraryWindow(int deviceId, QWidget *parent = 0);
     ~LibraryWindow();
 
 private:
+    void showParameters(db::LibraryModel* library);
     Ui::LibraryWindow *ui;
     db::ParameterStorage* storage_;
     db::LibraryModel* library_;
     gui::ParameterItemView* parameters_;
+
+    int deviceId_;
+
 private slots:
     void clickedOpenLibraryAction();
+    void clickedNewLibraryAction();
+    void clickedAddParameterAction();
+    void clickedRemoveParameterAction();
+
+    void clickedSaveButton();
 };
 
 }

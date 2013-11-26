@@ -28,13 +28,15 @@ public:
     bool saveLibrary( LibraryModel* library );
 
     LibraryModel* openLibrary( int libraryId );
-
+    QMap<int,QString> listLibraries(int deviceId);
 
 protected:
     QString connectionName() const;
+    int lastInsertId(const QString& table);
 private:
     void testData();
-
+    void syncParameters(LibraryModel* library);
+    QMap<int,QString> listLibrariesImpl(int deviceId);
     bool saveLibraryImpl( LibraryModel* library );
     LibraryModel* openLibraryImpl( int libraryId );
 

@@ -50,7 +50,8 @@ void DeviceWindow::clickedOpenDeviceAction() {
 
 void DeviceWindow::clickedParametersEditor() {
     delete libraryWindow_;
-    libraryWindow_ = new LibraryWindow(this);
+    int deviceId = 1;
+    libraryWindow_ = new LibraryWindow(deviceId,this);
 
     libraryWindow_->show();
 }

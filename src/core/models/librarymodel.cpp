@@ -17,6 +17,12 @@ void LibraryModel::setParameter(const QString &name, const ParameterModel &param
 
 }
 
+void LibraryModel::addEmptyParameter() {
+    ParameterModel model;
+
+    addParameter(model);
+}
+
 int LibraryModel::countParameters() {
     return parameters_.size();
 }
@@ -78,11 +84,16 @@ LibraryModel::LibraryModel(const LibraryModel &other) :
 
 }
 
-LibraryModel &LibraryModel::operator=(const LibraryModel &other) :
-    libraryId_(other.libraryId_),deviceId_(other.deviceId_),
-    name_(other.name_),createdAt_(other.createdAt_),changedAt_(other.changedAt_),
-    enable_(other.enable_), parameters_(other.parameters_)
-{
+LibraryModel &LibraryModel::operator=(const LibraryModel &other){
+
+    libraryId_ = other.libraryId_;
+    deviceId_ = other.deviceId_;
+    name_ = other.name_;
+    createdAt_ = other.createdAt_;
+    changedAt_ = other.changedAt_;
+    enable_ = other.enable_;
+    parameters_ = other.parameters_;
+
     return *this;
 }
 
@@ -136,6 +147,20 @@ const ParameterModel &LibraryModel::at(int id) const {
 
 ParameterModel &LibraryModel::at(int index) {
     return parameters_[index];
+}
+
+void LibraryModel::removeParameters(const QList<int>& indexes) {
+    QList<ParameterModel> parameters;
+    int nParameter = 0;
+    foreach(ParameterModel model, parameters_){
+        if(!indexes.contains(nParameter)){
+            parameters.append( model );
+        }
+        nParameter++;
+    }
+
+    parameters_ = parameters;
+
 }
 
 void LibraryModel::addParameter(const ParameterModel &parameter) {

@@ -55,6 +55,7 @@ protected:
 
     QMutex dbMutex_;
     static QString DBASE_COMMON_NAME;
+    virtual int lastInsertId(const QString& table) = 0;
 
 private:
 

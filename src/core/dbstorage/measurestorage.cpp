@@ -31,6 +31,25 @@ QString MeasureStorage::connectionName() const {
     return CONNECTION_NAME_MEASURE;
 }
 
+int MeasureStorage::lastInsertId(const QString &table) {
+    QString sqlQuery;
+    if(table.compare(TABLE_NAME_MEASURES) == 0){
+        sqlQuery = sql("SELECT MAX(id) FROM %1").arg(table);
+
+        QSqlQuery q( sqlQuery, db() );
+        if(q.exec() && q.next()){
+            bool ok;
+            int id = q.value(0).toInt(&ok);
+            if(ok){
+                return id;
+            }
+        }
+
+    }
+
+    return -1;
+}
+
 void MeasureStorage::testData() {
     MeasureModel* model = new MeasureModel();
     model->id(1);
@@ -196,7 +215,7 @@ bool MeasureStorage::saveMeasureImpl(MeasureModel *measure) {
     QSqlQuery q(sqlQuery,db());
 
     if(measureId == -1){
-        measureId = q.lastInsertId().toInt() + 1;
+        measureId = lastInsertId(TABLE_NAME_MEASURES) + 1;
 
     }
     q.bindValue(":id", measureId);

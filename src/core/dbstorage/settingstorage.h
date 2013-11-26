@@ -21,6 +21,7 @@ public:
     bool saveValue( const QString& key, const QVariant& value );
 protected:
     QString connectionName() const;
+    int lastInsertId(const QString& table);
 private:
     bool saveValueImpl( const QString& key, const QVariant& value );
     QVariant valueImpl( const QString& key, const QVariant& defaultValue = QVariant() );

@@ -1,6 +1,6 @@
 #include "parameteritemview.h"
 #include "dbstorage/parameterstorage.h"
-
+#include <QItemSelectionModel>
 namespace tsunami {
 namespace gui{
 
@@ -112,6 +112,26 @@ QVariant ParameterItemView::headerData(int section, Qt::Orientation orientation,
     }
 
     return QVariant();
+}
+
+void ParameterItemView::addEmptyParameter() {
+    beginResetModel();
+    library_->addEmptyParameter();
+    endResetModel();
+}
+
+void ParameterItemView::removeSelectedParameters(const QList<int>& indexes) {
+    beginResetModel();
+    library_->removeParameters( indexes );
+    endResetModel();
+}
+
+void ParameterItemView::removeSelectedParameter(const QModelIndex &index) {
+    int row = index.row();
+
+    beginResetModel();
+    library_->removeParameters( QList<int>() << row );
+    endResetModel();
 }
 
 }

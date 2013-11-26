@@ -59,6 +59,25 @@ QString DeviceStorage::connectionName() const {
     return CONNECTION_NAME_DEVICES;
 }
 
+int DeviceStorage::lastInsertId(const QString &table) {
+    QString sqlQuery;
+    if(table.compare(TABLE_NAME_DEVICES) == 0){
+        sqlQuery = sql("SELECT MAX(id) FROM %1").arg(table);
+
+        QSqlQuery q( sqlQuery, db() );
+        if(q.exec() && q.next()){
+            bool ok;
+            int id = q.value(0).toInt(&ok);
+            if(ok){
+                return id;
+            }
+        }
+
+    }
+
+    return -1;
+}
+
 void DeviceStorage::testData() {
     DeviceModel* device = new DeviceModel();
 
@@ -146,7 +165,7 @@ bool DeviceStorage::saveDeviceImpl(DeviceModel *device) {
     QSqlQuery q( sqlQuery, db() );
 
     if(device->id() == -1){
-        deviceId = q.lastInsertId().toInt()+1;
+        deviceId = lastInsertId(TABLE_NAME_DEVICES)+1;
     }
 
     q.bindValue(":id",deviceId);
