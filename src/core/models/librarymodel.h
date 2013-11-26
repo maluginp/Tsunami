@@ -12,6 +12,9 @@ class LibraryModel{
 //    friend class ParameterStorage;
 public:
     LibraryModel();
+    LibraryModel(const QString& name, int deviceId = -1);
+    LibraryModel( const LibraryModel& other );
+    LibraryModel& operator=(const LibraryModel& other);
 
     void id(int libraryId) { libraryId_ = libraryId; }
     void deviceId(int deviceId) { deviceId_ = deviceId; }

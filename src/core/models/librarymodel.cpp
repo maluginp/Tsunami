@@ -57,8 +57,33 @@ ParameterModel &LibraryModel::find(int index) {
 //    return QVariant();
 //}
 
-LibraryModel::LibraryModel() {
+LibraryModel::LibraryModel() :
+    libraryId_(-1), deviceId_(-1), createdAt_(QDateTime::currentDateTime()),
+    changedAt_(QDateTime::currentDateTime()),enable_(false)
+{
 
+}
+
+LibraryModel::LibraryModel(const QString &name, int deviceId) :
+    libraryId_(-1),name_(name),deviceId_(deviceId), createdAt_(QDateTime::currentDateTime()),
+    changedAt_(QDateTime::currentDateTime()),enable_(false)
+{
+
+}
+
+LibraryModel::LibraryModel(const LibraryModel &other) :
+    libraryId_(other.libraryId_),deviceId_(other.deviceId_),
+    name_(other.name_),createdAt_(other.createdAt_),changedAt_(other.changedAt_),
+    enable_(other.enable_), parameters_(other.parameters_) {
+
+}
+
+LibraryModel &LibraryModel::operator=(const LibraryModel &other) :
+    libraryId_(other.libraryId_),deviceId_(other.deviceId_),
+    name_(other.name_),createdAt_(other.createdAt_),changedAt_(other.changedAt_),
+    enable_(other.enable_), parameters_(other.parameters_)
+{
+    return *this;
 }
 
 const ParameterModel &LibraryModel::parameter(const QString &name) const {
