@@ -23,14 +23,17 @@ SOURCES += main.cpp\
         devicewindow.cpp \
     opendevicedialog.cpp \
     librarywindow.cpp \
-    openlibrarydialog.cpp
+    openlibrarydialog.cpp \
+    prepareextractordialog.cpp
 
 HEADERS  += devicewindow.h \
     opendevicedialog.h \
     librarywindow.h \
-    openlibrarydialog.h
+    openlibrarydialog.h \
+    prepareextractordialog.h
 
 FORMS    += devicewindow.ui \
     opendevicedialog.ui \
     librarywindow.ui \
-    openlibrarydialog.ui
+    openlibrarydialog.ui \
+    prepareextractordialog.ui
