@@ -22,12 +22,14 @@ private:
     LibraryWindow* libraryWindow_;
     Ui::DeviceWindow *ui;
     db::DeviceStorage* storage_;
-
+    int deviceId_;
     db::DeviceModel* device_;
 private slots:
 
     void clickedOpenDeviceAction();
     void clickedParametersEditor();
+    void clickedExtractionRunAction();
+
 };
 }
 

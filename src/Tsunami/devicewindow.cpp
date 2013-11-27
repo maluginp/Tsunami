@@ -3,6 +3,7 @@
 #include "opendevicedialog.h"
 #include "models/devicemodel.h"
 #include "librarywindow.h"
+#include "prepareextractordialog.h"
 namespace tsunami{
 
 DeviceWindow::DeviceWindow(QWidget *parent) :
@@ -12,9 +13,13 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
     ui->setupUi(this);
     storage_ = db::DeviceStorage::instance();
 
+    deviceId_ = 1;
+
     libraryWindow_ = NULL;
     connect( ui->actionOpen, SIGNAL(triggered()), this, SLOT(clickedOpenDeviceAction()) );
     connect( ui->actionEditorLibrary,SIGNAL(triggered()),this,SLOT(clickedParametersEditor()));
+    connect( ui->actionExtractionRun,SIGNAL(triggered()),this,SLOT(clickedExtractionRunAction()));
+
 }
 
 DeviceWindow::~DeviceWindow() {
@@ -25,6 +30,7 @@ void DeviceWindow::openDevice(int deviceId) {
 
     device_ = storage_->openDevice( deviceId );
     if(device_ == 0) Q_ASSERT(false);
+    deviceId_ = device_->id();
 
     ui->deviceNameText->setText( device_->name() );
     ui->deviceTypeText->setText( device_->typeJson().toUpper() );
@@ -50,10 +56,18 @@ void DeviceWindow::clickedOpenDeviceAction() {
 
 void DeviceWindow::clickedParametersEditor() {
     delete libraryWindow_;
-    int deviceId = 1;
-    libraryWindow_ = new LibraryWindow(deviceId,this);
+
+    libraryWindow_ = new LibraryWindow(deviceId_,this);
 
     libraryWindow_->show();
+}
+
+void DeviceWindow::clickedExtractionRunAction() {
+
+    PrepareExtractorDialog dialog(deviceId_);
+
+    dialog.exec();
+
 }
 
 }

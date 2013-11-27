@@ -54,7 +54,8 @@ SOURCES += main.cpp \
     extractor/extractorglobal.cpp \
     dbstorage/devicestorage.cpp \
     components/source.cpp \
-    delegates/delegatecheckbox.cpp
+    delegates/delegatecheckbox.cpp \
+    views/measureenableview.cpp
 
 HEADERS += \
     components/json.h \
@@ -98,7 +99,8 @@ HEADERS += \
     extractor/extractorglobal.h \
     dbstorage/devicestorage.h \
     components/source.h \
-    delegates/delegatecheckbox.h
+    delegates/delegatecheckbox.h \
+    views/measureenableview.h
 
 
 

@@ -24,6 +24,8 @@ public:
 
     QList<MeasureModel> findMeasure( const QVariantMap& criteria );
 
+    QList<MeasureModel*> getMeasuresByDeviceId( int deviceId );
+
 protected:
     QString connectionName() const;
     int lastInsertId(const QString& table);
@@ -33,6 +35,7 @@ private:
 
     void testData();
 
+    QList<MeasureModel*> getMeasuresByDeviceIdImpl(int deviceId);
     MeasureModel* openMeasureImpl(int measureId);
     bool saveMeasureImpl(MeasureModel* measure);
     bool createTable( const MeasureTable& table );

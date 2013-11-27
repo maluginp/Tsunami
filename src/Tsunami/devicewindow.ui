@@ -85,9 +85,16 @@
     </property>
     <addaction name="actionEditorLibrary"/>
    </widget>
+   <widget class="QMenu" name="menuExtraction">
+    <property name="title">
+     <string>Extraction</string>
+    </property>
+    <addaction name="actionExtractionRun"/>
+   </widget>
    <addaction name="menuDevice"/>
    <addaction name="menuMeasures"/>
    <addaction name="menuParameters"/>
+   <addaction name="menuExtraction"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -116,6 +123,11 @@
   <action name="actionEditorLibrary">
    <property name="text">
     <string>Editor</string>
+   </property>
+  </action>
+  <action name="actionExtractionRun">
+   <property name="text">
+    <string>Run</string>
    </property>
   </action>
  </widget>
