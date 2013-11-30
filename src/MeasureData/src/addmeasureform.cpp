@@ -98,7 +98,7 @@ void addMeasureForm::openMeasure(int measureId) {
     headerView_->setValue( "dubious", measure_->header().dubious );
 
     QVariantMap attrs = measure_->attrs();
-    qDebug() << attrs;
+
     foreach( QString attrName, attrs.keys() ){
         attributesView_->addPair( attrName, attrs.value(attrName),
                                   gui::KeyValuePair::TYPE_TEXT, attrName.toUpper() );

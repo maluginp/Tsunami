@@ -52,7 +52,7 @@ QVariant ParameterItemView::data(const QModelIndex &index, int role) const {
     switch(column){
     case 0: return library_->at(row).enable();
     case 1: return library_->at(row).name();
-    case 2: return library_->at(row).initial();
+    case 2: return QVariant(library_->at(row).initial());
     case 3: return library_->at(row).fitted();
     case 4: return library_->at(row).minimum();
     case 5: return library_->at(row).maximum();
@@ -76,6 +76,11 @@ bool ParameterItemView::setData(const QModelIndex &index, const QVariant &value,
 
     int row = index.row();
     int column = index.column();
+
+//    double digit;
+//    if(column >= 2 && column <= 5){
+
+//    }
 
     switch(column){
     case 0: library_->at(row).enable(  value.toBool() ); break;

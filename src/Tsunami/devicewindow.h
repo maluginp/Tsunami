@@ -9,10 +9,10 @@ class DeviceWindow;
 }
 namespace tsunami{
 class LibraryWindow;
-class DeviceWindow : public QMainWindow
-{
+class ExtractorWindow;
+class addMeasureForm;
+class DeviceWindow : public QMainWindow {
     Q_OBJECT
-
 public:
     explicit DeviceWindow(QWidget *parent = 0);
     ~DeviceWindow();
@@ -20,6 +20,8 @@ public:
     void openDevice( int deviceId );
 private:
     LibraryWindow* libraryWindow_;
+    ExtractorWindow* extractorWindow_;
+    addMeasureForm* measuresWindow_;
     Ui::DeviceWindow *ui;
     db::DeviceStorage* storage_;
     int deviceId_;
@@ -29,7 +31,7 @@ private slots:
     void clickedOpenDeviceAction();
     void clickedParametersEditor();
     void clickedExtractionRunAction();
-
+    void clickedMeasureEditor();
 };
 }
 

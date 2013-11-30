@@ -55,7 +55,10 @@ SOURCES += main.cpp \
     dbstorage/devicestorage.cpp \
     components/source.cpp \
     delegates/delegatecheckbox.cpp \
-    views/measureenableview.cpp
+    views/measureenableview.cpp \
+    views/parametersextractionview.cpp \
+    extractor/ExtractorHookeJeeves.cpp \
+    delegates/delegatedoubleitem.cpp
 
 HEADERS += \
     components/json.h \
@@ -100,7 +103,10 @@ HEADERS += \
     dbstorage/devicestorage.h \
     components/source.h \
     delegates/delegatecheckbox.h \
-    views/measureenableview.h
+    views/measureenableview.h \
+    views/parametersextractionview.h \
+    extractor/ExtractorHookeJeeves.h \
+    delegates/delegatedoubleitem.h
 
 
 

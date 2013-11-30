@@ -78,7 +78,7 @@ public:
     void enable(bool enable) { enable_ = enable; }
     void userId( int userId ) { userId_ = userId; }
 
-    int rows() { return rows_; }
+    int rows() const { return rows_; }
 
     const int& id() const { return measureId_; }
     const int& deviceId() const { return deviceId_; }
@@ -101,7 +101,7 @@ public:
     const bool& enable() const { return enable_; }
 
     bool hasAttr( const QString& key, const QVariant& value = QVariant() );
-    QMap<QString, double> get(int row);
+    QMap<QString, double> get(int row) const;
 
     int countSource( );
 

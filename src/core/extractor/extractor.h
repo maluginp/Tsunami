@@ -1,7 +1,9 @@
 #ifndef EXTRACTOR_H
 #define EXTRACTOR_H
 #include <QObject>
+#include <QMap>
 #include <QList>
+#include <QVariantMap>
 #include"defines.h"
 
 namespace tsunami{
@@ -15,49 +17,32 @@ namespace spice{
     class Simulator;
 }
 
+// TODO: Add tolerances
+
 namespace core{
 class Dataset;
 class OptimizeBase;
 
-class Extractor : public QObject {
+class Extractor : public QObject{
     Q_OBJECT
 public:
-    Extractor(DeviceType type, int libraryId);
+    enum Tolerance{
+        TOLERANCE_FUNCTION,
+        TOLERANCE_STEP,
+        TOLERANCE_GRADIENT
+    };
 
-    void setDataset(Dataset* dataset);
-    void setMethodOptimize(OptimizeBase* optimize);
-    void setMethodOptimize(const QString& name);
-    void setSimulator(spice::Simulator* simulator);
+    Extractor(DeviceType type, db::LibraryModel* library, const QList<int>& measures );
 
-    const double& value( const QString& name ) const;
-    const double& value( int index ) const;
-    const double& initial( const QString& name ) const;
-    const double& initial( int index ) const;
-    const double& minimum(const QString& name) const;
-    const double& minimum(int index) const;
-    const double& maximum(const QString& name) const;
-    const double& maximum(int index) const;
-    const double& fixed(const QString& name) const;
-    const double& fixed(int index) const;
-    const double& enable(const QString& name) const;
-    const double& enable(int index) const;
+    db::LibraryModel* library();
+    core::OptimizeBase* methodOptimize();
 
-    void value( const QString& name, double value );
-    void value( int index, double value );
-    void initial( const QString& name, double initial );
-    void initial( int index, double initial );
-    void minimum(const QString& name, double minimum);
-    void minimum(int index, double minimum);
-    void maximum(const QString& name, double maximum);
-    void maximum(int index, double maximum);
-    void fixed(const QString& name, bool fixed);
-    void fixed(int index, bool fixed);
-    void enable(const QString& name, bool enable);
-    void enable(int index,bool enable);
+    void methodOptimize(const QString& name);
+    void simulator(spice::Simulator* simulator);
+    void simulator(const QString& simulator, const QString &path);
+    int numberParameters();
 
-    int countParameters();
 
-    void run();
 
     virtual double functionError();
 
@@ -65,20 +50,63 @@ public:
     void config(const QString& key, const QVariant& value);
     void config( const QVariantMap& config );
 
+//    const bool& enable(int index) const;
+//    const double& initial(int index) const;
+    const double& fitted(int index) const;
+//    const double& minimum(int index) const;
+//    const double& maximum(int index) const;
+    const bool& fixed(int index) const;
 
+//    void enable(int index, bool enable);
+//    void initial(int index,double initial);
+    void fitted(int index,double fitted);
+//    void minimum(int index,double minimum);
+//    void maximum(int index,double maximum);
+//    void fixed(int index,bool fixed);
+//    void value(int index,double value);
+
+    double step(int index) const;
+    void step(int index,double step);
+    static Extractor* createExtractor(const QString& methodOptimization,
+                                      DeviceType type, db::LibraryModel* library,
+                                      const QList<int>& measures  );
+public slots:
+    virtual void process() = 0;
+    virtual void stop();
 protected:
+    void increaseIteration();
+
+    virtual bool checkConvergence(bool showMessage = true);
+    void currentFunctionError( double funcError );
+    const double& currentFunctionError( );
+    void saveSteps();
+
     QVariantMap configuration_;
 
     double subtract(double value1,double value2);
-    virtual double computeError( db::MeasureModel* measured ) = 0;
+    virtual double computeError(const db::MeasureModel* measure );
+
+
+    double previousFunctionError_, currentFunctionError_;
+    QMap<int, double> previousSteps_,currentSteps_;
+
     DeviceType type_;
-    Dataset* dataset() { return dataset_; }
     spice::Simulator* simulator_;
     db::LibraryModel* library_;
-    db::ParameterStorage* storage_;
-private:
     OptimizeBase* optimize_;
     Dataset* dataset_;
+
+    QMap<Tolerance,double> tolerances_;
+
+    int maxIterations_;
+    int iteration_;
+
+    // DB STORAGES
+    db::ParameterStorage* storageParameters_;
+    bool stopped_;
+signals:
+    void log(const QString& name);
+    void finished();
 
 };
 

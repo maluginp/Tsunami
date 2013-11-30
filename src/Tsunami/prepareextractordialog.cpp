@@ -50,11 +50,14 @@ void PrepareExtractorDialog::loadListLibraries() {
         ui->libraryComboBox->addItem( name, libraries.key(name) );
     }
 
+//    ui->libraryComboBox->setCurrentIndex(0);
+    libraryId_ = ui->libraryComboBox->itemData(0).toInt();
 }
 
 void PrepareExtractorDialog::loadListExtractionMethods() {
     ui->methodExtractionComboBox->clear();
-    ui->methodExtractionComboBox->addItem("Hooke-Jeevees", QVariant("hookejeevees") );
+    ui->methodExtractionComboBox->addItem("Hooke-Jeevees", QVariant("hookejeeves") );
+    methodExtraction_  = ui->methodExtractionComboBox->itemData(0,Qt::UserRole).toString();
 }
 
 void PrepareExtractorDialog::clickedRunButton()

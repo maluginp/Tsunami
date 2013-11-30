@@ -21,8 +21,10 @@ void DeviceModel::type(const QString &type){
         type_ = DEVICE_DIODE;
     }else if(type.compare("res") == 0){
         type_ = DEVICE_RESISTOR;
-    }else if(type.compare("source") == 0){
-        type_ = DEVICE_SOURCE;
+    }else if(type.compare("isource") == 0){
+        type_ = DEVICE_ISOURCE;
+    }else if(type.compare("vsource") == 0){
+        type_ = DEVICE_VSOURCE;
     }else if(type.compare("cap") == 0){
         type_ = DEVICE_CAPACITOR;
     }else{
@@ -41,7 +43,9 @@ QString DeviceModel::typeJson() const {
     case DEVICE_PMOS : return QString("pmos");
     case DEVICE_DIODE : return QString("diode");
     case DEVICE_RESISTOR : return QString("res");
-    case DEVICE_SOURCE : return QString("source");
+    case DEVICE_ISOURCE : return QString("isource");
+    case DEVICE_VSOURCE : return QString("vsource");
+
     case DEVICE_CAPACITOR : return QString("cap");
     }
 
@@ -62,7 +66,9 @@ QStringList DeviceModel::nodes() {
     case DEVICE_DIODE:
     case DEVICE_RESISTOR:
     case DEVICE_CAPACITOR:
-    case DEVICE_SOURCE:
+    case DEVICE_ISOURCE:
+    case DEVICE_VSOURCE:
+
         return QStringList() << "M" << "P";
 
     }

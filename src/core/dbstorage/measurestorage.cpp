@@ -308,6 +308,16 @@ QList<MeasureModel *> MeasureStorage::getMeasuresByDeviceId(int deviceId) {
     return getMeasuresByDeviceIdImpl(deviceId);
 }
 
+QList<MeasureModel *> MeasureStorage::getMeasures(const QList<int> &measureIds) {
+    QList<MeasureModel*> measures;
+
+    foreach(int measureId,measureIds){
+        measures.append( openMeasure(measureId) );
+    }
+
+    return measures;
+}
+
 
 }
 }

@@ -7,8 +7,8 @@
 namespace tsunami{
 namespace spice{
 
-class GraphNode
-{
+class GraphNode {
+    friend class Circuit;
 public:
     GraphNode(const QString& name);
     void link( GraphNode* node );

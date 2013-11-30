@@ -27,20 +27,23 @@ public:
     bool updateParameters(const QString& library, QList<db::ParameterModel> parameters );
 
     virtual bool simulate() = 0;
-    virtual db::MeasureModel simulatedData();
+    virtual db::MeasureModel *simulatedData();
 
 protected:
     virtual bool exec(QByteArray &data,const QStringList& arguments = QStringList());
     virtual QByteArray generateNetListModels() = 0;
     virtual QByteArray generateNetList() = 0;
-
+    virtual QByteArray generateNetPrints() = 0;
     QString randomName(int num);
 
 
+    db::MeasureModel* simulated_;
 private:
     bool external_;
     QString path_;
     Circuit* circuit_;
+
+
 
 };
 

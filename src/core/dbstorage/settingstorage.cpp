@@ -53,6 +53,19 @@ int SettingStorage::lastInsertId(const QString &table) {
 
 }
 
+void SettingStorage::testData() {
+    saveValue( "spice/simulator", "ngspice");
+    saveValue( "spice/max_iteration", 10);
+    saveValue( "spice/ngspice/enable", true );
+    saveValue( "optimize/tolerance/function", 1e-14);
+
+//#ifdef Q_MAC_OS
+    saveValue( "spice/ngspice/path", "/usr/local/bin/ngspice");
+    saveValue( "optimize/method", "hookejeeves" );
+    saveValue( "optimize/hookejeeves/max_iteration", 100);
+//    saveValue( "optimize/hookejeeves/tol" )
+}
+
 bool SettingStorage::saveValueImpl(const QString &key, const QVariant &value) {
     setLastError( QString() );
     QString sqlQuery("");
@@ -112,6 +125,9 @@ bool SettingStorage::createTable(const SettingStorage::SettingTable &table){
         return false;
     }
 
+#ifdef QT_DEBUG
+    testData();
+#endif
     return true;
 }
 

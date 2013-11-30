@@ -28,7 +28,7 @@ public:
     bool hasModel();
 
     void setParameters( const QStringList& parameters );
-
+    DeviceType type() { return device_; }
     void connect( Terminal* terminal );
     void disconnect( Terminal* terminal );
     void setModel( SpiceModel* model );
@@ -40,7 +40,10 @@ public:
     QByteArray netList();
     QByteArray sourceNetlist();
 
+    int numberPorts() { return numberPorts_; }
+
 private:
+    int numberPorts_;
     SpiceModel* model_;
     DeviceType device_;
     SourceMethod source_;

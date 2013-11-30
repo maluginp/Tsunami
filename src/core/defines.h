@@ -25,7 +25,9 @@ enum DeviceType{
     DEVICE_PMOS,
     DEVICE_DIODE,
     DEVICE_RESISTOR,
-    DEVICE_SOURCE,
+    DEVICE_ISOURCE,
+    DEVICE_VSOURCE,
+
     DEVICE_CAPACITOR
 };
 enum AnalysisType{

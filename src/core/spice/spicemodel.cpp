@@ -1,38 +1,18 @@
 #include "spicemodel.h"
+#include "models/librarymodel.h"
+#include "models/parametermodel.h"
 
 namespace tsunami{
 namespace spice{
 
 SpiceModel::SpiceModel(const QString &name, DeviceType type)
     : name_(name)
-    , type_(type){
+    , type_(type), library_(NULL){
 
 }
 
-void SpiceModel::add(const QString &name, const QVariant &value) {
-    parameters_.insert( name, value );
-    return;
-}
-
-void SpiceModel::add(const QVariantMap &parameters) {
-    foreach( QString key, parameters.keys()  ){
-        parameters_.insert( key, parameters.value(key) );
-    }
-    return;
-}
-
-void SpiceModel::set(const QString &name, const QVariant &value) {
-    if(parameters_.contains( name )){
-        parameters_[name] = value;
-    }
-}
-
-QVariant SpiceModel::get(const QString &name) {
-    return parameters_.value( name, QVariant() );
-}
-
-const QVariantMap &SpiceModel::parameters() const {
-    return parameters_;
+void SpiceModel::setLibrary(db::LibraryModel *library) {
+    library_ = library;
 }
 
 const QString &SpiceModel::name() const {
@@ -47,23 +27,47 @@ void SpiceModel::typeDevice(DeviceType type) {
     type_ = type;
 }
 
-void SpiceModel::clear() {
-    parameters_.clear();
-}
+QByteArray SpiceModel::generateNetList() {
+    QByteArray netlist;
 
-bool SpiceModel::isFixed(const QString& parameter) {
-    if(constraints_.contains( parameter )){
-        ConstraintSpiceParameter constraint = constraints_.value(parameter);
+    Q_ASSERT( library_ != NULL );
 
-        return constraint.fixed;
+    netlist.append( QString(".model %1").arg(name_) );
+    switch(type_){
+    case DEVICE_CAPACITOR:
+    case DEVICE_RESISTOR:
+    case DEVICE_DIODE:
+        netlist.append( "" );
+        break;
+    case DEVICE_NBJT:
+        netlist.append(" NPN");
+        break;
+    case DEVICE_PBJT:
+        netlist.append(" PNP");
+        break;
+    case DEVICE_NMOS:
+        netlist.append(" NMOS");
+        break;
+    case DEVICE_PMOS:
+        netlist.append(" PMOS");
+        break;
+    case DEVICE_UNKNOWN:
+    default:
+        Q_ASSERT(false);
+//            break;
     }
-    return true;
-}
 
-ConstraintSpiceParameter SpiceModel::constraint(const QString &parameter) {
-    return constraints_.value(parameter, ConstraintSpiceParameter());
-}
+    netlist.append("(");
+    foreach(db::ParameterModel param, library_->parameters()){
+        if(param.enable()){
+            netlist.append( QString("%1=%2 ").arg(param.name()).arg(param.fitted()) );
+        }
+    }
+    netlist.append(")\n");
 
+    return netlist;
+
+}
 
 
 }

@@ -17,5 +17,5 @@ int main(int argc, char *argv[]) {
 
     tsunami::addMeasureForm form(tsunami::addMeasureForm::EDIT,1,0);
     form.show();
-    return a.exec();
+        return a.exec();
 }

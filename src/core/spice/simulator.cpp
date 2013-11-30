@@ -8,14 +8,14 @@ namespace spice{
 
 Simulator::Simulator()
     : external_(false)
-    , circuit_(NULL) {
+    , circuit_(NULL), simulated_(NULL) {
     Q_ASSERT(false);
 }
 
 Simulator::Simulator(const QString &path)
     : external_(true)
     , circuit_(NULL)
-    , path_(path)
+    , path_(path), simulated_(NULL)
 {
 
 
@@ -48,8 +48,8 @@ void Simulator::path(const QString &path) {
     path_ = path;
 }
 
-db::MeasureModel Simulator::simulatedData(){
-Q_ASSERT(false);
+db::MeasureModel* Simulator::simulatedData(){
+    return simulated_;
 }
 
 bool Simulator::exec(QByteArray& data, const QStringList &arguments){
@@ -67,8 +67,6 @@ bool Simulator::exec(QByteArray& data, const QStringList &arguments){
     // Continue reading the data until EOF reached
     while(process.waitForReadyRead())
         data.append(process.readAll());
-
-    qDebug(data.data());
 
     return true;
 }

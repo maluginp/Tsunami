@@ -49,7 +49,6 @@ void MeasureModel::header(const QString &comment, const QDate &fabrication, cons
 void MeasureModel::attrsJson( const QString& json ){
     // TODO Attributes is extracted from json
     QVariantMap attrs = QtJson::parse(json).toMap();
-    qDebug() << attrs;
     attributes_ = attrs;
 
 }
@@ -218,7 +217,6 @@ QString MeasureModel::sourcesJson() {
     }
 
     QString json = QtJson::serializeStr( items );
-    qDebug() << json;
     return json;
 
 }
@@ -234,7 +232,7 @@ bool MeasureModel::hasAttr(const QString &key, const QVariant &value) {
     return false;
 }
 
-QMap<QString, double> MeasureModel::get(int row) {
+QMap<QString, double> MeasureModel::get(int row) const {
     QMap<QString, double> data;
     foreach(QString column,columns_){
         data.insert( column, at(row,column) );
@@ -253,10 +251,14 @@ QMap<QString, double> MeasureModel::find(const QMap<QString, double> &data) {
     // Getting sources;
     foreach(Source source, sources_){
         QString name;
+        if(source.direction() != SOURCE_DIRECTION_INPUT){
+            continue;
+        }
+
         if(source.mode() == SOURCE_MODE_VOLTAGE){
-            name = QString( "V%1" ).arg(source.node());
+            name = QString( "V%1" ).arg(source.node().toLower());
         }else if(source.mode() == SOURCE_MODE_CURRENT){
-            name = QString("I%1").arg(source.node());
+            name = QString("I%1").arg(source.node().toLower());
         }
 
         if(!name.isEmpty()){
@@ -265,19 +267,27 @@ QMap<QString, double> MeasureModel::find(const QMap<QString, double> &data) {
 
     }
 
-
     bool found = false;
     for( int i=0; i < rows_; ++i ){
         found = true;
         foreach(QString column, columnSearch){
             if( data.contains(column) ){
-                if(data[column] != at(i,column)){
+                if(fabs(data[column] - at(i,column)) > 1e-15) {
                     found = false;
                 }
+            }else{
+                qDebug() << "Not found by column" << column;
+                found = false;
             }
         }
+
+        if(found){
+            return get(i);
+        }
+
     }
 
+    return QMap<QString, double>();
 
 
 

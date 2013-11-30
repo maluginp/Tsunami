@@ -5,6 +5,7 @@
 #include "dbstorage/parameterstorage.h"
 #include "views/parameteritemview.h"
 #include "delegates/delegatecheckbox.h"
+#include "delegates/delegatedoubleitem.h"
 namespace tsunami{
 
 LibraryWindow::LibraryWindow(int deviceId,QWidget *parent) :
@@ -36,6 +37,10 @@ void LibraryWindow::showParameters(db::LibraryModel *library) {
     delete parameters_;
     parameters_ = new gui::ParameterItemView(library);
     ui->parametersTableView->setModel( parameters_ );
+    ui->parametersTableView->setItemDelegateForColumn(2, new DelegateDoubleItem(ui->parametersTableView));
+    ui->parametersTableView->setItemDelegateForColumn(3, new DelegateDoubleItem(ui->parametersTableView));
+    ui->parametersTableView->setItemDelegateForColumn(4, new DelegateDoubleItem(ui->parametersTableView));
+    ui->parametersTableView->setItemDelegateForColumn(5, new DelegateDoubleItem(ui->parametersTableView));
 
     ui->parametersTableView->setItemDelegateForColumn(0, new DelegateCheckBox(ui->parametersTableView));
     ui->parametersTableView->setItemDelegateForColumn(6, new DelegateCheckBox(ui->parametersTableView));

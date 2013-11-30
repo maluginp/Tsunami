@@ -104,7 +104,6 @@ bool AnalysisStorage::saveAnalysisImpl(AnalysisModel *model) {
 
     QSqlQuery q(sqlQuery,db());
 
-    qDebug() << sqlQuery;
     if( model->id() == -1 ){
         analysisId = lastInsertId(TABLE_NAME_ANALYSES) +1;
     }

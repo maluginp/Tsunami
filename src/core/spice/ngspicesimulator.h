@@ -14,6 +14,10 @@ public:
 protected:
     QByteArray generateNetListModels( );
     QByteArray generateNetList();
+    QByteArray generateNetPrints();
+
+    QStringList columns_;
+
 private:
     bool isCorrectForParse();
 

@@ -23,6 +23,7 @@ protected:
     QString connectionName() const;
     int lastInsertId(const QString& table);
 private:
+    void testData();
     bool saveValueImpl( const QString& key, const QVariant& value );
     QVariant valueImpl( const QString& key, const QVariant& defaultValue = QVariant() );
 

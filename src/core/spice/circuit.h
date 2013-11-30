@@ -3,7 +3,8 @@
 #include <QString>
 #include <QVariantMap>
 #include "defines.h"
-
+#include <map>
+#include <QList>
 namespace tsunami{
 namespace spice{
 
@@ -11,14 +12,20 @@ class Terminal;
 class Device;
 class SpiceModel;
 
-typedef QMap<int,Device*> DeviceMap;
-typedef QMap<int,Terminal*> TerminalMap;
+struct ltunsigned{
+    bool operator()(const int& i1, const int& i2) const{
+        return i1 < i2;
+    }
+};
+
+typedef std::map<int,Device*> DeviceMap;
+typedef std::map<int,Terminal*> TerminalMap;
 typedef QList<SpiceModel*> ModelList;
 
 class Circuit {
 public:
     Circuit(const QString& name);
-
+    ~Circuit();
     void typeAnalysis( AnalysisType analysis );
     const AnalysisType& typeAnalysis();
 //    int addDevice( Device* device );
@@ -27,6 +34,7 @@ public:
     Device* getDevice( const QString& name );
     Device* getDevice( int deviceId );
     Device* nextDevice();
+    Device* mainDevice();
     void beginDevice(DeviceFlag flag=DEVICE_NO_FLAG);
 
     int addTerminal( const QString& name );
@@ -36,10 +44,7 @@ public:
     Terminal* nextTerminal();
     void beginTerminal();
 
-    void setSpiceModel( DeviceType device, SpiceModel* model);
-
-    void addSpiceModel(const QString& name,
-                        const QVariantMap& parameters = QVariantMap() );
+    void setSpiceModel(DeviceType deviceType, SpiceModel* model);
     void addSpiceModel( SpiceModel* model );
 
     SpiceModel* getModel( const QString& name);
@@ -48,6 +53,7 @@ public:
     SpiceModel* nextModel();
 
     void setRefTerminal( int terminalId );
+    int getRefTerminalId();
 
     void connect(int deviceId, int terminalId);
 
@@ -59,15 +65,17 @@ public:
 //    static Circuit* createCircuitTran(DeviceType type);
 
     static QString formSourceName( SourceMode mode, QString node );
-protected:
 
+    QList<Source> sources() { return sources_; }
+protected:
+    QList<Source> sources_;
 private:
-    void createBjt(    Circuit *circuit, DeviceType type);
-    void createRes(    Circuit* circuit, DeviceType type);
-    void createCap(    Circuit* circuit, DeviceType type);
-    void createDiode(  Circuit* circuit, DeviceType type);
-    void createFet(    Circuit *circuit, DeviceType type);
-    void createMosfet( Circuit *circuit, DeviceType type);
+    int createBjt(    Circuit *circuit, DeviceType type);
+    int createRes(    Circuit* circuit, DeviceType type);
+    int createCap(    Circuit* circuit, DeviceType type);
+    int createDiode(  Circuit* circuit, DeviceType type);
+    int createFet(    Circuit *circuit, DeviceType type);
+    int createMosfet( Circuit *circuit, DeviceType type);
 
     bool isModelExist( const QString& name );
 
@@ -77,13 +85,14 @@ private:
     DeviceMap devices_;
     TerminalMap terminals_;
     ModelList models_;
-
+    int mainDeviceId_;
     AnalysisType typeAnalysis_;
 
+
     DeviceFlag flag_;
-    DeviceMap::Iterator currentDevice_;
-    TerminalMap::Iterator currentTerminal_;
-    ModelList::Iterator  currentModel_;
+    DeviceMap::iterator currentDevice_;
+    TerminalMap::iterator currentTerminal_;
+    ModelList::iterator  currentModel_;
 
 
 

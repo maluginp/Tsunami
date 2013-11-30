@@ -8,173 +8,72 @@
 #include "models/measuremodel.h"
 #include "optimize/optimizebase.h"
 #include "dbstorage/parameterstorage.h"
-
-// Optimize methods
-#include "optimize/hookejeevesmethod.h"
+#include "dbstorage/settingstorage.h"
+#include "spice/ngspicesimulator.h"
+#include "ExtractorHookeJeeves.h"
 
 namespace tsunami{
 namespace core{
 
-Extractor::Extractor(DeviceType type, int libraryId) {
+Extractor::Extractor(DeviceType type, db::LibraryModel* library, const QList<int> &measures) : simulator_(0),
+    dataset_(0),storageParameters_(0),previousFunctionError_(DBL_MAX),
+    currentFunctionError_(DBL_MAX), library_(library){
     type_ = type;
 
-    storage_ = db::ParameterStorage::instance();
-    library_ = storage_->openLibrary( libraryId );
+    db::SettingStorage* setting = db::SettingStorage::instance();
+    stopped_ = false;
+    iteration_ = 0;
+    maxIterations_ = setting->value("spice/max_iteration",10).toInt();
+
+    tolerances_.insert( TOLERANCE_FUNCTION, setting->value("optimize/tolerance/function",1e-14).toDouble()  );
+
+
+    dataset_ = new Dataset();
+    dataset_->load( measures );
 
 
 }
 
-void Extractor::setDataset(Dataset *dataset) {
-    dataset_ = dataset;
+db::LibraryModel *Extractor::library() {
+    return library_;
 }
 
-void Extractor::setMethodOptimize(OptimizeBase *optimize) {
-    optimize_ = optimize;
-}
-
-void Extractor::setMethodOptimize(const QString &name) {
-    if(name.compare("hookejeeves", Qt::CaseInsensitive)){
-        optimize_ = new HookeJeevesMethod(this);
-    }
-
-}
-
-void Extractor::setSimulator(spice::Simulator *simulator) {
+void Extractor::simulator(spice::Simulator *simulator) {
     simulator_ = simulator;
 }
 
-const double &Extractor::value(const QString &name) const {
-    return library_->parameter( name ).fitted();
+void Extractor::simulator(const QString &simulator, const QString& path) {
+    if(simulator.compare("ngspice") == 0){
+        simulator_ = new spice::NgSpiceSimulator( path );
+    }
 }
 
-const double &Extractor::value(int index) const {
-    return library_->parameter( index ).fitted();
-}
 
-const double &Extractor::initial(const QString &name) const {
-    return library_->parameter(name).initial();
-}
 
-const double &Extractor::initial(int index) const {
-    return library_->parameter(index).initial();
-}
-
-const double &Extractor::minimum(const QString &name) const {
-    return library_->parameter(name).minimum();
-}
-
-const double &Extractor::minimum(int index) const {
-    return library_->parameter(index).minimum();
-}
-
-const double &Extractor::maximum(const QString &name) const {
-    return library_->parameter(name).maximum();
-}
-
-const double &Extractor::maximum(int index) const {
-    return library_->parameter(index).maximum();
-}
-
-const double &Extractor::fixed(const QString &name) const {
-    return library_->parameter(name).fixed();
-}
-
-const double &Extractor::fixed(int index) const {
-    return library_->parameter(index).fixed();
-}
-
-const double &Extractor::enable(const QString &name) const {
-    return library_->parameter(name).enable();
-}
-
-const double &Extractor::enable(int index) const {
-    return library_->parameter(index).enable();
-}
-
-void Extractor::value(const QString &name, double value) {
-    library_->parameter(name).fitted(value);
-}
-
-void Extractor::value(int index, double value) {
-    library_->parameter(index).fitted(value);
-}
-
-void Extractor::initial(const QString &name, double initial) {
-    library_->parameter(name).initial(initial);
-}
-
-void Extractor::initial(int index, double initial){
-    library_->parameter(index).initial(initial);
-}
-
-void Extractor::minimum(const QString &name, double minimum) {
-    library_->parameter(name).minimum(minimum);
-}
-
-void Extractor::minimum(int index, double minimum) {
-    library_->parameter(index).minimum(minimum);
-}
-
-void Extractor::maximum(const QString &name, double maximum) {
-    library_->parameter(name).maximum(maximum);
-}
-
-void Extractor::maximum(int index, double maximum) {
-    library_->parameter(index).maximum(maximum);
-}
-
-void Extractor::fixed(const QString &name, bool fixed) {
-    library_->parameter(name).fixed(fixed);
-}
-
-void Extractor::fixed(int index, bool fixed) {
-    library_->parameter(index).fixed(fixed);
-}
-
-void Extractor::enable(const QString &name, bool enable) {
-    library_->parameter(name).enable(enable);
-}
-
-void Extractor::enable(int index, bool enable) {
-    library_->parameter(index).enable(enable);
-}
-
-int Extractor::countParameters() {
+int Extractor::numberParameters() {
     return library_->countParameters();
-
 }
-
-void Extractor::run() {
-    Q_ASSERT(optimize_ != NULL);
-
-    // Go to Mars
-    optimize_->run();
-
-
-}
-
 
 double Extractor::functionError() {
     double funcError = 0.0;
 
     Q_ASSERT(simulator_ != NULL);
-    Q_ASSERT(optimize_  != NULL);
+//    Q_ASSERT(optimize_  != NULL);
     Q_ASSERT(dataset_   != NULL);
 
-    dataset()->begin();
-    while(dataset()->isNext()){
-        db::MeasureModel measure = dataset()->next();
+    dataset_->begin();
+    while(dataset_->isNext()){
+        const db::MeasureModel* measure = dataset_->next();
         spice::Circuit *circuit = spice::Circuit::createCircuitDevice( type_,
-                                                                       measure.sources() );
+                                                                       measure->sources() );
 
-        spice::SpiceModel* model = new spice::SpiceModel("device");
-        foreach(db::ParameterModel parameter, library_->parameters()){
-            model->add( parameter.name(), parameter.fitted() );
-        }
+        spice::SpiceModel* model = new spice::SpiceModel( "bjt" ,type_);
+        model->setLibrary( library_ );
+
 
         circuit->setSpiceModel( type_, model );
         simulator_->setCircuit( circuit );
-        funcError += computeError(&measure);
+        funcError += computeError(measure);
 
         delete circuit;
         simulator_->setCircuit(NULL);
@@ -199,9 +98,139 @@ void Extractor::config(const QVariantMap &config) {
     configuration_ = config;
 }
 
+const double &Extractor::fitted(int index) const {
+    return library_->at(index).fitted();
+}
+
+const bool &Extractor::fixed(int index) const {
+    return library_->at(index).fixed();
+}
+
+void Extractor::fitted(int index, double fitted) {
+    library()->at(index).fitted( fitted );
+}
+
+double Extractor::step(int index) const {
+    return currentSteps_[index];
+}
+
+void Extractor::step(int index, double step) {
+    currentSteps_[index] = step;
+}
+
+Extractor *Extractor::createExtractor(const QString &methodOptimization, DeviceType type,
+                                      db::LibraryModel* library, const QList<int> &measures) {
+    if(methodOptimization.compare("hookejeeves") == 0){
+        return new ExtractorHookeJeeves(type,library,measures);
+    }
+
+
+    return NULL;
+}
+
+void Extractor::stop() {
+    stopped_ = true;
+}
+
+void Extractor::increaseIteration() {
+    iteration_++;
+}
+
+bool Extractor::checkConvergence(bool showMessage) {
+
+    if(stopped_){
+        return false;
+    }
+
+    if( tolerances_.contains(TOLERANCE_FUNCTION) ){
+        double tol = tolerances_[TOLERANCE_FUNCTION];
+        qDebug() << previousFunctionError_ - currentFunctionError_;
+        if( fabs(previousFunctionError_ - currentFunctionError_) < tol ){
+            if(showMessage) emit log("- Detected function tolerance condition");
+            return false;
+        }
+
+    }
+
+    if( tolerances_.contains(TOLERANCE_STEP)){
+        double tol = tolerances_[TOLERANCE_STEP];
+        int nParameters = numberParameters();
+        for(int i=0; i < nParameters; ++i){
+            if( !library_->parameter(i).enable() || library_->parameter(i).fixed() ){
+                continue;
+            }
+            if(fabs(previousSteps_[i] - currentSteps_[i]) < tol){
+               if(showMessage) emit log("- Detected step tolerance condition");
+               return false;
+            }
+        }
+
+    }
+
+    if( maxIterations_ < iteration_ ){
+        return false;
+    }
+
+    return true;
+
+}
+
+void Extractor::currentFunctionError(double funcError) {
+    previousFunctionError_ = currentFunctionError_;
+    currentFunctionError_ = funcError;
+}
+
+const double &Extractor::currentFunctionError() {
+    return currentFunctionError_;
+}
+
+void Extractor::saveSteps() {
+    previousSteps_ = currentSteps_;
+}
+
 double Extractor::subtract(double value1, double value2) {
     double subtract = value2 - value1;
     return subtract;
+}
+
+double Extractor::computeError(const db::MeasureModel *measure) {
+    // TODO: Add PRINTS
+    simulator_->simulate();
+    db::MeasureModel* simulate = simulator_->simulatedData();
+    int rows = measure->rows();
+    double error;
+
+    int nNotFound = 0;
+    for(int i=0; i < rows; ++i){
+        QMap<QString, double> measured  = measure->get(i);
+        QMap<QString, double> simulated = simulate->find(measured);
+
+        if(simulated.size() == 0){
+//            qDebug() << "Not found simulated data for" << measured;
+            nNotFound++;
+            continue;
+        }
+
+        if(type_ == DEVICE_PBJT || type_ == DEVICE_NBJT){
+//            error += subtract(measured.value("Ie"),simulated.value("Ie"));
+            error += fabs( subtract(measured.value("Ib"),simulated.value("Ib")) );
+            error += fabs( subtract(measured.value("Ic"),simulated.value("Ic")) );
+        }else if(type_ == DEVICE_NMOS || type_ == DEVICE_PMOS
+                 || type_ == DEVICE_NFET || type_ == DEVICE_PFET){
+            error += subtract(measured.value("Is"),simulated.value("Is"));
+            error += subtract(measured.value("Ig"),simulated.value("Ig"));
+            error += subtract(measured.value("Id"),simulated.value("Id"));
+            error += subtract(measured.value("Ib"),simulated.value("Ib"));
+        }
+    }
+
+    qDebug() << "Number found:" << rows-nNotFound;
+
+
+//    delete model;
+//    delete circuit;
+
+    return error;
 }
 
 

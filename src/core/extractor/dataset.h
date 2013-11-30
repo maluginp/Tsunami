@@ -2,14 +2,15 @@
 #define DATASET_H
 #include <QString>
 #include <QList>
-#include <QVariantMap>
-//#include "models/measuremodel.h"
 #include "defines.h"
 
 namespace tsunami{
 namespace db{
 class MeasureModel;
 }
+
+typedef QList<db::MeasureModel*> ListMeasures;
+
 namespace core{
 
 class Dataset {
@@ -19,15 +20,14 @@ public:
     bool load( AnalysisType type, DeviceType device,
                const QVariantMap& attr = QVariantMap() );
 
+    void load(const QList<int>& measureIds );
 
     void begin();
     bool isNext();
-    const db::MeasureModel &next();
+    const db::MeasureModel *next();
 private:
-    QList<db::MeasureModel> measures_;
-    QList<db::MeasureModel>::iterator currentMeasure_;
-
-
+    ListMeasures measures_;
+    int measureIt_;
 
 };
 

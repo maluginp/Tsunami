@@ -12,12 +12,35 @@ Device::Device(const QString &name, DeviceType device)
     , flags_(0x0)
     , source_(SOURCE_METHOD_UNKNOWN) {
 
+    switch(device_){
+    case DEVICE_CAPACITOR:
+    case DEVICE_RESISTOR:
+    case DEVICE_DIODE:
+    case DEVICE_VSOURCE:
+    case DEVICE_ISOURCE:
+        numberPorts_ = 2;
+        break;
+    case DEVICE_PBJT:
+    case DEVICE_NBJT:
+        numberPorts_ = 3;
+        break;
+    case DEVICE_NMOS:
+    case DEVICE_PMOS:
+    case DEVICE_PFET:
+    case DEVICE_NFET:
+        numberPorts_ = 4;
+        break;
+    case DEVICE_UNKNOWN:
+    default:
+        Q_ASSERT(false);
+    }
 }
 
 void Device::setSource(SourceMethod source, const QVariantMap &options) {
 //    if( source != SOURCE_UNKNOWN ){
         setFlag( DEVICE_FLAG_SOURCE  );
         sourceOptions_ = options;
+        source_ = source;
 //    }
 }
 
@@ -89,11 +112,11 @@ QByteArray Device::netList() {
     QStringList temp;
 
     if(source_ != SOURCE_METHOD_UNKNOWN){
-        if(source_ == SOURCE_METHOD_CONST && source_ == SOURCE_METHOD_LINEAR){
+        if(source_ == SOURCE_METHOD_CONST || source_ == SOURCE_METHOD_LINEAR){
             if(source_ == SOURCE_METHOD_CONST){
-                temp.append( QString("dc %1").arg( sourceOptions_.value("const").toDouble() ) );
+                temp.append( QString("%1").arg( sourceOptions_.value("const").toDouble() ) );
             }else if(source_ == SOURCE_METHOD_LINEAR){
-                temp.append( QString("dc %1").arg(sourceOptions_.value("start").toDouble()) );
+                temp.append( QString("%1").arg(sourceOptions_.value("start").toDouble()) );
             }
         }
     }
@@ -105,23 +128,36 @@ QByteArray Device::netList() {
     case DEVICE_CAPACITOR:
     case DEVICE_RESISTOR:
     case DEVICE_DIODE:
-    case DEVICE_SOURCE:
-        nets.append( QString("%1 %2 %3 %4 %5").arg(name())
+    case DEVICE_ISOURCE:
+    case DEVICE_VSOURCE:
+        nets.append( QString("%1 %2 %3 %4").arg(name())
                      .arg(terminal(0)->id()).arg(terminal(1)->id())
                      .arg(params).toAscii() );
         break;
     case DEVICE_PBJT:
     case DEVICE_NBJT:
+        nets.append( QString("Q%1 %2 %3 %4 %5").arg(id())
+                     .arg(terminal(0)->id())
+                     .arg(terminal(1)->id())
+                     .arg(terminal(2)->id())
+                     .arg(params).toAscii() );
+        if( model_ != 0 ){
+            nets.append(QString(" %1").arg(model_->name()));
+        }
+        break;
     case DEVICE_NMOS:
     case DEVICE_PMOS:
     case DEVICE_PFET:
     case DEVICE_NFET:
-        nets.append( QString("%1 %2 %3 %4 %5 %6 %7").arg(name())
+        nets.append( QString("%1 %2 %3 %4 %5 %6").arg(name())
                      .arg(terminal(0)->id())
                      .arg(terminal(1)->id())
                      .arg(terminal(2)->id())
                      .arg(terminal(3)->id())
                      .arg(params).toAscii() );
+        if( model_ != 0 ){
+            nets.append(QString(" %1").arg(model_->name()));
+        }
         break;
     case DEVICE_UNKNOWN:
     default:

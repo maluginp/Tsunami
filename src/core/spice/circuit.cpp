@@ -3,6 +3,8 @@
 #include "device.h"
 #include "terminal.h"
 #include "spicemodel.h"
+#include <QMap>
+#include <QDebug>
 namespace tsunami{
 namespace spice{
 
@@ -10,8 +12,13 @@ namespace spice{
 
 Circuit::Circuit(const QString &name)
     : name_(name)
-    , flag_(DEVICE_NO_FLAG)
-{
+    , flag_(DEVICE_NO_FLAG), mainDeviceId_(-1) {
+
+     GraphNode::nextId_ = 1;
+}
+
+
+Circuit::~Circuit(){
 
 }
 
@@ -25,24 +32,26 @@ const AnalysisType &Circuit::typeAnalysis() {
 
 int Circuit::addDevice(const QString &name, DeviceType type) {
     Device* device = new Device(name,type);
+    devices_[device->id()] = device;
 
-    devices_.insert( device->id(), device );
+    qDebug() << "Add device " << device->id() << " " << device->name();
+//    devices_.insert( device->id(), device );
     return device->id();
 }
 
 void Circuit::removeDevice(int id) {
-    DeviceMap::Iterator it = devices_.find( id );
+    DeviceMap::iterator it = devices_.find( id );
     if( it != devices_.end() ){
-        Device* device = static_cast<Device*>(it.value());
+        Device* device = (*it).second;
         devices_.erase( it );
         delete device;
     }
 }
 
 Device *Circuit::getDevice(const QString &name) {
-    DeviceMap::Iterator it = devices_.begin();
+    DeviceMap::iterator it = devices_.begin();
     for(; it != devices_.end(); it++){
-        Device* device = static_cast<Device*>(it.value());
+        Device* device = (*it).second;
         if(device->name().compare( name, Qt::CaseInsensitive ) == 0){
             return device;
         }
@@ -54,9 +63,9 @@ Device *Circuit::getDevice(const QString &name) {
 }
 
 Device *Circuit::getDevice(int deviceId) {
-    DeviceMap::Iterator it = devices_.find( deviceId );
+    DeviceMap::iterator it = devices_.find( deviceId );
     if( it != devices_.end() ){
-        Device* device = static_cast<Device*>(it.value());
+        Device* device = (*it).second;
         return device;
     }
 
@@ -65,19 +74,26 @@ Device *Circuit::getDevice(int deviceId) {
 }
 
 Device *Circuit::nextDevice() {
-    while( currentDevice_ != devices_.end() &&
-           !(static_cast<Device*>(currentDevice_.value())->isFlagged(flag_))) {
+    while( currentDevice_ != devices_.end()){
+        Device* device = (*currentDevice_).second;
+        if(device->isFlagged(flag_)){
+            break;
+        }
         currentDevice_++;
     }
     if( currentDevice_ != devices_.end() ){
-        Device* device = static_cast<Device*>(currentDevice_.value());
+        Device* device = (*currentDevice_).second;
         currentDevice_++;
         return device;
     }
-
-    Q_ASSERT(false);
-
     return NULL;
+}
+
+Device *Circuit::mainDevice() {
+    Q_ASSERT(mainDeviceId_ != -1);
+
+    return getDevice(mainDeviceId_);
+
 }
 
 void Circuit::beginDevice(DeviceFlag flag) {
@@ -87,25 +103,26 @@ void Circuit::beginDevice(DeviceFlag flag) {
 
 int Circuit::addTerminal(const QString &name) {
     Terminal* terminal = new Terminal(name);
-    terminals_.insert( terminal->id(), terminal );
-
+    terminals_[terminal->id()] = terminal;
+//    .insert( terminal->id(), terminal );
+    qDebug() << "Add terminal" << terminal->id() << " " << terminal->name() ;
     return terminal->id();
 }
 
 void Circuit::removeTerminal(int terminalId) {
-    TerminalMap::Iterator it = terminals_.find( terminalId );
+    TerminalMap::iterator it = terminals_.find( terminalId );
 
     if(it != terminals_.end()){
-        Terminal* terminal = static_cast<Terminal*>(it.value());
+        Terminal* terminal = (*it).second;
         terminals_.erase( it );
         delete terminal;
     }
 }
 
 Terminal *Circuit::getTerminal(const QString &name) {
-    TerminalMap::Iterator it = terminals_.begin();
+    TerminalMap::iterator it = terminals_.begin();
     for(; it != terminals_.end(); it++){
-        Terminal* terminal = static_cast<Terminal*>(it.value());
+        Terminal* terminal = (*it).second;
         if(terminal->name().compare( name, Qt::CaseInsensitive ) == 0){
             return terminal;
         }
@@ -118,9 +135,9 @@ Terminal *Circuit::getTerminal(const QString &name) {
 }
 
 Terminal *Circuit::getTerminal(int terminalId) {
-    TerminalMap::Iterator it = terminals_.find( terminalId );
+    TerminalMap::iterator it = terminals_.find( terminalId );
     if(it != terminals_.end()){
-        Terminal* terminal = static_cast<Terminal*>(it.value());
+        Terminal* terminal = (*it).second;
         return terminal;
     }
 
@@ -132,7 +149,7 @@ Terminal *Circuit::nextTerminal() {
 
     if( currentTerminal_ != terminals_.end() ){
 
-        Terminal* terminal = static_cast<Terminal*>(currentTerminal_.value());
+        Terminal* terminal = (*currentTerminal_).second;
         currentTerminal_++;
         return terminal;
     }
@@ -146,22 +163,18 @@ void Circuit::beginTerminal() {
     currentTerminal_ = terminals_.begin();
 }
 
-void Circuit::setSpiceModel(DeviceType device, SpiceModel *model) {
-    Q_ASSERT(false);
+void Circuit::setSpiceModel(DeviceType deviceType, SpiceModel *model) {
 
-}
-
-void Circuit::addSpiceModel(const QString &name, const QVariantMap &parameters) {
-
-    if( isModelExist(name) ){
-        return;
+    // BULLSHIT: Stupid function
+    beginDevice();
+    Device* device = nextDevice();
+    while(device){
+        if(device->type() == deviceType){
+            device->setModel( model );
+        }
+        device = nextDevice();
     }
-
-    SpiceModel* model = new SpiceModel( name );
-    if(parameters.size() > 0){
-        model->add( parameters );
-    }
-
+    addSpiceModel( model );
 }
 
 void Circuit::addSpiceModel(SpiceModel *model) {
@@ -189,7 +202,7 @@ void Circuit::beginModel() {
 }
 
 void Circuit::removeModel(const QString &name) {
-    ModelList::Iterator it = models_.begin();
+    ModelList::iterator it = models_.begin();
     for(;it != models_.end(); it++){
         SpiceModel* model = static_cast<SpiceModel*>(*it);
         if(model->name().compare(name,Qt::CaseInsensitive) == 0){
@@ -216,6 +229,10 @@ void Circuit::setRefTerminal(int terminalId) {
     if(terminal != NULL && !terminal->isRef()){
         terminal->setRef();
     }
+}
+
+int Circuit::getRefTerminalId() {
+    return 0;
 }
 
 void Circuit::connect(int deviceId, int terminalId) {
@@ -280,37 +297,39 @@ Circuit *Circuit::createCircuitDevice(DeviceType type, const QList<Source> &sour
     Circuit* circuit = new Circuit("Simulated");
     circuit->typeAnalysis( ANALYSIS_DC );
 
-    if( type == DEVICE_NBJT || type == DEVICE_PBJT ){
-        if(sources.count() != 3){
-            Q_ASSERT(false);
-        }
+    circuit->sources_ = sources;
 
-        circuit->createBjt( circuit,type );
+    if( type == DEVICE_NBJT || type == DEVICE_PBJT ){
+//        if(sources.count() != 3){
+//            Q_ASSERT(false);
+//        }
+
+        circuit->mainDeviceId_ = circuit->createBjt( circuit,type );
     }else if( type == DEVICE_NFET || type == DEVICE_PFET ){
         if(sources.count() != 4){
             Q_ASSERT(false);
         }
-        circuit->createFet( circuit, type );
+        circuit->mainDeviceId_  = circuit->createFet( circuit, type );
     }else if( type == DEVICE_NMOS || type == DEVICE_PMOS){
         if(sources.count() != 4){
             Q_ASSERT(false);
         }
-        circuit->createMosfet(circuit, type);
+        circuit->mainDeviceId_  = circuit->createMosfet(circuit, type);
     }else if( type == DEVICE_DIODE ){
         if(sources.count() != 2){
             Q_ASSERT(false);
         }
-        circuit->createDiode( circuit,type );
+        circuit->mainDeviceId_  = circuit->createDiode( circuit,type );
     }else if(type== DEVICE_CAPACITOR){
         if(sources.count() != 2){
             Q_ASSERT(false);
         }
-        circuit->createCap(circuit,type);
+        circuit->mainDeviceId_  = circuit->createCap(circuit,type);
     }else if(type == DEVICE_RESISTOR){
         if(sources.count() != 2){
             Q_ASSERT(false);
         }
-        circuit->createRes(circuit,type);
+        circuit->mainDeviceId_ = circuit->createRes(circuit,type);
     }else{
         Q_ASSERT(false);
     }
@@ -328,22 +347,29 @@ Circuit *Circuit::createCircuitDevice(DeviceType type, const QList<Source> &sour
     Q_ASSERT(termGnd != -1);
 
     foreach(Source source,sources){
-        if(source.mode() == SOURCE_MODE_GND){
+        if(source.mode() == SOURCE_MODE_GND || source.direction() != SOURCE_DIRECTION_INPUT){
             continue;
         }
         QString nameSource = formSourceName( source.mode(), source.node() );
         if(nameSource.isEmpty()) continue;
 
-        int devId = circuit->addDevice( nameSource, DEVICE_SOURCE );
+        int devId;
+        if(source.mode() == SOURCE_MODE_VOLTAGE){
+           devId = circuit->addDevice( nameSource, DEVICE_VSOURCE );
+        }else if(source.mode() == SOURCE_MODE_CURRENT){
+            devId = circuit->addDevice(nameSource, DEVICE_ISOURCE);
+        }
         circuit->getDevice(devId)->setSource( source.method(), source.configuration() );
 
         circuit->connect( devId, circuit->getTerminal(source.node())->id()  );
         circuit->connect( devId, termGnd);
 
     }
+
+    return circuit;
 }
 
-void Circuit::createBjt(Circuit* circuit, DeviceType type) {
+int Circuit::createBjt(Circuit* circuit, DeviceType type) {
     int bjtId = circuit->addDevice( "BJT", type );
     QStringList terms;
     terms << "E" << "B" << "C";
@@ -353,10 +379,10 @@ void Circuit::createBjt(Circuit* circuit, DeviceType type) {
         circuit->connect( bjtId, circuit->addTerminal(term) );
     }
 
-
+    return bjtId;
 }
 
-void Circuit::createRes(Circuit *circuit, DeviceType type) {
+int Circuit::createRes(Circuit *circuit, DeviceType type) {
     int resId = circuit->addDevice("RES", type);
 
     QStringList terms;
@@ -366,9 +392,11 @@ void Circuit::createRes(Circuit *circuit, DeviceType type) {
     foreach(QString term, terms) {
         circuit->connect( resId, circuit->addTerminal(term) );
     }
+
+    return resId;
 }
 
-void Circuit::createCap(Circuit *circuit, DeviceType type) {
+int Circuit::createCap(Circuit *circuit, DeviceType type) {
     int capId = circuit->addDevice("CAP", type);
 
     QStringList terms;
@@ -378,22 +406,25 @@ void Circuit::createCap(Circuit *circuit, DeviceType type) {
     foreach(QString term, terms) {
         circuit->connect( capId, circuit->addTerminal(term) );
     }
+
+    return capId;
 }
 
-void Circuit::createDiode(Circuit *circuit, DeviceType type) {
-    int fetId = circuit->addDevice("DIODE", type);
+int Circuit::createDiode(Circuit *circuit, DeviceType type) {
+    int diodeId = circuit->addDevice("DIODE", type);
 
     QStringList terms;
     terms << "A" << "C";
 
     // Terminals
     foreach(QString term, terms) {
-        circuit->connect( fetId, circuit->addTerminal(term) );
+        circuit->connect( diodeId, circuit->addTerminal(term) );
     }
 
+    return diodeId;
 }
 
-void Circuit::createFet(Circuit *circuit, DeviceType type) {
+int Circuit::createFet(Circuit *circuit, DeviceType type) {
     int fetId = circuit->addDevice("FET", type);
 
     QStringList terms;
@@ -403,10 +434,10 @@ void Circuit::createFet(Circuit *circuit, DeviceType type) {
     foreach(QString term, terms){
         circuit->connect( fetId, circuit->addTerminal(term) );
     }
-
+    return fetId;
 }
 
-void Circuit::createMosfet(Circuit *circuit, DeviceType type) {
+int Circuit::createMosfet(Circuit *circuit, DeviceType type) {
     int fetId = circuit->addDevice("MOSFET", type);
 
     QStringList terms;
@@ -416,7 +447,7 @@ void Circuit::createMosfet(Circuit *circuit, DeviceType type) {
     foreach(QString term, terms){
         circuit->connect( fetId, circuit->addTerminal(term) );
     }
-
+    return fetId;
 }
 
 
