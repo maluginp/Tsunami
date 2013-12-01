@@ -166,6 +166,9 @@ bool Extractor::checkConvergence(bool showMessage) {
         }
 
     }
+    if( tolerances_.contains(TOLERANCE_GRADIENT)){
+        Q_ASSERT(false);
+    }
 
     if( maxIterations_ < iteration_ ){
         return false;
@@ -194,7 +197,6 @@ double Extractor::subtract(double value1, double value2) {
 }
 
 double Extractor::computeError(const db::MeasureModel *measure) {
-    // TODO: Add PRINTS
     simulator_->simulate();
     db::MeasureModel* simulate = simulator_->simulatedData();
     int rows = measure->rows();
@@ -211,6 +213,8 @@ double Extractor::computeError(const db::MeasureModel *measure) {
             continue;
         }
 
+
+        // FIXME: Need change: Get sources list, then subract measured and simulated data
         if(type_ == DEVICE_PBJT || type_ == DEVICE_NBJT){
 //            error += subtract(measured.value("Ie"),simulated.value("Ie"));
             error += fabs( subtract(measured.value("Ib"),simulated.value("Ib")) );

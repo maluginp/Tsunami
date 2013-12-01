@@ -12,8 +12,6 @@ namespace db{
 
 #define CACHE_SIZE_PARAMETER_STORAGE 10
 
-// TODO changed parameters storage
-
 class ParameterStorage : public DbStorage, public Singleton<ParameterStorage> {
     enum ParameterTable{
         TABLE_PARAMETERS,

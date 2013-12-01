@@ -164,8 +164,6 @@ void Circuit::beginTerminal() {
 }
 
 void Circuit::setSpiceModel(DeviceType deviceType, SpiceModel *model) {
-
-    // BULLSHIT: Stupid function
     beginDevice();
     Device* device = nextDevice();
     while(device){

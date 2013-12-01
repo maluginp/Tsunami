@@ -58,17 +58,16 @@ bool NgSpiceSimulator::simulate() {
 
     output = output.mid(positionStartIndex);
 
-
     QList<QByteArray> list =  output.split( '\n' );
     list.removeAt(0);
     list.removeAt(0);
-    // remove null items
+    // Remove null items
     QList<QByteArray>::iterator it = list.begin();
     while(it!=list.end()){
         if((*it).isEmpty()){
             it = list.erase(it);
         }else{
-        it++;
+            it++;
         }
     }
 
@@ -114,7 +113,6 @@ QByteArray NgSpiceSimulator::generateNetListModels(){
         model = circuit()->nextModel();
     }
     return cards;
-
 }
 
 QByteArray NgSpiceSimulator::generateNetList() {

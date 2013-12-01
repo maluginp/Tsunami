@@ -17,8 +17,6 @@ namespace spice{
     class Simulator;
 }
 
-// TODO: Add tolerances
-
 namespace core{
 class Dataset;
 class OptimizeBase;

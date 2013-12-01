@@ -66,9 +66,9 @@ QVariant ParametersExtractionView::headerData(int section, Qt::Orientation orien
         return library_->at(section).name();
     }else if(orientation == Qt::Horizontal){
         if(section == 0){
-            return QVariant("Initial");
+            return tr("Initial");
         }else if(section == 1){
-            return QVariant("Fitted");
+            return tr("Fitted");
         }
     }
 

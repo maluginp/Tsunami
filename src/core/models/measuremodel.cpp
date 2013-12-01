@@ -47,14 +47,11 @@ void MeasureModel::header(const QString &comment, const QDate &fabrication, cons
 }
 
 void MeasureModel::attrsJson( const QString& json ){
-    // TODO Attributes is extracted from json
     QVariantMap attrs = QtJson::parse(json).toMap();
     attributes_ = attrs;
-
 }
 
 void MeasureModel::sourcesJson(const QString &json) {
-    // TODO Sources is extracted from json
     sources_.clear();
     QVariantList sources = QtJson::parse( json ).toList();
 
@@ -70,11 +67,9 @@ void MeasureModel::sourcesJson(const QString &json) {
         sources_.append(source);
 
     }
-
 }
 
 void MeasureModel::headerJson( const QString& json ){
-    // TODO Header is extracted from json
     QVariantMap header = QtJson::parse(json).toMap();
 
     header_ = MeasureHeader( header.value("comment").toString(),
@@ -86,14 +81,11 @@ void MeasureModel::headerJson( const QString& json ){
 
 
 void MeasureModel::columnsJson(const QString &json) {
-    // TODO Columns is extracted from json
     QStringList list = QtJson::parse(json).toStringList();
-
     columns_ = list;
 }
 
 void MeasureModel::dataJson(const QString &json) {
-    // TODO Data is extracted from json
     QVariantMap dataJson = QtJson::parse(json).toMap();
     rows_ = dataJson.size();
     int columns = dataJson.value("0").toList().size();
@@ -148,8 +140,6 @@ Source MeasureModel::getSource(const QString &name) {
 }
 
 QString MeasureModel::headerJson() {
-    // TODO JSON is formed from header
-
     QString json;
 
     QVariantMap header;
@@ -164,7 +154,6 @@ QString MeasureModel::headerJson() {
 }
 
 QString MeasureModel::dataJson() {
-    // TODO JSON is formed from data
     int rows = data_->rows();
     int columns = data_->columns();
     QVariantMap dataJson;

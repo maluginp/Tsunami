@@ -20,7 +20,6 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
     storage_ = db::DeviceStorage::instance();
 
     deviceId_ = 1;
-
     device_ = storage_->openDevice(deviceId_);
 
     libraryWindow_ = NULL;

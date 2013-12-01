@@ -16,6 +16,9 @@ CONFIG(release,debug|release){
     DESTDIR=$$SOLUTION_DIR/build/release
 }
 
+TRANSLATIONS += i18n/tsunami_en.ts \
+                i18n/tsunami_ru.ts
+
 LIBS += -L$$DESTDIR -lcore
 
 
@@ -40,3 +43,6 @@ FORMS    += devicewindow.ui \
     openlibrarydialog.ui \
     prepareextractordialog.ui \
     extractorwindow.ui
+
+RESOURCES += \
+    resources.qrc

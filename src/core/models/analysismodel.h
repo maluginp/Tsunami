@@ -1,6 +1,5 @@
 #ifndef ANALYSISMODEL_H
 #define ANALYSISMODEL_H
-// TODO Remove?
 #include <QDateTime>
 #include "defines.h"
 namespace tsunami{

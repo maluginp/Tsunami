@@ -63,7 +63,7 @@ private:
     SourceMode mode_;
     SourceMethod method_;
     QVariantMap configuration_;
-    QString node_; // TODO Node is QString ??
+    QString node_;
     SourceDirection direction_;
 };
 }

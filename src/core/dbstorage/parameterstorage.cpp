@@ -184,10 +184,10 @@ bool ParameterStorage::saveLibraryImpl(LibraryModel *library) {
 
 
     QSqlQuery q( sqlQuery, db() );
-
+    bool needSync = true;
     if(libraryId == -1){
         libraryId = lastInsertId(TABLE_NAME_LIBRARIES) + 1;
-//        currentLibrary_.id( lastInsertId );
+        needSync = false;
     }
 
     q.bindValue(":id",          libraryId);
@@ -203,7 +203,10 @@ bool ParameterStorage::saveLibraryImpl(LibraryModel *library) {
         return false;
     }
 
-    syncParameters( library );
+
+    if(needSync){
+        syncParameters( library );
+    }
 
     sqlQuery = sql("INSERT OR REPLACE INTO "
                    "%1(id,library_id,name,initial,fitted,minimum,maximum,fixed,enable) "
@@ -213,13 +216,13 @@ bool ParameterStorage::saveLibraryImpl(LibraryModel *library) {
 
     foreach(ParameterModel parameter,library->parameters()){
         if(parameter.name().isEmpty()){
-
+            continue;
         }
 
         q = QSqlQuery( sqlQuery, db() );
 
         parameter.libraryId( libraryId );
-        if(parameter.id() == -1 ){
+        if(parameter.id() == -1 || !needSync){
             int parameterId = lastInsertId(TABLE_NAME_PARAMETERS)+1;
             parameter.id(  parameterId  );
         }
