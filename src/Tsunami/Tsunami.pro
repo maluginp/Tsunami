@@ -19,7 +19,7 @@ CONFIG(release,debug|release){
 TRANSLATIONS += i18n/tsunami_en.ts \
                 i18n/tsunami_ru.ts
 
-LIBS += -L$$DESTDIR -lcore
+LIBS += -L$$DESTDIR -lcore -llogger
 
 
 SOURCES += main.cpp\

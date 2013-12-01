@@ -6,7 +6,8 @@ MOC_DIR = $$SOLUTION_DIR/tmp/$$TARGET
 QMAKE_CXXFLAGS_WARN_ON += -Wno-reorder
 
 INCLUDEPATH += $$SOLUTION_DIR/include \
-               $$SOLUTION_DIR/src/core
+               $$SOLUTION_DIR/src/core \
+               $$SOLUTION_DIR/src/logger
 
 macx:QMAKE_CC = gcc
 macx:QMAKE_CXX = g++

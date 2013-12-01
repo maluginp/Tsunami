@@ -10,6 +10,8 @@
 
 #include "dbstorage/settingstorage.h"
 
+#include <logger.h>
+
 namespace tsunami{
 
 DeviceWindow::DeviceWindow(QWidget *parent) :
