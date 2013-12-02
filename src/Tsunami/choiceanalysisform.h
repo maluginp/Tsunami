@@ -27,7 +27,7 @@ public:
 private slots:
     void clickedAnalysis( const QModelIndex& index );
     void clickedAddButton();
-    void clickedSelectButton();
+    void clickedOpenButton();
     void clickedEditButton();
 
 private:

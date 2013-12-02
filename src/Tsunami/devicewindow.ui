@@ -78,6 +78,8 @@
     <property name="title">
      <string>Measures</string>
     </property>
+    <addaction name="actionAddMeasure"/>
+    <addaction name="actionEditMeasure"/>
    </widget>
    <widget class="QMenu" name="menuParameters">
     <property name="title">
@@ -128,6 +130,16 @@
   <action name="actionExtractionRun">
    <property name="text">
     <string>Run</string>
+   </property>
+  </action>
+  <action name="actionAddMeasure">
+   <property name="text">
+    <string>Add</string>
+   </property>
+  </action>
+  <action name="actionEditMeasure">
+   <property name="text">
+    <string>Edit</string>
    </property>
   </action>
  </widget>

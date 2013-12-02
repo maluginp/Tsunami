@@ -32,6 +32,7 @@ private slots:
     void clickedParametersEditor();
     void clickedExtractionRunAction();
     void clickedMeasureEditor();
+    void clickedMeasureAdd();
 };
 }
 

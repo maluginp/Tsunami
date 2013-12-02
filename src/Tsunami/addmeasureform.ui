@@ -19,7 +19,7 @@
      <item>
       <widget class="QTabWidget" name="measureTabs">
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tabHeader">
         <attribute name="title">
@@ -95,7 +95,7 @@
         </attribute>
         <layout class="QGridLayout" name="gridLayout_3">
          <item row="0" column="0">
-          <widget class="QLabel" name="measureInputsText">
+          <widget class="QLabel" name="measureSources">
            <property name="text">
             <string>TextLabel</string>
            </property>

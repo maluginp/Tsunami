@@ -104,6 +104,15 @@ void addMeasureForm::openMeasure(int measureId) {
                                   gui::KeyValuePair::TYPE_TEXT, attrName.toUpper() );
     }
 
+    QString sourcesDescription;
+    QList<Source> sources = measure_->sources();
+    foreach(Source source,sources){
+        if(source.direction() == SOURCE_DIRECTION_INPUT){
+            sourcesDescription.append( QString("%1 %2 %3\n").arg(source.node()).arg(source.modeJson().toUpper())
+                                       .arg(source.methodJson().toUpper()));
+        }
+    }
+    ui->measureSources->setText( sourcesDescription );
 
 }
 

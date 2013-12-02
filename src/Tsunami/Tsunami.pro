@@ -28,21 +28,36 @@ SOURCES += main.cpp\
     librarywindow.cpp \
     openlibrarydialog.cpp \
     prepareextractordialog.cpp \
-    extractorwindow.cpp
+    extractorwindow.cpp \
+    plotdatawindow.cpp \
+    choiceanalysisform.cpp \
+    analysisform.cpp \
+    addmeasureform.cpp \
+    OpenMeasureDialog.cpp
 
 HEADERS  += devicewindow.h \
     opendevicedialog.h \
     librarywindow.h \
     openlibrarydialog.h \
     prepareextractordialog.h \
-    extractorwindow.h
+    extractorwindow.h \
+    plotdatawindow.h \
+    choiceanalysisform.h \
+    analysisform.h \
+    addmeasureform.h \
+    OpenMeasureDialog.h
 
 FORMS    += devicewindow.ui \
     opendevicedialog.ui \
     librarywindow.ui \
     openlibrarydialog.ui \
     prepareextractordialog.ui \
-    extractorwindow.ui
+    extractorwindow.ui \
+    plotdatawindow.ui \
+    choiceanalysisform.ui \
+    analysisform.ui \
+    addmeasureform.ui \
+    OpenMeasureDialog.ui
 
 RESOURCES += \
     resources.qrc

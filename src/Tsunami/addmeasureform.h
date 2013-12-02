@@ -36,6 +36,7 @@ private:
     bool isReadOnlyColumn( const QString& column );
     void openAnalysis(int analysisId);
     void openMeasure(int measureId);
+
     Ui::addMeasureForm *ui;
 
     Action action_;

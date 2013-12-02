@@ -6,10 +6,11 @@
 #include "prepareextractordialog.h"
 #include "extractor/extractorglobal.h"
 #include "extractorwindow.h"
-#include "../../src/MeasureData/src/addmeasureform.h"
+#include "addmeasureform.h"
 
 #include "dbstorage/settingstorage.h"
-
+#include "OpenMeasureDialog.h"
+#include "choiceanalysisform.h"
 #include <logger.h>
 
 namespace tsunami{
@@ -31,7 +32,8 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
     connect( ui->actionOpen, SIGNAL(triggered()), this, SLOT(clickedOpenDeviceAction()) );
     connect( ui->actionEditorLibrary,SIGNAL(triggered()),this,SLOT(clickedParametersEditor()));
     connect( ui->actionExtractionRun,SIGNAL(triggered()),this,SLOT(clickedExtractionRunAction()));
-
+    connect( ui->actionEditMeasure,SIGNAL(triggered()),this,SLOT(clickedMeasureEditor()));
+    connect( ui->actionAddMeasure,SIGNAL(triggered()),this,SLOT(clickedMeasureAdd()));
 }
 
 DeviceWindow::~DeviceWindow() {
@@ -95,10 +97,24 @@ void DeviceWindow::clickedExtractionRunAction() {
 }
 
 void DeviceWindow::clickedMeasureEditor() {
+    int measureId = OpenMeasureDialog::getMeasureId( deviceId_ );
 
-    delete measuresWindow_;
-//    measuresWindow_ = new tsunami::addMeasureForm(tsunami::addMeasureForm::EDIT,1,0);
-//    measuresWindow_->show();
+    if(measureId != -1){
+        delete measuresWindow_;
+
+        measuresWindow_ = new tsunami::addMeasureForm(tsunami::addMeasureForm::EDIT,1,0);
+        measuresWindow_->show();
+    }
+}
+
+void DeviceWindow::clickedMeasureAdd() {
+//    int deviceId = 1;
+    int analysisId = tsunami::ChoiceAnalysisForm::getAnalysisId( deviceId_ );
+    if( analysisId != -1){
+        delete measuresWindow_;
+        measuresWindow_ = new tsunami::addMeasureForm(tsunami::addMeasureForm::NEW,1,0);
+        measuresWindow_->show();
+    }
 }
 
 }

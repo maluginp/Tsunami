@@ -25,7 +25,7 @@ ChoiceAnalysisForm::ChoiceAnalysisForm(int deviceId, QWidget *parent) :
 
     connect(ui->addButton,SIGNAL(clicked()),this,SLOT(clickedAddButton()));
     connect(ui->editButton,SIGNAL(clicked()),this,SLOT(clickedEditButton()));
-    connect(ui->selectButton,SIGNAL(clicked()),this,SLOT(accept()));
+    connect(ui->openButton,SIGNAL(clicked()),this,SLOT(accept()));
 
 }
 
@@ -61,7 +61,7 @@ void ChoiceAnalysisForm::clickedAddButton() {
     Q_ASSERT(false);
 }
 
-void ChoiceAnalysisForm::clickedSelectButton() {
+void ChoiceAnalysisForm::clickedOpenButton() {
     Q_ASSERT(false);
 }
 
