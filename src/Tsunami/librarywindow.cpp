@@ -6,6 +6,10 @@
 #include "views/parameteritemview.h"
 #include "delegates/delegatecheckbox.h"
 #include "delegates/delegatedoubleitem.h"
+#include "ShowTextDialog.h"
+#include "dbstorage/devicestorage.h"
+#include "models/devicemodel.h"
+
 namespace tsunami{
 
 LibraryWindow::LibraryWindow(int deviceId,QWidget *parent) :
@@ -18,7 +22,7 @@ LibraryWindow::LibraryWindow(int deviceId,QWidget *parent) :
 
 
 
-
+    connect(ui->actionExportNetList,SIGNAL(triggered()),this,SLOT(clickedExportNetList()));
     connect(ui->actionOpenLibrary,SIGNAL(triggered()),this,SLOT(clickedOpenLibraryAction()));
     connect(ui->actionNewLibrary,SIGNAL(triggered()),this, SLOT(clickedNewLibraryAction()));
     connect(ui->actionAddParameter,SIGNAL(triggered()),this,SLOT(clickedAddParameterAction()));
@@ -89,6 +93,61 @@ void LibraryWindow::clickedRemoveParameterAction() {
 //    }
 
     parameters_->removeSelectedParameter( ui->parametersTableView->currentIndex() );
+}
+
+void LibraryWindow::clickedExportNetList() {
+    QString libraryName;
+    QString netlist;
+
+    db::DeviceModel* device = db::DeviceStorage::instance()->openDevice(deviceId_);
+
+    libraryName = library_->name();
+    libraryName.replace(" ","_");
+
+     netlist.append( QString(".model %1").arg(libraryName));
+
+    DeviceType type = device->type();
+    switch(type){
+    case DEVICE_CAPACITOR:
+    case DEVICE_RESISTOR:
+    case DEVICE_DIODE:
+        netlist.append( "" );
+        break;
+    case DEVICE_NBJT:
+        netlist.append(" NPN");
+        break;
+    case DEVICE_PBJT:
+        netlist.append(" PNP");
+        break;
+    case DEVICE_NMOS:
+        netlist.append(" NMOS");
+        break;
+    case DEVICE_PMOS:
+        netlist.append(" PMOS");
+        break;
+    case DEVICE_UNKNOWN:
+    default:
+        Q_ASSERT(false);
+//            break;
+    }
+
+    netlist.append("(");
+
+    QStringList parameters;
+    foreach(db::ParameterModel parameter, library_->parameters()){
+        if(parameter.enable()){
+            parameters << QString("%1=%2").arg(parameter.name()).arg(parameter.fitted());
+        }
+    }
+
+    netlist.append( parameters.join(", ") );
+//    netlist.chop(1);
+    netlist.append(")");
+
+    ShowTextDialog dialog( tr("Export NetList"), netlist );
+    dialog.exec();
+
+    dialog.close();
 }
 
 void LibraryWindow::clickedSaveButton() {

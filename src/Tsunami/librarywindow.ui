@@ -109,9 +109,16 @@
     <property name="title">
      <string>Library</string>
     </property>
+    <widget class="QMenu" name="menuExport">
+     <property name="title">
+      <string>Export</string>
+     </property>
+     <addaction name="actionExportNetList"/>
+    </widget>
     <addaction name="actionNewLibrary"/>
     <addaction name="actionRemoveLibrary"/>
     <addaction name="actionOpenLibrary"/>
+    <addaction name="menuExport"/>
    </widget>
    <widget class="QMenu" name="menuParameter">
     <property name="title">
@@ -147,6 +154,11 @@
   <action name="actionOpenLibrary">
    <property name="text">
     <string>Open</string>
+   </property>
+  </action>
+  <action name="actionExportNetList">
+   <property name="text">
+    <string>NetList</string>
    </property>
   </action>
  </widget>

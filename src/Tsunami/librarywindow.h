@@ -36,7 +36,7 @@ private slots:
     void clickedNewLibraryAction();
     void clickedAddParameterAction();
     void clickedRemoveParameterAction();
-
+    void clickedExportNetList();
     void clickedSaveButton();
 };
 
