@@ -33,6 +33,8 @@ enum LogLevel{
 #define logFatalF(message,...) Logger::instance()->log(log::LOG_FATAL,__LINE__,__FILE__,message,__VA_ARGS__)
 
 
+//#define logTrace Logger::instance()
+
 
 class Logger : public Singleton<Logger> {
 public:

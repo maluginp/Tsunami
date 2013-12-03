@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Редактор библиотек</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -20,7 +20,7 @@
       <item>
        <widget class="QLabel" name="libraryNameText">
         <property name="text">
-         <string>Library Name</string>
+         <string>Выберите библиотеку</string>
         </property>
        </widget>
       </item>

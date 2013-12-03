@@ -58,6 +58,7 @@ public:
     Source(const Source& other);
     Source& operator=(const Source& other);
 
+    QString name( bool upper = false );
     QString title();
 private:
     SourceMode mode_;

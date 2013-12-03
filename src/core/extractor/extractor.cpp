@@ -12,6 +12,8 @@
 #include "spice/ngspicesimulator.h"
 #include "ExtractorHookeJeeves.h"
 
+#include <logger.h>
+
 namespace tsunami{
 namespace core{
 
@@ -208,31 +210,26 @@ double Extractor::computeError(const db::MeasureModel *measure) {
         QMap<QString, double> simulated = simulate->find(measured);
 
         if(simulated.size() == 0){
-//            qDebug() << "Not found simulated data for" << measured;
+//            log::logTraceF("Not found simulated data for %s",measured);
             nNotFound++;
             continue;
         }
 
 
-        // FIXME: Need change: Get sources list, then subract measured and simulated data
-        if(type_ == DEVICE_PBJT || type_ == DEVICE_NBJT){
-//            error += subtract(measured.value("Ie"),simulated.value("Ie"));
-            error += fabs( subtract(measured.value("Ib"),simulated.value("Ib")) );
-            error += fabs( subtract(measured.value("Ic"),simulated.value("Ic")) );
-        }else if(type_ == DEVICE_NMOS || type_ == DEVICE_PMOS
-                 || type_ == DEVICE_NFET || type_ == DEVICE_PFET){
-            error += subtract(measured.value("Is"),simulated.value("Is"));
-            error += subtract(measured.value("Ig"),simulated.value("Ig"));
-            error += subtract(measured.value("Id"),simulated.value("Id"));
-            error += subtract(measured.value("Ib"),simulated.value("Ib"));
+        foreach(Source source, measure->sources()){
+            if(source.direction() == SOURCE_DIRECTION_OUTPUT){
+                error += fabs( subtract( measured.value(source.name(),.0),
+                                         simulated.value(source.name(),.0))  );
+            }
         }
+
     }
 
-    qDebug() << "Number found:" << rows-nNotFound;
 
 
-//    delete model;
-//    delete circuit;
+//    log::logDebugF("Number found: %d",rows-nNotFound);
+
+
 
     return error;
 }

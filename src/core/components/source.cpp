@@ -27,6 +27,25 @@ Source &Source::operator=(const Source &other) {
 
 }
 
+QString Source::name(bool upper) {
+    QString name;
+
+    if(mode_ == SOURCE_MODE_VOLTAGE || mode_==SOURCE_MODE_GND){
+        name = "V";
+    }else if(mode_ == SOURCE_MODE_CURRENT){
+        name = "I";
+    }else{
+        Q_ASSERT(false);
+    }
+    if(upper){
+        name = name.append(node_).toUpper();
+    }else{
+        name.append( node_.toLower() );
+    }
+
+    return name;
+}
+
 QString Source::title() {
     QString title;
 
