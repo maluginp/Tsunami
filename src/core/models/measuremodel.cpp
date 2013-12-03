@@ -310,6 +310,22 @@ int MeasureModel::dataColumns() {
     return data_->columns();
 }
 
+bool MeasureModel::isSourceDirection(const QString &name, SourceDirection direction) {
+
+    foreach( Source source, sources_ ){
+        if(source.name().compare(name,Qt::CaseInsensitive) == 0){
+            if(source.direction() == direction){
+                return true;
+            }
+            break;
+        }
+
+    }
+
+    return false;
+
+}
+
 
 }
 }

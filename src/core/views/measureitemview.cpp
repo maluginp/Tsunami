@@ -1,6 +1,8 @@
 #include "measureitemview.h"
 #include "../dbstorage/measurestorage.h"
 #include "../models/measuremodel.h"
+#include <QColor>
+
 namespace tsunami {
 namespace gui{
 
@@ -41,6 +43,21 @@ int MeasureItemView::columnCount(const QModelIndex &parent) const {
 }
 
 QVariant MeasureItemView::data(const QModelIndex &index, int role) const  {
+    if(!index.isValid()){
+        return QVariant();
+    }
+
+    if(role == Qt::BackgroundColorRole){
+        QString column = headerData( index.column(), Qt::Horizontal, Qt::DisplayRole ).toString();
+
+        if(measure_->isSourceDirection( column, SOURCE_DIRECTION_INPUT ) ){
+            return QVariant(QColor(0xDA,0xDA,0xDA));
+        }
+
+        return QVariant(QColor(Qt::white));
+
+    }
+
     if(role != Qt::EditRole && role != Qt::DisplayRole){
         return QVariant();
     }
@@ -53,7 +70,16 @@ QVariant MeasureItemView::data(const QModelIndex &index, int role) const  {
 }
 
 Qt::ItemFlags MeasureItemView::flags(const QModelIndex &index) const {
-    Q_UNUSED(index)
+//    Q_UNUSED(index)
+    QString column = headerData( index.column(), Qt::Horizontal, Qt::DisplayRole ).toString();
+
+    if(measure_->isSourceDirection( column, SOURCE_DIRECTION_INPUT ) ){
+
+        return (Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+
+    }
+
+
     return (Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled);
 }
 
@@ -77,6 +103,7 @@ QVariant MeasureItemView::headerData(int section, Qt::Orientation orientation, i
 
     return QVariant();
 }
+
 
 
 

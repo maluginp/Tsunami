@@ -50,7 +50,7 @@ addMeasureForm::~addMeasureForm() {
     delete ui;
 
 }
-// TODO: rechange code
+// FIXME: removed it.
 bool addMeasureForm::isReadOnlyColumn(const QString &column) {
     if(column.startsWith("V")){
         return true;
@@ -78,16 +78,6 @@ void addMeasureForm::openMeasure(int measureId) {
 
     measureView_ = new gui::MeasureItemView( measure_ );
     ui->dataTableView->setModel( measureView_ );
-
-    int col = 0;
-    foreach( QString column, measure_->columns()){
-        if(isReadOnlyColumn(column)){
-            ui->dataTableView->setItemDelegateForColumn(col,new gui::DelegateReadOnly(ui->dataTableView));
-        }
-        col++;
-    }
-
-
 
 
     headerView_->setPairs( headerPairs_, nPairs_ );
@@ -140,7 +130,6 @@ void addMeasureForm::addButtonClick() {
 
 
 //    ui->setupUi(this);
-
 //    headerView_ = new KeyValueView();
 //    headerView_->setPairs( headerPairs_, nPairs_ );
 

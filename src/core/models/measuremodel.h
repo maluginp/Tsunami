@@ -116,6 +116,7 @@ public:
     int dataColumns();
 
 
+    bool isSourceDirection(const QString& name, SourceDirection direction);
 
 private:
     int measureId_;
