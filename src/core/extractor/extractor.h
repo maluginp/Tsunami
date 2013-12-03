@@ -51,8 +51,8 @@ public:
 //    const bool& enable(int index) const;
 //    const double& initial(int index) const;
     const double& fitted(int index) const;
-//    const double& minimum(int index) const;
-//    const double& maximum(int index) const;
+    const double& minimum(int index) const;
+    const double& maximum(int index) const;
     const bool& fixed(int index) const;
 
 //    void enable(int index, bool enable);
@@ -72,6 +72,7 @@ public slots:
     virtual void process() = 0;
     virtual void stop();
 protected:
+    bool testBoundary( int index, double value );
     void increaseIteration();
 
     virtual bool checkConvergence(bool showMessage = true);

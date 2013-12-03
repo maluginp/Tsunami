@@ -4,7 +4,8 @@
 #include <views/measureitemview.h>
 #include <models/analysisitems.h>
 #include "dbstorage/measurestorage.h"
-#include "delegates/delegatereadonly.h"
+#include "dbstorage/analysisstorage.h"
+#include "models/analysismodel.h"
 namespace tsunami{
 
 const int addMeasureForm::nPairs_ = 6;
@@ -50,12 +51,95 @@ addMeasureForm::~addMeasureForm() {
     delete ui;
 
 }
-// FIXME: removed it.
-bool addMeasureForm::isReadOnlyColumn(const QString &column) {
-    if(column.startsWith("V")){
-        return true;
+
+void addMeasureForm::showSourcesDescription() {
+    QString sourcesDescription;
+    QList<Source> sources = measure_->sources();
+    foreach(Source source,sources){
+        if(source.direction() == SOURCE_DIRECTION_INPUT){
+            sourcesDescription.append( QString("%1 %2 %3\n").arg(source.node()).arg(source.modeJson().toUpper())
+                                       .arg(source.methodJson().toUpper()));
+        }
     }
-    return false;
+    ui->measureSources->setText( sourcesDescription );
+}
+ void addMeasureForm::prepareNewMeasureData() {
+    Q_ASSERT(measure_ != 0);
+
+    QStringList columns;
+
+    QVector< QVector<double> > data;
+
+    int nNonLinearSources = 0;
+    QMap< int, QVector<double> > nonLinearSourcesData;
+
+    foreach(Source source, measure_->sources()){
+        columns.append( source.name() );
+        if( source.method() == SOURCE_METHOD_LINEAR ) {
+            double start = source.configuration("start").toDouble();
+            double step = source.configuration("step").toDouble();
+            double end = source.configuration("end").toDouble();
+
+            QVector<double> sourceData;
+            int count = static_cast<int>(fabs((end-start)/step));
+            for(int i=0; i<= count;++i){
+                sourceData.append(start+step*i);
+            }
+            qDebug() << source.configurations();
+
+            int number= source.configuration("number").toInt();
+            if(number > 0){
+                nonLinearSourcesData.insert( number, sourceData );
+            }
+            nNonLinearSources++;
+        }
+    }
+
+    Q_ASSERT( nNonLinearSources > 0 && nNonLinearSources <= 2);
+
+    if(nNonLinearSources == 1){
+        nonLinearSourcesData.insert(2, QVector<double>() << .0 );
+    }
+
+    if( nNonLinearSources == 2 ){
+       foreach(double dc2, nonLinearSourcesData[2]){
+           foreach(double dc1, nonLinearSourcesData[1]){
+               QVector<double> rowData;
+               foreach(Source source, measure_->sources()){
+                   if(source.direction() == SOURCE_DIRECTION_INPUT){
+                       switch(source.method()){
+                       case SOURCE_METHOD_CONST:
+                           rowData.append( source.configuration("const").toDouble() );
+                           break;
+                       case SOURCE_METHOD_LINEAR:
+                           {
+                             int num = source.configuration("number").toInt();
+                             if(num == 2){
+                                 rowData.append( dc2 );
+                             }else if(num == 1){
+                                 rowData.append( dc1 );
+                             }else{
+                                 Q_ASSERT(false);
+                             }
+                           }
+                           break;
+                       default:
+                           rowData.append(.0);
+                       }
+                   }else{
+                       rowData.append(.0);
+                   }
+               }
+               data.append( rowData );
+           }
+       }
+    }
+
+    qDebug() << data.size();
+    qDebug() << columns.size();
+    measure_->columns( columns );
+    measure_->data( data );
+
 }
 
 void addMeasureForm::openAnalysis(int analysisId) {
@@ -63,8 +147,24 @@ void addMeasureForm::openAnalysis(int analysisId) {
 
     headerView_->setPairs( headerPairs_, nPairs_ );
 
+    db::AnalysisStorage* storage = db::AnalysisStorage::instance();
+    db::AnalysisModel* analysis = storage->openAnalysis( analysisId_ );
+
+    QList<Source> sources = analysis->sources();
+
+    measure_ = new db::MeasureModel();
+    measure_->sources( analysis->sources() );
+
+    measure_->type( analysis->type() );
+
+    prepareNewMeasureData();
 
 
+    measureView_ = new gui::MeasureItemView( measure_ );
+    ui->dataTableView->setModel( measureView_ );
+
+
+    showSourcesDescription();
 }
 
 void addMeasureForm::openMeasure(int measureId) {
@@ -94,15 +194,8 @@ void addMeasureForm::openMeasure(int measureId) {
                                   gui::KeyValuePair::TYPE_TEXT, attrName.toUpper() );
     }
 
-    QString sourcesDescription;
-    QList<Source> sources = measure_->sources();
-    foreach(Source source,sources){
-        if(source.direction() == SOURCE_DIRECTION_INPUT){
-            sourcesDescription.append( QString("%1 %2 %3\n").arg(source.node()).arg(source.modeJson().toUpper())
-                                       .arg(source.methodJson().toUpper()));
-        }
-    }
-    ui->measureSources->setText( sourcesDescription );
+    showSourcesDescription();
+
 
 }
 
@@ -128,194 +221,6 @@ void addMeasureForm::addButtonClick() {
     measureStorage_->saveMeasure( measure_ );
 }
 
-
-//    ui->setupUi(this);
-//    headerView_ = new KeyValueView();
-//    headerView_->setPairs( headerPairs_, nPairs_ );
-
-//    ui->headerTableView->setModel( headerView_ );
-
-//    headerView_->fillDelegates( ui->headerTableView );
-
-//    measureView_ = new MeasureItemView( -1 );
-
-
-
-
-
-//    // Nodes
-//    ListItemView* nodesView = new ListItemView();
-//    nodesView->addItem( trUtf8("И"), "s"  ).
-//            addItem( trUtf8("З"), "g"  ).
-//            addItem( trUtf8("С"), "d"  ).
-//            addItem( trUtf8("П"), "b"  );
-
-//    ui->nodesListView->setModel( nodesView );
-//    prepareAnalysis( analysisId );
-
-
-//    attributesView_ = new KeyValueView();
-//    attributesView_->addPair( "w", QVariant(),KeyValuePair::TYPE_TEXT, trUtf8("W") );
-//    attributesView_->addPair( "l", QVariant(),KeyValuePair::TYPE_TEXT, trUtf8("L") );
-
-//    ui->attributesTableView->setModel( attributesView_ );
-//    attributesView_->fillDelegates( ui->attributesTableView );
-//    //    data.items.append( QVector<double>() << 1.0 << 2.0 );
-
-
-
-//    ui->dataTableView->setModel( measureView_ );
-
-
-//    connect(ui->addButton,SIGNAL(clicked()),this,SLOT(addButtonClick()));
-//}
-
-//addMeasureForm::~addMeasureForm()
-//{
-//    delete ui;
-//}
-
-//bool sortItems(IAnalysisItem* item1, IAnalysisItem* item2) {
-//    if(item2->getItemType() == item1->getItemType()){
-//        if(item2->getItemType() == ANALYSIS_ITEM_SWEEP){
-//            return static_cast<AnalysisItemSweep*>(item2)->number() >
-//                    static_cast<AnalysisItemSweep*>(item1)->number();
-
-//        }
-//        return true;
-//    }else if(item2->getItemType() > item1->getItemType()){
-//        return true;
-//    }
-//    return false;
-//}
-
-//void addMeasureForm::prepareAnalysis(const int &analysisId) {
-//    MeasureData data = measureView_->model().measureData();
-//    AnalysisModel analysis = AnalysisStorage::instance()->openAnalysis( analysisId );
-
-
-//    QList<IAnalysisItem*> items;
-
-//    QList<IAnalysisItem*> inputs = analysis.inputs();
-//    qSort( inputs.begin(), inputs.end(), sortItems );
-//    ui->measureInputsText->setText("");
-//    foreach(IAnalysisItem* item, inputs){
-//        ui->measureInputsText->setText( QString("%1%2\n").arg(ui->measureInputsText->text()).arg(item->title()) );
-//    }
-
-
-//    items.append( inputs );
-//    QList<IAnalysisItem*> outputs = analysis.outputs();
-//    qSort( outputs.begin(), outputs.end(), sortItems );
-
-
-
-
-//    items.append( outputs );
-
-//    int nColumns = items.size();
-//    QVector< QVector<double> > dataItems;
-//    QVector<double> rowItems(nColumns);
-
-//    int maxSweepNumber = countAnalysisItem( items, ANALYSIS_ITEM_SWEEP );
-//    QVector<double> current;
-
-//    // TODO bullshit code, need change
-//    // MAX[number()] <= 2
-//    if( maxSweepNumber == 2){
-//        double dc2 = static_cast<AnalysisItemSweep*>(items[1])->start();
-//        while(dc2 <= static_cast<AnalysisItemSweep*>(items[1])->stop()){
-//            rowItems.fill(0.0);
-//            double dc1 = static_cast<AnalysisItemSweep*>(items[0])->start();
-//            while( dc1 <= static_cast<AnalysisItemSweep*>(items[0])->stop()){
-//                rowItems[0] = dc1;
-//                rowItems[1] = dc2;
-
-//                for(int i=0; i < nColumns; ++i){
-//                    if(items[i]->getItemType() == ANALYSIS_ITEM_CONST){
-//                        rowItems[i] = static_cast<AnalysisItemConst*>(items[i])->constant();
-//                    }
-//                }
-
-//                dataItems.append( rowItems );
-//                dc1+=static_cast<AnalysisItemSweep*>(items[0])->step();
-//            }
-//            dc2 += static_cast<AnalysisItemSweep*>(items[0])->step();
-//        }
-//    }else if(maxSweepNumber == 1){
-//        double dc1 = static_cast<AnalysisItemSweep*>(items[0])->start();
-//        while( dc1 <= static_cast<AnalysisItemSweep*>(items[0])->stop()){
-//            rowItems[0] = dc1;
-
-//            for(int i=0; i < nColumns; ++i){
-//                if(items[i]->getItemType() == ANALYSIS_ITEM_CONST){
-//                    rowItems[i] = static_cast<AnalysisItemConst*>(items[i])->constant();
-//                }
-//            }
-
-//            dataItems.append( rowItems );
-//            dc1+=static_cast<AnalysisItemSweep*>(items[0])->step();
-//        }
-//    }
-
-//    data.columns.clear();
-//    for(int i=0; i < nColumns;++i){
-//        data.columns.append( items[i]->name() );
-//    }
-//    data.items = dataItems;
-
-//    measureView_->model().setMeasureData( data );
-
-
-
-//    for(int i=0; i < nColumns;++i){
-//        if( items[i]->getItemType() != ANALYSIS_ITEM_OUTPUT &&
-//                items[i]->getItemType() != ANALYSIS_ITEM_NONE ){
-
-//            ui->dataTableView->setItemDelegateForColumn( i, new DelegateReadOnly() );
-//        }
-//    }
-
-
-
-//}
-
-//int addMeasureForm::countAnalysisItem(const QList<IAnalysisItem *> &items, const AnalysisItemType &type) {
-//    int nMatched = 0;
-//    foreach(IAnalysisItem* item, items){
-//        if(item->getItemType() == type){
-//            ++nMatched;
-//        }
-//    }
-//    return nMatched;
-//}
-
-//void addMeasureForm::addButtonClick() {
-
-//    MeasureHeader header;
-//    qDebug() << headerView_->getPair("type").value.toString();
-//    if(headerView_->getPair("type").value.toString().compare("dc")==0){
-//        header.type = TYPE_DC;
-//    }else if(headerView_->getPair("type").value.toString().compare("ac")==0){
-//        header.type = TYPE_AC;
-//    }else if(headerView_->getPair("type").value.toString().compare("tran")==0){
-//        header.type = TYPE_TRAN;
-//    }else{
-//        header.type = TYPE_UNKNOWN;
-//    }
-
-//
-
-//    measureView_->model().setChangeAt( );
-//    measureView_->model().setCreateAt( QDateTime::currentDateTime() );
-//    measureView_->model().setEnable( true );
-//    measureView_->model().setHeader( header );
-
-//    if(!measureView_->saveMeasure()){
-//        qDebug() << "Measurement did not save to db.";
-//    }
-
-//}
 
 }
 

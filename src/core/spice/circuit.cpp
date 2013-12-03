@@ -357,7 +357,7 @@ Circuit *Circuit::createCircuitDevice(DeviceType type, const QList<Source> &sour
         }else if(source.mode() == SOURCE_MODE_CURRENT){
             devId = circuit->addDevice(nameSource, DEVICE_ISOURCE);
         }
-        circuit->getDevice(devId)->setSource( source.method(), source.configuration() );
+        circuit->getDevice(devId)->setSource( source.method(), source.configurations() );
 
         circuit->connect( devId, circuit->getTerminal(source.node())->id()  );
         circuit->connect( devId, termGnd);

@@ -51,7 +51,6 @@ SOURCES += main.cpp \
     optimize/hookejeevesmethod.cpp \
     extractor/extractor.cpp \
     extractor/dataset.cpp \
-    extractor/extractorglobal.cpp \
     dbstorage/devicestorage.cpp \
     components/source.cpp \
     delegates/delegatecheckbox.cpp \
@@ -99,7 +98,6 @@ HEADERS += \
     optimize/hookejeevesmethod.h \
     extractor/extractor.h \
     extractor/dataset.h \
-    extractor/extractorglobal.h \
     dbstorage/devicestorage.h \
     components/source.h \
     delegates/delegatecheckbox.h \

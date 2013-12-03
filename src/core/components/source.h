@@ -31,9 +31,9 @@ public:
     const SourceMethod& method() const {return method_; }
     QString methodJson() const;
     const SourceDirection& direction() const {return direction_; }
-    const QVariantMap& configuration() const {return configuration_; }
+    const QVariantMap& configurations() const {return configuration_; }
 
-    const QVariant& configuration(const QString& key) const;
+    QVariant configuration(const QString& key, const QVariant &defaultValue = QVariant()) const;
     bool hasConfiguration( const QString& key ) { return configuration_.contains(key); }
     void addConfiguration(const QString& key, const QVariant& value);
 
@@ -44,7 +44,7 @@ public:
     void mode(const QString& _mode);
     void method(SourceMethod method) { method_ = method; }
     void method(const QString& _method);
-    void configuration(const QVariantMap& configuration) { configuration_ = configuration; }
+    void configurations(const QVariantMap& configurations) { configuration_ = configurations; }
     void direction(SourceDirection direction) { direction_ = direction; }
     void direction(const QString& _direction);
 

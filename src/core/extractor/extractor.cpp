@@ -104,6 +104,14 @@ const double &Extractor::fitted(int index) const {
     return library_->at(index).fitted();
 }
 
+const double &Extractor::minimum(int index) const {
+    return library_->at(index).minimum();
+}
+
+const double &Extractor::maximum(int index) const {
+    return library_->at(index).maximum();
+}
+
 const bool &Extractor::fixed(int index) const {
     return library_->at(index).fixed();
 }
@@ -132,6 +140,10 @@ Extractor *Extractor::createExtractor(const QString &methodOptimization, DeviceT
 
 void Extractor::stop() {
     stopped_ = true;
+}
+
+bool Extractor::testBoundary(int index, double value) {
+    return (minimum(index) >= value && value <= maximum(index));
 }
 
 void Extractor::increaseIteration() {

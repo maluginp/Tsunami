@@ -32,8 +32,10 @@ public:
     addMeasureForm(Action action, int id, QWidget *parent = 0);
     ~addMeasureForm();
 private:
+    void showSourcesDescription();
+    void prepareNewMeasureData();
+
     int analysisId_;
-    bool isReadOnlyColumn( const QString& column );
     void openAnalysis(int analysisId);
     void openMeasure(int measureId);
 

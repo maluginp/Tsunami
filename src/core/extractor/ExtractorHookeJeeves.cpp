@@ -68,28 +68,35 @@ bool ExtractorHookeJeeves::findBestNearby() {
 
     int nParameters = numberParameters();
     for(int i=0; i < nParameters; ++i){
-        double value = fitted(i);
         if(!fixed(i)){
+            double value = fitted(i);
+            if(testBoundary(i,value+step(i))){
+                fitted(i, value + step(i) );
+                error = functionError();
+                if( tempFunctionError_ > error ){
+                    tempFunctionError_ = error;
+                    mask(i,HJ_INC);
+                    continue;
+                }
+            }
 
-            fitted(i, value + step(i) );
-            error = functionError();
-
-            if( tempFunctionError_ > error ){
-                tempFunctionError_;
-                mask(i,HJ_INC);
-            }else{
+            if(testBoundary(i,value-step(i))){
                 fitted(i, value - step(i));
                 error = functionError();
                 if(tempFunctionError_ > error){
                     tempFunctionError_ = error;
                     mask(i,HJ_DEC);
-                }else{
-                    fitted(i,value);
-                    mask(i,HJ_INC);
+                    continue;
                 }
+
             }
+
+            fitted(i,value);
+            mask(i,HJ_HOLD);
+
         }
     }
+
 
     bool found = ( currentFunctionError() > tempFunctionError_ );
     if(found){
@@ -105,9 +112,15 @@ void ExtractorHookeJeeves::patternStep() {
             double value = fitted(i);
             switch(mask(i)){
             case HJ_INC:
-                fitted(  i,  value + step(i) ); break;
+                if( testBoundary(i,value + step(i)) ){
+                    fitted(i, value + step(i) );
+                }
+                break;
             case HJ_DEC:
-                fitted( i, value-step(i)); break;
+                if( testBoundary(i,value-step(i)) ){
+                    fitted( i, value-step(i));
+                }
+                break;
             case HJ_HOLD:
             default:
                 break;

@@ -45,13 +45,6 @@ bool NgSpiceSimulator::simulate() {
         return false;
     }
 
-//    file.remove();
-
-    if(!isCorrectForParse()) {
-        return false;
-    }
-
-
     // BULLSHIT: code
     int positionStartIndex = output.indexOf("Index");
     Q_ASSERT(positionStartIndex != -1);
@@ -163,7 +156,7 @@ QByteArray NgSpiceSimulator::generateNetList() {
     netlist.append(source);
     netlist.append(".width out=257\n");
     netlist.append(generateNetPrints());
-    netlist.append( ".options noacct nopage\n" );
+    netlist.append(".options noacct nopage\n");
     netlist.append(".end\n");
 
     return netlist;
@@ -189,9 +182,6 @@ QByteArray NgSpiceSimulator::generateNetPrints() {
         Q_ASSERT(false);
     }
 
-
-//    Device* device = circuit()->mainDevice();
-
 //    int gndId;
 //    int nPorts = device->numberPorts();
 //    for(int i=0; i < nPorts; ++i){
@@ -201,8 +191,6 @@ QByteArray NgSpiceSimulator::generateNetPrints() {
     circuit()->beginDevice(DEVICE_FLAG_SOURCE);
     Device* device = circuit()->nextDevice();
     while(device){
-
-
         int plus = device->terminal(0)->id();
         int minus = device->terminal(1)->id();
 
@@ -218,19 +206,9 @@ QByteArray NgSpiceSimulator::generateNetPrints() {
             columns_ << QString("I%1").arg(device->terminal(1)->name().toLower());
         }
 
-
-
         device = circuit()->nextDevice();
 
     }
-
-//    netlist.append(QString(" v(%1)").arg(device->terminal(0)->id()) ); // E
-//    netlist.append(QString(" v(%1,2)").arg(device->terminal(1)->id()) ); // B
-//    netlist.append(QString(" v(%1,2)").arg(device->terminal(2)->id()) ); // C
-
-//    netlist.append(" i(Vc) i(Vb)");
-
-
 
     netlist.append("\n");
     return netlist;

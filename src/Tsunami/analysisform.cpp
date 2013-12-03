@@ -297,7 +297,7 @@ void AnalysisForm::insertInputItemClick() {
         break;
     }
 
-    source.configuration( configuration );
+    source.configurations( configuration );
 
     model_->addSource( source );
 

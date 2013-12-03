@@ -4,7 +4,6 @@
 #include "models/devicemodel.h"
 #include "librarywindow.h"
 #include "prepareextractordialog.h"
-#include "extractor/extractorglobal.h"
 #include "extractorwindow.h"
 #include "addmeasureform.h"
 
@@ -108,11 +107,12 @@ void DeviceWindow::clickedMeasureEditor() {
 }
 
 void DeviceWindow::clickedMeasureAdd() {
-//    int deviceId = 1;
-    int analysisId = tsunami::ChoiceAnalysisForm::getAnalysisId( deviceId_ );
+    int analysisId = 1;
+//    int analysisId = tsunami::ChoiceAnalysisForm::getAnalysisId( deviceId_ );
+
     if( analysisId != -1){
         delete measuresWindow_;
-        measuresWindow_ = new tsunami::addMeasureForm(tsunami::addMeasureForm::NEW,1,0);
+        measuresWindow_ = new tsunami::addMeasureForm(tsunami::addMeasureForm::NEW,analysisId,0);
         measuresWindow_->show();
     }
 }

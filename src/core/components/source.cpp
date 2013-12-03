@@ -92,7 +92,7 @@ void Source::method(const QString &_method) {
     }else if(_method.compare("const") == 0){
         method_ = SOURCE_METHOD_CONST;
     }else{
-        Q_ASSERT(false);
+        method_ = SOURCE_METHOD_UNKNOWN;
     }
 }
 
@@ -117,12 +117,16 @@ QString Source::methodJson() const{
         return "list";
     }
 
-    Q_ASSERT(false);
-    return "unknown";
+//    Q_ASSERT(false);
+    return "";
 }
 
-const QVariant &Source::configuration(const QString &key) const{
-    return configuration_[key];
+QVariant Source::configuration(const QString &key,const QVariant& defaultValue) const{
+    if(configuration_.contains(key)){
+        return configuration_[key];
+    }
+
+    return defaultValue;
 }
 
 Source::Source() {

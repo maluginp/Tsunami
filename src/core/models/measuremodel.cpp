@@ -60,7 +60,7 @@ void MeasureModel::sourcesJson(const QString &json) {
         Source source;
         source.node(sourceJson.value( "node" ).toString());
         source.method(sourceJson.value("method").toString());
-        source.configuration(sourceJson.value("configuration",QVariantMap()).toMap());
+        source.configurations(sourceJson.value("configuration",QVariantMap()).toMap());
         source.mode( sourceJson.value("mode").toString() );
         source.direction(sourceJson.value("direction").toString());
 
@@ -103,6 +103,8 @@ void MeasureModel::dataJson(const QString &json) {
 }
 
 void MeasureModel::data(const QVector<QVector<double> > &data) {
+
+    Q_ASSERT(data.size() > 0);
 
     rows_ = data.size();
     int columns = data[0].size();
@@ -178,7 +180,7 @@ QString MeasureModel::sourcesJson() {
         QVariantMap sourceJson;
         sourceJson.insert( "node",   source.node() );
         sourceJson.insert( "method", source.methodJson());
-        sourceJson.insert( "configuration", source.configuration() );
+        sourceJson.insert( "configuration", source.configurations() );
         sourceJson.insert( "mode",   source.modeJson());
 
         if(source.direction() == SOURCE_DIRECTION_INPUT){

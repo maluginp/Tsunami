@@ -68,6 +68,7 @@ void AnalysisStorage::testData() {
     configuration.insert("start", 0.0);
     configuration.insert("end",10.0);
     configuration.insert("step", 1.0);
+    configuration.insert("number",1);
     model->addSource( Source("C",SOURCE_MODE_VOLTAGE,SOURCE_DIRECTION_INPUT,SOURCE_METHOD_LINEAR, configuration) );
 
     configuration.clear();
@@ -75,7 +76,12 @@ void AnalysisStorage::testData() {
     configuration.insert("start", 0.0);
     configuration.insert("end",1.0);
     configuration.insert("step", 0.1);
+    configuration.insert("number",2);
     model->addSource( Source("B",SOURCE_MODE_VOLTAGE,SOURCE_DIRECTION_INPUT,SOURCE_METHOD_LINEAR, configuration) );
+
+    model->addSource(Source("B",SOURCE_MODE_CURRENT,SOURCE_DIRECTION_OUTPUT));
+    model->addSource(Source("C",SOURCE_MODE_CURRENT,SOURCE_DIRECTION_OUTPUT));
+
 
     if(!saveAnalysis( model )){
         Q_ASSERT(false);

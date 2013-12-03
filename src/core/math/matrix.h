@@ -3,7 +3,6 @@
 #include <assert.h>
 #include <float.h>
 
-// TODO Need testing
 // double a = double& A::f();
 // double& A::f() = double& B::f()
 

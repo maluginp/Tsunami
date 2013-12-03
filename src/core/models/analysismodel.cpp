@@ -73,7 +73,7 @@ void AnalysisModel::sourcesJson(const QString &json){
         Source source;
         source.node(sourceJson.value( "node" ).toString());
         source.method(sourceJson.value("method").toString());
-        source.configuration(sourceJson.value("configuration",QVariantMap()).toMap());
+        source.configurations(sourceJson.value("configuration",QVariantMap()).toMap());
         source.mode( sourceJson.value("mode").toString() );
         source.direction(sourceJson.value("direction").toString());
 
@@ -118,7 +118,7 @@ QString AnalysisModel::sourcesJson() const {
         QVariantMap sourceJson;
         sourceJson.insert( "node",   source.node() );
         sourceJson.insert( "method", source.methodJson());
-        sourceJson.insert( "configuration", source.configuration() );
+        sourceJson.insert( "configuration", source.configurations() );
         sourceJson.insert( "mode",   source.modeJson());
 
         if(source.direction() == SOURCE_DIRECTION_INPUT){
