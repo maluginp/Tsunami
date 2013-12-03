@@ -22,7 +22,7 @@ public:
     bool saveMeasure(MeasureModel* measure);
     MeasureModel* openMeasure(int measureId);
 
-    QList<MeasureModel> findMeasure( const QVariantMap& criteria );
+    QList<MeasureModel *> findMeasures( const QVariantMap& criteria );
 
     QList<MeasureModel*> getMeasuresByDeviceId( int deviceId );
     QList<MeasureModel*> getMeasures(const QList<int>& measureIds );

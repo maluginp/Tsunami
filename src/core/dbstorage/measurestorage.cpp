@@ -300,8 +300,59 @@ MeasureModel *MeasureStorage::openMeasure(int measureId) {
     return openMeasureImpl( measureId );
 }
 
-QList<MeasureModel> MeasureStorage::findMeasure(const QVariantMap &criteria) {
-    // TODO List of measure model
+QList<MeasureModel*> MeasureStorage::findMeasures(const QVariantMap &criteria) {
+    QList<MeasureModel*> measures;
+
+    QString sqlQuery = sql("SELECT * FROM %1 WHERE ").arg(TABLE_NAME_MEASURES);
+    QStringList criteriaSql;
+
+    int deviceId = -1;
+    QString type;
+
+    if( criteria.contains("device") ) {
+        criteriaSql.append( "device_id=:device_id" );
+        deviceId = criteria.value( "device", -1 ).toInt();
+    }
+
+    if( criteria.contains("type") ) {
+        criteriaSql.append( "type=:type" );
+        type = criteria.value("type",QString()).toString();
+    }
+
+    if(criteriaSql.isEmpty()){
+        return measures;
+    }
+    sqlQuery.append( criteriaSql.join(" AND ") );
+
+    QSqlQuery q(sqlQuery,db());
+
+    if( deviceId != -1 ){ q.bindValue(":device_id",deviceId); }
+    if( !type.isEmpty() ){  q.bindValue(":type",type); }
+    if(!q.exec()){
+        setLastError( q.lastError().text() );
+        return measures;
+    }
+    while(q.next()){
+        QSqlRecord rec( q.record() );
+        MeasureModel* model = new MeasureModel();
+
+        model->id(          ITEM("id").toInt()  );
+        model->deviceId(    ITEM("device_id").toInt() );
+        model->name(        ITEM("name").toString() );
+        model->type(        ITEM("analysis").toString());
+        model->attrsJson(   ITEM("attributes").toString());
+        model->sourcesJson( ITEM("sources").toString());
+        model->columnsJson( ITEM("columns").toString());
+        model->dataJson(    ITEM("data").toString());
+        model->createAt(    ITEM("created_at").toDateTime());
+        model->changeAt(    ITEM("changet_at").toDateTime());
+        model->enable(      ITEM("enable").toBool());
+        model->userId(      ITEM("user_id").toInt());
+
+        measures.append( model );
+    }
+
+    return measures;
 }
 
 QList<MeasureModel *> MeasureStorage::getMeasuresByDeviceId(int deviceId) {
