@@ -80,7 +80,7 @@ bool NgSpiceSimulator::simulate() {
         }
 
         if( columns_.size() != vals.size() ){
-            qDebug() <<  "No parsing string:" << str;
+//            qDebug() <<  "No parsing string:" << str;
             continue;
         }
         QVector<double> row;
@@ -89,7 +89,7 @@ bool NgSpiceSimulator::simulate() {
         }
         data.append(row);
     }
-    qDebug() << "Number of parsed row:"<<data.size();
+//    qDebug() << "Number of parsed row:"<<data.size();
 
     simulated_->data(data);
 
@@ -188,27 +188,32 @@ QByteArray NgSpiceSimulator::generateNetPrints() {
 //        device->terminal(i)->isRef();
 //    }
 
+    QList<Source> sources = circuit()->sources();
+
+    // Looking for all input source
     circuit()->beginDevice(DEVICE_FLAG_SOURCE);
     Device* device = circuit()->nextDevice();
     while(device){
+        Source source = device->source();
+
+        Q_ASSERT( device->numberPorts() == 2 );
+        Q_ASSERT( source.mode() != SOURCE_MODE_GND );
+
         int plus = device->terminal(0)->id();
         int minus = device->terminal(1)->id();
 
         netlist.append( QString(" v(%1,%2)").arg(plus).arg(minus) );
-
-        columns_ << device->name();
-        // TODO: Incorrect logic
-        netlist.append( QString(" i(%1)").arg(device->name()));
-        // BULLSHIT: code
-        if( !device->terminal(0)->isRef() ){
-            columns_ << QString("I%1").arg(device->terminal(0)->name().toLower());
-        }else if(!device->terminal(1)->isRef()){
-            columns_ << QString("I%1").arg(device->terminal(1)->name().toLower());
-        }
+        netlist.append( QString(" i(%1) ").arg(device->name()) );
+        columns_ << QString("V%1").arg( source.node().toLower() );
+        columns_ << QString("I%1").arg( source.node().toLower() );
 
         device = circuit()->nextDevice();
-
     }
+
+    // Add ground
+    int gndId = circuit()->getRefTerminalId();
+    netlist.append( QString(" v(%1)").arg(gndId) ); //.arg(minus) );
+    columns_ << QString("V%1").arg( circuit()->getTerminal(gndId)->name().toLower() );
 
     netlist.append("\n");
     return netlist;

@@ -70,18 +70,21 @@ bool ExtractorHookeJeeves::findBestNearby() {
     for(int i=0; i < nParameters; ++i){
         if(!fixed(i)){
             double value = fitted(i);
-            if(testBoundary(i,value+step(i))){
-                fitted(i, value + step(i) );
+            double _step = step(i);
+            if(testBoundary(i,value+_step)){
+                fitted(i, value + _step );
                 error = functionError();
                 if( tempFunctionError_ > error ){
                     tempFunctionError_ = error;
                     mask(i,HJ_INC);
                     continue;
                 }
+            }else{
+                qDebug() << "testBoundary failed: " << i;
             }
 
-            if(testBoundary(i,value-step(i))){
-                fitted(i, value - step(i));
+            if(testBoundary(i,value-_step)){
+                fitted(i, value - _step);
                 error = functionError();
                 if(tempFunctionError_ > error){
                     tempFunctionError_ = error;
@@ -89,6 +92,8 @@ bool ExtractorHookeJeeves::findBestNearby() {
                     continue;
                 }
 
+            }else{
+                qDebug() << "testBoundary failed: " << i;
             }
 
             fitted(i,value);
@@ -110,15 +115,16 @@ void ExtractorHookeJeeves::patternStep() {
     for(int i=0; i < nParameters; ++i){
         if( !fixed(i) ){
             double value = fitted(i);
+            double _step = step(i);
             switch(mask(i)){
             case HJ_INC:
-                if( testBoundary(i,value + step(i)) ){
-                    fitted(i, value + step(i) );
+                if( testBoundary(i,value + _step ) ){
+                    fitted(i, value + _step );
                 }
                 break;
             case HJ_DEC:
-                if( testBoundary(i,value-step(i)) ){
-                    fitted( i, value-step(i));
+                if( testBoundary(i,value-_step) ){
+                    fitted( i, value-_step);
                 }
                 break;
             case HJ_HOLD:

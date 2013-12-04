@@ -143,7 +143,8 @@ void Extractor::stop() {
 }
 
 bool Extractor::testBoundary(int index, double value) {
-    return (minimum(index) >= value && value <= maximum(index));
+    double val = fabs(value);
+    return (fabs(minimum(index)) >= val && val <= fabs(maximum(index)));
 }
 
 void Extractor::increaseIteration() {

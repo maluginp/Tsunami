@@ -34,7 +34,7 @@ int Circuit::addDevice(const QString &name, DeviceType type) {
     Device* device = new Device(name,type);
     devices_[device->id()] = device;
 
-    qDebug() << "Add device " << device->id() << " " << device->name();
+//    qDebug() << "Add device " << device->id() << " " << device->name();
 //    devices_.insert( device->id(), device );
     return device->id();
 }
@@ -105,7 +105,7 @@ int Circuit::addTerminal(const QString &name) {
     Terminal* terminal = new Terminal(name);
     terminals_[terminal->id()] = terminal;
 //    .insert( terminal->id(), terminal );
-    qDebug() << "Add terminal" << terminal->id() << " " << terminal->name() ;
+//    qDebug() << "Add terminal" << terminal->id() << " " << terminal->name() ;
     return terminal->id();
 }
 
@@ -230,7 +230,17 @@ void Circuit::setRefTerminal(int terminalId) {
 }
 
 int Circuit::getRefTerminalId() {
-    return 0;
+    beginTerminal();
+    Terminal* terminal = nextTerminal();
+    while(terminal){
+        if( terminal->isRef() ){
+            return terminal->id();
+        }
+
+        terminal = nextTerminal();
+    }
+
+    return -1;
 }
 
 void Circuit::connect(int deviceId, int terminalId) {
@@ -269,25 +279,25 @@ QString Circuit::formSourceName(SourceMode mode, QString node) {
 bool Circuit::correct() {
     return true;
     // DC analysis
-    if(typeAnalysis() == ANALYSIS_DC){
-        int countSource = 0;
-        beginDevice( DEVICE_FLAG_SOURCE );
-        Device* device = nextDevice();
+//    if(typeAnalysis() == ANALYSIS_DC){
+//        int countSource = 0;
+//        beginDevice( DEVICE_FLAG_SOURCE );
+//        Device* device = nextDevice();
 
-        while(device){
-            if(device->getSource() == typeAnalysis()){
-                countSource++;
-            }
+//        while(device){
+//            if(device-> == typeAnalysis()){
+//                countSource++;
+//            }
 
-            device = nextDevice();
-        }
+//            device = nextDevice();
+//        }
 
-        if(countSource > 2 || countSource < 1){
-            return false;
-        }
-    }
+//        if(countSource > 2 || countSource < 1){
+//            return false;
+//        }
+//    }
 
-    return true;
+//    return true;
 
 }
 
@@ -357,7 +367,7 @@ Circuit *Circuit::createCircuitDevice(DeviceType type, const QList<Source> &sour
         }else if(source.mode() == SOURCE_MODE_CURRENT){
             devId = circuit->addDevice(nameSource, DEVICE_ISOURCE);
         }
-        circuit->getDevice(devId)->setSource( source.method(), source.configurations() );
+        circuit->getDevice(devId)->source( source );
 
         circuit->connect( devId, circuit->getTerminal(source.node())->id()  );
         circuit->connect( devId, termGnd);

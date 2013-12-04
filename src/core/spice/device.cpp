@@ -9,8 +9,7 @@ Device::Device(const QString &name, DeviceType device)
     : GraphNode(name)
     , device_(device)
     , model_(NULL)
-    , flags_(0x0)
-    , source_(SOURCE_METHOD_UNKNOWN) {
+    , flags_(0x0) {
 
     switch(device_){
     case DEVICE_CAPACITOR:
@@ -36,15 +35,15 @@ Device::Device(const QString &name, DeviceType device)
     }
 }
 
-void Device::setSource(SourceMethod source, const QVariantMap &options) {
+void Device::source(Source source) {
 //    if( source != SOURCE_UNKNOWN ){
         setFlag( DEVICE_FLAG_SOURCE  );
-        sourceOptions_ = options;
+//        sourceOptions_ = options;
         source_ = source;
 //    }
 }
 
-const SourceMethod &Device::getSource() const {
+const Source &Device::source() const {
     return source_;
 }
 
@@ -110,13 +109,14 @@ QByteArray Device::netList() {
     QByteArray nets;
 
     QStringList temp;
+    SourceMethod method = source_.method();
 
-    if(source_ != SOURCE_METHOD_UNKNOWN){
-        if(source_ == SOURCE_METHOD_CONST || source_ == SOURCE_METHOD_LINEAR){
-            if(source_ == SOURCE_METHOD_CONST){
-                temp.append( QString("%1").arg( sourceOptions_.value("const").toDouble() ) );
-            }else if(source_ == SOURCE_METHOD_LINEAR){
-                temp.append( QString("%1").arg(sourceOptions_.value("start").toDouble()) );
+    if(method != SOURCE_METHOD_UNKNOWN){
+        if(method == SOURCE_METHOD_CONST || method == SOURCE_METHOD_LINEAR){
+            if(method == SOURCE_METHOD_CONST){
+                temp.append( QString("%1").arg( source_.configuration("const").toDouble() ) );
+            }else if(method == SOURCE_METHOD_LINEAR){
+                temp.append( QString("%1").arg(source_.configuration("start").toDouble()) );
             }
         }
     }
@@ -169,11 +169,12 @@ QByteArray Device::netList() {
 
 QByteArray Device::sourceNetlist() {
     QByteArray netlist;
-    if( source_ == SOURCE_METHOD_LINEAR ){
+    SourceMethod method = source_.method();
+    if( method == SOURCE_METHOD_LINEAR ){
         netlist.append( QString("%1 %2 %3 %4").arg(name())
-                        .arg(sourceOptions_.value("start").toDouble())
-                        .arg(sourceOptions_.value("end").toDouble())
-                        .arg(sourceOptions_.value("step").toDouble())
+                        .arg(source_.configuration("start").toDouble())
+                        .arg(source_.configuration("end").toDouble())
+                        .arg(source_.configuration("step").toDouble())
                        );
     }
     return netlist;

@@ -292,7 +292,6 @@ const double &MeasureModel::at(int row,const QString &name ) const {
 const double &MeasureModel::at(int row, int column) const {
     return data_->at(row,column);
 }
-
 double &MeasureModel::at(int row, int column) {
     return data_->at(row,column);
 

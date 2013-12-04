@@ -1,6 +1,9 @@
 #include "parametersextractionview.h"
 #include "models/librarymodel.h"
 #include "models/parametermodel.h"
+#include <QColor>
+#include <math.h>
+
 namespace tsunami{
 namespace gui{
 ParametersExtractionView::ParametersExtractionView(db::LibraryModel *library,
@@ -36,15 +39,29 @@ int ParametersExtractionView::columnCount(const QModelIndex &parent) const {
 }
 
 QVariant ParametersExtractionView::data(const QModelIndex &index, int role) const {
-    if( role != Qt::DisplayRole ){
-        return QVariant();
-    }
+//    if( role != Qt::DisplayRole ){
+//        return QVariant();
+//    }
 
     int row = index.row();
     int column = index.column();
-    switch(column){
-    case 0: return library_->at(row).initial();
-    case 1: return library_->at(row).fitted();
+
+    if( role == Qt::BackgroundColorRole){
+        if( library_->at(row).fixed() ){
+            return QVariant(QColor(0xDA,0xDA,0xDA));
+        }else{
+            if(  fabs(library_->at(row).initial() - library_->at(row).fitted()) > 1e-16  ){
+                return QVariant(QColor("pink"));
+            }
+        }
+        return QVariant(QColor(0xFF,0xFF,0xFF));
+    }
+
+    if( role == Qt::DisplayRole || role == Qt::EditRole ){
+        switch(column){
+        case 0: return library_->at(row).initial();
+        case 1: return library_->at(row).fitted();
+        }
     }
     return QVariant();
 }
@@ -74,7 +91,6 @@ QVariant ParametersExtractionView::headerData(int section, Qt::Orientation orien
 
     return QVariant();
 }
-
 
 }
 }

@@ -106,6 +106,7 @@ protected:
 signals:
     void log(const QString& name);
     void finished();
+//    void updateFunctionError();
 
 };
 

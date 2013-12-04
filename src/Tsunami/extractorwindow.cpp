@@ -22,7 +22,8 @@ ExtractorWindow::ExtractorWindow(DeviceType type, int libraryId, QList<int> meas
     library_ = db::ParameterStorage::instance()->openLibrary( libraryId_ );
     parameters_ = new gui::ParametersExtractionView(library_);
     ui->parametersTableView->setModel( parameters_ );
-    ui->parametersTableView->setItemDelegateForColumn(0, new gui::DelegateReadOnly());
+    ui->parametersTableView->setUpdatesEnabled( true );
+//    ui->parametersTableView->setItemDelegateForColumn(0, new gui::DelegateReadOnly());
 
     settings_ = db::SettingStorage::instance();
 
@@ -42,6 +43,8 @@ void ExtractorWindow::finishExtraction() {
     ui->runButton->setEnabled(true);
     ui->stopButton->setEnabled(false);
     ui->saveParametersButton->setEnabled(true);
+
+
 }
 
 void ExtractorWindow::clickedStop() {
@@ -69,7 +72,7 @@ void ExtractorWindow::runExtraction() {
     connect(this,SIGNAL(stop()),extractor,SLOT(stop()),Qt::DirectConnection);
     connect(extractor,SIGNAL(finished()),extractor,SLOT(deleteLater()));
     connect(thread,SIGNAL(finished()),thread,SLOT(deleteLater()));
-
+//    connect(extractor,SIGNAL(updateFunctionError()),this,SLOT(updateParametersView()),Qt::DirectConnection);
     connect(extractor,SIGNAL(finished()),this,SLOT(finishExtraction()));
     connect(extractor,SIGNAL(log(QString)),this,SLOT(log(QString)),Qt::QueuedConnection);
 

@@ -8,6 +8,7 @@ namespace db{
     class LibraryModel;
 }
 namespace gui{
+
 class ParametersExtractionView : public QAbstractItemModel {
 public:
     ParametersExtractionView(db::LibraryModel* library,QObject *parent=0);
@@ -25,6 +26,7 @@ private:
     db::LibraryModel* library_;
 
 };
+
 }
 }
 #endif // PARAMETERSEXTRACTIONVIEW_H

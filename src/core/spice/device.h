@@ -18,8 +18,8 @@ public:
 
     Device( const QString& name,DeviceType device = DEVICE_UNKNOWN);
 
-    void setSource( SourceMethod source, const QVariantMap& options );
-    const SourceMethod& getSource() const;
+    void source( Source source );
+    const Source &source() const;
 
     bool isFlagged( DeviceFlag flag );
     void setFlag( DeviceFlag flag );
@@ -46,9 +46,8 @@ private:
     int numberPorts_;
     SpiceModel* model_;
     DeviceType device_;
-    SourceMethod source_;
+    Source source_;
     DeviceFlag flags_;
-    QVariantMap sourceOptions_;
 
     QStringList parameters_;
 };
