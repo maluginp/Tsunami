@@ -1,5 +1,6 @@
 #include "devicewindow.h"
 #include <QApplication>
+#include "AnalysisWindow.h"
 
 int main(int argc, char *argv[])
 {
@@ -9,7 +10,10 @@ int main(int argc, char *argv[])
     QTextCodec::setCodecForTr(utfcodec);
     QTextCodec::setCodecForCStrings(utfcodec);
 
-    tsunami::DeviceWindow w;
+    AnalysisWindow w;
     w.show();
+
+//    tsunami::DeviceWindow w;
+//    w.show();
     return a.exec();
 }

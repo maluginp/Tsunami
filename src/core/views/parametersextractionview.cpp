@@ -31,10 +31,12 @@ QModelIndex ParametersExtractionView::parent(const QModelIndex &child) const {
 }
 
 int ParametersExtractionView::rowCount(const QModelIndex &parent) const {
+    Q_UNUSED(parent)
     return library_->countParameters();
 }
 
 int ParametersExtractionView::columnCount(const QModelIndex &parent) const {
+    Q_UNUSED(parent)
     return 2;
 }
 
@@ -67,10 +69,14 @@ QVariant ParametersExtractionView::data(const QModelIndex &index, int role) cons
 }
 
 Qt::ItemFlags ParametersExtractionView::flags(const QModelIndex &index) const {
+    Q_UNUSED(index);
     return (Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 }
 
 bool ParametersExtractionView::setData(const QModelIndex &index, const QVariant &value, int role){
+    Q_UNUSED(index);
+    Q_UNUSED(value);
+    Q_UNUSED(role);
     return false;
 }
 

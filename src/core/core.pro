@@ -57,7 +57,9 @@ SOURCES += main.cpp \
     views/measureenableview.cpp \
     views/parametersextractionview.cpp \
     extractor/ExtractorHookeJeeves.cpp \
-    delegates/delegatedoubleitem.cpp
+    delegates/delegatedoubleitem.cpp \
+    webkit/WebKit.cpp \
+    webkit/APIObject.cpp
 
 HEADERS += \
     components/json.h \
@@ -104,7 +106,9 @@ HEADERS += \
     views/measureenableview.h \
     views/parametersextractionview.h \
     extractor/ExtractorHookeJeeves.h \
-    delegates/delegatedoubleitem.h
+    delegates/delegatedoubleitem.h \
+    webkit/WebKit.h \
+    webkit/APIObject.h
 
 
 

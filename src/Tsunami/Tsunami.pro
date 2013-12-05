@@ -34,7 +34,8 @@ SOURCES += main.cpp\
     analysisform.cpp \
     addmeasureform.cpp \
     OpenMeasureDialog.cpp \
-    ShowTextDialog.cpp
+    ShowTextDialog.cpp \
+    AnalysisWindow.cpp
 
 HEADERS  += devicewindow.h \
     opendevicedialog.h \
@@ -47,7 +48,8 @@ HEADERS  += devicewindow.h \
     analysisform.h \
     addmeasureform.h \
     OpenMeasureDialog.h \
-    ShowTextDialog.h
+    ShowTextDialog.h \
+    AnalysisWindow.h
 
 FORMS    += devicewindow.ui \
     opendevicedialog.ui \
@@ -60,7 +62,8 @@ FORMS    += devicewindow.ui \
     analysisform.ui \
     addmeasureform.ui \
     OpenMeasureDialog.ui \
-    ShowTextDialog.ui
+    ShowTextDialog.ui \
+    AnalysisWindow.ui
 
 RESOURCES += \
     resources.qrc

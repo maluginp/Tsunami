@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>DeviceName</string>
+     <string>Выберите устройство</string>
     </property>
    </widget>
    <widget class="QLabel" name="deviceTypeText">
@@ -37,7 +37,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Type</string>
+     <string>Выберите устройство</string>
     </property>
    </widget>
    <widget class="QLabel" name="deviceNodesText">
@@ -50,7 +50,8 @@
      </rect>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string>Выберите
+устройство</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
