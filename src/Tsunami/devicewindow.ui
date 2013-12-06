@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>465</width>
-    <height>326</height>
+    <width>601</width>
+    <height>449</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -40,30 +40,13 @@
      <string>Выберите устройство</string>
     </property>
    </widget>
-   <widget class="QLabel" name="deviceNodesText">
-    <property name="geometry">
-     <rect>
-      <x>340</x>
-      <y>10</y>
-      <width>101</width>
-      <height>131</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Выберите
-устройство</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-    </property>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>465</width>
+     <width>601</width>
      <height>22</height>
     </rect>
    </property>

@@ -1,0 +1,181 @@
+<html>
+<head>
+	<title></title>
+
+<style type="text/css">
+#device{
+	background-image:url('bjt-big.png');
+	width:700px;
+	height:500px;
+	background-repeat: no-repeat;
+}
+
+#device .collector{
+	padding: 20px 30px 0 400px;
+	width:200px;
+	height:200px;
+}
+#device .base{
+	float:left;
+	padding: 130px 0 0 140px;
+		width:200px;
+	height:200px;
+}
+#device .emitter{
+	float:right;
+	padding: 130px 40px 0 30px;
+		width:200px;
+	height:200px;
+}
+</style>
+	<script type="text/javascript" src="jquery-1.10.2.js"></script>
+	<script type="text/javascript" src="tsunami.js"> </script>
+	<script type="text/javascript">
+	var gSources;
+
+
+
+		var openSlot = function(sources){
+			gSources = sources;
+			// console.log("Sources", sources);
+			for( i in sources ){
+				console.log('Node', sources[i].node);
+				// node('select[name=mode]').val( sources[i].mode );	
+				$('#device div[node="'+sources[i].node+'"] select[name="method"]').val( sources[i].method );
+				$('#device div[node="'+sources[i].node+'"] select[name="mode"]').val( sources[i].mode );
+
+				method = '#device div[node="'+sources[i].node+'"] select[name="method"]';
+				if( sources[i].mode == "gnd"){
+					$(method).attr("disabled","disabled");
+					$('#device div[node="'+sources[i].node+'"] label').each(function(i,obj){ $(obj).hide(); });
+				}else{
+					$(method).val( sources[i].method );
+					if(sources[i].method == "linear"){
+						$('#device div[node="'+sources[i].node+'"] label[name="const"]').each(function(i,obj){ $(obj).hide(); });
+					}else if(sources[i].method == "const"){
+						$('#device div[node="'+sources[i].node+'"] label[name!="const"]').each(function(i,obj){ $(obj).hide(); });
+					}
+				}
+				// if( source.mode == "gnd" ){				
+				// }else if(source.mode == "Voltage")
+			}
+
+		};
+
+	var changeMode = function(){
+		console.log( $(this).val() );
+		mode = $(this).val();
+		if(mode == 'gnd'){
+			$(this).parent().find( 'select[name="method"]' ).attr('disabled','disabled');
+			$(this).parent().find('label').each( function(i,obj){ $(obj).hide(); } )
+		}else{
+			$(this).parent().find('label').each( function(i,obj){ $(obj).hide(); } )
+			method = $(this).parent().find('select[name="method"]').val();
+			console.log(method);
+			if( method == 'const' ){
+				console.log('const');
+				$(this).parent().find( 'label[name="const"]' ).show();
+			}else if(method == 'linear'){
+				$(this).parent().find('label[name!="const"]').each( function(i,obj){ $(obj).show(); } );
+			}
+
+		}
+	}
+	$(document).ready(function() {
+		var tsunami = new Tsunami();
+
+		$( '#device select[name="mode"]' ).each( function(i,obj){ $(obj).bind('change',changeMode); } );
+		console.log("ready");
+		// $("#device select[)
+
+	});
+	try{
+		Api.analysisOpened.connect(openSlot);
+	}catch(e){
+		alert(e);
+	}
+	</script>
+
+</head>
+<body>
+<div id="device">
+	<div class="collector" node="C">
+		Source: 
+		<select name="source">
+			<option value="smu1">SMU1</option>
+			<option value="smu2">SMU2</option>
+		</select> <br/>
+		Mode: 
+		<select name="mode">
+			<option value="voltage">Voltage</option>
+			<option value="current">Current</option>
+			<option value="gnd">Gnd</option>
+		</select> <br/>
+		Method:
+		<select name="method">
+			<option value="const">Constant</option>
+			<option value="linear">Linear</option>
+		</select><br/>
+		<label name="const">Constant: <input type="text" ></label>
+		<label name="start">Vc start: <input type="text"  /></label>
+		<label name="step" >Vc step: <input type="text"  /></label>
+		<label name="stop">Vc stop: <input type="text"  /></label>
+	</div>
+	<div style="clear:both;"></div>
+	<div class="base" node="B">
+		Source: 
+		<select name="source">
+			<option value="smu1">SMU1</option>
+			<option value="smu2">SMU2</option>
+		</select> <br/>
+		Mode: 
+		<select name="mode">
+			<option value="voltage">Voltage</option>
+			<option value="current">Current</option>
+			<option value="gnd">Gnd</option>
+		</select> <br/>
+		Method:
+		<select name="method">
+			<option value="const">Constant</option>
+			<option value="linear">Linear</option>
+		</select><br/>
+		<div class="config"></div>
+		<label name="const">Constant: <input type="text" ></label>
+		<label name="start">Vc start: <input type="text"  /></label>
+		<label name="step" >Vc step: <input type="text"  /></label>
+		<label name="stop">Vc stop: <input type="text"  /></label>
+	</div>
+
+	<div class="emitter" node="E">
+		Source: 
+		<select name="source">
+			<option value="smu1">SMU1</option>
+			<option value="smu2">SMU2</option>
+		</select> <br/>
+		Mode: 
+		<select name="mode">
+			<option value="voltage" selected="selected">Voltage</option>
+			<option value="current">Current</option>
+			<option value="gnd">Gnd</option>
+		</select> <br/>
+		Method:
+		<select name="method">
+			<option value="const">Constant</option>
+			<option value="linear">Linear</option>
+		</select><br/>
+		<div class="config"></div>
+		<label name="const">Constant: <input type="text" ></label>
+		<label name="start">Vc start: <input type="text"  /></label>
+		<label name="step" >Vc step: <input type="text"  /></label>
+		<label name="stop">Vc stop: <input type="text"  /></label>
+	</div>
+	<div style="clear:both;"></div>
+	<div style="float:right; padding:20px 30px 0 0">
+		<input style="width:100px; height:50px" type="button" value="Save">
+	</div>
+</div>
+
+
+
+</body>
+</html>

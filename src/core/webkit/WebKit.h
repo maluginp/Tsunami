@@ -8,14 +8,17 @@
 //public:
 //    WebKit();
 //};
-class APIObject;
+//namespace tsunami{
+//class APIObject;
+//}
 class WebPage : public QWebPage{
+    friend class WebView;
     Q_OBJECT
 public:
     explicit WebPage(QObject* parent = 0);
     ~WebPage();
 private:
-    APIObject* api_;
+
 };
 
 class WebView : public QWebView{
@@ -24,7 +27,7 @@ public:
     WebView(QWidget *parent = 0);
     ~WebView();
 private:
-    QWebPage* webPage_;
+    WebPage* webPage_;
 #ifdef QT_DEBUG
     QWebInspector* webInspector_;
 #endif

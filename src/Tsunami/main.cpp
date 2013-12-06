@@ -10,8 +10,9 @@ int main(int argc, char *argv[])
     QTextCodec::setCodecForTr(utfcodec);
     QTextCodec::setCodecForCStrings(utfcodec);
 
-    AnalysisWindow w;
+    tsunami::AnalysisWindow w(1);
     w.show();
+//    w.close();
 
 //    tsunami::DeviceWindow w;
 //    w.show();

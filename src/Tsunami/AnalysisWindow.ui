@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>884</width>
-    <height>568</height>
+    <width>915</width>
+    <height>704</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,10 +15,10 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
+    <item row="0" column="0" rowspan="2">
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QListView" name="listView"/>
+       <widget class="QListView" name="analysisItemsListView"/>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
@@ -36,6 +36,13 @@
          </spacer>
         </item>
         <item>
+         <widget class="QPushButton" name="addButton">
+          <property name="text">
+           <string>Добавить</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QPushButton" name="openButton">
           <property name="text">
            <string>Открыть</string>
@@ -47,11 +54,64 @@
      </layout>
     </item>
     <item row="0" column="1">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMinimumSize</enum>
+      </property>
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Название</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="analysisNameLineEdit"/>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="maximumSize">
+         <size>
+          <width>70</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Анализ</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="analysisTypeComboBox"/>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="analysisEnableCheckBox">
+        <property name="text">
+         <string>Включить</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="1" column="1">
      <widget class="WebView" name="webView" native="true">
       <property name="minimumSize">
        <size>
         <width>600</width>
-        <height>0</height>
+        <height>600</height>
        </size>
       </property>
      </widget>
@@ -63,7 +123,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>884</width>
+     <width>915</width>
      <height>22</height>
     </rect>
    </property>

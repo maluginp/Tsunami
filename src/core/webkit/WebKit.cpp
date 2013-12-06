@@ -18,8 +18,8 @@ WebPage::WebPage(QObject *parent) : QWebPage(parent) {
 #ifdef QT_DEBUG
     settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
 #endif
-    api_ = new APIObject();
-    mainFrame()->addToJavaScriptWindowObject( api_->objectName(), api_);
+
+//    mainFrame()->addToJavaScriptWindowObject( api_->objectName(), api_);
 
 }
 
@@ -27,8 +27,17 @@ WebPage::~WebPage() { }
 
 
 WebView::~WebView() {
-
+    if(webInspector_ != 0){
+        webInspector_->close();
+        webInspector_->deleteLater();
+//        webInspector_ = 0;
+//        delete webInspector_;
+    }
 }
+
+//APIObject *WebView::api() {
+//    return webPage_->api_;
+//}
 
 
 WebView::WebView(QWidget* parent) : QWebView(parent) {
@@ -43,6 +52,8 @@ WebView::WebView(QWidget* parent) : QWebView(parent) {
 #ifdef QT_DEBUG
     webInspector_ = new QWebInspector();
     webInspector_->setPage(webPage_);
+//    webInspector_->setVisible(true);
+//    webInspector_->setBaseSize(600,600);
     connect(this, SIGNAL(destroyed()), webInspector_, SLOT(close()));
 #endif
     setPage(webPage_);

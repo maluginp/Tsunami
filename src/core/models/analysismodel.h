@@ -26,7 +26,7 @@ public:
     const int& id() { return analysisId_; }
     const AnalysisType& type() { return type_; }
     QString typeJson();
-    const QList<Source>& sources() { return sources_; }
+    const QList<Source>& sources() const { return sources_; }
     QList<Source> sources(SourceDirection direction);
 
 

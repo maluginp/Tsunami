@@ -23,6 +23,7 @@ struct MeasureEnableViewItem{
         id = other.id;
         name = other.name;
         type = other.type;
+        return *this;
     }
 };
 

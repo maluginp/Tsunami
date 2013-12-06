@@ -21,8 +21,7 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
     ui->setupUi(this);
     storage_ = db::DeviceStorage::instance();
 
-    deviceId_ = 1;
-    device_ = storage_->openDevice(deviceId_);
+    openDevice(1);
 
     libraryWindow_ = NULL;
 
@@ -48,12 +47,12 @@ void DeviceWindow::openDevice(int deviceId) {
     ui->deviceNameText->setText( device_->name() );
     ui->deviceTypeText->setText( device_->typeJson().toUpper() );
 
-    QString nodeText;
-    foreach(QString node, device_->nodes()){
-        nodeText.append( QString("<b>%1</b><br/>").arg(node) );
-    }
+//    QString nodeText;
+//    foreach(QString node, device_->nodes()){
+//        nodeText.append( QString("<b>%1</b><br/>").arg(node) );
+//    }
 
-    ui->deviceNodesText->setText( nodeText );
+//    ui->deviceNodesText->setText( nodeText );
 
 }
 
