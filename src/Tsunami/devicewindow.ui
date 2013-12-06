@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>601</width>
+    <width>774</width>
     <height>449</height>
    </rect>
   </property>
@@ -17,8 +17,8 @@
    <widget class="QLabel" name="deviceNameText">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>10</y>
+      <x>40</x>
+      <y>20</y>
       <width>171</width>
       <height>21</height>
      </rect>
@@ -30,8 +30,8 @@
    <widget class="QLabel" name="deviceTypeText">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>40</y>
+      <x>40</x>
+      <y>50</y>
       <width>171</width>
       <height>21</height>
      </rect>
@@ -40,13 +40,43 @@
      <string>Выберите устройство</string>
     </property>
    </widget>
+   <widget class="QTreeView" name="datasetTreeView">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>10</y>
+      <width>221</width>
+      <height>361</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTreeView" name="libraryTreeView">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>10</y>
+      <width>261</width>
+      <height>161</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTreeView" name="analysisTreeView">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>180</y>
+      <width>261</width>
+      <height>191</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>601</width>
+     <width>774</width>
      <height>22</height>
     </rect>
    </property>

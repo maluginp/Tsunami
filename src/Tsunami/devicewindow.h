@@ -26,7 +26,11 @@ private:
     db::DeviceStorage* storage_;
     int deviceId_;
     db::DeviceModel* device_;
+
+
+
 private slots:
+    void updateDeviceWindow();
 
     void clickedOpenDeviceAction();
     void clickedParametersEditor();

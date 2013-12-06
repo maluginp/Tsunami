@@ -12,16 +12,15 @@ APIObject::APIObject(QObject *parent) :
 void APIObject::openAnalysis( const tsunami::db::AnalysisModel* analysis ) {
     QList<tsunami::Source> sources = analysis->sources();
 
-    QVariantList sourcesJson;
+    QVariantMap sourcesJson;
     foreach( tsunami::Source source, sources ){
         if( source.direction() == tsunami::SOURCE_DIRECTION_INPUT ){
             QVariantMap sourceJson;
             sourceJson.insert( "mode", source.modeJson() );
             sourceJson.insert("method", source.methodJson());
-            sourceJson.insert("node", source.node());
             sourceJson.insert("config", source.configurations());
             sourceJson.insert("name",source.name());
-            sourcesJson.append( sourceJson );
+            sourcesJson.insert( source.node(), sourceJson );
         }
     }
 
