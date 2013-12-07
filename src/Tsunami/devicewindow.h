@@ -4,14 +4,17 @@
 #include <QMainWindow>
 #include <dbstorage/DbStorages.h>
 #include <views/Views.h>
+#include "librarywindow.h"
+#include "addmeasureform.h"
+#include "extractorwindow.h"
+#include "AnalysisWindow.h"
 
 namespace Ui {
 class DeviceWindow;
 }
 namespace tsunami{
-class LibraryWindow;
-class ExtractorWindow;
-class addMeasureForm;
+
+
 class DeviceWindow : public QMainWindow {
     Q_OBJECT
 public:
@@ -23,6 +26,8 @@ private:
     LibraryWindow* libraryWindow_;
     ExtractorWindow* extractorWindow_;
     addMeasureForm* measuresWindow_;
+    AnalysisWindow* analysisWindow_;
+
     Ui::DeviceWindow *ui;
     db::DeviceStorage* storage_;
     int deviceId_;
@@ -40,6 +45,8 @@ private slots:
     void clickedExtractionRunAction();
     void clickedMeasureEditor();
     void clickedMeasureAdd();
+    void clickedAnalysisAdd();
+    void clickedLibraryAdd();
 };
 }
 

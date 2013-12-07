@@ -1,10 +1,7 @@
 #include "devicewindow.h"
 #include "ui_devicewindow.h"
 #include "opendevicedialog.h"
-#include "librarywindow.h"
 #include "prepareextractordialog.h"
-#include "extractorwindow.h"
-#include "addmeasureform.h"
 #include "OpenMeasureDialog.h"
 #include "choiceanalysisform.h"
 #include <logger.h>
@@ -16,7 +13,7 @@ namespace tsunami{
 DeviceWindow::DeviceWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::DeviceWindow), storage_(NULL), device_(NULL),extractorWindow_(NULL),measuresWindow_(NULL),
-    measureList_(NULL),libraryList_(NULL),analysisList_(NULL)
+    measureList_(NULL),libraryList_(NULL),analysisList_(NULL), analysisWindow_(NULL)
 {
 
     ui->setupUi(this);
@@ -47,6 +44,9 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
     connect( ui->actionEditMeasure,SIGNAL(triggered()),this,SLOT(clickedMeasureEditor()));
     connect( ui->actionAddMeasure,SIGNAL(triggered()),this,SLOT(clickedMeasureAdd()));
 
+    connect( ui->addAnalysisButton,SIGNAL(clicked()),this,SLOT(clickedAnalysisAdd()) );
+    connect( ui->addLibraryButton,SIGNAL(clicked()),this,SLOT(clickedLibraryAdd()));
+    connect( ui->addMeasureButton,SIGNAL(clicked()),this,SLOT(clickedMeasureAdd()) );
 
     statusBar()->showMessage("Tsunami ver0.2");
 
@@ -121,9 +121,7 @@ void DeviceWindow::clickedOpenDeviceAction() {
 
 void DeviceWindow::clickedParametersEditor() {
     delete libraryWindow_;
-
     libraryWindow_ = new LibraryWindow(deviceId_,this);
-
     libraryWindow_->show();
 }
 
@@ -167,6 +165,17 @@ void DeviceWindow::clickedMeasureAdd() {
         measuresWindow_ = new tsunami::addMeasureForm(tsunami::addMeasureForm::NEW,analysisId,0);
         measuresWindow_->show();
     }
+}
+
+void DeviceWindow::clickedAnalysisAdd() {
+    delete analysisWindow_;
+    analysisWindow_ = new AnalysisWindow( deviceId_ );
+    analysisWindow_->show();
+
+}
+
+void DeviceWindow::clickedLibraryAdd() {
+    clickedParametersEditor();
 }
 
 }
