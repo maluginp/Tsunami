@@ -6,5 +6,6 @@
         <file alias="PFET">images/jfet-p.png</file>
         <file alias="NMOS">images/nmos.png</file>
         <file alias="PMOS">images/pmos.png</file>
+        <file alias="NONE_DEVICE">images/none_device.png</file>
     </qresource>
 </RCC>

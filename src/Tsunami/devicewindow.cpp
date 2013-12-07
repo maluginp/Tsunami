@@ -5,7 +5,7 @@
 #include "OpenMeasureDialog.h"
 #include "choiceanalysisform.h"
 #include <logger.h>
-
+#include "defines.h"
 #include <QTreeView>
 
 namespace tsunami{
@@ -72,10 +72,22 @@ void DeviceWindow::openDevice(int deviceId) {
 
     updateDeviceWindow();
 
-    QPixmap deviceImage( ":/images/NBJT" );
-    ui->deviceImage->setPixmap( deviceImage );
-
     setWindowTitle( tr("%1 - Devices Manager").arg(device_->name()) );
+
+    QPixmap deviceImage;
+
+    switch( device_->type() ){
+    case DEVICE_NBJT: deviceImage.load(":/images/NBJT" ); break;
+    case DEVICE_PBJT: deviceImage.load(":/images/PBJT" ); break;
+    case DEVICE_NFET: deviceImage.load(":/images/NFET" ); break;
+    case DEVICE_PFET: deviceImage.load(":/images/PFET" ); break;
+    case DEVICE_NMOS: deviceImage.load(":/images/NMOS" ); break;
+    case DEVICE_PMOS: deviceImage.load(":/images/PMOS" ); break;
+    default:
+        deviceImage.load(":/images/NONE_DEVICE");
+    }
+
+    ui->deviceImage->setPixmap( deviceImage );
 
 }
 
