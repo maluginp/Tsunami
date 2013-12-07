@@ -2,7 +2,8 @@
 #define DEVICEWINDOW_H
 
 #include <QMainWindow>
-#include <dbstorage/devicestorage.h>
+#include <dbstorage/DbStorages.h>
+#include <views/Views.h>
 
 namespace Ui {
 class DeviceWindow;
@@ -28,7 +29,9 @@ private:
     db::DeviceModel* device_;
 
 
-
+    gui::ListTreeView* measureList_;
+    gui::ListItemView* libraryList_;
+    gui::ListTreeView* analysisList_;
 private slots:
     void updateDeviceWindow();
 

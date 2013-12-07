@@ -24,6 +24,10 @@ AnalysisModel *AnalysisStorage::openAnalysis(int analysisId) {
     return openAnalysisImpl(analysisId);
 }
 
+QList<AnalysisModel *> AnalysisStorage::getAnalysesByDeviceId(int deviceId){
+    return getAnalysesByDeviceIdImpl( deviceId );
+}
+
 QMap<int, QString> AnalysisStorage::listAnalysis(int deviceId) {
     return listAnalysisImpl(deviceId);
 }
@@ -176,6 +180,44 @@ AnalysisModel *AnalysisStorage::openAnalysisImpl(int analysisId) {
 
 
     return model;
+}
+
+QList<AnalysisModel *> AnalysisStorage::getAnalysesByDeviceIdImpl(int deviceId) {
+    setLastError( QString() );
+
+    QString sqlQuery;
+
+    sqlQuery = sql("SELECT * FROM %1 WHERE device_id=:device_id").arg(TABLE_NAME_ANALYSES);
+
+    QSqlQuery q(sqlQuery,db());
+    q.bindValue(":device_id",deviceId);
+
+    if(!q.exec()){
+        setLastError( q.lastError().text() );
+        Q_ASSERT(false);
+        return QList<AnalysisModel *>();
+    }
+    QList<AnalysisModel*> analyses;
+    AnalysisModel* model;
+    while(q.next()){
+
+        QSqlRecord rec(q.record());
+
+        model = new AnalysisModel();
+        model->id(          ITEM("id").toInt() );
+        model->deviceId(    ITEM("device_id").toInt());
+        model->name(        ITEM("name").toString() );
+        model->sourcesJson( ITEM("sources").toString() );
+        model->type(        ITEM("type").toString() );
+        model->createAt(    ITEM("createdAt").toDateTime() );
+        model->changeAt(    ITEM("changedAt").toDateTime());
+        model->enable(      ITEM("enable").toBool() );
+
+        analyses.append( model );
+    }
+
+
+    return analyses;
 }
 
 bool AnalysisStorage::createTable(AnalysisTable table) {

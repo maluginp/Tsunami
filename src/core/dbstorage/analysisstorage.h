@@ -19,6 +19,7 @@ public:
     bool saveAnalysis( AnalysisModel* model );
     AnalysisModel* openAnalysis(int analysisId);
 
+    QList<AnalysisModel*> getAnalysesByDeviceId( int deviceId );
     QMap<int,QString> listAnalysis(int deviceId);
 
 protected:
@@ -30,6 +31,7 @@ private:
 
     bool saveAnalysisImpl( AnalysisModel* model );
     AnalysisModel* openAnalysisImpl(int analysisId);
+    QList<AnalysisModel*> getAnalysesByDeviceIdImpl( int deviceId );
     bool createTable(AnalysisTable table);
     QMap<int,QString> listAnalysisImpl(int deviceId);
 

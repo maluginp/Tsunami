@@ -26,6 +26,9 @@ public:
 
     QList<MeasureModel*> getMeasuresByDeviceId( int deviceId );
     QList<MeasureModel*> getMeasures(const QList<int>& measureIds );
+
+    QMap<int,QString> getMeasuresIdByDeviceId( int deviceId );
+
 protected:
     QString connectionName() const;
     int lastInsertId(const QString& table);

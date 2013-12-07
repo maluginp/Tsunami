@@ -27,6 +27,8 @@ public:
 
     LibraryModel* openLibrary( int libraryId );
     QMap<int,QString> listLibraries(int deviceId);
+    QList<LibraryModel*> getLibrariesByDeviceId( int deviceId );
+
     bool removeLibrary( int libraryId );
 
 protected:
@@ -38,6 +40,7 @@ private:
     QMap<int,QString> listLibrariesImpl(int deviceId);
     bool saveLibraryImpl( LibraryModel* library );
     LibraryModel* openLibraryImpl( int libraryId );
+    QList<LibraryModel*> getLibrariesByDeviceIdImpl( int deviceId );
     bool removeLibraryImpl( int libraryId );
 
     bool createTable( const ParameterTable& table);

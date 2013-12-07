@@ -42,6 +42,10 @@ QMap<int,QString>  ParameterStorage::listLibraries(int deviceId){
     return listLibrariesImpl(deviceId);
 }
 
+QList<LibraryModel *> ParameterStorage::getLibrariesByDeviceId(int deviceId) {
+    return getLibrariesByDeviceIdImpl(deviceId);
+}
+
 bool ParameterStorage::removeLibrary(int libraryId)
 {
     return removeLibraryImpl(libraryId);
@@ -54,7 +58,7 @@ QString ParameterStorage::connectionName() const {
 int ParameterStorage::lastInsertId(const QString &table) {
     QString sqlQuery;
     if(table.compare(TABLE_NAME_PARAMETERS) == 0 ||
-       table.compare(TABLE_NAME_LIBRARIES) == 0){
+            table.compare(TABLE_NAME_LIBRARIES) == 0){
         sqlQuery = sql("SELECT MAX(id) FROM %1").arg(table);
 
         QSqlQuery q( sqlQuery, db() );
@@ -261,10 +265,6 @@ bool ParameterStorage::saveLibraryImpl(LibraryModel *library) {
 LibraryModel* ParameterStorage::openLibraryImpl(int libraryId) {
     setLastError(QString());
 
-//    if(cachedLibraries_.contains(libraryId)){
-//        return cachedLibraries_[libraryId];
-//    }
-
     QString sqlQuery;
     // Load Library
     LibraryModel* library = new LibraryModel();
@@ -322,11 +322,35 @@ LibraryModel* ParameterStorage::openLibraryImpl(int libraryId) {
         }
     }
 
-
-//    currentLibrary_ = library;
-//    saveCache( library );
-
     return library;
+}
+
+QList<LibraryModel *> ParameterStorage::getLibrariesByDeviceIdImpl(int deviceId){
+    setLastError(QString());
+
+    QString sqlQuery;
+    // Load Library
+
+    sqlQuery = sql("SELECT id FROM %1 WHERE device_id=:device_id").arg(TABLE_NAME_LIBRARIES);
+
+    QSqlQuery q(sqlQuery,db());
+    q.bindValue(":device_id",deviceId);
+
+    if(!q.exec()){
+        setLastError( q.lastError().text() );
+        return QList<LibraryModel*>();
+    }
+
+    QList<LibraryModel*> libraries;
+    LibraryModel* library;
+
+    while(q.next()){
+        QSqlRecord rec = QSqlRecord(q.record());
+        libraries.append(  openLibrary( ITEM("id").toInt() )  );
+    }
+
+    return libraries;
+
 }
 
 bool ParameterStorage::removeLibraryImpl(int libraryId){

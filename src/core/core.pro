@@ -59,7 +59,8 @@ SOURCES += main.cpp \
     extractor/ExtractorHookeJeeves.cpp \
     delegates/delegatedoubleitem.cpp \
     webkit/WebKit.cpp \
-    webkit/APIObject.cpp
+    webkit/APIObject.cpp \
+    views/ListTreeView.cpp
 
 HEADERS += \
     components/json.h \
@@ -108,7 +109,10 @@ HEADERS += \
     extractor/ExtractorHookeJeeves.h \
     delegates/delegatedoubleitem.h \
     webkit/WebKit.h \
-    webkit/APIObject.h
+    webkit/APIObject.h \
+    dbstorage/DbStorages.h \
+    views/Views.h \
+    views/ListTreeView.h
 
 
 

@@ -13,7 +13,7 @@ class ListItemView : public QAbstractItemModel
 {
     Q_OBJECT
 public:
-    explicit ListItemView(QObject *parent = 0);
+    explicit ListItemView(const QString& title = QString(), QObject *parent = 0);
     explicit ListItemView(const  QList< QPair<QString,QVariant> >& items, QObject *parent = 0);
     QModelIndex index(int row, int column,
                       const QModelIndex &parent = QModelIndex()) const;
@@ -37,6 +37,7 @@ private:
 
     QList< QPair<QString,QVariant> > items_;
     bool editable_;
+    QString title_;
 };
 
 }

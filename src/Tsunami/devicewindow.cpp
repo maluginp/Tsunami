@@ -1,37 +1,56 @@
 #include "devicewindow.h"
 #include "ui_devicewindow.h"
 #include "opendevicedialog.h"
-#include "models/devicemodel.h"
 #include "librarywindow.h"
 #include "prepareextractordialog.h"
 #include "extractorwindow.h"
 #include "addmeasureform.h"
-
-#include "dbstorage/settingstorage.h"
 #include "OpenMeasureDialog.h"
 #include "choiceanalysisform.h"
 #include <logger.h>
+
+#include <QTreeView>
 
 namespace tsunami{
 
 DeviceWindow::DeviceWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::DeviceWindow), storage_(NULL), device_(NULL),extractorWindow_(NULL),measuresWindow_(NULL) {
+    ui(new Ui::DeviceWindow), storage_(NULL), device_(NULL),extractorWindow_(NULL),measuresWindow_(NULL),
+    measureList_(NULL),libraryList_(NULL),analysisList_(NULL)
+{
 
     ui->setupUi(this);
     storage_ = db::DeviceStorage::instance();
 
-    openDevice(1);
+
 
     libraryWindow_ = NULL;
 
     db::SettingStorage::instance();
+
+    QVariantMap measureTypes;
+    measureTypes.insert("AC","ac");
+    measureTypes.insert("DC","dc");
+    measureTypes.insert("TRAN","tran");
+
+    measureList_ = new gui::ListTreeView( tr("Measures"),  measureTypes );
+    libraryList_ = new gui::ListItemView( tr("Libraries"));
+    analysisList_ = new gui::ListTreeView( tr("Analyses"), measureTypes );
+
+    ui->datasetTreeView->setModel( measureList_ );
+    ui->libraryTreeView->setModel( libraryList_ );
+    ui->analysisTreeView->setModel( analysisList_ );
 
     connect( ui->actionOpen, SIGNAL(triggered()), this, SLOT(clickedOpenDeviceAction()) );
     connect( ui->actionEditorLibrary,SIGNAL(triggered()),this,SLOT(clickedParametersEditor()));
     connect( ui->actionExtractionRun,SIGNAL(triggered()),this,SLOT(clickedExtractionRunAction()));
     connect( ui->actionEditMeasure,SIGNAL(triggered()),this,SLOT(clickedMeasureEditor()));
     connect( ui->actionAddMeasure,SIGNAL(triggered()),this,SLOT(clickedMeasureAdd()));
+
+
+    statusBar()->showMessage("Tsunami ver0.2");
+
+    openDevice(1);
 }
 
 DeviceWindow::~DeviceWindow() {
@@ -47,12 +66,46 @@ void DeviceWindow::openDevice(int deviceId) {
     ui->deviceNameText->setText( device_->name() );
     ui->deviceTypeText->setText( device_->typeJson().toUpper() );
 
-//    QString nodeText;
-//    foreach(QString node, device_->nodes()){
-//        nodeText.append( QString("<b>%1</b><br/>").arg(node) );
-//    }
+    updateDeviceWindow();
 
-//    ui->deviceNodesText->setText( nodeText );
+    QPixmap deviceImage( ":/images/NBJT" );
+    ui->deviceImage->setPixmap( deviceImage );
+
+    setWindowTitle( tr("%1 - Devices Manager").arg(device_->name()) );
+
+}
+
+void DeviceWindow::updateDeviceWindow() {
+    if( device_ == 0) return;
+
+    // Updates datasets
+
+    db::MeasureStorage* measureStorage = db::MeasureStorage::instance();
+    measureList_->clear();
+    QList<db::MeasureModel*> measures = measureStorage->getMeasuresByDeviceId(deviceId_);
+    foreach( db::MeasureModel* measure, measures ){
+        measureList_->addChild( measure->typeJson() ,measure->name(),
+                                measure->id() );
+    }
+    qDeleteAll( measures );
+
+    analysisList_->clear();
+    db::AnalysisStorage* analysisStorage = db::AnalysisStorage::instance();
+    QList<db::AnalysisModel*> analyses = analysisStorage->getAnalysesByDeviceId( deviceId_ );
+    foreach( db::AnalysisModel* analysis, analyses ){
+        analysisList_->addChild( analysis->typeJson(), analysis->name(), analysis->id() );
+    }
+
+    qDeleteAll( analyses );
+
+    libraryList_->clear();
+    db::ParameterStorage* parameterStorage = db::ParameterStorage::instance();
+    QList<db::LibraryModel*> libraries = parameterStorage->getLibrariesByDeviceId( deviceId_ );
+    foreach(db::LibraryModel* library, libraries){
+        libraryList_->addItem( library->name(), library->id() );
+    }
+
+    qDeleteAll( libraries );
 
 }
 
@@ -107,7 +160,7 @@ void DeviceWindow::clickedMeasureEditor() {
 
 void DeviceWindow::clickedMeasureAdd() {
     int analysisId = 1;
-//    int analysisId = tsunami::ChoiceAnalysisForm::getAnalysisId( deviceId_ );
+    //    int analysisId = tsunami::ChoiceAnalysisForm::getAnalysisId( deviceId_ );
 
     if( analysisId != -1){
         delete measuresWindow_;

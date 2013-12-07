@@ -4,8 +4,8 @@ namespace tsunami {
 namespace gui{
 
 
-ListItemView::ListItemView(QObject *parent) :
-    QAbstractItemModel(parent), editable_(false) {
+ListItemView::ListItemView(const QString &title, QObject *parent) :
+    QAbstractItemModel(parent), editable_(false), title_(title) {
 
 }
 
@@ -81,9 +81,10 @@ bool ListItemView::setData(const QModelIndex &index, const QVariant &value, int 
 }
 
 QVariant ListItemView::headerData(int section, Qt::Orientation orientation, int role) const {
-    Q_UNUSED(section);
-    Q_UNUSED(orientation);
-    Q_UNUSED(role);
+    if( !title_.isEmpty() && section==0 && orientation==Qt::Horizontal && role == Qt::DisplayRole ){
+        return QVariant(title_);
+    }
+
     return QVariant();
 }
 

@@ -369,6 +369,19 @@ QList<MeasureModel *> MeasureStorage::getMeasures(const QList<int> &measureIds) 
     return measures;
 }
 
+QMap<int, QString> MeasureStorage::getMeasuresIdByDeviceId(int deviceId) {
+    QList<MeasureModel *> measures = getMeasuresByDeviceId( deviceId );
+    QMap<int,QString> measuresId;
+
+    int numberMeasures = measures.count();
+    for(int i=0; i < numberMeasures; ++i){
+        measuresId.insert(measures[i]->id(), measures[i]->name());
+        delete measures[i];
+    }
+
+    return measuresId;
+}
+
 
 }
 }

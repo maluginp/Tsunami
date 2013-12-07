@@ -1,1 +1,10 @@
-<RCC/>
+<RCC>
+    <qresource prefix="/images">
+        <file alias="NBJT">images/bjt-npn.png</file>
+        <file alias="PBJT">images/bjt-pnp.png</file>
+        <file alias="NFET">images/jfet-n.png</file>
+        <file alias="PFET">images/jfet-p.png</file>
+        <file alias="NMOS">images/nmos.png</file>
+        <file alias="PMOS">images/pmos.png</file>
+    </qresource>
+</RCC>
