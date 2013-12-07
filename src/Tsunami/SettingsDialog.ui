@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SettingsDialog</class>
+ <widget class="QDialog" name="SettingsDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>454</width>
+    <height>302</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Настройки</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="1" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="closeButton">
+       <property name="text">
+        <string>Закрыть</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="saveButton">
+       <property name="text">
+        <string>Сохранить</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="applyButton">
+       <property name="text">
+        <string>Применить</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="0">
+    <widget class="QTabWidget" name="settingTabs">
+     <property name="currentIndex">
+      <number>2</number>
+     </property>
+     <widget class="QWidget" name="mainTab">
+      <attribute name="title">
+       <string>Основные</string>
+      </attribute>
+     </widget>
+     <widget class="QWidget" name="optimizeTab">
+      <attribute name="title">
+       <string>Оптимизация</string>
+      </attribute>
+      <widget class="QLabel" name="label_3">
+       <property name="geometry">
+        <rect>
+         <x>70</x>
+         <y>30</y>
+         <width>62</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Метод:</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="optimizeMethodComboBox">
+       <property name="geometry">
+        <rect>
+         <x>260</x>
+         <y>20</y>
+         <width>111</width>
+         <height>26</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="optimizeMaxIterationsLineEdit">
+       <property name="geometry">
+        <rect>
+         <x>260</x>
+         <y>60</y>
+         <width>113</width>
+         <height>21</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_4">
+       <property name="geometry">
+        <rect>
+         <x>70</x>
+         <y>60</y>
+         <width>161</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Максимальное
+число итераций:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_5">
+       <property name="geometry">
+        <rect>
+         <x>70</x>
+         <y>110</y>
+         <width>161</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Допустимое отклонение
+функции:</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="optimizeToleranceFunctionLineEdit">
+       <property name="geometry">
+        <rect>
+         <x>260</x>
+         <y>110</y>
+         <width>113</width>
+         <height>21</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="spiceTab">
+      <attribute name="title">
+       <string>SPICE</string>
+      </attribute>
+      <widget class="QLabel" name="label">
+       <property name="geometry">
+        <rect>
+         <x>25</x>
+         <y>13</y>
+         <width>75</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Симулятор:</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="spiceSimulatorComboBox">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>155</x>
+         <y>11</y>
+         <width>181</width>
+         <height>26</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_2">
+       <property name="geometry">
+        <rect>
+         <x>25</x>
+         <y>43</y>
+         <width>125</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Путь к симулятору:</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="spicePathLineEdit">
+       <property name="geometry">
+        <rect>
+         <x>158</x>
+         <y>43</y>
+         <width>241</width>
+         <height>21</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

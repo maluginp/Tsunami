@@ -25,7 +25,7 @@ Extractor::Extractor(DeviceType type, db::LibraryModel* library, const QList<int
     db::SettingStorage* setting = db::SettingStorage::instance();
     stopped_ = false;
     iteration_ = 0;
-    maxIterations_ = setting->value("spice/max_iteration",10).toInt();
+    maxIterations_ = setting->value("optimize/max_iteration",100).toInt();
 
     tolerances_.insert( TOLERANCE_FUNCTION, setting->value("optimize/tolerance/function",1e-14).toDouble()  );
 

@@ -8,6 +8,8 @@
 #include "defines.h"
 #include <QTreeView>
 #include <QMessageBox>
+#include "SettingsDialog.h"
+#include "AboutDialog.h"
 
 namespace tsunami{
 
@@ -44,6 +46,8 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
     connect( ui->actionAddMeasure,SIGNAL(triggered()),this,SLOT(clickedMeasureAdd()));
     connect( ui->actionDeviceClose,SIGNAL(triggered()),this,SLOT(clickedDeviceClose()));
     connect( ui->actionDeviceRemove,SIGNAL(triggered()),this,SLOT(clickedDeviceRemove()));
+    connect( ui->actionSettingsOpen,SIGNAL(triggered()),this,SLOT(clickedSettingsOpen()));
+    connect( ui->actionAboutOpen,SIGNAL(triggered()),this,SLOT(clickedAboutOpen()));
 
     connect( ui->addAnalysisButton,SIGNAL(clicked()),this,SLOT(clickedAnalysisAdd()) );
     connect( ui->addLibraryButton,SIGNAL(clicked()),this,SLOT(clickedLibraryAdd()));
@@ -243,6 +247,16 @@ void DeviceWindow::clickedDeviceRemove() {
         }
     }
 
+}
+
+void DeviceWindow::clickedSettingsOpen() {
+    SettingsDialog settings;
+    settings.exec();
+}
+
+void DeviceWindow::clickedAboutOpen() {
+    AboutDialog dialog;
+    dialog.exec();
 }
 
 void DeviceWindow::selectedMeasure(const QModelIndex &index) {
