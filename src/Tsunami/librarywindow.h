@@ -21,7 +21,7 @@ class LibraryWindow : public QMainWindow
 public:
     explicit LibraryWindow(int deviceId, QWidget *parent = 0);
     ~LibraryWindow();
-
+    void openLibrary(int libraryId);
 private:
     void showParameters(db::LibraryModel* library);
     Ui::LibraryWindow *ui;

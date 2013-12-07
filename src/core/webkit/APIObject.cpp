@@ -25,7 +25,7 @@ void APIObject::openAnalysis( const tsunami::db::AnalysisModel* analysis ) {
     }
 
     if(!sourcesJson.isEmpty()){
-        emit analysisOpened( sourcesJson );
+        emit openedAnalysis( sourcesJson );
     }
 
 }

@@ -2,6 +2,7 @@
 #define ANALYSISWINDOW_H
 
 #include <QMainWindow>
+#include <QModelIndex>
 #include "views/listitemview.h"
 #include "webkit/APIObject.h"
 namespace Ui {
@@ -19,7 +20,7 @@ class AnalysisWindow : public QMainWindow
 public:
     explicit AnalysisWindow(int deviceId,QWidget *parent = 0);
     ~AnalysisWindow();
-
+    void openAnalysis(int analysisId);
 private:
     void updateAnalysisList();
 
@@ -31,8 +32,10 @@ private:
 
     APIObject* api_;
 private slots:
-    void openAnalysis();
+    void clickedOpenAnalysis();
+    void selectedAnalysisItem( const QModelIndex& index );
     void loadStarted();
+
 };
 }
 

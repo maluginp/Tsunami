@@ -47,6 +47,10 @@ private slots:
     void clickedMeasureAdd();
     void clickedAnalysisAdd();
     void clickedLibraryAdd();
+
+    void selectedMeasure( const QModelIndex& index );
+    void selectedAnalysis( const QModelIndex& index );
+    void selectedLibrary( const QModelIndex& index );
 };
 }
 

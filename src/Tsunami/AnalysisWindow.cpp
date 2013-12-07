@@ -51,10 +51,27 @@ void AnalysisWindow::updateAnalysisList() {
     }
 }
 
-void AnalysisWindow::openAnalysis() {
-    analysisId_ = 1;
+void AnalysisWindow::clickedOpenAnalysis() {
+    if( analysisId_ != -1 ){
+        openAnalysis(analysisId_);
+    }
+}
 
-    db::AnalysisModel* analysis = storage_->openAnalysis( analysisId_ );
+void AnalysisWindow::selectedAnalysisItem(const QModelIndex &index) {
+    bool ok;
+    int analysisId = index.data(Qt::UserRole).toInt(&ok);
+    if(!ok || analysisId == -1){
+        return;
+    }
+
+    analysisId_ = analysisId;
+
+}
+
+void AnalysisWindow::openAnalysis(int analysisId) {
+//    analysisId_ = 1;
+
+    db::AnalysisModel* analysis = storage_->openAnalysis( analysisId );
 
     int typeIndex = ui->analysisTypeComboBox->findData( analysis->typeJson() );
     ui->analysisTypeComboBox->setCurrentIndex(typeIndex);

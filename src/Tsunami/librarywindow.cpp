@@ -35,6 +35,16 @@ LibraryWindow::~LibraryWindow() {
     delete ui;
 }
 
+void LibraryWindow::openLibrary(int libraryId) {
+    if(libraryId == -1){
+        return;
+    }
+
+    library_ = storage_->openLibrary(libraryId);
+
+    showParameters( library_ );
+}
+
 void LibraryWindow::showParameters(db::LibraryModel *library) {
     ui->libraryNameText->setText( library->name() );
 
@@ -57,13 +67,7 @@ void LibraryWindow::clickedOpenLibraryAction() {
 
     int libraryId =  OpenLibraryDialog::getLibraryId(deviceId_);
 
-    if(libraryId == -1){
-        Q_ASSERT(false);
-    }else{
-        library_ = storage_->openLibrary(libraryId);
-
-        showParameters( library_ );
-    }
+    openLibrary( libraryId );
 
 }
 

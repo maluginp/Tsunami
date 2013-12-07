@@ -48,6 +48,10 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
     connect( ui->addLibraryButton,SIGNAL(clicked()),this,SLOT(clickedLibraryAdd()));
     connect( ui->addMeasureButton,SIGNAL(clicked()),this,SLOT(clickedMeasureAdd()) );
 
+    connect( ui->libraryTreeView,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(selectedLibrary(QModelIndex)));
+    connect( ui->datasetTreeView,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(selectedMeasure(QModelIndex)));
+    connect( ui->analysisTreeView,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(selectedMeasure(QModelIndex)));
+
     statusBar()->showMessage("Tsunami ver0.2");
 
     openDevice(1);
@@ -176,6 +180,42 @@ void DeviceWindow::clickedAnalysisAdd() {
 
 void DeviceWindow::clickedLibraryAdd() {
     clickedParametersEditor();
+}
+
+void DeviceWindow::selectedMeasure(const QModelIndex &index) {
+    bool ok;
+    int measureId =  index.data(Qt::UserRole).toInt(&ok);
+    if(!ok || measureId == -1){
+        return;
+    }
+    delete measuresWindow_;
+    measuresWindow_ = new addMeasureForm( addMeasureForm::EDIT, measureId );
+    measuresWindow_->show();
+}
+
+void DeviceWindow::selectedAnalysis(const QModelIndex &index) {
+    bool ok;
+    int analysisId = index.data( Qt::UserRole ).toInt(&ok);
+    if(!ok || analysisId == -1){
+        return;
+    }
+    delete analysisWindow_;
+    analysisWindow_ = new AnalysisWindow(deviceId_);
+    analysisWindow_->openAnalysis( analysisId );
+    analysisWindow_->show();
+
+}
+
+void DeviceWindow::selectedLibrary(const QModelIndex &index) {
+    bool ok;
+    int libraryId = index.data(Qt::UserRole).toInt(&ok);
+    if(!ok || libraryId == -1){
+        return;
+    }
+    delete libraryWindow_;
+    libraryWindow_ = new LibraryWindow(deviceId_);
+    libraryWindow_->openLibrary( libraryId );
+    libraryWindow_->show();
 }
 
 }

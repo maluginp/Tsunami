@@ -15,7 +15,7 @@ public:
 public slots:
     QString test();
 signals:
-    void analysisOpened(const QVariantMap& analysis);
+    void openedAnalysis(const QVariantMap& analysis);
 public slots:
 private:
     tsunami::db::AnalysisModel* analysis_;
