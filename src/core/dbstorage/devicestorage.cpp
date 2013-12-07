@@ -27,6 +27,10 @@ bool DeviceStorage::saveDevice(DeviceModel *device){
     return saveDeviceImpl(device);
 }
 
+bool DeviceStorage::removeDevice(int deviceId) {
+    return removeDeviceImpl( deviceId );
+}
+
 QMap<QString, int> DeviceStorage::listDevices(bool onlyEnabled) {
     QMap<QString,int> list;
     QString sqlQuery;
@@ -189,6 +193,36 @@ bool DeviceStorage::saveDeviceImpl(DeviceModel *device) {
     device->id( deviceId );
 
     return true;
+}
+
+bool DeviceStorage::removeDeviceImpl(int deviceId) {
+    QString sqlQuery;
+
+    if(!beginTransaction()){
+        return false;
+    }
+
+
+    sqlQuery = sql( "DELETE FROM %1 WHERE id=:id")
+            .arg(TABLE_NAME_DEVICES);
+
+    QSqlQuery q( sqlQuery, db() );
+
+    q.bindValue(":id",deviceId);
+
+    if(!q.exec()){
+        setLastError( q.lastError().text() );
+        rollback();
+        return false;
+    }
+
+    if(!endTransaction()){
+        rollback();
+        return false;
+    }
+
+    return true;
+
 }
 
 

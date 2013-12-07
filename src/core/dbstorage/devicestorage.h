@@ -18,7 +18,7 @@ public:
      QString dbName() const;
      DeviceModel* openDevice(int deviceId);
      bool saveDevice( DeviceModel* device );
-
+     bool removeDevice( int deviceId );
      QMap<QString,int> listDevices( bool onlyEnabled = true );
 
 protected:
@@ -32,6 +32,7 @@ private:
 
     DeviceModel* openDeviceImpl(int deviceId);
     bool saveDeviceImpl( DeviceModel* device );
+    bool removeDeviceImpl( int deviceId );
 
     static QString TABLE_NAME_DEVICES;
     static QString CONNECTION_NAME_DEVICES;

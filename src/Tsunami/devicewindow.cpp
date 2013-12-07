@@ -7,19 +7,18 @@
 #include <logger.h>
 #include "defines.h"
 #include <QTreeView>
+#include <QMessageBox>
 
 namespace tsunami{
 
 DeviceWindow::DeviceWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::DeviceWindow), storage_(NULL), device_(NULL),extractorWindow_(NULL),measuresWindow_(NULL),
-    measureList_(NULL),libraryList_(NULL),analysisList_(NULL), analysisWindow_(NULL)
-{
+    measureList_(NULL),libraryList_(NULL),analysisList_(NULL), analysisWindow_(NULL) {
 
     ui->setupUi(this);
     storage_ = db::DeviceStorage::instance();
-
-
+    ui->deviceImage->hide();
 
     libraryWindow_ = NULL;
 
@@ -38,11 +37,13 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
     ui->libraryTreeView->setModel( libraryList_ );
     ui->analysisTreeView->setModel( analysisList_ );
 
-    connect( ui->actionOpen, SIGNAL(triggered()), this, SLOT(clickedOpenDeviceAction()) );
+    connect( ui->actionDeviceOpen, SIGNAL(triggered()), this, SLOT(clickedOpenDeviceAction()) );
     connect( ui->actionEditorLibrary,SIGNAL(triggered()),this,SLOT(clickedParametersEditor()));
     connect( ui->actionExtractionRun,SIGNAL(triggered()),this,SLOT(clickedExtractionRunAction()));
     connect( ui->actionEditMeasure,SIGNAL(triggered()),this,SLOT(clickedMeasureEditor()));
     connect( ui->actionAddMeasure,SIGNAL(triggered()),this,SLOT(clickedMeasureAdd()));
+    connect( ui->actionDeviceClose,SIGNAL(triggered()),this,SLOT(clickedDeviceClose()));
+    connect( ui->actionDeviceRemove,SIGNAL(triggered()),this,SLOT(clickedDeviceRemove()));
 
     connect( ui->addAnalysisButton,SIGNAL(clicked()),this,SLOT(clickedAnalysisAdd()) );
     connect( ui->addLibraryButton,SIGNAL(clicked()),this,SLOT(clickedLibraryAdd()));
@@ -88,7 +89,11 @@ void DeviceWindow::openDevice(int deviceId) {
     }
 
     ui->deviceImage->setPixmap( deviceImage );
+    ui->deviceImage->show();
 
+    ui->addAnalysisButton->setEnabled(true);
+    ui->addLibraryButton->setEnabled(true);
+    ui->addMeasureButton->setEnabled(true);
 }
 
 void DeviceWindow::updateDeviceWindow() {
@@ -192,6 +197,52 @@ void DeviceWindow::clickedAnalysisAdd() {
 
 void DeviceWindow::clickedLibraryAdd() {
     clickedParametersEditor();
+}
+
+void DeviceWindow::clickedDeviceClose() {
+
+    if(device_ != 0){
+        device_->changeAt( QDateTime::currentDateTime() );
+        if(!storage_->saveDevice( device_ )){
+            Q_ASSERT(false);
+        }
+        deviceId_;
+        delete device_;
+        measureList_->clear();
+        libraryList_->clear();
+        analysisList_->clear();
+    }
+    ui->deviceNameText->setText( tr("Choice device") );
+    ui->deviceTypeText->setText( tr("Choice device") );
+    ui->deviceModelText->setText( tr("Choice device") );
+
+    ui->addAnalysisButton->setEnabled(false);
+    ui->addLibraryButton->setEnabled(false);
+    ui->addMeasureButton->setEnabled(false);
+
+    ui->deviceImage->hide();
+}
+
+void DeviceWindow::clickedDeviceRemove() {
+    if(device_ == 0 || deviceId_ == -1){
+        return;
+    }
+
+    int button =  QMessageBox::question(this,
+                                        tr("Remove device"),
+                                        tr("Do you want remove %1").arg(device_->name()),
+                                        QMessageBox::No | QMessageBox::Yes,
+                                        QMessageBox::No);
+    if(button == QMessageBox::Yes){
+        if(storage_->removeDevice( deviceId_ )){
+            clickedDeviceClose();
+
+            delete device_;
+            device_ = 0;
+
+        }
+    }
+
 }
 
 void DeviceWindow::selectedMeasure(const QModelIndex &index) {

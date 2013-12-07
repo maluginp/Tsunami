@@ -212,9 +212,9 @@
     <property name="title">
      <string>Devices</string>
     </property>
-    <addaction name="actionOpen"/>
-    <addaction name="actionRemove"/>
-    <addaction name="actionClose"/>
+    <addaction name="actionDeviceOpen"/>
+    <addaction name="actionDeviceRemove"/>
+    <addaction name="actionDeviceClose"/>
    </widget>
    <widget class="QMenu" name="menuMeasures">
     <property name="title">
@@ -262,17 +262,17 @@
     <bool>false</bool>
    </property>
   </widget>
-  <action name="actionOpen">
+  <action name="actionDeviceOpen">
    <property name="text">
     <string>Open</string>
    </property>
   </action>
-  <action name="actionRemove">
+  <action name="actionDeviceRemove">
    <property name="text">
     <string>Remove</string>
    </property>
   </action>
-  <action name="actionClose">
+  <action name="actionDeviceClose">
    <property name="text">
     <string>Close</string>
    </property>

@@ -47,6 +47,8 @@ private slots:
     void clickedMeasureAdd();
     void clickedAnalysisAdd();
     void clickedLibraryAdd();
+    void clickedDeviceClose();
+    void clickedDeviceRemove();
 
     void selectedMeasure( const QModelIndex& index );
     void selectedAnalysis( const QModelIndex& index );

@@ -7,7 +7,7 @@ ListTreeView::ListTreeView(const QString &title, const QVariantMap &rootMap, QOb
     QAbstractItemModel(parent) {
     rootItem_ = new ListTreeViewItem( "ROOT", "root", 0 );
     foreach(QString key, rootMap.keys()){
-          rootItem_->addChild( new ListTreeViewItem( key, rootMap.value(key), 0 ) );
+          rootItem_->addChild( new ListTreeViewItem( key, rootMap.value(key), rootItem_ ) );
     }
     title_ = title;
 }
@@ -93,6 +93,10 @@ int ListTreeView::rowCount(const QModelIndex &parent) const {
        parentItem = static_cast<ListTreeViewItem *>(parent.internalPointer());
     }
 
+    if(parentItem == 0){
+        return 0;
+    }
+
     return parentItem->numberChilds();
 }
 
@@ -114,10 +118,12 @@ void ListTreeView::addChild(const QString &rootName, const QString &name, const 
 }
 
 void ListTreeView::clear() {
+   beginResetModel();
    int nItems = rootItem_->numberChilds();
    for(int i=0; i < nItems; ++i ){
        rootItem_->child(i)->removeChilds();
    }
+   endResetModel();
 }
 
 // ListTreeViewItem IMPLEMENTATIONS
@@ -128,6 +134,7 @@ ListTreeViewItem::ListTreeViewItem(QString name, QVariant value, ListTreeViewIte
 }
 
 ListTreeViewItem::~ListTreeViewItem() {
+    parent_ = 0;
     qDeleteAll( childs_ );
 }
 
@@ -156,6 +163,7 @@ void ListTreeViewItem::addChild(ListTreeViewItem *child) {
 
 void ListTreeViewItem::removeChilds() {
     qDeleteAll(childs_);
+    childs_.clear();
 }
 
 ListTreeViewItem *ListTreeViewItem::child(int number) {

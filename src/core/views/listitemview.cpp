@@ -108,7 +108,9 @@ ListItemView &ListItemView::addItem(const QString &key, const QVariant &value) {
 }
 
 void ListItemView::clear() {
+    beginResetModel();
     items_.clear();
+    endResetModel();
 }
 
 QVariant ListItemView::itemAt(const int &index) const {
