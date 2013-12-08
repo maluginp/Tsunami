@@ -29,71 +29,44 @@
 }
 </style>
 	<script type="text/javascript" src="jquery-1.10.2.js"></script>
-	<script type="text/javascript" src="tsunami.js"> </script>
+	<script type="text/javascript" src="analysis.js"> </script>
 	<script type="text/javascript">
-	var gSources;
-
-
-
-		var openSlot = function(sources){
-			gSources = sources;
-			// console.log("Sources", sources);
-			for( i in sources ){
-				console.log('Node', sources[i].node);
-				// node('select[name=mode]').val( sources[i].mode );	
-				$('#device div[node="'+sources[i].node+'"] select[name="method"]').val( sources[i].method );
-				$('#device div[node="'+sources[i].node+'"] select[name="mode"]').val( sources[i].mode );
-
-				method = '#device div[node="'+sources[i].node+'"] select[name="method"]';
-				if( sources[i].mode == "gnd"){
-					$(method).attr("disabled","disabled");
-					$('#device div[node="'+sources[i].node+'"] label').each(function(i,obj){ $(obj).hide(); });
-				}else{
-					$(method).val( sources[i].method );
-					if(sources[i].method == "linear"){
-						$('#device div[node="'+sources[i].node+'"] label[name="const"]').each(function(i,obj){ $(obj).hide(); });
-					}else if(sources[i].method == "const"){
-						$('#device div[node="'+sources[i].node+'"] label[name!="const"]').each(function(i,obj){ $(obj).hide(); });
-					}
-				}
-				// if( source.mode == "gnd" ){				
-				// }else if(source.mode == "Voltage")
-			}
-
-		};
-
-	var changeMode = function(){
-		console.log( $(this).val() );
-		mode = $(this).val();
-		if(mode == 'gnd'){
-			$(this).parent().find( 'select[name="method"]' ).attr('disabled','disabled');
-			$(this).parent().find('label').each( function(i,obj){ $(obj).hide(); } )
-		}else{
-			$(this).parent().find('label').each( function(i,obj){ $(obj).hide(); } )
-			method = $(this).parent().find('select[name="method"]').val();
-			console.log(method);
-			if( method == 'const' ){
-				console.log('const');
-				$(this).parent().find( 'label[name="const"]' ).show();
-			}else if(method == 'linear'){
-				$(this).parent().find('label[name!="const"]').each( function(i,obj){ $(obj).show(); } );
-			}
-
-		}
-	}
+	
+	var analysis = new Analysis();
 	$(document).ready(function() {
-		var tsunami = new Tsunami();
-
-		$( '#device select[name="mode"]' ).each( function(i,obj){ $(obj).bind('change',changeMode); } );
-		console.log("ready");
-		// $("#device select[)
-
+		console.log('Document ready');
+		$('select[name="mode"]').each( function(i, obj){
+			$(obj).bind('change', function(){
+				node = $(obj).parent().attr('node');
+				mode = $(this).val();
+				analysis.onChangeMode( node, mode );
+			})
+		});
+		$('select[name="method"]').each( function(i, obj){
+			$(obj).bind('change', function(){
+				node = $(obj).parent().attr('node');
+				method = $(this).val();
+				analysis.onChangeMethod( node, method );
+			})
+		});
+		$('input').each( function(i, obj){
+			$(obj).bind('change', function(){
+				node = $(obj).parent().parent().attr('node');
+				item = $(this).parent().attr('name');
+				value = $(this).val();
+				analysis.onChangeConfig( node, item, value );
+			})
+		});
+		
+	
 	});
+
 	try{
-		Api.openedAnalysis.connect(openSlot);
+		Api.openedAnalysis.connect(analysis.init);
 	}catch(e){
 		alert(e);
 	}
+
 	</script>
 
 </head>
@@ -119,7 +92,7 @@
 		<label name="const">Constant: <input type="text" ></label>
 		<label name="start">Vc start: <input type="text"  /></label>
 		<label name="step" >Vc step: <input type="text"  /></label>
-		<label name="stop">Vc stop: <input type="text"  /></label>
+		<label name="end">Vc stop: <input type="text"  /></label>
 	</div>
 	<div style="clear:both;"></div>
 	<div class="base" node="B">
@@ -143,7 +116,7 @@
 		<label name="const">Constant: <input type="text" ></label>
 		<label name="start">Vc start: <input type="text"  /></label>
 		<label name="step" >Vc step: <input type="text"  /></label>
-		<label name="stop">Vc stop: <input type="text"  /></label>
+		<label name="end">Vc stop: <input type="text"  /></label>
 	</div>
 
 	<div class="emitter" node="E">
@@ -167,7 +140,7 @@
 		<label name="const">Constant: <input type="text" ></label>
 		<label name="start">Vc start: <input type="text"  /></label>
 		<label name="step" >Vc step: <input type="text"  /></label>
-		<label name="stop">Vc stop: <input type="text"  /></label>
+		<label name="end">Vc stop: <input type="text"  /></label>
 	</div>
 	<div style="clear:both;"></div>
 	<div style="float:right; padding:20px 30px 0 0">

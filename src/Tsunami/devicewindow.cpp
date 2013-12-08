@@ -55,7 +55,7 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
 
     connect( ui->libraryTreeView,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(selectedLibrary(QModelIndex)));
     connect( ui->datasetTreeView,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(selectedMeasure(QModelIndex)));
-    connect( ui->analysisTreeView,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(selectedMeasure(QModelIndex)));
+    connect( ui->analysisTreeView,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(selectedAnalysis(QModelIndex)));
 
     statusBar()->showMessage("Tsunami ver0.2");
 
@@ -278,8 +278,14 @@ void DeviceWindow::selectedAnalysis(const QModelIndex &index) {
     }
     delete analysisWindow_;
     analysisWindow_ = new AnalysisWindow(deviceId_);
-    analysisWindow_->openAnalysis( analysisId );
     analysisWindow_->show();
+
+    // Some trick
+    QEventLoop eventLoop;
+    connect(analysisWindow_,SIGNAL(pageLoadFinished()),&eventLoop,SLOT(quit()));
+    eventLoop.exec();
+
+    analysisWindow_->openAnalysis( analysisId );
 
 }
 

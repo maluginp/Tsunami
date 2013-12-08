@@ -35,6 +35,9 @@ private slots:
     void clickedOpenAnalysis();
     void selectedAnalysisItem( const QModelIndex& index );
     void loadStarted();
+    void loadFinished(bool);
+signals:
+    void pageLoadFinished();
 
 };
 }

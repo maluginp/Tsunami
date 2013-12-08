@@ -32,7 +32,8 @@ AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
 
     updateAnalysisList();
 
-    connect(ui->openButton,SIGNAL(clicked()),this,SLOT(openAnalysis()));
+    connect(ui->openButton,SIGNAL(clicked()),this,SLOT(clickedOpenAnalysis()));
+    connect(ui->webView,SIGNAL(loadFinished(bool)),this,SLOT(loadFinished(bool)));
     //    ui->analysisWebView->setUrl();
 //    ui->analysisWebView->setPage(  );
 }
@@ -69,7 +70,7 @@ void AnalysisWindow::selectedAnalysisItem(const QModelIndex &index) {
 }
 
 void AnalysisWindow::openAnalysis(int analysisId) {
-//    analysisId_ = 1;
+    analysisId_ = analysisId;
 
     db::AnalysisModel* analysis = storage_->openAnalysis( analysisId );
 
@@ -90,8 +91,13 @@ void AnalysisWindow::openAnalysis(int analysisId) {
 void AnalysisWindow::loadStarted() {
 //    delete api_;
     api_->disconnect( );
+
 //    disconnect( api_, SIGNAL(analysisOpened(QVariantList)) );
-     ui->webView->page()->mainFrame()->addToJavaScriptWindowObject("Api",api_);
+    ui->webView->page()->mainFrame()->addToJavaScriptWindowObject("Api",api_);
+}
+
+void AnalysisWindow::loadFinished(bool) {
+    emit pageLoadFinished();
 }
 
 }
