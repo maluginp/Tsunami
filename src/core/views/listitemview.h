@@ -29,6 +29,9 @@ public:
     ListItemView& addItem( const QPair<QString,QVariant>& item );
     ListItemView& addItem( const QString& key, const QVariant& value);
     void clear();
+
+    QModelIndex findByKey( const QString& name );
+
 signals:
 public slots:
 private:

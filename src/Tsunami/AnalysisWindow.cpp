@@ -24,7 +24,7 @@ AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
     ui->analysisTypeComboBox->addItem( "AC", "dc" );
     ui->analysisTypeComboBox->addItem( "DC", "dc" );
     ui->analysisTypeComboBox->addItem( "TRAN", "tran" );
-//    connect(ui->webView,SIGNAL(loadStarted()),this,SLOT(loadStarted()));
+//    connect(ui->webView,SIGNAL(loadStarted()),t   his,SLOT(loadStarted()));
 //    loadStarted();
     connect(ui->webView->page()->mainFrame(),SIGNAL(javaScriptWindowObjectCleared()),this,SLOT(loadStarted()) );
     ui->webView->load( QUrl("html/test.html") );

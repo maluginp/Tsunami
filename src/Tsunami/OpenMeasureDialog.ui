@@ -6,18 +6,35 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>353</width>
-    <height>335</height>
+    <width>389</width>
+    <height>376</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Открыть измерения</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="QListView" name="measuresListView"/>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Поиск</string>
+     </property>
+    </widget>
    </item>
    <item row="1" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLineEdit" name="measureNameLineEdit"/>
+     </item>
+     <item>
+      <widget class="QComboBox" name="measureTypeComboBox"/>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="0">
+    <widget class="QListView" name="measuresListView"/>
+   </item>
+   <item row="3" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <spacer name="horizontalSpacer">

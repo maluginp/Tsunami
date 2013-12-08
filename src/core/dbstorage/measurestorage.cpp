@@ -314,9 +314,9 @@ QList<MeasureModel*> MeasureStorage::findMeasures(const QVariantMap &criteria) {
         deviceId = criteria.value( "device", -1 ).toInt();
     }
 
-    if( criteria.contains("type") ) {
-        criteriaSql.append( "type=:type" );
-        type = criteria.value("type",QString()).toString();
+    if( criteria.contains("analysis") ) {
+        criteriaSql.append( "analysis=:type" );
+        type = criteria.value("analysis",QString()).toString();
     }
 
     if(criteriaSql.isEmpty()){

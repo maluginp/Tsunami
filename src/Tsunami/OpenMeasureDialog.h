@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QModelIndex>
+#include "dbstorage/measurestorage.h"
 
 namespace Ui {
 class OpenMeasureDialog;
@@ -23,9 +24,13 @@ public:
 private:
     Ui::OpenMeasureDialog *ui;
     gui::ListItemView* measuresView_;
-    int measureId_;
+    int measureId_,
+        deviceId_;
+    db::MeasureStorage* storage_;
 private slots:
     void clickedMeasureItem( const QModelIndex& index );
+    void changeMeasureName(const QString& name);
+    void changeMeasureAnalysis(int index);
 };
 
 }

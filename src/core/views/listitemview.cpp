@@ -1,5 +1,5 @@
 #include "listitemview.h"
-
+#include <QString>
 namespace tsunami {
 namespace gui{
 
@@ -111,6 +111,20 @@ void ListItemView::clear() {
     beginResetModel();
     items_.clear();
     endResetModel();
+}
+
+QModelIndex ListItemView::findByKey(const QString &name) {
+    if(name.isEmpty()){
+        return QModelIndex();
+    }
+
+    int nItems = items_.count();
+    for(int i=0; i < nItems; ++i){
+        if( items_[i].first.startsWith(name,Qt::CaseInsensitive) ){
+            return index(i,0);
+        }
+    }
+    return QModelIndex();
 }
 
 QVariant ListItemView::itemAt(const int &index) const {
