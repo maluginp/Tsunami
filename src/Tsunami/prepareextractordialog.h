@@ -3,6 +3,9 @@
 
 #include <QDialog>
 #include "views/measureenableview.h"
+#include <dbstorage/DbStorages.h>
+#include "views/listitemview.h"
+
 namespace Ui {
 class PrepareExtractorDialog;
 }
@@ -18,21 +21,25 @@ public:
     explicit PrepareExtractorDialog(int deviceId,QWidget *parent = 0);
     ~PrepareExtractorDialog();
 
+
     const int& libraryId() const { return libraryId_; }
-    const QString& methodExtraction() const { return methodExtraction_;}
     QList<int> measures();
 private:
     void loadListLibraries();
-    void loadListExtractionMethods();
+    void loadMeasures( const QString& analysis );
+
+
     Ui::PrepareExtractorDialog *ui;
     gui::MeasureEnableView *measures_;
+    gui::ListItemView* analysisTypeView_;
+
     int libraryId_;
     int deviceId_;
-    QString methodExtraction_;
+
 private slots:
     void clickedRunButton();
-    void changedMethodExtractionComboBox(int index);
     void changedLibraryComboBox(int index);
+    void clickedAnalysisType(const QModelIndex& index);
 };
 }
 #endif // PREPAREEXTRACTORDIALOG_H

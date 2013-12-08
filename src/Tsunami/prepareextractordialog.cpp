@@ -1,36 +1,37 @@
 #include "prepareextractordialog.h"
 #include "ui_prepareextractordialog.h"
-#include "dbstorage/parameterstorage.h"
 #include "views/measureenableview.h"
 #include "delegates/delegatecheckbox.h"
 
 namespace tsunami{
 PrepareExtractorDialog::PrepareExtractorDialog(int deviceId, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::PrepareExtractorDialog),deviceId_(deviceId) {
+    ui(new Ui::PrepareExtractorDialog),deviceId_(deviceId),measures_(0) {
     ui->setupUi(this);
-
-
-
-    measures_ = new gui::MeasureEnableView(deviceId_);
-    ui->measuresTableView->setModel( measures_ );
-//    int width = ui->measuresTableView->width();
-    ui->measuresTableView->setColumnWidth(0,30);
-    ui->measuresTableView->setColumnWidth(1,400);
-    ui->measuresTableView->setColumnWidth(2,100);
-
-
 
     ui->measuresTableView->setItemDelegateForColumn(0,new DelegateCheckBox(ui->measuresTableView));
 
+
+    analysisTypeView_ = new gui::ListItemView("Analysis");
+    analysisTypeView_->addItem( "AC","ac");
+    analysisTypeView_->addItem( "DC", "dc" );
+    analysisTypeView_->addItem( "TRAN", "tran");
+    ui->analysisTreeView->setModel( analysisTypeView_ );
+    loadMeasures( "ac" );
+
     loadListLibraries();
-    loadListExtractionMethods();
 
-    connect(ui->methodExtractionComboBox,SIGNAL(currentIndexChanged(int)),
-            this,SLOT(changedMethodExtractionComboBox(int)));
-    connect(ui->libraryComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(changedLibraryComboBox(int)));
 
+    db::SettingStorage* settings = db::SettingStorage::instance();
+    ui->methodText->setText( settings->value("optimize/method").toString() );
+//    optimize/method"
+
+    connect(ui->analysisTreeView,SIGNAL(clicked(QModelIndex)),
+            this,SLOT(clickedAnalysisType(QModelIndex)));
+    connect(ui->libraryComboBox,SIGNAL(currentIndexChanged(int)),
+            this,SLOT(changedLibraryComboBox(int)));
     connect(ui->runButton,SIGNAL(clicked()),this,SLOT(clickedRunButton()));
+    connect(ui->closeButton,SIGNAL(clicked()),this,SLOT(reject()));
 }
 
 PrepareExtractorDialog::~PrepareExtractorDialog() {
@@ -54,10 +55,15 @@ void PrepareExtractorDialog::loadListLibraries() {
     libraryId_ = ui->libraryComboBox->itemData(0).toInt();
 }
 
-void PrepareExtractorDialog::loadListExtractionMethods() {
-    ui->methodExtractionComboBox->clear();
-    ui->methodExtractionComboBox->addItem("Hooke-Jeevees", QVariant("hookejeeves") );
-    methodExtraction_  = ui->methodExtractionComboBox->itemData(0,Qt::UserRole).toString();
+void PrepareExtractorDialog::loadMeasures(const QString &analysis) {
+    delete measures_;
+
+    measures_ = new gui::MeasureEnableView(deviceId_,analysis);
+    ui->measuresTableView->setModel( measures_ );
+    ui->measuresTableView->setColumnWidth(0,30);
+    ui->measuresTableView->setColumnWidth(1,400);
+    ui->measuresTableView->setColumnWidth(2,100);
+
 }
 
 void PrepareExtractorDialog::clickedRunButton()
@@ -65,11 +71,12 @@ void PrepareExtractorDialog::clickedRunButton()
     accept();
 }
 
-void PrepareExtractorDialog::changedMethodExtractionComboBox(int index){
-    methodExtraction_ = ui->methodExtractionComboBox->itemData(index).toString();
-}
-
 void PrepareExtractorDialog::changedLibraryComboBox(int index){
     libraryId_ = ui->libraryComboBox->itemData(index).toInt();
+}
+
+void PrepareExtractorDialog::clickedAnalysisType(const QModelIndex &index) {
+    QString type = index.data( Qt::UserRole ).toString();
+    loadMeasures(type);
 }
 }

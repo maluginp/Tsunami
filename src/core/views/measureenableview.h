@@ -30,7 +30,7 @@ struct MeasureEnableViewItem{
 class MeasureEnableView : public QAbstractItemModel {
     Q_OBJECT
 public:
-    explicit MeasureEnableView(int deviceId,QObject *parent = 0);
+    explicit MeasureEnableView(int deviceId, const QString& analysis,QObject *parent = 0);
     QModelIndex index(int row, int column,
                       const QModelIndex &parent = QModelIndex()) const;
     QModelIndex parent(const QModelIndex &child) const;

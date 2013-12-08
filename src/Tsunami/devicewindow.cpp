@@ -149,7 +149,6 @@ void DeviceWindow::clickedParametersEditor() {
     libraryWindow_ = new LibraryWindow(deviceId_,this);
     libraryWindow_->show();
 }
-
 void DeviceWindow::clickedExtractionRunAction() {
 
     PrepareExtractorDialog dialog(deviceId_);
@@ -158,12 +157,10 @@ void DeviceWindow::clickedExtractionRunAction() {
         return;
     }
 
-    qDebug() << "[Run extraction] " << dialog.libraryId() << dialog.measures() << dialog.methodExtraction();
-
     int libraryId = dialog.libraryId();
     QList<int> measureIds = dialog.measures();
-    QString optimize = dialog.methodExtraction();
-
+    db::SettingStorage* settings = db::SettingStorage::instance();
+    QString optimize = settings->value("optimize/method").toString();
 
     delete extractorWindow_;
     extractorWindow_ = new ExtractorWindow(device_->type(),libraryId,measureIds, optimize );

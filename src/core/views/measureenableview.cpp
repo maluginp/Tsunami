@@ -5,13 +5,18 @@
 namespace tsunami{
 namespace gui{
 
-MeasureEnableView::MeasureEnableView(int deviceId, QObject *parent)
+MeasureEnableView::MeasureEnableView(int deviceId, const QString &analysis, QObject *parent)
     : QAbstractItemModel(parent),deviceId_(deviceId)  {
 
     db::MeasureStorage* storage = db::MeasureStorage::instance();
 
     items_.clear();
-    QList<db::MeasureModel *> measures = storage->getMeasuresByDeviceId(deviceId_);
+
+    QVariantMap criteria;
+    criteria.insert( "device",   deviceId );
+    criteria.insert( "analysis", analysis );
+
+    QList<db::MeasureModel *> measures = storage->findMeasures( criteria );
     foreach(db::MeasureModel* measure, measures){
         MeasureEnableViewItem item;
 
@@ -23,6 +28,7 @@ MeasureEnableView::MeasureEnableView(int deviceId, QObject *parent)
         items_.append( item );
     }
 
+    qDeleteAll(measures);
     measures.clear();
 }
 
