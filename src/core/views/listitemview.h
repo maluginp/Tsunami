@@ -31,7 +31,7 @@ public:
     void clear();
 
     QModelIndex findByKey( const QString& name );
-
+    QModelIndex findByValue( const QVariant& value );
 signals:
 public slots:
 private:

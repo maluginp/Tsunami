@@ -59,6 +59,32 @@ QMap<QString, int> DeviceStorage::listDevices(bool onlyEnabled) {
 
 }
 
+bool DeviceStorage::exists(const QString &column, const QVariant &value) {
+
+    QString sqlQuery;
+    sqlQuery = sql( "SELECT id FROM %1 WHERE %2=:value").arg(TABLE_NAME_DEVICES).
+            arg(column);
+
+     QSqlQuery q( sqlQuery, db() );
+     q.bindValue(":value", value);
+
+     if(!q.exec()){
+         setLastError( q.lastError().text() );
+         return true;
+     }
+
+     int count = 0;
+     while(q.next()){
+         count++;
+     }
+
+     if(count == 0){
+         return false;
+     }
+
+     return true;
+}
+
 QString DeviceStorage::connectionName() const {
     return CONNECTION_NAME_DEVICES;
 }
@@ -88,6 +114,7 @@ void DeviceStorage::testData() {
     device->id(1);
     device->name("TEST BJT");
     device->type( DEVICE_NBJT );
+    device->model( "gummelpoon" );
     device->createAt( QDateTime::currentDateTime() );
     device->changeAt(QDateTime::currentDateTime() );
     device->enable( true );
@@ -105,6 +132,7 @@ bool DeviceStorage::createTable(DeviceStorage::DeviceTable table) {
                         "id INTEGER PRIMARY KEY ON CONFLICT REPLACE,"
                         "name TEXT,"
                         "type TEXT,"
+                        "model TEXT,"
                         "created_at NUMERIC,"
                         "changed_at NUMERIC,"
                         "enable NUMERIC"
@@ -145,12 +173,12 @@ DeviceModel *DeviceStorage::openDeviceImpl(int deviceId) {
     device->id( ITEM("id").toInt() );
     device->name(ITEM("name").toString());
     device->type(ITEM("type").toString());
+    device->model( ITEM("model").toString() );
     device->createAt(ITEM("created_at").toDateTime());
     device->changeAt(ITEM("changed_at").toDateTime());
     device->enable(ITEM("enable").toBool());
 
     return device;
-
 }
 
 bool DeviceStorage::saveDeviceImpl(DeviceModel *device) {
@@ -162,8 +190,8 @@ bool DeviceStorage::saveDeviceImpl(DeviceModel *device) {
     }
 
 
-    sqlQuery = sql( "INSERT OR REPLACE INTO %1(id,name,type,created_at,changed_at,enable) "
-                    "VALUES(:id,:name,:type,:created_at,:changed_at,:enable)")
+    sqlQuery = sql( "INSERT OR REPLACE INTO %1(id,name,type,model,created_at,changed_at,enable) "
+                    "VALUES(:id,:name,:type,:model,:created_at,:changed_at,:enable)")
             .arg(TABLE_NAME_DEVICES);
 
     QSqlQuery q( sqlQuery, db() );
@@ -175,6 +203,7 @@ bool DeviceStorage::saveDeviceImpl(DeviceModel *device) {
     q.bindValue(":id",deviceId);
     q.bindValue(":name",device->name());
     q.bindValue(":type",device->typeJson());
+    q.bindValue(":model",device->model());
     q.bindValue(":created_at",device->createAt());
     q.bindValue(":changed_at",device->changeAt());
     q.bindValue(":enable",device->enable());

@@ -18,6 +18,7 @@ public:
     void createAt(const QDateTime& createAt)  { createdAt_ = createAt; }
     void changeAt(const QDateTime& changeAt ) { changedAt_ = changeAt; }
     void enable( bool enable ) { enable_ = enable; }
+    void model( const QString& model) { model_ = model; }
 
     const int& id() const{ return deviceId_; }
     const QString& name() const { return name_; }
@@ -26,6 +27,7 @@ public:
     const QDateTime& createAt() const { return createdAt_; }
     const QDateTime& changeAt() const { return changedAt_; }
     const bool& enable() const { return enable_; }
+    const QString& model() const { return model_; }
 
     QStringList nodes();
 
@@ -34,6 +36,7 @@ private:
     int deviceId_;
     QString name_;
     DeviceType type_;
+    QString model_;
 
     QDateTime createdAt_;
     QDateTime changedAt_;

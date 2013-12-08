@@ -77,6 +77,7 @@ void DeviceWindow::openDevice(int deviceId) {
 
     updateDeviceWindow();
 
+    ui->deviceModelText->setText( device_->model() );
     setWindowTitle( tr("%1 - Devices Manager").arg(device_->name()) );
 
     QPixmap deviceImage;
@@ -137,7 +138,9 @@ void DeviceWindow::updateDeviceWindow() {
 void DeviceWindow::clickedOpenDeviceAction() {
     int deviceId = OpenDeviceDialog::getDeviceId();
 
-    if(deviceId == -1) Q_ASSERT(false);
+    if(deviceId == -1){
+        return;
+    }
 
     openDevice(deviceId);
 

@@ -32,6 +32,8 @@ private slots:
     void clickedOpenButton();
     void clickedRemoveButton();
     void clickedCreateButton();
+
+    void changedDeviceName(const QString& name);
 };
 }
 
