@@ -182,8 +182,8 @@ void DeviceWindow::clickedMeasureEditor() {
 }
 
 void DeviceWindow::clickedMeasureAdd() {
-    int analysisId = 1;
-    //    int analysisId = tsunami::ChoiceAnalysisForm::getAnalysisId( deviceId_ );
+//    int analysisId = 1;
+        int analysisId = tsunami::ChoiceAnalysisForm::getAnalysisId( deviceId_ );
 
     if( analysisId != -1){
         delete measuresWindow_;

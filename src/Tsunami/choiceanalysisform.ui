@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>605</width>
-    <height>480</height>
+    <width>685</width>
+    <height>415</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Выберите тип анализа для измерения</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
@@ -47,7 +47,20 @@
           </spacer>
          </item>
          <item>
+          <widget class="QPushButton" name="editButton">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>Редактировать</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QPushButton" name="addButton">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="text">
             <string>Добавить</string>
            </property>
@@ -62,7 +75,7 @@
        <item>
         <widget class="QLabel" name="descriptionLabel">
          <property name="text">
-          <string>TextLabel</string>
+          <string>Выберите анализ</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignJustify|Qt::AlignTop</set>
@@ -101,13 +114,6 @@
           <widget class="QPushButton" name="closeButton">
            <property name="text">
             <string>Закрыть</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="editButton">
-           <property name="text">
-            <string>Редактировать</string>
            </property>
           </widget>
          </item>

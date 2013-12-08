@@ -7,7 +7,8 @@ namespace tsunami{
 
 ChoiceAnalysisForm::ChoiceAnalysisForm(int deviceId, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::ChoiceAnalysisForm) {
+    ui(new Ui::ChoiceAnalysisForm),
+    currentModel_(NULL) {
     ui->setupUi(this);
 
     deviceId_ = deviceId;
@@ -26,6 +27,7 @@ ChoiceAnalysisForm::ChoiceAnalysisForm(int deviceId, QWidget *parent) :
     connect(ui->addButton,SIGNAL(clicked()),this,SLOT(clickedAddButton()));
     connect(ui->editButton,SIGNAL(clicked()),this,SLOT(clickedEditButton()));
     connect(ui->openButton,SIGNAL(clicked()),this,SLOT(accept()));
+    connect(ui->closeButton,SIGNAL(clicked()),this,SLOT(reject()));
 
 }
 
@@ -40,6 +42,8 @@ int ChoiceAnalysisForm::getAnalysisId(int deviceId) {
     if(form.exec() == QDialog::Accepted){
         if(form.currentModel_ != NULL){
              analysisId = form.currentModel_->id();
+        }else{
+            return -1;
         }
     }
     form.close();
@@ -58,10 +62,6 @@ void ChoiceAnalysisForm::clickedAnalysis(const QModelIndex &index) {
 }
 
 void ChoiceAnalysisForm::clickedAddButton() {
-    Q_ASSERT(false);
-}
-
-void ChoiceAnalysisForm::clickedOpenButton() {
     Q_ASSERT(false);
 }
 

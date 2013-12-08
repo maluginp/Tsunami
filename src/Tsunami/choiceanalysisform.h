@@ -24,12 +24,6 @@ public:
 
     static int getAnalysisId( int deviceId  );
 
-private slots:
-    void clickedAnalysis( const QModelIndex& index );
-    void clickedAddButton();
-    void clickedOpenButton();
-    void clickedEditButton();
-
 private:
     void updateList();
     void showAnalysisDescription(  db::AnalysisModel* model );
@@ -39,6 +33,11 @@ private:
     db::AnalysisStorage* storage_;
     gui::ListItemView *listModel_;
     int deviceId_;
+
+private slots:
+    void clickedAnalysis( const QModelIndex& index );
+    void clickedAddButton();
+    void clickedEditButton();
 };
 
 }
