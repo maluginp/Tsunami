@@ -49,7 +49,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Запустить</string>
+     <string>Закрыть</string>
     </property>
    </widget>
    <widget class="QTableView" name="parametersTableView">

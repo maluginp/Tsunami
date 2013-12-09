@@ -39,7 +39,8 @@ SOURCES += main.cpp\
     SettingsDialog.cpp \
     AboutDialog.cpp \
     CreateDeviceDialog.cpp \
-    CreateLibraryDialog.cpp
+    CreateLibraryDialog.cpp \
+    PlotExtractionDialog.cpp
 
 HEADERS  += devicewindow.h \
     opendevicedialog.h \
@@ -57,7 +58,8 @@ HEADERS  += devicewindow.h \
     SettingsDialog.h \
     AboutDialog.h \
     CreateDeviceDialog.h \
-    CreateLibraryDialog.h
+    CreateLibraryDialog.h \
+    PlotExtractionDialog.h
 
 FORMS    += devicewindow.ui \
     opendevicedialog.ui \
@@ -75,7 +77,8 @@ FORMS    += devicewindow.ui \
     SettingsDialog.ui \
     AboutDialog.ui \
     CreateDeviceDialog.ui \
-    CreateLibraryDialog.ui
+    CreateLibraryDialog.ui \
+    PlotExtractionDialog.ui
 
 RESOURCES += \
     resources.qrc
