@@ -38,6 +38,9 @@ private slots:
     void clickedRemoveParameterAction();
     void clickedExportNetList();
     void clickedSaveButton();
+    void clickedSearchButton();
+    void clickedRemoveLibrary();
+    void clickedCloseLibrary();
 };
 
 }

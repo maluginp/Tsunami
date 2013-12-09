@@ -9,7 +9,7 @@
 #include "ShowTextDialog.h"
 #include "dbstorage/devicestorage.h"
 #include "models/devicemodel.h"
-
+#include "CreateLibraryDialog.h"
 namespace tsunami{
 
 LibraryWindow::LibraryWindow(int deviceId,QWidget *parent) :
@@ -29,6 +29,13 @@ LibraryWindow::LibraryWindow(int deviceId,QWidget *parent) :
     connect(ui->addButton,SIGNAL(clicked()),this,SLOT(clickedAddParameterAction()));
     connect(ui->removeButton,SIGNAL(clicked()),this,SLOT(clickedRemoveParameterAction()));
     connect(ui->saveButton,SIGNAL(clicked()),this,SLOT(clickedSaveButton()));
+    connect(ui->closeButton,SIGNAL(clicked()),this,SLOT(close()));
+    connect(ui->searchButton,SIGNAL(clicked()),this,SLOT(clickedSearchButton()));
+    connect(ui->actionRemoveLibrary,SIGNAL(triggered()),this,SLOT(clickedRemoveLibrary()));
+    connect(ui->actionCloseLibrary,SIGNAL(triggered()),this,SLOT(clickedCloseLibrary()));
+    //    connect(ui->libraryParameterComboBox,SIGNAL(editTextChanged(QString)),
+//            this,SLOT()
+
 }
 
 LibraryWindow::~LibraryWindow() {
@@ -43,6 +50,13 @@ void LibraryWindow::openLibrary(int libraryId) {
     library_ = storage_->openLibrary(libraryId);
 
     showParameters( library_ );
+
+
+    ui->libraryNameLineEdit->setEnabled( true );
+    ui->searchButton->setEnabled(true);
+    ui->addButton->setEnabled(true);
+    ui->removeButton->setEnabled(true);
+    ui->saveButton->setEnabled(true);
 }
 
 void LibraryWindow::showParameters(db::LibraryModel *library) {
@@ -73,11 +87,12 @@ void LibraryWindow::clickedOpenLibraryAction() {
 
 void LibraryWindow::clickedNewLibraryAction() {
 
-    QString libraryName = QInputDialog::getText(this,tr("New library"), tr("Name"));
-
-    library_ = new db::LibraryModel(libraryName,deviceId_);
-    showParameters(library_);
-
+    CreateLibraryDialog dialog(deviceId_);
+    if(dialog.exec() == QDialog::Accepted){
+        library_ = dialog.library();
+        showParameters(library_);
+    }
+    return;
 }
 
 void LibraryWindow::clickedAddParameterAction() {
@@ -158,6 +173,53 @@ void LibraryWindow::clickedSaveButton() {
     if(!storage_->saveLibrary( library_ )){
         qDebug() << "Can not save library";
     }
+}
+
+void LibraryWindow::clickedSearchButton() {
+    QString name = ui->libraryNameLineEdit->text();
+    if(parameters_ == 0 || name.isEmpty()){
+        return;
+    }
+    ui->parametersTableView->setCurrentIndex( parameters_->findByParameterName(name) );
+}
+
+void LibraryWindow::clickedRemoveLibrary() {
+    if(library_ != 0){
+        if(library_->id() == -1){
+            return;
+        }
+
+        int button =  QMessageBox::question(this,
+                                            tr("Remove library"),
+                                            tr("Do you want remove %1").arg(library_->name()),
+                                            QMessageBox::No | QMessageBox::Yes,
+                                            QMessageBox::No);
+        if(button == QMessageBox::Yes){
+            if(storage_->removeLibrary( library_->id() )){
+                clickedCloseLibrary();
+                delete library_;
+                library_ = 0;
+            }
+    }
+}
+
+
+
+
+}
+
+void LibraryWindow::clickedCloseLibrary() {
+    ui->libraryNameText->setText(tr("Choice library"));
+    delete parameters_;
+    ui->parametersTableView->setModel(0);
+    parameters_ = 0;
+    library_ = 0;
+
+    ui->libraryNameLineEdit->setEnabled( false );
+    ui->searchButton->setEnabled(false);
+    ui->addButton->setEnabled(false);
+    ui->removeButton->setEnabled(false);
+    ui->saveButton->setEnabled(false);
 }
 
 }

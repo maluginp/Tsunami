@@ -3,7 +3,7 @@
 
 #include <QAbstractItemModel>
 #include "../dbstorage/parameterstorage.h"
-
+#include <QModelIndex>
 namespace tsunami {
 namespace gui{
 
@@ -25,6 +25,9 @@ public:
     void addEmptyParameter();
     void removeSelectedParameters(const QList<int> &indexes);
     void removeSelectedParameter( const QModelIndex& index );
+
+    QModelIndex findByParameterName(const QString& name );
+
 signals:
     
 private:

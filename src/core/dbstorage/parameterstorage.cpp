@@ -51,6 +51,30 @@ bool ParameterStorage::removeLibrary(int libraryId)
     return removeLibraryImpl(libraryId);
 }
 
+bool ParameterStorage::exists(const QString &name) {
+    QString sqlQuery;
+    sqlQuery = sql( "SELECT id FROM %1 WHERE name=:name").arg(TABLE_NAME_LIBRARIES);
+
+     QSqlQuery q( sqlQuery, db() );
+     q.bindValue(":name", name);
+
+     if(!q.exec()){
+         setLastError( q.lastError().text() );
+         return true;
+     }
+
+     int count = 0;
+     while(q.next()){
+         count++;
+     }
+
+     if(count == 0){
+         return false;
+     }
+
+     return true;
+}
+
 QString ParameterStorage::connectionName() const {
     return CONNECTION_NAME_PARAMETER;
 }

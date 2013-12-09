@@ -30,7 +30,7 @@ public:
     QList<LibraryModel*> getLibrariesByDeviceId( int deviceId );
 
     bool removeLibrary( int libraryId );
-
+    bool exists( const QString& name );
 protected:
     QString connectionName() const;
     int lastInsertId(const QString& table);

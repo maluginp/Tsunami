@@ -18,6 +18,13 @@
     <item row="0" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Библиотека:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QLabel" name="libraryNameText">
         <property name="text">
          <string>Выберите библиотеку</string>
@@ -38,11 +45,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QComboBox" name="searchParameterComboBox">
-        <property name="editable">
-         <bool>true</bool>
-        </property>
-       </widget>
+       <widget class="QLineEdit" name="libraryNameLineEdit"/>
       </item>
       <item>
        <widget class="QPushButton" name="searchButton">
@@ -59,6 +62,20 @@
     <item row="2" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
+       <widget class="QPushButton" name="removeButton">
+        <property name="text">
+         <string>Удалить</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="addButton">
+        <property name="text">
+         <string>Добавить</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <spacer name="horizontalSpacer_2">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -72,16 +89,9 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="removeButton">
+       <widget class="QPushButton" name="closeButton">
         <property name="text">
-         <string>Удалить</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="addButton">
-        <property name="text">
-         <string>Добавить</string>
+         <string>Закрыть</string>
         </property>
        </widget>
       </item>
@@ -119,6 +129,7 @@
     <addaction name="actionRemoveLibrary"/>
     <addaction name="actionOpenLibrary"/>
     <addaction name="menuExport"/>
+    <addaction name="actionCloseLibrary"/>
    </widget>
    <widget class="QMenu" name="menuParameter">
     <property name="title">
@@ -159,6 +170,11 @@
   <action name="actionExportNetList">
    <property name="text">
     <string>NetList</string>
+   </property>
+  </action>
+  <action name="actionCloseLibrary">
+   <property name="text">
+    <string>Close</string>
    </property>
   </action>
  </widget>

@@ -139,5 +139,28 @@ void ParameterItemView::removeSelectedParameter(const QModelIndex &index) {
     endResetModel();
 }
 
+QModelIndex ParameterItemView::findByParameterName(const QString &name) {
+    int foundRow = -1,
+        row = 0;
+    if(library_ == 0 || name.isEmpty()){
+        return QModelIndex();
+    }
+
+    foreach(db::ParameterModel parameter, library_->parameters()){
+        if(parameter.name().compare(name,Qt::CaseInsensitive) == 0 ||
+           parameter.name().startsWith(name,Qt::CaseInsensitive)){
+            foundRow = row;
+            break;
+        }
+        row++;
+    }
+
+    if(foundRow != -1){
+        return index(foundRow,1);
+    }
+
+    return QModelIndex();
+}
+
 }
 }

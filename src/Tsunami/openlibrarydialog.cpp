@@ -21,6 +21,7 @@ OpenLibraryDialog::OpenLibraryDialog(int deviceId,QWidget *parent) :
 
     connect(ui->listLibrarys,SIGNAL(clicked(QModelIndex)),
             this,SLOT(selectedLibrary(QModelIndex)));
+    connect(ui->closeButton,SIGNAL(clicked()),this,SLOT(reject()));
     connect(ui->choiceButton,SIGNAL(clicked()),this,SLOT(accept()));
 }
 
@@ -56,7 +57,12 @@ void OpenLibraryDialog::updateList() {
 void OpenLibraryDialog::showDescriptionLibrary(int libraryId) {
     db::LibraryModel* library = storage_->openLibrary(libraryId);
 
-    ui->descriptionLibraryText->setText( QString("<b>Library name:</b> %1").arg(library->name()) );
+    QString desc;
+    desc.append( QString("<b>Name:</b> %1<br/>").arg(library->name()) );
+    desc.append( QString("<b>Number parameters:</b> %1").
+                                         arg(library->parameters().count()) );
+
+    ui->descriptionLibraryText->setText( desc );
     delete library;
 }
 
