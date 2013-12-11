@@ -29,11 +29,13 @@ private:
     db::AnalysisStorage* storage_;
     int deviceId_;
     int analysisId_;
+    db::AnalysisModel* currentAnalysis_;
 
     APIObject* api_;
 private slots:
     void clickedOpenAnalysis();
-    void clickedSaveAnalysis(QList<Source> sources);
+    void clickedSaveAnalysis(const QList<tsunami::Source>& sources);
+    void clickedCreateAnalysis();
 
     void selectedAnalysisItem( const QModelIndex& index );
     void loadStarted();

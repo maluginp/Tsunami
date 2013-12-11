@@ -10,13 +10,14 @@ class APIObject : public QObject
     Q_OBJECT
 public:
     explicit APIObject(QObject *parent = 0);
-    void openAnalysis(const tsunami::db::AnalysisModel *analysis );
-
+    void openAnalysis(tsunami::db::AnalysisModel *analysis );
+//    void createAnalysis();
 public slots:
     QString test();
     void saveAnalysis(const QVariantMap& sources);
 signals:
     void openedAnalysis(const QVariantMap& analysis);
+    void savedAnalysis( const QList<tsunami::Source>& sources );
 public slots:
 private:
     tsunami::db::AnalysisModel* analysis_;

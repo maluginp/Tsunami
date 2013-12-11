@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>915</width>
-    <height>704</height>
+    <width>989</width>
+    <height>706</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -110,7 +110,7 @@
      <widget class="WebView" name="webView" native="true">
       <property name="minimumSize">
        <size>
-        <width>600</width>
+        <width>710</width>
         <height>600</height>
        </size>
       </property>
@@ -123,7 +123,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>915</width>
+     <width>989</width>
      <height>22</height>
     </rect>
    </property>

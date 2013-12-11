@@ -196,7 +196,11 @@ void DeviceWindow::clickedAnalysisAdd() {
     delete analysisWindow_;
     analysisWindow_ = new AnalysisWindow( deviceId_ );
     analysisWindow_->show();
+    QEventLoop eventLoop;
+    connect(analysisWindow_,SIGNAL(pageLoadFinished()),&eventLoop,SLOT(quit()));
+    eventLoop.exec();
 
+    analysisWindow_->openAnalysis( -1 );
 }
 
 void DeviceWindow::clickedLibraryAdd() {

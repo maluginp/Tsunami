@@ -158,7 +158,7 @@ AnalysisModel *AnalysisStorage::openAnalysisImpl(int analysisId) {
 
     if(!q.exec() || !q.next()){
         setLastError( q.lastError().text() );
-        Q_ASSERT(false);
+//        Q_ASSERT(false);
         return NULL;
     }
 

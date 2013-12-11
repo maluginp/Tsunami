@@ -4,28 +4,34 @@
 
 <style type="text/css">
 #device{
-	background-image:url('bjt-big.png');
+	background-image:url('devices/bjt.png');
 	width:700px;
-	height:500px;
+	height:508px;
 	background-repeat: no-repeat;
 }
 
-#device .collector{
-	padding: 20px 30px 0 400px;
-	width:200px;
-	height:200px;
-}
-#device .base{
+#device .node1{
 	float:left;
-	padding: 130px 0 0 140px;
-		width:200px;
-	height:200px;
+	height: 200px;
+	padding:30px 0 0 30px;
 }
-#device .emitter{
-	float:right;
-	padding: 130px 40px 0 30px;
-		width:200px;
-	height:200px;
+#device .node2{
+	float: right;
+	height: 200px;
+	padding:80px 0 0 0;
+	
+}
+#device .node3{
+	float:left;
+	height: 200px;
+	padding:60px 0 0 30px;
+
+}
+#device .node4{
+	float: right;
+	height: 200px;
+	padding:60px 0 0 0;
+
 }
 </style>
 	<script type="text/javascript" src="jquery-1.10.2.js"></script>
@@ -49,7 +55,7 @@
 				analysis.onChangeMethod( node, method );
 			})
 		});
-		$('input[name!="save"]').each( function(i, obj){
+		$('.config"]').each( function(i, obj){
 			$(obj).bind('change', function(){
 				node = $(obj).parent().parent().attr('node');
 				item = $(this).parent().attr('name');
@@ -58,9 +64,7 @@
 			})
 		});
 
-		
 		$('input[name="save"]').bind('click', analysis.save);
-		
 	
 	});
 
@@ -75,12 +79,7 @@
 </head>
 <body>
 <div id="device">
-	<div class="collector" node="C">
-		Source: 
-		<select name="source">
-			<option value="smu1">SMU1</option>
-			<option value="smu2">SMU2</option>
-		</select> <br/>
+	<div class="node1" node="C">
 		Mode: 
 		<select name="mode">
 			<option value="voltage">Voltage</option>
@@ -92,18 +91,19 @@
 			<option value="const">Constant</option>
 			<option value="linear">Linear</option>
 		</select><br/>
-		<label name="const">Constant: <input type="text" ></label>
-		<label name="start">Vc start: <input type="text"  /></label>
-		<label name="step" >Vc step: <input type="text"  /></label>
-		<label name="end">Vc stop: <input type="text"  /></label>
+		<label name="const"  method="const">Constant: <input class="config"><br/></label>
+		<label name="number" method="linear">Number:
+		<select class="config">
+			<option value="1">1</option>
+			<option value="2">2</option>
+		</select>
+		<br/></label>
+		<label name="start"  method="linear">Vc start: <input class="config"/><br/></label>
+		<label name="step"   method="linear">Vc step: <input  class="config"/><br/></label>
+		<label name="end"    method="linear">Vc stop: <input  class="config"/></label>
 	</div>
-	<div style="clear:both;"></div>
-	<div class="base" node="B">
-		Source: 
-		<select name="source">
-			<option value="smu1">SMU1</option>
-			<option value="smu2">SMU2</option>
-		</select> <br/>
+	
+	<div class="node2" node="-">
 		Mode: 
 		<select name="mode">
 			<option value="voltage">Voltage</option>
@@ -115,22 +115,22 @@
 			<option value="const">Constant</option>
 			<option value="linear">Linear</option>
 		</select><br/>
-		<div class="config"></div>
-		<label name="const">Constant: <input type="text" ></label>
-		<label name="start">Vc start: <input type="text"  /></label>
-		<label name="step" >Vc step: <input type="text"  /></label>
-		<label name="end">Vc stop: <input type="text"  /></label>
+		<label name="const"  method="const">Constant: <input class="config"><br/></label>
+		<label name="number" method="linear">Number:
+		<select class="config">
+			<option value="1">1</option>
+			<option value="2">2</option>
+		</select>
+		<br/></label>
+		<label name="start"  method="linear">Vc start: <input class="config"/><br/></label>
+		<label name="step"   method="linear">Vc step: <input  class="config"/><br/></label>
+		<label name="end"    method="linear">Vc stop: <input  class="config"/></label>
 	</div>
-
-	<div class="emitter" node="E">
-		Source: 
-		<select name="source">
-			<option value="smu1">SMU1</option>
-			<option value="smu2">SMU2</option>
-		</select> <br/>
+	<div style="clear:both;"></div>
+	<div class="node3" node="B">
 		Mode: 
 		<select name="mode">
-			<option value="voltage" selected="selected">Voltage</option>
+			<option value="voltage">Voltage</option>
 			<option value="current">Current</option>
 			<option value="gnd">Gnd</option>
 		</select> <br/>
@@ -139,18 +139,45 @@
 			<option value="const">Constant</option>
 			<option value="linear">Linear</option>
 		</select><br/>
-		<div class="config"></div>
-		<label name="const">Constant: <input type="text" ></label>
-		<label name="start">Vc start: <input type="text"  /></label>
-		<label name="step" >Vc step: <input type="text"  /></label>
-		<label name="end">Vc stop: <input type="text"  /></label>
+		<label name="const"  method="const">Constant: <input class="config"><br/></label>
+		<label name="number" method="linear">Number:
+		<select class="config">
+			<option value="1">1</option>
+			<option value="2">2</option>
+		</select>
+		<br/></label>
+		<label name="start"  method="linear">Vc start: <input class="config"/><br/></label>
+		<label name="step"   method="linear">Vc step: <input  class="config"/><br/></label>
+		<label name="end"    method="linear">Vc stop: <input  class="config"/></label>
+	</div>
+	<div class="node4" node="E">
+		Mode: 
+		<select name="mode">
+			<option value="voltage">Voltage</option>
+			<option value="current">Current</option>
+			<option value="gnd">Gnd</option>
+		</select> <br/>
+		Method:
+		<select name="method">
+			<option value="const">Constant</option>
+			<option value="linear">Linear</option>
+		</select><br/>
+		<label name="const"  method="const">Constant: <input class="config"><br/></label>
+		<label name="number" method="linear">Number:
+		<select class="config">
+			<option value="1">1</option>
+			<option value="2">2</option>
+		</select>
+		<br/></label>
+		<label name="start"  method="linear">Vc start: <input class="config"/><br/></label>
+		<label name="step"   method="linear">Vc step: <input  class="config"/><br/></label>
+		<label name="end"    method="linear">Vc stop: <input  class="config"/></label>
 	</div>
 	<div style="clear:both;"></div>
-	<div style="float:right; padding:20px 30px 0 0">
+</div>
+<div style="float:right; padding:20px 30px 0 0">
 		<input style="width:100px; height:50px" type="button" name="save" value="Save" >
 	</div>
-</div>
-
 
 
 </body>

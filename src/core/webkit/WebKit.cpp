@@ -15,6 +15,7 @@ WebPage::WebPage(QObject *parent) : QWebPage(parent) {
 
     settings()->setLocalStoragePath(qApp->applicationDirPath().append(QLatin1String("/storage")));
 
+    settings()->setDefaultTextEncoding( "UTF-8" );
 #ifdef QT_DEBUG
     settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
 #endif
