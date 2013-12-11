@@ -103,7 +103,7 @@ void addMeasureForm::showSourcesDescription() {
         nonLinearSourcesData.insert(2, QVector<double>() << .0 );
     }
 
-    if( nNonLinearSources == 2 ){
+//    if( nNonLinearSources == 2 ){
        foreach(double dc2, nonLinearSourcesData[2]){
            foreach(double dc1, nonLinearSourcesData[1]){
                QVector<double> rowData;
@@ -135,7 +135,7 @@ void addMeasureForm::showSourcesDescription() {
                data.append( rowData );
            }
        }
-    }
+//    }
 
     qDebug() << data.size();
     qDebug() << columns.size();
