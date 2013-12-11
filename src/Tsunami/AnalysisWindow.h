@@ -33,6 +33,8 @@ private:
     APIObject* api_;
 private slots:
     void clickedOpenAnalysis();
+    void clickedSaveAnalysis(QList<Source> sources);
+
     void selectedAnalysisItem( const QModelIndex& index );
     void loadStarted();
     void loadFinished(bool);

@@ -6,6 +6,8 @@
 #include "dbstorage/measurestorage.h"
 #include "dbstorage/analysisstorage.h"
 #include "models/analysismodel.h"
+#include <QTableView>
+#include "delegates/delegatedoubleitem.h"
 namespace tsunami{
 
 const int addMeasureForm::nPairs_ = 6;
@@ -162,7 +164,12 @@ void addMeasureForm::openAnalysis(int analysisId) {
 
     measureView_ = new gui::MeasureItemView( measure_ );
     ui->dataTableView->setModel( measureView_ );
-
+    int nColumns = measureView_->columnCount();
+    for(int i=0; i < nColumns; ++i){
+        if(!measureView_->isColumnReadOnly(i)){
+            ui->dataTableView->setItemDelegateForColumn(i, new DelegateDoubleItem(ui->dataTableView));
+        }
+    }
 
     showSourcesDescription();
 }
@@ -179,6 +186,12 @@ void addMeasureForm::openMeasure(int measureId) {
     measureView_ = new gui::MeasureItemView( measure_ );
     ui->dataTableView->setModel( measureView_ );
 
+    int nColumns = measureView_->columnCount();
+    for(int i=0; i < nColumns; ++i){
+        if(!measureView_->isColumnReadOnly(i)){
+            ui->dataTableView->setItemDelegateForColumn(i, new DelegateDoubleItem(ui->dataTableView));
+        }
+    }
 
     headerView_->setPairs( headerPairs_, nPairs_ );
     headerView_->setValue( "type", measure_->typeJson() );

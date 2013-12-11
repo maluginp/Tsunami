@@ -41,6 +41,7 @@ private slots:
     void runExtraction();
     void log( const QString& log );
     void clickedCancel();
+    void clickedShowPlotButton();
 signals:
     void stop();
 };

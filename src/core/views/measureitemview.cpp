@@ -104,6 +104,12 @@ QVariant MeasureItemView::headerData(int section, Qt::Orientation orientation, i
     return QVariant();
 }
 
+bool MeasureItemView::isColumnReadOnly(int index) {
+    QString column = headerData( index, Qt::Horizontal, Qt::DisplayRole ).toString();
+
+    return measure_->isSourceDirection( column, SOURCE_DIRECTION_INPUT );
+}
+
 
 
 

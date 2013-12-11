@@ -6,6 +6,7 @@
 #include "dbstorage/parameterstorage.h"
 #include <QWidget>
 #include "delegates/delegatereadonly.h"
+#include "PlotExtractionDialog.h"
 namespace tsunami{
 ExtractorWindow::ExtractorWindow(DeviceType type, int libraryId, QList<int> measures, const QString& optimize,
                                  QWidget *parent) :
@@ -32,6 +33,7 @@ ExtractorWindow::ExtractorWindow(DeviceType type, int libraryId, QList<int> meas
 
     connect(ui->runButton,SIGNAL(clicked()),this,SLOT(runExtraction()));
     connect(ui->stopButton,SIGNAL(clicked()),this,SLOT(clickedStop()));
+    connect(ui->showPlotButton,SIGNAL(clicked()),this,SLOT(clickedShowPlotButton()));
 }
 
 
@@ -90,6 +92,12 @@ void ExtractorWindow::log(const QString &log) {
 void ExtractorWindow::clickedCancel() {
 
     emit stop();
+}
+
+void ExtractorWindow::clickedShowPlotButton(){
+    PlotExtractionDialog dialog( library_->deviceId(), library_, measures_ );
+    dialog.exec();
+
 }
 
 }

@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QWidget" name="widget" native="true">
+  <widget class="TsunamiPlot" name="plotter" native="true">
    <property name="geometry">
     <rect>
      <x>200</x>
@@ -23,7 +23,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>470</x>
@@ -47,14 +47,14 @@
      </spacer>
     </item>
     <item>
-     <widget class="QPushButton" name="pushButton_2">
+     <widget class="QPushButton" name="closeButton">
       <property name="text">
        <string>Закрыть</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QPushButton" name="pushButton">
+     <widget class="QPushButton" name="buildButton">
       <property name="text">
        <string>Построить</string>
       </property>
@@ -62,7 +62,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -75,12 +75,12 @@
     <item>
      <widget class="QLabel" name="label_5">
       <property name="text">
-       <string>Тип параметры</string>
+       <string>Тип параметров</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QComboBox" name="comboBox_5"/>
+     <widget class="QComboBox" name="typeParameterComboBox"/>
     </item>
     <item>
      <widget class="QLabel" name="label">
@@ -90,7 +90,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QComboBox" name="comboBox"/>
+     <widget class="QComboBox" name="measureComboBox"/>
     </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
@@ -102,7 +102,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QComboBox" name="comboBox_3"/>
+       <widget class="QComboBox" name="axisKeyComboBox"/>
       </item>
      </layout>
     </item>
@@ -116,7 +116,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QComboBox" name="comboBox_4"/>
+       <widget class="QComboBox" name="axisValueComboxBox"/>
       </item>
      </layout>
     </item>
@@ -128,24 +128,22 @@
      </widget>
     </item>
     <item>
-     <widget class="QComboBox" name="comboBox_2"/>
+     <widget class="QComboBox" name="constComboBox"/>
     </item>
    </layout>
   </widget>
-  <zorder>label</zorder>
-  <zorder>comboBox</zorder>
-  <zorder>label_2</zorder>
-  <zorder>comboBox_3</zorder>
   <zorder>layoutWidget</zorder>
-  <zorder>layoutWidget_2</zorder>
-  <zorder>pushButton</zorder>
-  <zorder>horizontalSpacer</zorder>
-  <zorder>comboBox_5</zorder>
-  <zorder>label_5</zorder>
-  <zorder>widget</zorder>
-  <zorder></zorder>
-  <zorder>pushButton_2</zorder>
+  <zorder>plotter</zorder>
+  <zorder>layoutWidget</zorder>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>TsunamiPlot</class>
+   <extends>QWidget</extends>
+   <header location="global">plots/tsunamiplot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

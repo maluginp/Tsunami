@@ -148,7 +148,7 @@ QModelIndex ParameterItemView::findByParameterName(const QString &name) {
 
     foreach(db::ParameterModel parameter, library_->parameters()){
         if(parameter.name().compare(name,Qt::CaseInsensitive) == 0 ||
-           parameter.name().startsWith(name,Qt::CaseInsensitive)){
+           parameter.name().startsWith(name,Qt::CaseInsensitive) ){
             foundRow = row;
             break;
         }

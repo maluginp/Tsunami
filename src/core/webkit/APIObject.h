@@ -14,7 +14,7 @@ public:
 
 public slots:
     QString test();
-
+    void saveAnalysis(const QVariantMap& sources);
 signals:
     void openedAnalysis(const QVariantMap& analysis);
 public slots:

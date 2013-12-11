@@ -1,19 +1,19 @@
 Analysis = function(){
 	
-	var _sources;
+	this.sources;
 
 
 	this.init = function( sources ){
-		_sources = sources;
+		this.sources = sources;
 
 		// console.log( 'Initialization', sources.size() );
 
-		for(node in _sources){
-			console.log( "Node", node, "Mode",_sources[node].mode,"Method",_sources[node].method );
+		for(node in this.sources){
+			console.log( "Node", node, "Mode",this.sources[node].mode,"Method",this.sources[node].method );
 		 	nodeObject = $('#device div[node="'+node+'"]');
-		 	nodeObject.find('select[name="mode"]').val(_sources[node].mode);
-		 	nodeObject.find('select[name="method"]').val( _sources[node].method );
-		 	changeMode( node, _sources[node].mode );
+		 	nodeObject.find('select[name="mode"]').val(this.sources[node].mode);
+		 	nodeObject.find('select[name="method"]').val( this.sources[node].method );
+		 	changeMode( node, this.sources[node].mode );
 
 		}
 	}
@@ -22,7 +22,7 @@ Analysis = function(){
 		console.log( 'Start changeMode',node,mode);
 
 		nodeObject = $('#device div[node="'+node+'"]');
-		_sources[ node ].mode = mode;
+		this.sources[ node ].mode = mode;
 
 		var method;
 		if( mode == "gnd"){
@@ -45,7 +45,7 @@ Analysis = function(){
 	function changeMethod( node, method ){
 		console.log( 'Start changeMethod',node,'Method',method );
 
-		_sources[node].method = method;
+		this.sources[node].method = method;
 		nodeObject = $('#device div[node="'+node+'"]');
 		if(method == ""){
 			nodeObject.find('label').each( function(i, labelObject){
@@ -56,18 +56,24 @@ Analysis = function(){
 				$(labelObject).hide();
 			});
 			nodeObject.find('label[name="const"]').show();
-			nodeObject.find('label[name="const"] input').val( _sources[node].config.const );
+			nodeObject.find('label[name="const"] input').val( this.sources[node].config.const );
 		}else if(method == "linear"){
 			nodeObject.find('label[name="const"]').hide();
 			nodeObject.find('label[name!="const"]').each( function(i, labelObject){
 				$(labelObject).show();
 			});
-			nodeObject.find('label[name="start"] input').val( _sources[node].config.start );
-			nodeObject.find('label[name="step"] input').val( _sources[node].config.step );
-			nodeObject.find('label[name="end"] input').val( _sources[node].config.end );
+			nodeObject.find('label[name="start"] input').val( this.sources[node].config.start );
+			nodeObject.find('label[name="step"] input').val( this.sources[node].config.step );
+			nodeObject.find('label[name="end"] input').val( this.sources[node].config.end );
 		}
 
 		console.log('changeMethod', node, method);
+	}
+
+	this.save = function(){
+		console.log('Click save');
+		console.log(sources);
+		Api.saveAnalysis(sources);
 	}
 
 	this.onChangeMethod = function(node,method){
@@ -77,10 +83,10 @@ Analysis = function(){
 	this.onChangeConfig = function( node, item, value ){
 		nodeObject = $('#device div[node="'+node+'"]');
 		switch( item ){
-			case 'const': _sources[node].config.const = value; break;
-			case 'start': _sources[node].config.start = value; break;
-			case 'step':  _sources[node].config.step = value; break;
-			case 'end':  _sources[node].config.end = value; break;
+			case 'const': this.sources[node].config.const = value; break;
+			case 'start': this.sources[node].config.start = value; break;
+			case 'step':  this.sources[node].config.step = value; break;
+			case 'end':  this.sources[node].config.end = value; break;
 			default:
 				return;
 		}

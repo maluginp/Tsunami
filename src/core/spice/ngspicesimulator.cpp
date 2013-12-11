@@ -145,11 +145,20 @@ QByteArray NgSpiceSimulator::generateNetList() {
         Q_ASSERT(false);
     }
 
-    circuit()->beginDevice(DEVICE_FLAG_SOURCE);
-    device = circuit()->nextDevice();
-    while(device){
-        source.append(" ").append(device->sourceNetlist());
+
+    int sourceNumber = 1;
+
+    while(sourceNumber < 3){
+        circuit()->beginDevice(DEVICE_FLAG_SOURCE);
         device = circuit()->nextDevice();
+        while(device){
+            if(device->source().configuration("number").toInt() == sourceNumber){
+                source.append(" ").append(device->sourceNetlist());
+            }
+
+            device = circuit()->nextDevice();
+        }
+        sourceNumber++;
     }
     source.append("\n");
 

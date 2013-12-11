@@ -3,29 +3,21 @@
 
 #include "../components/qcustomplot.h"
 
-#include "graphicitem.h"
+#include "PlotItem.h"
 
 class TsunamiPlot : public QCustomPlot {
 public:
-    TsunamiPlot();
+    explicit TsunamiPlot( QWidget *parent = 0 );
 
-    void addGraphic( const QString& key, QVector<double> keys, QVector<double> measured,
-                     QVector<double> simulated);
-    void addGraphic( const QString& key, QVector<double> keys, QVector<double> measured);
+    PlotItem* addPlot(const QString &name );
+    PlotItem* plot( const QString& name );
 
-    void hideGraphic(const QString& key);
-    void showGraphic(const QString& key);
 
-    void hideGraphics();
-    void showGraphics();
-
-    void setCurrentGraph(const QString& key);
-
+public slots:
+    void build();
 private:
-    GraphicItem* findGraphicItem( const QString& key);
-
-    QList<GraphicItem*> graphics_;
-    GraphicItem* currentGraphic_;
+    QList<PlotItem*> plots_;
+    PlotItem* currentGraphic_;
 };
 
 #endif // TSUNAMIPLOT_H

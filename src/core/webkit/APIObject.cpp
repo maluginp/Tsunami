@@ -1,6 +1,7 @@
 #include "APIObject.h"
 //#include "dbstorage/analysisstorage.h"
-
+#include <QDebug>
+#include "defines.h"
 APIObject::APIObject(QObject *parent) :
     QObject(parent), analysis_(0) {
 
@@ -9,8 +10,9 @@ APIObject::APIObject(QObject *parent) :
 
 }
 
-void APIObject::openAnalysis( const tsunami::db::AnalysisModel* analysis ) {
-    QList<tsunami::Source> sources = analysis->sources();
+void APIObject::openAnalysis( tsunami::db::AnalysisModel* analysis ) {
+    analysis_ = analysis;
+    QList<tsunami::Source> sources = analysis_->sources();
 
     QVariantMap sourcesJson;
     foreach( tsunami::Source source, sources ){
@@ -32,5 +34,14 @@ void APIObject::openAnalysis( const tsunami::db::AnalysisModel* analysis ) {
 
 QString APIObject::test() {
     return "APIObject::test()";
+}
+
+void APIObject::saveAnalysis(const QVariantMap &sourcesJson){
+    QList<tsunami::Source> sources;
+    foreach(QString node, sourcesJson.keys()){
+        tsunami::Source source;
+//        source.mode()
+
+    }
 }
 

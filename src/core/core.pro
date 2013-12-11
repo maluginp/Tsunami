@@ -60,7 +60,8 @@ SOURCES += main.cpp \
     delegates/delegatedoubleitem.cpp \
     webkit/WebKit.cpp \
     webkit/APIObject.cpp \
-    views/ListTreeView.cpp
+    views/ListTreeView.cpp \
+    plots/PlotItem.cpp
 
 HEADERS += \
     components/json.h \
@@ -112,7 +113,8 @@ HEADERS += \
     webkit/APIObject.h \
     dbstorage/DbStorages.h \
     views/Views.h \
-    views/ListTreeView.h
+    views/ListTreeView.h \
+    plots/PlotItem.h
 
 
 

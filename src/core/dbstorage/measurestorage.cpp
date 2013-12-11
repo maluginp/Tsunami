@@ -65,7 +65,9 @@ void MeasureStorage::testData() {
     QVariantMap configuration;
     configuration.insert("start", 0.0);
     configuration.insert("end",10.0);
-    configuration.insert("step", 1.0);
+    configuration.insert("step", 5.0);
+    configuration.insert("number", 2);
+
     model->addSource( Source("C",SOURCE_MODE_VOLTAGE,SOURCE_DIRECTION_INPUT,SOURCE_METHOD_LINEAR, configuration) );
 
     configuration.clear();
@@ -73,6 +75,7 @@ void MeasureStorage::testData() {
     configuration.insert("start", 0.0);
     configuration.insert("end",1.0);
     configuration.insert("step", 0.1);
+    configuration.insert("number", 1);
     model->addSource( Source("B",SOURCE_MODE_VOLTAGE,SOURCE_DIRECTION_INPUT,SOURCE_METHOD_LINEAR, configuration) );
 
     model->header( MeasureHeader("No comment, althought test date =)") );
@@ -84,16 +87,16 @@ void MeasureStorage::testData() {
 
 
     QStringList columns;
-    columns << "Vc" << "Vb" << "Ve" << "Ib" << "Ic" ;
+    columns << "Vb" << "Vc" << "Ve" << "Ib" << "Ic" ;
     model->columns(columns);
 
     QVector< QVector<double> > data;
 
-    for(double val1=0.0; val1 <= 10.0; val1 += 1.0){
+    for(double val1=0.0; val1 <= 10.0; val1 += 5.0){
 
         for(double val2=0.0; val2 <= 1.0; val2 += 0.1){
             QVector<double> row;
-            row << val1 << val2 << 0.0 <<  val1+val2 << 2*(val1+val2);
+            row << val2 << val1 << 0.0 <<  val1+val2 << 2*(val1+val2);
             data.append( row );
         }
 
