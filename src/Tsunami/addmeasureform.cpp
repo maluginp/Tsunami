@@ -8,6 +8,7 @@
 #include "models/analysismodel.h"
 #include <QTableView>
 #include "delegates/delegatedoubleitem.h"
+#include <QFileDialog>
 namespace tsunami{
 
 const int addMeasureForm::nPairs_ = 6;
@@ -48,6 +49,7 @@ addMeasureForm::addMeasureForm(addMeasureForm::Action action, int id, QWidget *p
     connect(ui->cancelButton,SIGNAL(clicked()),this,SLOT(close()));
 
     connect(ui->exportButton,SIGNAL(clicked()),this,SLOT(clickedExportButton()));
+    connect(ui->importButton,SIGNAL(clicked()),this,SLOT(clickedImportButton()));
     //    openAnalysis( analysisId );
 }
 
@@ -237,14 +239,32 @@ void addMeasureForm::addButtonClick() {
 }
 
 void addMeasureForm::clickedExportButton() {
-    QByteArray data = db::MeasureModel::exportTo( measure_ );
+    QString fileName = QFileDialog::getSaveFileName( this, tr("Export to file"), QString(), QString("*.tmb") );
 
-    db::MeasureModel* model = db::MeasureModel::importFrom( data );
-
-    qDebug() << data;
+    if(!fileName.isEmpty()){
+        QFile file(fileName);
+        if(file.open(QIODevice::WriteOnly)){
+            QByteArray data = db::MeasureModel::exportTo( measure_ );
+            file.write(data);
+        }
+        file.close();
+    }
 }
 
 void addMeasureForm::clickedImportButton() {
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Import from file"),QString(),QString("*.tmb"));
+    if(!fileName.isEmpty()){
+        QFile file(fileName);
+        if(file.open(QIODevice::ReadOnly)){
+            QByteArray data = file.readAll();
+            measure_ = db::MeasureModel::importFrom( data );
+
+            measureView_ = new gui::MeasureItemView( measure_ );
+            ui->dataTableView->setModel( measureView_ );
+
+        }
+        file.close();
+    }
 
 
 }
