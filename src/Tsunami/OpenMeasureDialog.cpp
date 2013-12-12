@@ -77,8 +77,9 @@ void OpenMeasureDialog::changeMeasureAnalysis(int index) {
         measures = storage_->findMeasures(criteria);
     }
     foreach(db::MeasureModel* measure,measures){
+        QString type = measure->typeJson();
         measuresView_->addItem( QString("%1 (%2)").arg(measure->name()).
-                                arg(measure->typeJson().toUpper()), measure->id() );
+                                arg(type.toUpper()), measure->id() );
     }
 
 }

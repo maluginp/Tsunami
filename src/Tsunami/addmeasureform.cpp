@@ -46,6 +46,8 @@ addMeasureForm::addMeasureForm(addMeasureForm::Action action, int id, QWidget *p
     }
     connect(ui->addButton,SIGNAL(clicked()),this,SLOT(addButtonClick()));
     connect(ui->cancelButton,SIGNAL(clicked()),this,SLOT(close()));
+
+    connect(ui->exportButton,SIGNAL(clicked()),this,SLOT(clickedExportButton()));
     //    openAnalysis( analysisId );
 }
 
@@ -232,6 +234,19 @@ void addMeasureForm::addButtonClick() {
     measure_->changeAt( QDateTime::currentDateTime()  );
 
     measureStorage_->saveMeasure( measure_ );
+}
+
+void addMeasureForm::clickedExportButton() {
+    QByteArray data = db::MeasureModel::exportTo( measure_ );
+
+    db::MeasureModel* model = db::MeasureModel::importFrom( data );
+
+    qDebug() << data;
+}
+
+void addMeasureForm::clickedImportButton() {
+
+
 }
 
 

@@ -84,7 +84,7 @@ public:
     const int& deviceId() const { return deviceId_; }
     const QString& name() const { return name_; }
     const AnalysisType& type() const { return type_; }
-    QString typeJson();
+    QString typeJson() const;
     const QVariantMap& attrs() const { return attributes_; }
     QString attrsJson() const;
     const QList<Source>& sources() const { return sources_; }
@@ -112,11 +112,15 @@ public:
     double &at(int row, int column);
     const QString& column( int index ) const;
 
-    int dataRows();
+    int dataRows() const;
     int dataColumns();
 
 
     bool isSourceDirection(const QString& name, SourceDirection direction);
+
+
+    static MeasureModel* importFrom( const QByteArray& data );
+    static QByteArray exportTo( const MeasureModel* model );
 
 private:
     int measureId_;

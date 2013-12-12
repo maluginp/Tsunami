@@ -14,6 +14,6 @@ macx:QMAKE_CXX = g++
 macx:QMAKE_LINK = g++
 
 DEFINES += DEBUG
-QT += core sql gui webkit
+QT += core sql gui webkit xml
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 greaterThan(QT_MAJOR_VERSION, 4): QT += printsupport

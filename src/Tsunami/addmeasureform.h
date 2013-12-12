@@ -54,6 +54,9 @@ private:
     static const int nPairs_;
 private slots:
     void addButtonClick();
+    void clickedExportButton();
+    void clickedImportButton();
+
 };
 
 }
