@@ -1,13 +1,12 @@
 #ifndef PARAMETERPLOTVIEW_H
 #define PARAMETERPLOTVIEW_H
 
-#include <QAbstractItemModel>
+#include "defines.h"
 
 namespace tsunami {
 namespace gui{
 
-
-class ParameterPlotView : public QAbstractItemModel {
+class  ParameterPlotView : public QAbstractItemModel {
 Q_OBJECT
 public:
     explicit ParameterPlotView(QVariantMap parameters, QObject *parent = 0);

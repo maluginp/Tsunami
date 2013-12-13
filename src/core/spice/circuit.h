@@ -1,10 +1,9 @@
 #ifndef CIRCUIT_H
 #define CIRCUIT_H
-#include <QString>
-#include <QVariantMap>
+
 #include "defines.h"
 #include <map>
-#include <QList>
+
 namespace tsunami{
 namespace spice{
 
@@ -22,7 +21,7 @@ typedef std::map<int,Device*> DeviceMap;
 typedef std::map<int,Terminal*> TerminalMap;
 typedef QList<SpiceModel*> ModelList;
 
-class Circuit {
+class  Circuit {
 public:
     Circuit(const QString& name);
     ~Circuit();

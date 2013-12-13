@@ -1,13 +1,13 @@
 #ifndef PARAMETERITEMVIEW_H
 #define PARAMETERITEMVIEW_H
 
-#include <QAbstractItemModel>
+#include "defines.h"
 #include "../dbstorage/parameterstorage.h"
-#include <QModelIndex>
+
 namespace tsunami {
 namespace gui{
 
-class ParameterItemView : public QAbstractItemModel
+class  ParameterItemView : public QAbstractItemModel
 {
     Q_OBJECT
 public:

@@ -1,6 +1,8 @@
 #ifndef SIMULATOR_H
 #define SIMULATOR_H
-#include <QStringList>
+
+#include "defines.h"
+
 namespace tsunami{
 namespace db{
     class MeasureModel;
@@ -11,7 +13,7 @@ namespace spice{
 class Circuit;
 class SpiceModel;
 
-class Simulator {
+class  Simulator {
 public:
     Simulator();
     Simulator(const QString& path);

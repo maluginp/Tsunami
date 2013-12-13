@@ -44,8 +44,8 @@ OpenMeasureDialog::~OpenMeasureDialog()
     delete ui;
 }
 
-int OpenMeasureDialog::getMeasureId(int deviceId) {
-    OpenMeasureDialog dialog(deviceId);
+int OpenMeasureDialog::getMeasureId(int deviceId, QWidget* parent =0 ) {
+    OpenMeasureDialog dialog(deviceId,parent);
     if(dialog.exec() == QDialog::Accepted){
         return dialog.measureId_;
     }

@@ -1,12 +1,12 @@
 #ifndef LISTTREEVIEW_H
 #define LISTTREEVIEW_H
 
-#include <QAbstractItemModel>
+#include "defines.h"
 
 namespace tsunami{
 namespace gui {
 
-class ListTreeViewItem{
+class  ListTreeViewItem{
 public:
     ListTreeViewItem( QString name, QVariant value, ListTreeViewItem* parent = 0 );
     ~ListTreeViewItem();

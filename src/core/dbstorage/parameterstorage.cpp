@@ -454,11 +454,11 @@ bool ParameterStorage::createTable(const ParameterStorage::ParameterTable &table
         return false;
     }
 
-#ifdef QT_DEBUG
+//#ifdef QT_DEBUG
     if(tableExists(TABLE_NAME_LIBRARIES) && tableExists(TABLE_NAME_PARAMETERS)){
         testData();
     }
-#endif
+//#endif
 
     return true;
 

@@ -1,11 +1,10 @@
 #ifndef MEASUREENABLEVIEW_H
 #define MEASUREENABLEVIEW_H
-#include <QAbstractItemModel>
-#include <QVector>
+#include "defines.h"
 namespace tsunami{
 namespace gui{
 
-struct MeasureEnableViewItem{
+struct  MeasureEnableViewItem{
     bool enable;
     int id;
     QString name;
@@ -27,7 +26,7 @@ struct MeasureEnableViewItem{
     }
 };
 
-class MeasureEnableView : public QAbstractItemModel {
+class  MeasureEnableView : public QAbstractItemModel {
     Q_OBJECT
 public:
     explicit MeasureEnableView(int deviceId, const QString& analysis,QObject *parent = 0);

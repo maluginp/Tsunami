@@ -125,9 +125,9 @@ bool SettingStorage::createTable(const SettingStorage::SettingTable &table){
         return false;
     }
 
-#ifdef QT_DEBUG
+//#ifdef QT_DEBUG
     testData();
-#endif
+//#endif
     return true;
 }
 

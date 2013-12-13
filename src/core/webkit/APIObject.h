@@ -1,11 +1,10 @@
 #ifndef APIOBJECT_H
 #define APIOBJECT_H
 
-#include <QObject>
-#include <QString>
+#include "defines.h"
 #include "models/analysismodel.h"
 
-class APIObject : public QObject
+class  APIObject : public QObject
 {
     Q_OBJECT
 public:

@@ -1,12 +1,13 @@
 #ifndef NGSPICESIMULATOR_H
 #define NGSPICESIMULATOR_H
 
+#include "defines.h"
 #include "simulator.h"
 
 namespace tsunami{
 namespace spice{
 
-class NgSpiceSimulator : public Simulator {
+class  NgSpiceSimulator : public Simulator {
 public:
     NgSpiceSimulator( const QString& path );
 

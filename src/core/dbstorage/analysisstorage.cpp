@@ -245,9 +245,9 @@ bool AnalysisStorage::createTable(AnalysisTable table) {
         return false;
     }
 
-#ifdef QT_DEBUG
+//#ifdef QT_DEBUG
     testData();
-#endif
+//#endif
 
     return true;
 }

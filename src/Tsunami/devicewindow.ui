@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Менеджер устройств</string>
+   <string>Manager devices</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QLabel" name="deviceNameText">
@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Выберите устройство</string>
+     <string>Choice device</string>
     </property>
    </widget>
    <widget class="QLabel" name="deviceTypeText">
@@ -37,7 +37,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Выберите устройство</string>
+     <string>Choice device</string>
     </property>
    </widget>
    <widget class="QTreeView" name="datasetTreeView">
@@ -48,6 +48,9 @@
       <width>261</width>
       <height>401</height>
      </rect>
+    </property>
+    <property name="indentation">
+     <number>10</number>
     </property>
    </widget>
    <widget class="QTreeView" name="libraryTreeView">
@@ -75,6 +78,9 @@
       <height>191</height>
      </rect>
     </property>
+    <property name="indentation">
+     <number>10</number>
+    </property>
    </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
@@ -92,7 +98,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Название</string>
+     <string>Name:</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
@@ -111,7 +117,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Тип:</string>
+     <string>Type:</string>
     </property>
    </widget>
    <widget class="QLabel" name="deviceImage">
@@ -136,6 +142,9 @@
       <height>32</height>
      </rect>
     </property>
+    <property name="locale">
+     <locale language="English" country="UnitedStates"/>
+    </property>
     <property name="text">
      <string>Добавить</string>
     </property>
@@ -149,6 +158,9 @@
       <height>32</height>
      </rect>
     </property>
+    <property name="locale">
+     <locale language="English" country="UnitedStates"/>
+    </property>
     <property name="text">
      <string>Добавить</string>
     </property>
@@ -161,6 +173,9 @@
       <width>91</width>
       <height>32</height>
      </rect>
+    </property>
+    <property name="locale">
+     <locale language="English" country="UnitedStates"/>
     </property>
     <property name="text">
      <string>Добавить</string>
@@ -182,7 +197,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Модель:</string>
+     <string>Model:</string>
     </property>
    </widget>
    <widget class="QLabel" name="deviceModelText">
@@ -195,7 +210,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Выберите устройство</string>
+     <string>Choice device</string>
     </property>
    </widget>
   </widget>
@@ -205,7 +220,7 @@
      <x>0</x>
      <y>0</y>
      <width>810</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuDevice">

@@ -1,11 +1,18 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
+#include <QtCore>
+#include <QtGui>
+
 #include "math/matrix.h"
 #include "math/vector.h"
-#include <QVariantMap>
-#include <QStringList>
 #include "components/source.h"
+
+#if defined(TSUNAMI_MAKEDLL)
+# define TSUNAMI_EXPORT Q_DECL_EXPORT
+#else
+# define TSUNAMI_EXPORT Q_DECL_IMPORT
+#endif
 
 namespace tsunami{
 
@@ -14,6 +21,9 @@ enum{
     DEVICE_FLAG_SOURCE  = 1 << 0
 };
 typedef unsigned long DeviceFlag;
+
+
+
 
 enum DeviceType{
     DEVICE_UNKNOWN=-1,

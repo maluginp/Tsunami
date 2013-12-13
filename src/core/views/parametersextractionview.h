@@ -1,7 +1,7 @@
 #ifndef PARAMETERSEXTRACTIONVIEW_H
 #define PARAMETERSEXTRACTIONVIEW_H
 
-#include <QAbstractItemModel>
+#include "defines.h"
 
 namespace tsunami{
 namespace db{
@@ -9,7 +9,7 @@ namespace db{
 }
 namespace gui{
 
-class ParametersExtractionView : public QAbstractItemModel {
+class  ParametersExtractionView : public QAbstractItemModel {
 public:
     ParametersExtractionView(db::LibraryModel* library,QObject *parent=0);
     QModelIndex index(int row, int column,

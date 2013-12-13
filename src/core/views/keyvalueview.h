@@ -3,7 +3,7 @@
 
 #include <QAbstractItemModel>
 #include <QString>
-
+#include "defines.h"
 class QAbstractItemView;
 
 namespace tsunami {
@@ -47,7 +47,7 @@ struct KeyValuePair{
 
 };
 
-class KeyValueView : public QAbstractItemModel {
+class  KeyValueView : public QAbstractItemModel {
     Q_OBJECT
 public:
     explicit KeyValueView(QObject *parent = 0);

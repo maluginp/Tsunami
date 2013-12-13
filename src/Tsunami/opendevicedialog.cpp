@@ -36,8 +36,8 @@ OpenDeviceDialog::~OpenDeviceDialog()
     delete ui;
 }
 
-int OpenDeviceDialog::getDeviceId() {
-    OpenDeviceDialog dialog(0);
+int OpenDeviceDialog::getDeviceId(QWidget *parent) {
+    OpenDeviceDialog dialog(parent);
     int deviceId = -1;
     if(dialog.exec() == QDialog::Accepted){
         deviceId = dialog.currentDeviceId_;

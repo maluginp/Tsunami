@@ -1,15 +1,12 @@
 #ifndef LISTITEMVIEW_H
 #define LISTITEMVIEW_H
 
-#include <QAbstractItemModel>
-#include <QPair>
-#include <QList>
-
+#include "defines.h"
 namespace tsunami {
 namespace gui{
 
 
-class ListItemView : public QAbstractItemModel
+class  ListItemView : public QAbstractItemModel
 {
     Q_OBJECT
 public:

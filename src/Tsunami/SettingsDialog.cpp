@@ -38,7 +38,7 @@ void SettingsDialog::openSettings() {
     ui->spiceSimulatorComboBox->setEnabled(false);
 
     ui->spicePathLineEdit->setText( storage_->value( "spice/ngspice/path" ).toString() );
-    ui->optimizeMethodComboBox->addItem( tr("Хука Дживса"), QVariant("hookejeeves") );
+    ui->optimizeMethodComboBox->addItem( tr("Hooke-Jeeves"), QVariant("hookejeeves") );
     ui->optimizeMethodComboBox->setEnabled(false);
     ui->optimizeMaxIterationsLineEdit->setText( storage_->value("optimize/max_iteration").toString() );
     ui->optimizeToleranceFunctionLineEdit->setText( storage_->value("optimize/tolerance/function").toString() );

@@ -18,7 +18,7 @@ public:
     explicit OpenDeviceDialog(QWidget *parent = 0);
     ~OpenDeviceDialog();
 
-    static int getDeviceId();
+    static int getDeviceId(QWidget *parent=0);
 private:
     void updateList();
     void showDescription(int deviceId);

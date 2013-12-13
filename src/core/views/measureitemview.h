@@ -1,13 +1,13 @@
 #ifndef MEASUREITEMVIEW_H
 #define MEASUREITEMVIEW_H
 
-#include <QAbstractItemModel>
-#include "../dbstorage/measurestorage.h"
+#include "defines.h"
+#include "dbstorage/measurestorage.h"
 
 namespace tsunami {
 namespace gui{
 
-class MeasureItemView : public QAbstractItemModel {
+class  MeasureItemView : public QAbstractItemModel {
     Q_OBJECT
 public:
     explicit MeasureItemView(db::MeasureModel* model, QObject *parent = 0);

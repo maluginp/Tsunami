@@ -20,7 +20,7 @@ class OpenMeasureDialog : public QDialog
 public:
     explicit OpenMeasureDialog(int deviceId, QWidget *parent = 0);
     ~OpenMeasureDialog();
-    static int getMeasureId(int deviceId);
+    static int getMeasureId(int deviceId, QWidget *parent);
 private:
     Ui::OpenMeasureDialog *ui;
     gui::ListItemView* measuresView_;

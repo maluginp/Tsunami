@@ -1,9 +1,7 @@
 #ifndef GRAPHNODE_H
 #define GRAPHNODE_H
 
-#include <QString>
-#include <QVector>
-
+#include "defines.h"
 namespace tsunami{
 namespace spice{
 

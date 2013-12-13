@@ -4,7 +4,8 @@
 #include "prepareextractordialog.h"
 #include "OpenMeasureDialog.h"
 #include "choiceanalysisform.h"
-#include <logger.h>
+#include <Log.h>
+
 #include "defines.h"
 #include <QTreeView>
 #include <QMessageBox>
@@ -17,6 +18,15 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::DeviceWindow), storage_(NULL), device_(NULL),extractorWindow_(NULL),measuresWindow_(NULL),
     measureList_(NULL),libraryList_(NULL),analysisList_(NULL), analysisWindow_(NULL) {
+
+    // Load Translator
+    translator_ = new QTranslator();
+    if( translator_->load(":/i18n/tsunami_ru") ){
+        qApp->installTranslator( translator_ );
+    }else{
+        delete translator_;
+        translator_ = 0;
+    }
 
     ui->setupUi(this);
     storage_ = db::DeviceStorage::instance();
@@ -57,13 +67,16 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
     connect( ui->datasetTreeView,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(selectedMeasure(QModelIndex)));
     connect( ui->analysisTreeView,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(selectedAnalysis(QModelIndex)));
 
-    statusBar()->showMessage("Tsunami ver0.2");
+    statusBar()->showMessage(tr("Tsunami ver %1").arg( TSUNAMI_VERSION ));
 
-    openDevice(1);
 }
 
 DeviceWindow::~DeviceWindow() {
     delete ui;
+
+    if( translator_ != 0 ){
+        delete translator_;
+    }
 }
 
 void DeviceWindow::openDevice(int deviceId) {
@@ -149,7 +162,7 @@ void DeviceWindow::clickedOpenDeviceAction() {
 
 void DeviceWindow::clickedParametersEditor() {
     delete libraryWindow_;
-    libraryWindow_ = new LibraryWindow(deviceId_,this);
+    libraryWindow_ = new LibraryWindow(deviceId_);
     libraryWindow_->show();
 }
 void DeviceWindow::clickedExtractionRunAction() {
@@ -171,7 +184,7 @@ void DeviceWindow::clickedExtractionRunAction() {
 }
 
 void DeviceWindow::clickedMeasureEditor() {
-    int measureId = OpenMeasureDialog::getMeasureId( deviceId_ );
+    int measureId = OpenMeasureDialog::getMeasureId( deviceId_, this );
 
     if(measureId != -1){
         delete measuresWindow_;
@@ -183,7 +196,7 @@ void DeviceWindow::clickedMeasureEditor() {
 
 void DeviceWindow::clickedMeasureAdd() {
 //    int analysisId = 1;
-        int analysisId = tsunami::ChoiceAnalysisForm::getAnalysisId( deviceId_ );
+        int analysisId = tsunami::ChoiceAnalysisForm::getAnalysisId( deviceId_);
 
     if( analysisId != -1){
         delete measuresWindow_;
@@ -194,7 +207,7 @@ void DeviceWindow::clickedMeasureAdd() {
 
 void DeviceWindow::clickedAnalysisAdd() {
     delete analysisWindow_;
-    analysisWindow_ = new AnalysisWindow( deviceId_ );
+    analysisWindow_ = new AnalysisWindow( deviceId_);
     analysisWindow_->show();
     QEventLoop eventLoop;
     connect(analysisWindow_,SIGNAL(pageLoadFinished()),&eventLoop,SLOT(quit()));

@@ -2,13 +2,10 @@ TEMPLATE = subdirs
 
 SUBDIRS += \
     src/core  \
-    src/Tsunami \
-#    src/MeasureData \
-    src/logger
-
-   # src/freeda
-
+    src/logger \
+    src/Tsunami
 
 OTHER_FILES += \
     Tsunami.pri
-CONFIG += sql
+
+#CONFIG += sql

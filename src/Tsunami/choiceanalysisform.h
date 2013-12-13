@@ -22,7 +22,7 @@ public:
     explicit ChoiceAnalysisForm(int deviceId,QWidget *parent = 0);
     ~ChoiceAnalysisForm();
 
-    static int getAnalysisId( int deviceId  );
+    static int getAnalysisId(int deviceId  , QWidget *parent = 0);
 
 private:
     void updateList();

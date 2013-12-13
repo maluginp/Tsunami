@@ -1,9 +1,6 @@
 #ifndef DEVICE_H
 #define DEVICE_H
 
-#include <QVariantMap>
-#include <QString>
-#include <QStringList>
 #include "graphnode.h"
 #include "defines.h"
 
@@ -13,7 +10,7 @@ namespace spice{
 
 class SpiceModel;
 class Terminal;
-class Device : public GraphNode  {
+class  Device : public GraphNode  {
 public:
 
     Device( const QString& name,DeviceType device = DEVICE_UNKNOWN);

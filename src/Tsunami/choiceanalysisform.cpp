@@ -36,8 +36,8 @@ ChoiceAnalysisForm::~ChoiceAnalysisForm()
     delete ui;
 }
 
-int ChoiceAnalysisForm::getAnalysisId(int deviceId) {
-    ChoiceAnalysisForm form(deviceId);
+int ChoiceAnalysisForm::getAnalysisId(int deviceId, QWidget* parent) {
+    ChoiceAnalysisForm form(deviceId,parent);
     int analysisId = -1;
     if(form.exec() == QDialog::Accepted){
         if(form.currentModel_ != NULL){

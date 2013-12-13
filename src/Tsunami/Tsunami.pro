@@ -23,16 +23,6 @@ LIBS += -L$$DESTDIR -lcore -llogger
 
 
 SOURCES += main.cpp\
-        devicewindow.cpp \
-    opendevicedialog.cpp \
-    librarywindow.cpp \
-    openlibrarydialog.cpp \
-    prepareextractordialog.cpp \
-    extractorwindow.cpp \
-    plotdatawindow.cpp \
-    choiceanalysisform.cpp \
-    analysisform.cpp \
-    addmeasureform.cpp \
     OpenMeasureDialog.cpp \
     ShowTextDialog.cpp \
     AnalysisWindow.cpp \
@@ -40,18 +30,19 @@ SOURCES += main.cpp\
     AboutDialog.cpp \
     CreateDeviceDialog.cpp \
     CreateLibraryDialog.cpp \
-    PlotExtractionDialog.cpp
+    PlotExtractionDialog.cpp \
+    DeviceWindow.cpp \
+    ExtractorWindow.cpp \
+    LibraryWindow.cpp \
+    ChoiceAnalysisForm.cpp \
+    AnalysisForm.cpp \
+    AddMeasureForm.cpp \
+    OpenDeviceDialog.cpp \
+    OpenLibraryDialog.cpp \
+    PlotDataWindow.cpp \
+    PrepareExtractorDialog.cpp
 
-HEADERS  += devicewindow.h \
-    opendevicedialog.h \
-    librarywindow.h \
-    openlibrarydialog.h \
-    prepareextractordialog.h \
-    extractorwindow.h \
-    plotdatawindow.h \
-    choiceanalysisform.h \
-    analysisform.h \
-    addmeasureform.h \
+HEADERS  += \
     OpenMeasureDialog.h \
     ShowTextDialog.h \
     AnalysisWindow.h \
@@ -59,7 +50,17 @@ HEADERS  += devicewindow.h \
     AboutDialog.h \
     CreateDeviceDialog.h \
     CreateLibraryDialog.h \
-    PlotExtractionDialog.h
+    PlotExtractionDialog.h \
+    AddMeasureForm.h \
+    AnalysisForm.h \
+    ChoiceAnalysisForm.h \
+    DeviceWindow.h \
+    ExtractorWindow.h \
+    LibraryWindow.h \
+    OpenDeviceDialog.h \
+    OpenLibraryDialog.h \
+    PlotDataWindow.h \
+    PrepareExtractorDialog.h
 
 FORMS    += devicewindow.ui \
     opendevicedialog.ui \

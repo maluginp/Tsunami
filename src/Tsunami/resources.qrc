@@ -8,4 +8,8 @@
         <file alias="PMOS">images/pmos.png</file>
         <file alias="NONE_DEVICE">images/none_device.png</file>
     </qresource>
+    <qresource>
+        <file>i18n/tsunami_en.qm</file>
+        <file>i18n/tsunami_ru.qm</file>
+    </qresource>
 </RCC>

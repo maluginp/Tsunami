@@ -28,12 +28,14 @@ WebPage::~WebPage() { }
 
 
 WebView::~WebView() {
+#ifdef QT_DEBUG
     if(webInspector_ != 0){
         webInspector_->close();
         webInspector_->deleteLater();
 //        webInspector_ = 0;
 //        delete webInspector_;
     }
+#endif
 }
 
 //APIObject *WebView::api() {

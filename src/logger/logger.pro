@@ -8,21 +8,30 @@ QT       -= gui
 
 TARGET = logger
 TEMPLATE = lib
-#CONFIG += staticlib
+DEFINES += TSUNAMI_MAKEDLL
 
 include(../../Tsunami.pri)
 
 CONFIG(debug, debug|release) {
     DESTDIR=$$SOLUTION_DIR/build/debug
-CONFIG+= lib
+    CONFIG+= lib
 }
 CONFIG(release,debug|release){
     DESTDIR=$$SOLUTION_DIR/build/release
-CONFIG+= staticlib
+    CONFIG+= staticlib
 }
 
 
-SOURCES += logger.cpp
 
-HEADERS += logger.h
+
+
+SOURCES += \
+    LogStream.cpp \
+    Log.cpp
+
+HEADERS += \
+    LogStream.h \
+    Log.h
+
+include(log4qt/log4qt.pri)
 

@@ -86,7 +86,8 @@ void ExtractorWindow::runExtraction() {
 }
 
 void ExtractorWindow::log(const QString &log) {
-    ui->extractionLogText->append( QString("%1").arg(log) );
+//    log::logDebug() << log;
+    ui->extractionLogText->append( log );
 }
 
 void ExtractorWindow::clickedCancel() {

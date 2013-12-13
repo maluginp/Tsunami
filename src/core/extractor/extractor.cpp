@@ -12,7 +12,7 @@
 #include "spice/ngspicesimulator.h"
 #include "ExtractorHookeJeeves.h"
 
-#include <logger.h>
+#include <Log.h>
 
 namespace tsunami{
 namespace core{
@@ -223,7 +223,6 @@ double Extractor::computeError(const db::MeasureModel *measure) {
         QMap<QString, double> simulated = simulate->find(measured);
 
         if(simulated.size() == 0){
-//            log::logTraceF("Not found simulated data for %s",measured);
             nNotFound++;
             continue;
         }

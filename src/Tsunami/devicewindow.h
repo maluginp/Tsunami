@@ -1,7 +1,6 @@
 #ifndef DEVICEWINDOW_H
 #define DEVICEWINDOW_H
 
-#include <QMainWindow>
 #include <dbstorage/DbStorages.h>
 #include <views/Views.h>
 #include "librarywindow.h"
@@ -9,6 +8,7 @@
 #include "extractorwindow.h"
 #include "AnalysisWindow.h"
 
+#include "defines.h"
 namespace Ui {
 class DeviceWindow;
 }
@@ -32,6 +32,7 @@ private:
     db::DeviceStorage* storage_;
     int deviceId_;
     db::DeviceModel* device_;
+    QTranslator* translator_;
 
 
     gui::ListTreeView* measureList_;
