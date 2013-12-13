@@ -1,9 +1,9 @@
 #include "devicewindow.h"
 #include "ui_devicewindow.h"
-#include "opendevicedialog.h"
-#include "prepareextractordialog.h"
+#include "OpenDeviceDialog.h"
+#include "PrepareExtractorDialog.h"
 #include "OpenMeasureDialog.h"
-#include "choiceanalysisform.h"
+#include "ChoiceAnalysisForm.h"
 #include <Log.h>
 
 #include "defines.h"
