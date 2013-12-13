@@ -1,17 +1,17 @@
 #ifndef DBSTORAGES_H
 #define DBSTORAGES_H
 
-#include "models/analysismodel.h"
-#include "models/devicemodel.h"
-#include "models/librarymodel.h"
-#include "models/measuremodel.h"
-#include "models/parametermodel.h"
+#include "models/AnalysisModel.h"
+#include "models/DeviceModel.h"
+#include "models/LibraryModel.h"
+#include "models/MeasureModel.h"
+#include "models/ParameterModel.h"
 
-#include "analysisstorage.h"
-#include "devicestorage.h"
-#include "measurestorage.h"
-#include "parameterstorage.h"
-#include "settingstorage.h"
+#include "AnalysisStorage.h"
+#include "DeviceStorage.h"
+#include "MeasureStorage.h"
+#include "ParameterStorage.h"
+#include "SettingStorage.h"
 
 
 #endif // DBSTORAGES_H

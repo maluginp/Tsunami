@@ -1,5 +1,5 @@
 #include "PlotItem.h"
-#include "tsunamiplot.h"
+#include "TsunamiPlot.h"
 
 PlotItem::PlotItem(TsunamiPlot *plotter, const QString &name, PlotItem::PlotType type) :
     plotter_(plotter),name_(name),type_(type)

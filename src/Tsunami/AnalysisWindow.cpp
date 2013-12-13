@@ -6,6 +6,7 @@
 #include "dbstorage/DbStorages.h"
 
 #include "webkit/APIObject.h"
+
 namespace tsunami{
 AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
     QMainWindow(parent),

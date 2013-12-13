@@ -1,6 +1,6 @@
 #include "ExtractorHookeJeeves.h"
-#include "models/librarymodel.h"
-#include "models/parametermodel.h"
+#include "models/LibraryModel.h"
+#include "models/ParameterModel.h"
 #include <QDebug>
 
 namespace tsunami{

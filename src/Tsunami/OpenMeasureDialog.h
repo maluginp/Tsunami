@@ -3,7 +3,8 @@
 
 #include <QDialog>
 #include <QModelIndex>
-#include "dbstorage/measurestorage.h"
+#include "dbstorage/MeasureStorage.h"
+#include "defines.h"
 
 namespace Ui {
 class OpenMeasureDialog;

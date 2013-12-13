@@ -2,7 +2,7 @@
 #define CREATELIBRARYDIALOG_H
 
 #include <QDialog>
-#include <dbstorage/parameterstorage.h>
+#include <dbstorage/ParameterStorage.h>
 namespace Ui {
 class CreateLibraryDialog;
 }

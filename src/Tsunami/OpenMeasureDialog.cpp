@@ -1,10 +1,8 @@
 #include "OpenMeasureDialog.h"
 #include "ui_OpenMeasureDialog.h"
+#include "models/MeasureModel.h"
+#include "views/ListItemView.h"
 
-#include "models/measuremodel.h"
-#include "views/listitemview.h"
-#include <QComboBox>
-#include <QLineEdit>
 namespace tsunami{
 
 OpenMeasureDialog::OpenMeasureDialog(int deviceId, QWidget *parent) :

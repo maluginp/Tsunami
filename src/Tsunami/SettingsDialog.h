@@ -2,7 +2,7 @@
 #define SETTINGSDIALOG_H
 
 #include <QDialog>
-#include "dbstorage/settingstorage.h"
+#include "dbstorage/SettingStorage.h"
 
 namespace Ui {
 class SettingsDialog;

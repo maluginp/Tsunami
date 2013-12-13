@@ -1,4 +1,4 @@
-#include "graphicitem.h"
+#include "GraphicItem.h"
 
 
 //GraphicItem::GraphicItem(const QString &key, TsunamiPlot *plotter) :

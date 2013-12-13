@@ -62,16 +62,16 @@ HEADERS  += \
     PlotDataWindow.h \
     PrepareExtractorDialog.h
 
-FORMS    += devicewindow.ui \
-    opendevicedialog.ui \
-    librarywindow.ui \
-    openlibrarydialog.ui \
-    prepareextractordialog.ui \
-    extractorwindow.ui \
-    plotdatawindow.ui \
-    choiceanalysisform.ui \
-    analysisform.ui \
-    addmeasureform.ui \
+FORMS    += DeviceWindow.ui \
+    OpenDeviceDialog.ui \
+    LibraryWindow.ui \
+    OpenLibraryDialog.ui \
+    PrepareExtractorDialog.ui \
+    ExtractorWindow.ui \
+    PlotDataWindow.ui \
+    ChoiceAnalysisForm.ui \
+    AnalysisForm.ui \
+    AddMeasureForm.ui \
     OpenMeasureDialog.ui \
     ShowTextDialog.ui \
     AnalysisWindow.ui \

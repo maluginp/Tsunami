@@ -1,8 +1,7 @@
 #include "SettingsDialog.h"
 #include "ui_SettingsDialog.h"
-#include <QLineEdit>
-#include <QComboBox>
-#include <QPushButton>
+#include "defines.h"
+
 namespace tsunami{
 SettingsDialog::SettingsDialog(QWidget *parent) :
     QDialog(parent),

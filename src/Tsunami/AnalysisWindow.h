@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <QModelIndex>
-#include "views/listitemview.h"
+#include "views/ListItemView.h"
 #include "webkit/APIObject.h"
 namespace Ui {
 class AnalysisWindow;

@@ -4,9 +4,9 @@
 #include <QtCore>
 #include <QtGui>
 
-#include "math/matrix.h"
-#include "math/vector.h"
-#include "components/source.h"
+#include "math/Matrix.h"
+#include "math/Vector.h"
+#include "components/Source.h"
 
 #if defined(TSUNAMI_MAKEDLL)
 # define TSUNAMI_EXPORT Q_DECL_EXPORT

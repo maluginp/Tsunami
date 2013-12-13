@@ -1,7 +1,7 @@
 #ifndef EXTRACTORHOOKEJEEVES_H
 #define EXTRACTORHOOKEJEEVES_H
 
-#include "extractor.h"
+#include "Extractor.h"
 namespace tsunami{
 namespace core{
 

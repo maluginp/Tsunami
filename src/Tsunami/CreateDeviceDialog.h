@@ -2,8 +2,8 @@
 #define CREATEDEVICEDIALOG_H
 
 #include <QDialog>
-#include "dbstorage/devicestorage.h"
-#include "models/devicemodel.h"
+#include "dbstorage/DeviceStorage.h"
+#include "models/DeviceModel.h"
 
 namespace Ui {
 class CreateDeviceDialog;

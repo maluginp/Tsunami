@@ -1,9 +1,9 @@
 #include "PlotExtractionDialog.h"
 #include "ui_PlotExtractionDialog.h"
 #include <QComboBox>
-#include "spice/circuit.h"
-#include "spice/ngspicesimulator.h"
-#include "spice/spicemodel.h"
+#include "spice/Circuit.h"
+#include "spice/NgSpiceSimulator.h"
+#include "spice/SpiceModel.h"
 namespace tsunami{
 
 PlotExtractionDialog::PlotExtractionDialog(int deviceId,

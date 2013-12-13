@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include "dbstorage/DbStorages.h"
-#include "spice/simulator.h"
+#include "spice/Simulator.h"
 
 namespace Ui {
 class PlotExtractionDialog;
