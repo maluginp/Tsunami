@@ -24,6 +24,8 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
         translator_ = 0;
     }
 
+    log::logDebug() << "Tsunami is started";
+
     ui->setupUi(this);
     storage_ = db::DeviceStorage::instance();
     ui->deviceImage->hide();

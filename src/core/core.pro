@@ -14,6 +14,7 @@ CONFIG(debug, debug|release) {
     CONFIG+= lib
     DESTDIR=$$SOLUTION_DIR/build/debug
     DEFINES  += TSUNAMI_MAKEDLL
+    DEFINES  += QCUSTOMPLOT_COMPILE_LIBRARY
 }
 CONFIG(release, debug|release) {
     CONFIG+= staticlib

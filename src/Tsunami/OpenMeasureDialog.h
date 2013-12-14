@@ -30,6 +30,7 @@ private:
     db::MeasureStorage* storage_;
 private slots:
     void clickedMeasureItem( const QModelIndex& index );
+    void clickedDoubleMeasureItem( const QModelIndex& index);
     void changeMeasureName(const QString& name);
     void changeMeasureAnalysis(int index);
 };

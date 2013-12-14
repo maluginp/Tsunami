@@ -2,7 +2,7 @@
 #include "ui_OpenMeasureDialog.h"
 #include "models/MeasureModel.h"
 #include "views/ListItemView.h"
-
+#include "Log.h"
 namespace tsunami{
 
 OpenMeasureDialog::OpenMeasureDialog(int deviceId, QWidget *parent) :
@@ -30,6 +30,8 @@ OpenMeasureDialog::OpenMeasureDialog(int deviceId, QWidget *parent) :
 
     connect(ui->measuresListView,SIGNAL(clicked(QModelIndex)),
             this,SLOT(clickedMeasureItem(QModelIndex)));
+    connect(ui->measuresListView,SIGNAL(doubleClicked(QModelIndex)),
+            this,SLOT(clickedDoubleMeasureItem(QModelIndex)));
     connect(ui->openButton,SIGNAL(clicked()),this,SLOT(accept()));
     connect(ui->closeButton,SIGNAL(clicked()),this,SLOT(reject()));
     connect(ui->measureNameLineEdit,SIGNAL(textChanged(QString)),this,SLOT(changeMeasureName(QString)));
@@ -53,6 +55,17 @@ int OpenMeasureDialog::getMeasureId(int deviceId, QWidget* parent =0 ) {
 
 void OpenMeasureDialog::clickedMeasureItem(const QModelIndex &index) {
     measureId_ = measuresView_->data( index, Qt::UserRole ).toInt();
+}
+
+void OpenMeasureDialog::clickedDoubleMeasureItem(const QModelIndex &index) {
+    measureId_ = measuresView_->data( index, Qt::UserRole ).toInt();
+    log::logTrace() << "Clicked double measure item";
+    if(measureId_ != -1){
+        log::logTrace() << "Measure item are opened. ID=" << measureId_;
+
+        accept();
+    }
+
 }
 
 void OpenMeasureDialog::changeMeasureName(const QString &name) {

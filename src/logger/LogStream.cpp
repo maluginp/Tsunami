@@ -28,7 +28,11 @@ void outputLog(const LogHeader &h, const QString &msg) {
     }
 
     Log4Qt::Logger* logger;
-    logger = Log4Qt::LogManager::instance()->logger(h.funcName);
+
+    QString preparedFuncName(h.funcName);
+    preparedFuncName.replace("tsunami::","").replace("__thiscall ","");
+
+    logger = Log4Qt::LogManager::instance()->logger(preparedFuncName);
 
 
     if (h.fileName) {
