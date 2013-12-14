@@ -19,7 +19,7 @@ struct ConstraintSpiceParameter{
 
 };
 
-class SpiceModel {
+class TSUNAMI_EXPORT SpiceModel {
 public:
     SpiceModel(const QString& name,DeviceType typeDevice = DEVICE_UNKNOWN);
     void setLibrary(db::LibraryModel* library);

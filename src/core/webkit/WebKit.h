@@ -2,7 +2,7 @@
 #define WEBKIT_H
 
 #include <QtWebKit>
-
+#include "defines.h"
 //class WebKit
 //{
 //public:
@@ -11,7 +11,7 @@
 //namespace tsunami{
 //class APIObject;
 //}
-class WebPage : public QWebPage{
+class TSUNAMI_EXPORT WebPage : public QWebPage{
     friend class WebView;
     Q_OBJECT
 public:
@@ -21,7 +21,7 @@ private:
 
 };
 
-class WebView : public QWebView{
+class TSUNAMI_EXPORT WebView : public QWebView{
 Q_OBJECT
 public:
     WebView(QWidget *parent = 0);

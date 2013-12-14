@@ -59,7 +59,7 @@ bool Dataset::load(AnalysisType type, DeviceType device, const QVariantMap &attr
 //    }
 
 //    return true;
-
+    return false;
 }
 
 void Dataset::load(const QList<int> &measureIds) {

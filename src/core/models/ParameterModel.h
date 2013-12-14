@@ -1,13 +1,12 @@
 #ifndef PARAMETERMODEL_H
 #define PARAMETERMODEL_H
 
-#include <QString>
-#include <QVariant>
+#include "defines.h"
 
 namespace tsunami {
 namespace db{
 
-class ParameterModel {
+class TSUNAMI_EXPORT ParameterModel {
 public:
     ParameterModel();
     ParameterModel(const ParameterModel& other);

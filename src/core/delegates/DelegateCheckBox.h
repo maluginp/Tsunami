@@ -1,10 +1,9 @@
 #ifndef DELEGATECHECKBOX_H
 #define DELEGATECHECKBOX_H
 
-#include <QtCore>
-#include <QtGui>
+#include "defines.h"
 
-class DelegateCheckBox : public QItemDelegate
+class TSUNAMI_EXPORT DelegateCheckBox : public QItemDelegate
 {
 public:
     DelegateCheckBox(QObject *parent);

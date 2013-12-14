@@ -1,9 +1,8 @@
 #ifndef KEYVALUEVIEW_H
 #define KEYVALUEVIEW_H
 
-#include <QAbstractItemModel>
-#include <QString>
 #include "defines.h"
+
 class QAbstractItemView;
 
 namespace tsunami {
@@ -47,7 +46,7 @@ struct KeyValuePair{
 
 };
 
-class  KeyValueView : public QAbstractItemModel {
+class TSUNAMI_EXPORT  KeyValueView : public QAbstractItemModel {
     Q_OBJECT
 public:
     explicit KeyValueView(QObject *parent = 0);

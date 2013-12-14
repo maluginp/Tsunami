@@ -13,7 +13,7 @@ typedef QList<db::MeasureModel*> ListMeasures;
 
 namespace core{
 
-class Dataset {
+class TSUNAMI_EXPORT Dataset {
 public:
     Dataset();
 

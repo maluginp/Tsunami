@@ -5,7 +5,7 @@
 
 #include "PlotItem.h"
 
-class TsunamiPlot : public QCustomPlot {
+class TSUNAMI_EXPORT TsunamiPlot : public QCustomPlot {
 public:
     explicit TsunamiPlot( QWidget *parent = 0 );
 

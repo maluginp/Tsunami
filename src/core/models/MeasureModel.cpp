@@ -132,13 +132,14 @@ QString MeasureModel::typeJson() const {
 QString MeasureModel::attrsJson() const {
     return QtJson::serializeStr(attributes_);
 }
-
+// FIXME: need implementation method
 Source MeasureModel::getSource(const QString &name) {
     QString modeChar = name[0].toLower();
 //    SourceMode mode = SOURCE_MODE_
 //    if(modeChar == "v"){
 
 //    }
+    return Source();
 }
 
 QString MeasureModel::headerJson() {

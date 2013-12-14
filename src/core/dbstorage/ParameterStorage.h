@@ -10,7 +10,7 @@ namespace db{
 
 #define CACHE_SIZE_PARAMETER_STORAGE 10
 
-class ParameterStorage : public DbStorage, public Singleton<ParameterStorage> {
+class TSUNAMI_EXPORT ParameterStorage : public DbStorage, public Singleton<ParameterStorage> {
     enum ParameterTable{
         TABLE_PARAMETERS,
         TABLE_LIBRARIES

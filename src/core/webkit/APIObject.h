@@ -4,7 +4,7 @@
 #include "defines.h"
 #include "models/analysismodel.h"
 
-class  APIObject : public QObject
+class TSUNAMI_EXPORT APIObject : public QObject
 {
     Q_OBJECT
 public:

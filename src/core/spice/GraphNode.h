@@ -5,7 +5,7 @@
 namespace tsunami{
 namespace spice{
 
-class GraphNode {
+class TSUNAMI_EXPORT GraphNode {
     friend class Circuit;
 public:
     GraphNode(const QString& name);

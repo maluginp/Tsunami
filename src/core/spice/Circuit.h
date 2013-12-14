@@ -21,7 +21,7 @@ typedef std::map<int,Device*> DeviceMap;
 typedef std::map<int,Terminal*> TerminalMap;
 typedef QList<SpiceModel*> ModelList;
 
-class  Circuit {
+class TSUNAMI_EXPORT Circuit {
 public:
     Circuit(const QString& name);
     ~Circuit();

@@ -6,7 +6,7 @@
 namespace tsunami{
 namespace gui {
 
-class  ListTreeViewItem{
+class  TSUNAMI_EXPORT ListTreeViewItem{
 public:
     ListTreeViewItem( QString name, QVariant value, ListTreeViewItem* parent = 0 );
     ~ListTreeViewItem();
@@ -29,7 +29,7 @@ private:
 
 };
 
-class ListTreeView : public QAbstractItemModel
+class TSUNAMI_EXPORT ListTreeView : public QAbstractItemModel
 {
     Q_OBJECT
 public:

@@ -10,7 +10,7 @@ namespace spice{
 
 class SpiceModel;
 class Terminal;
-class  Device : public GraphNode  {
+class TSUNAMI_EXPORT Device : public GraphNode  {
 public:
 
     Device( const QString& name,DeviceType device = DEVICE_UNKNOWN);

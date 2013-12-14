@@ -1,7 +1,6 @@
 #ifndef MEASUREMODEL_H
 #define MEASUREMODEL_H
 
-#include <QtCore>
 #include "defines.h"
 
 namespace tsunami {
@@ -44,7 +43,7 @@ struct MeasureHeader{
     }
 };
 
-class MeasureModel {
+class TSUNAMI_EXPORT MeasureModel {
 //friend class MeasureStorage;
 public:
     MeasureModel();

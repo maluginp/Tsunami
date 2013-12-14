@@ -1,6 +1,12 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
+#if defined(TSUNAMI_MAKEDLL)
+# define TSUNAMI_EXPORT Q_DECL_EXPORT
+#else
+# define TSUNAMI_EXPORT Q_DECL_IMPORT
+#endif
+
 #include <QtCore>
 #include <QtGui>
 
@@ -8,11 +14,6 @@
 #include "math/Vector.h"
 #include "components/Source.h"
 
-#if defined(TSUNAMI_MAKEDLL)
-# define TSUNAMI_EXPORT Q_DECL_EXPORT
-#else
-# define TSUNAMI_EXPORT Q_DECL_IMPORT
-#endif
 
 namespace tsunami{
 

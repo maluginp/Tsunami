@@ -8,13 +8,14 @@ QT       -= gui
 
 TARGET = logger
 TEMPLATE = lib
-DEFINES += TSUNAMI_MAKEDLL
 
 include(../../Tsunami.pri)
 
 CONFIG(debug, debug|release) {
     DESTDIR=$$SOLUTION_DIR/build/debug
     CONFIG+= lib
+    DEFINES  += TSUNAMI_MAKEDLL
+
 }
 CONFIG(release,debug|release){
     DESTDIR=$$SOLUTION_DIR/build/release

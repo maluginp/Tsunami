@@ -7,7 +7,7 @@
 namespace tsunami {
 namespace gui{
 
-class  ParameterItemView : public QAbstractItemModel
+class TSUNAMI_EXPORT ParameterItemView : public QAbstractItemModel
 {
     Q_OBJECT
 public:

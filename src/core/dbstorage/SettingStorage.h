@@ -6,7 +6,7 @@
 namespace tsunami{
 namespace db{
 
-class SettingStorage : public DbStorage, public Singleton<SettingStorage> {
+class TSUNAMI_EXPORT SettingStorage : public DbStorage, public Singleton<SettingStorage> {
     enum SettingTable{
         TABLE_SETTINGS
     };

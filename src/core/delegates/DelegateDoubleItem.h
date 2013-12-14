@@ -1,10 +1,8 @@
 #ifndef DELEGATEDOUBLEITEM_H
 #define DELEGATEDOUBLEITEM_H
-#include <QItemDelegate>
-#include <QTextEdit>
-#include <QKeyEvent>
+#include "defines.h"
 
-class DelegateDoubleItem : public QItemDelegate {
+class TSUNAMI_EXPORT DelegateDoubleItem : public QItemDelegate {
 public:
     DelegateDoubleItem(QObject *parent);
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,const QModelIndex &index) const;

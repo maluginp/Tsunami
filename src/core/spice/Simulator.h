@@ -13,7 +13,7 @@ namespace spice{
 class Circuit;
 class SpiceModel;
 
-class  Simulator {
+class TSUNAMI_EXPORT Simulator {
 public:
     Simulator();
     Simulator(const QString& path);

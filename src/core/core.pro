@@ -4,16 +4,21 @@
 #
 #-------------------------------------------------
 
+TARGET   =  core
+TEMPLATE = lib
+
+
 include(../../Tsunami.pri)
 
-TARGET   =  core
 CONFIG(debug, debug|release) {
     CONFIG+= lib
+    DESTDIR=$$SOLUTION_DIR/build/debug
+    DEFINES  += TSUNAMI_MAKEDLL
 }
 CONFIG(release, debug|release) {
     CONFIG+= staticlib
+    DESTDIR=$$SOLUTION_DIR/build/release
 }
-TEMPLATE = lib
 
 SOURCES += main.cpp \
     components/Json.cpp \
@@ -108,13 +113,3 @@ HEADERS += \
     views/ListTreeView.h \
     plots/PlotItem.h
 
-
-
-CONFIG(debug, debug|release) {
-    DESTDIR=$$SOLUTION_DIR/build/debug
-}
-CONFIG(release,debug|release){
-    DESTDIR=$$SOLUTION_DIR/build/release
-}
-
-FORMS +=

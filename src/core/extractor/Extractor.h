@@ -17,7 +17,7 @@ namespace core{
 class Dataset;
 class OptimizeBase;
 
-class Extractor : public QObject{
+class TSUNAMI_EXPORT Extractor : public QObject{
     Q_OBJECT
 public:
     enum Tolerance{

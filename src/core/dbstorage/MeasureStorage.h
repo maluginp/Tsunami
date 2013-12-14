@@ -10,7 +10,7 @@
 namespace tsunami{
 namespace db{
 
-class MeasureStorage : public DbStorage, public Singleton<MeasureStorage> {
+class TSUNAMI_EXPORT MeasureStorage : public DbStorage, public Singleton<MeasureStorage> {
 public:
     enum MeasureTable{
         TABLE_MEASURES

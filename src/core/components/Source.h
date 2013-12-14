@@ -1,6 +1,7 @@
 #ifndef SOURCE_H
 #define SOURCE_H
 #include <QVariantMap>
+#include "defines.h"
 namespace tsunami{
 
 enum SourceMethod{
@@ -20,7 +21,7 @@ enum SourceDirection{
     SOURCE_DIRECTION_OUTPUT
 };
 
-class Source{
+class TSUNAMI_EXPORT Source{
 public:
 
     Source();

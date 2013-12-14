@@ -8,7 +8,7 @@ namespace tsunami{
 namespace db{
 class DeviceModel;
 
-class DeviceStorage : public DbStorage, public Singleton<DeviceStorage> {
+class TSUNAMI_EXPORT DeviceStorage : public DbStorage, public Singleton<DeviceStorage> {
 enum DeviceTable{
     TABLE_DEVICES
 };

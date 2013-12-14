@@ -7,7 +7,7 @@ namespace tsunami{
 namespace db{
 class AnalysisModel;
 
-class AnalysisStorage : public DbStorage, public Singleton<AnalysisStorage> {
+class TSUNAMI_EXPORT  AnalysisStorage : public DbStorage, public Singleton<AnalysisStorage> {
 public:
     enum AnalysisTable{
         TABLE_ANALYSES

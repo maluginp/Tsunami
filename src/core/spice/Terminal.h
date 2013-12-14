@@ -6,7 +6,7 @@
 namespace tsunami{
 namespace spice{
 
-class Terminal : public GraphNode  {
+class TSUNAMI_EXPORT Terminal : public GraphNode  {
 public:
     Terminal(const QString& name);
 

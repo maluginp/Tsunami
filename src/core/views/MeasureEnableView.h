@@ -4,7 +4,7 @@
 namespace tsunami{
 namespace gui{
 
-struct  MeasureEnableViewItem{
+struct TSUNAMI_EXPORT  MeasureEnableViewItem{
     bool enable;
     int id;
     QString name;
@@ -26,7 +26,7 @@ struct  MeasureEnableViewItem{
     }
 };
 
-class  MeasureEnableView : public QAbstractItemModel {
+class TSUNAMI_EXPORT  MeasureEnableView : public QAbstractItemModel {
     Q_OBJECT
 public:
     explicit MeasureEnableView(int deviceId, const QString& analysis,QObject *parent = 0);

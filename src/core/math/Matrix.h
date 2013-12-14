@@ -10,7 +10,7 @@
 namespace tsunami{
 namespace core{
 
-export template<class T> class Vector;
+template<class T> class Vector;
 
 template<class T>
 class Matrix

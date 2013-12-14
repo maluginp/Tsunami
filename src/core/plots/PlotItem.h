@@ -1,16 +1,12 @@
 #ifndef PLOTITEM_H
 #define PLOTITEM_H
-
-#include <QPoint>
-#include <QVector>
-#include <QMap>
-#include <QString>
+#include "defines.h"
 #include <float.h>
 class TsunamiPlot;
 class QCPGraph;
 class QCPAxis;
 
-class PlotItem{
+class TSUNAMI_EXPORT PlotItem{
 public:
     enum PlotType{
         PLOT_MEASURE  = 1 << 0,

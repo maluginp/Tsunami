@@ -5,7 +5,7 @@
 namespace tsunami{
 namespace core{
 
-class ExtractorHookeJeeves : public Extractor {
+class TSUNAMI_EXPORT ExtractorHookeJeeves : public Extractor {
 public:
     enum Masks{
         HJ_DEC,

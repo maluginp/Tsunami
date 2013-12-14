@@ -1,14 +1,13 @@
 #ifndef LIBRARYMODEL_H
 #define LIBRARYMODEL_H
-#include <QDateTime>
-#include <QModelIndex>
+#include "defines.h"
 
 namespace tsunami {
 namespace db{
 
 class ParameterModel;
 
-class LibraryModel{
+class TSUNAMI_EXPORT LibraryModel{
 //    friend class ParameterStorage;
 public:
     LibraryModel();

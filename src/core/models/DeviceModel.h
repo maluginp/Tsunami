@@ -8,7 +8,7 @@
 namespace tsunami {
 namespace db{
 
-class DeviceModel {
+class TSUNAMI_EXPORT DeviceModel {
 public:
     DeviceModel(){}
     void id( int deviceId ) { deviceId_ = deviceId; }

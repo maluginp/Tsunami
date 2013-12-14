@@ -9,7 +9,7 @@ namespace db{
 }
 namespace gui{
 
-class  ParametersExtractionView : public QAbstractItemModel {
+class TSUNAMI_EXPORT ParametersExtractionView : public QAbstractItemModel {
 public:
     ParametersExtractionView(db::LibraryModel* library,QObject *parent=0);
     QModelIndex index(int row, int column,

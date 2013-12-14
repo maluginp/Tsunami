@@ -7,7 +7,7 @@
 namespace tsunami {
 namespace gui{
 
-class  MeasureItemView : public QAbstractItemModel {
+class TSUNAMI_EXPORT MeasureItemView : public QAbstractItemModel {
     Q_OBJECT
 public:
     explicit MeasureItemView(db::MeasureModel* model, QObject *parent = 0);

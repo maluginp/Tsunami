@@ -6,7 +6,7 @@
 namespace tsunami {
 namespace gui{
 
-class  ParameterPlotView : public QAbstractItemModel {
+class TSUNAMI_EXPORT ParameterPlotView : public QAbstractItemModel {
 Q_OBJECT
 public:
     explicit ParameterPlotView(QVariantMap parameters, QObject *parent = 0);

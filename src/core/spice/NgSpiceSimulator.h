@@ -7,7 +7,7 @@
 namespace tsunami{
 namespace spice{
 
-class  NgSpiceSimulator : public Simulator {
+class TSUNAMI_EXPORT NgSpiceSimulator : public Simulator {
 public:
     NgSpiceSimulator( const QString& path );
 

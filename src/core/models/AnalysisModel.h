@@ -5,7 +5,7 @@
 namespace tsunami{
 namespace db{
 
-class AnalysisModel{
+class TSUNAMI_EXPORT AnalysisModel{
 public:
     AnalysisModel();
 

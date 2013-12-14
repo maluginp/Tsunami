@@ -7,6 +7,8 @@
 #include <QtSql/QSqlError>
 #include <QtSql/QSqlRecord>
 
+#include "defines.h"
+
 namespace tsunami{
 namespace db{
 
@@ -27,7 +29,7 @@ struct TransactionCtx{
 
 };
 
-class DbStorage : public QObject {
+class TSUNAMI_EXPORT DbStorage : public QObject {
     Q_OBJECT
 public:
 
