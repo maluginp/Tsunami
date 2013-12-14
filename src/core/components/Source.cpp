@@ -1,6 +1,7 @@
 #include "source.h"
-#include <QStringList>
 
+#include <QStringList>
+#include "Log.h"
 namespace tsunami{
 Source::Source(const QString &_node, SourceMode _mode, SourceDirection _direction, SourceMethod _method, const QVariantMap &_configuration) {
     node_ = _node;
@@ -46,18 +47,27 @@ QString Source::name(bool upper) {
     return name;
 }
 
-QString Source::title() {
+QString Source::title( const QString& format ) const {
     QString title;
 
-    title = methodJson().toUpper();
+    if( format.isEmpty()){
+        title = methodJson().toUpper();
 
-    QStringList configs;
-    foreach(QString key, configuration_.keys()){
-        configs.append( QString("%1=%2").arg(key)
-                        .arg(configuration_.value(key).toString()) );
+        QStringList configs;
+        foreach(QString key, configuration_.keys()){
+            configs.append( QString("%1=%2").arg(key)
+                            .arg(configuration_.value(key).toString()) );
+        }
+
+        title = QString("%1 (%2)").arg(title).arg(configs.join(";"));
+    }else{
+        title = format;
+        title.replace( "%node", node() ).replace("%NODE", node().toUpper() );
+        title.replace( "%method", methodJson()).replace("%METHOD",methodJson().toUpper());
+        title.replace( "%mode", modeJson() ).replace("%MODE", modeJson().toUpper());
+        title.replace( "%dir", directionJson()).replace("%DIR",directionJson().toUpper());
+        log::logDebug() << "Format: " << format << " Result: " << title;
     }
-
-    title = QString("%1 (%2)").arg(title).arg(configs.join(";"));
     return title;
 }
 
@@ -65,7 +75,7 @@ void Source::addConfiguration(const QString &key, const QVariant &value) {
     configuration_.insert(key,value);
 }
 
-QString Source::directionJson() {
+QString Source::directionJson() const {
     if(direction_ == SOURCE_DIRECTION_INPUT){
         return "input";
     }else if(direction_ == SOURCE_DIRECTION_OUTPUT){

@@ -136,16 +136,16 @@ void AnalysisForm::openAnalysis(int analysisId) {
 
     // Preparing input
     sources = model_->sources( SOURCE_DIRECTION_INPUT );
-
+    // FIXME: костыль
     itemsInputView_->clear();
     foreach(Source source, sources){
-        itemsInputView_->addItem( source.title(), source.node()  );
+        itemsInputView_->addItem( source.title(""), source.node()  );
     }
 
     itemsOutputView_->clear();
     sources = model_->sources( SOURCE_DIRECTION_OUTPUT );
     foreach(Source source, sources){
-        itemsOutputView_->addItem( source.title(), source.node() );
+        itemsOutputView_->addItem( source.title(""), source.node() );
     }
 
 

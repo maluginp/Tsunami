@@ -8,6 +8,9 @@
 #include <QTableView>
 #include "delegates/DelegateDoubleItem.h"
 #include <QFileDialog>
+
+#include "Log.h"
+
 namespace tsunami{
 
 const int addMeasureForm::nPairs_ = 6;

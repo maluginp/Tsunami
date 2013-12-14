@@ -82,9 +82,19 @@ void AnalysisWindow::clickedOpenAnalysis() {
 }
 
 void AnalysisWindow::clickedSaveAnalysis(const QList<tsunami::Source> &sources) {
+
+    QString analysisName = ui->analysisNameLineEdit->text();
+    if(analysisName.isEmpty()){
+        return;
+    }
+    if(storage_->exists( deviceId_, analysisName )){
+        // TODO: show message if analysis exists
+        return;
+    }
+
     currentAnalysis_->sources( sources );
 
-    currentAnalysis_->name( ui->analysisNameLineEdit->text() );
+    currentAnalysis_->name( analysisName );
     currentAnalysis_->type( ui->analysisTypeComboBox->itemData( ui->analysisTypeComboBox->currentIndex() ).toString() );
     currentAnalysis_->enable( ui->analysisEnableCheckBox->checkState() == Qt::Checked );
 
@@ -97,7 +107,12 @@ void AnalysisWindow::clickedCreateAnalysis() {
     currentAnalysis_ = new db::AnalysisModel();
     currentAnalysis_->deviceId( deviceId_ );
 
+    ui->analysisNameLineEdit->setText("");
+    ui->analysisTypeComboBox->setCurrentIndex(0);
+    ui->analysisEnableCheckBox->setCheckState(Qt::Unchecked);
+
     api_->openAnalysis( currentAnalysis_ );
+
 }
 
 void AnalysisWindow::selectedAnalysisItem(const QModelIndex &index) {

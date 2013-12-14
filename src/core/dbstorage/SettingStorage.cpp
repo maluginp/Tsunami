@@ -60,7 +60,11 @@ void SettingStorage::testData() {
     saveValue( "optimize/tolerance/function", 1e-14);
 
 //#ifdef Q_MAC_OS
+#ifdef Q_WS_WIN
+    saveValue( "spice/ngspice/path", QString("%1\%2").arg(qApp->applicationDirPath(),"ngspice\bin\ngpspice.exe") );
+#else
     saveValue( "spice/ngspice/path", "/usr/local/bin/ngspice");
+#endif
     saveValue( "optimize/method", "hookejeeves" );
 //    saveValue( "optimize/hookejeeves/max_iteration", 100);
 //    saveValue( "optimize/hookejeeves/tol" )

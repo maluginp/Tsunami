@@ -21,6 +21,8 @@ CONFIG(release, debug|release) {
     DESTDIR=$$SOLUTION_DIR/build/release
 }
 
+LIBS += -L$$DESTDIR -llogger
+
 SOURCES += main.cpp \
     components/Json.cpp \
     models/StrategyModel.cpp \

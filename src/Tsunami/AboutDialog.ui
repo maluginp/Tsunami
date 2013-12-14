@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>304</width>
+    <width>292</width>
     <height>179</height>
    </rect>
   </property>
@@ -16,29 +16,33 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>20</y>
-     <width>181</width>
-     <height>51</height>
+     <x>10</x>
+     <y>40</y>
+     <width>271</width>
+     <height>61</height>
     </rect>
    </property>
    <property name="text">
-    <string>Tsunami
-Экстрактор параметорв</string>
+    <string>Программа применяется для задач связанных с экстракцией SPICE-параметров из компактных SPICE-моделей.
+Разработана на Qt4 </string>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>70</y>
-     <width>181</width>
-     <height>51</height>
+     <x>10</x>
+     <y>110</y>
+     <width>131</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="text">
     <string>Разработчик
-Малюгин Платон</string>
+Малюгин Платон
+malugin.p@gmail.com</string>
    </property>
   </widget>
   <widget class="QPushButton" name="closeButton">
@@ -52,6 +56,30 @@
    </property>
    <property name="text">
     <string>Закрыть</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>231</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Tahoma</family>
+     <pointsize>16</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Tsunami</string>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
    </property>
   </widget>
  </widget>

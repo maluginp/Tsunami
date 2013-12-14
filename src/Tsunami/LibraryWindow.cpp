@@ -36,6 +36,7 @@ LibraryWindow::LibraryWindow(int deviceId,QWidget *parent) :
     //    connect(ui->libraryParameterComboBox,SIGNAL(editTextChanged(QString)),
 //            this,SLOT()
 
+    clickedCloseLibrary();
 }
 
 LibraryWindow::~LibraryWindow() {

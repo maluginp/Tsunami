@@ -32,6 +32,30 @@ QMap<int, QString> AnalysisStorage::listAnalysis(int deviceId) {
     return listAnalysisImpl(deviceId);
 }
 
+bool AnalysisStorage::exists(int deviceId, const QString &name) {
+    QString sqlQuery;
+    sqlQuery = sql( "SELECT id FROM %1 WHERE name=:name AND device_id=:device_id").arg(TABLE_NAME_ANALYSES);
+
+     QSqlQuery q( sqlQuery, db() );
+     q.bindValue(":name", name);
+     q.bindValue(":device_id",deviceId);
+     if(!q.exec()){
+         setLastError( q.lastError().text() );
+         return true;
+     }
+
+     int count = 0;
+     while(q.next()){
+         count++;
+     }
+
+     if(count == 0){
+         return false;
+     }
+
+     return true;
+}
+
 QString AnalysisStorage::connectionName() const {
     return CONNECTION_NAME_ANALYSIS;
 }

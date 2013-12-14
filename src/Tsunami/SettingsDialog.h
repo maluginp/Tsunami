@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "dbstorage/SettingStorage.h"
+#include "defines.h"
 
 namespace Ui {
 class SettingsDialog;
@@ -28,6 +29,8 @@ private:
 private slots:
     void clickedApplyButton();
     void clickedSaveButton();
+    void clickedSetSimulatorPathButton();
+    void changedSimulatorPath(const QString& pathSimulator);
 };
 }
 #endif // SETTINGSDIALOG_H

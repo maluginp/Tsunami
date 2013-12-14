@@ -1,6 +1,6 @@
 #include "DeviceStorage.h"
 #include "models/DeviceModel.h"
-
+#include "Log.h"
 namespace tsunami{
 namespace db{
 
@@ -9,6 +9,7 @@ QString DeviceStorage::CONNECTION_NAME_DEVICES = QString("connection_devices");
 
 DeviceStorage::DeviceStorage() : DbStorage(0){
     if(!tableExists(TABLE_NAME_DEVICES)){
+        log::logDebug() << "Table isn't existed";
         createTable(TABLE_DEVICES);
     }
 }
@@ -59,8 +60,7 @@ QMap<QString, int> DeviceStorage::listDevices(bool onlyEnabled) {
 
 }
 
-bool DeviceStorage::exists(const QString &column, const QVariant &value) {
-
+bool DeviceStorage::exists(const QString &column, const QVariant &value) {    
     QString sqlQuery;
     sqlQuery = sql( "SELECT id FROM %1 WHERE %2=:value").arg(TABLE_NAME_DEVICES).
             arg(column);
@@ -109,6 +109,8 @@ int DeviceStorage::lastInsertId(const QString &table) {
 }
 
 void DeviceStorage::testData() {
+//    log::logDebug() << "Test data is "
+
     DeviceModel* device = new DeviceModel();
 
     device->id(1);
@@ -145,8 +147,11 @@ bool DeviceStorage::createTable(DeviceStorage::DeviceTable table) {
     QSqlQuery q(sqlQuery,db());
     if( !q.exec() ){
         setLastError( q.lastError().text() );
+        log::logFatal() << "Sql error:" << q.lastError().text();
         return false;
     }
+
+    log::logTrace() << "Table " << TABLE_NAME_DEVICES << " is created";
 
 //#ifdef QT_DEBUG
     testData();
@@ -157,13 +162,16 @@ bool DeviceStorage::createTable(DeviceStorage::DeviceTable table) {
 
 DeviceModel *DeviceStorage::openDeviceImpl(int deviceId) {
     QString sqlQuery;
+
+    log::logTrace() << "Open device " << deviceId;
+
     sqlQuery = sql( "SELECT * FROM %1 WHERE id=:id").arg(TABLE_NAME_DEVICES);
     QSqlQuery q(sqlQuery,db());
     q.bindValue(":id",deviceId);
 
     if( !q.exec() || !q.next() ){
         setLastError( q.lastError().text() );
-        Q_ASSERT(false);
+        log::logError() << "Sql error:" << q.lastError().text();
         return NULL;
     }
 
@@ -186,6 +194,7 @@ bool DeviceStorage::saveDeviceImpl(DeviceModel *device) {
     int deviceId = device->id();
 
     if(!beginTransaction()){
+        log::logError() << "Can not begin transaction";
         return false;
     }
 
@@ -198,6 +207,7 @@ bool DeviceStorage::saveDeviceImpl(DeviceModel *device) {
 
     if(device->id() == -1){
         deviceId = lastInsertId(TABLE_NAME_DEVICES)+1;
+        log::logDebug() << "Create new device with ID"<<deviceId;
     }
 
     q.bindValue(":id",deviceId);
@@ -210,11 +220,13 @@ bool DeviceStorage::saveDeviceImpl(DeviceModel *device) {
 
     if(!q.exec()){
         setLastError( q.lastError().text() );
+        log::logError() << "Sql error: " << q.lastError().text() << ".  Rollback";
         rollback();
         return false;
     }
 
     if(!endTransaction()){
+        log::logError() << "Can not end transaction. Rollback";
         rollback();
         return false;
     }
@@ -227,7 +239,10 @@ bool DeviceStorage::saveDeviceImpl(DeviceModel *device) {
 bool DeviceStorage::removeDeviceImpl(int deviceId) {
     QString sqlQuery;
 
+    log::logDebug() << "Remove device " << deviceId;
+
     if(!beginTransaction()){
+        log::logError() << "Can not begin transaction";
         return false;
     }
 
@@ -241,15 +256,18 @@ bool DeviceStorage::removeDeviceImpl(int deviceId) {
 
     if(!q.exec()){
         setLastError( q.lastError().text() );
+        log::logError() << "Sql error: " << q.lastError().text() << ". Rollback";
         rollback();
         return false;
     }
 
     if(!endTransaction()){
+        log::logError() << "Can not end transaction. Rollback";
         rollback();
         return false;
     }
 
+    log::logDebug() << "Device is removed";
     return true;
 
 }

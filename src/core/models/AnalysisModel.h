@@ -25,16 +25,16 @@ public:
 
     const int& id() { return analysisId_; }
     const AnalysisType& type() { return type_; }
-    QString typeJson();
+    QString typeJson() const;
     const QList<Source>& sources() const { return sources_; }
-    QList<Source> sources(SourceDirection direction);
+    QList<Source> sources(SourceDirection direction) const;
 
 
-    const QString& name() { return name_; }
-    const QDateTime& createAt() { return createdAt_; }
-    const QDateTime& changeAt() { return changedAt_; }
-    const bool& enable() { return enable_; }
-    const int& deviceId() { return deviceId_; }
+    const QString& name() const { return name_; }
+    const QDateTime& createAt() const { return createdAt_; }
+    const QDateTime& changeAt() const { return changedAt_; }
+    const bool& enable() const { return enable_; }
+    const int& deviceId() const { return deviceId_; }
 
     QString sourcesJson() const;
     bool sourceExists( const QString& node, SourceDirection direction  );

@@ -27,6 +27,7 @@ public:
     ~ExtractorWindow();
 
 private:
+    bool running_;
     int libraryId_;
     QList<int> measures_;
     QString optimize_;
@@ -42,6 +43,7 @@ private slots:
     void log( const QString& log );
     void clickedCancel();
     void clickedShowPlotButton();
+    void clickedCloseButton();
 signals:
     void stop();
 };

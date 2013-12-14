@@ -31,6 +31,8 @@ public:
 
     QStringList nodes();
 
+    static QString modelNameToTitle(const QString& modelName);
+
 private:
 
     int deviceId_;

@@ -50,6 +50,7 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
     connect( ui->actionDeviceOpen, SIGNAL(triggered()), this, SLOT(clickedOpenDeviceAction()) );
     connect( ui->actionEditorLibrary,SIGNAL(triggered()),this,SLOT(clickedParametersEditor()));
     connect( ui->actionExtractionRun,SIGNAL(triggered()),this,SLOT(clickedExtractionRunAction()));
+    connect( ui->runExtractButton,SIGNAL(clicked()),this,SLOT(clickedExtractionRunAction()));
     connect( ui->actionEditMeasure,SIGNAL(triggered()),this,SLOT(clickedMeasureEditor()));
     connect( ui->actionAddMeasure,SIGNAL(triggered()),this,SLOT(clickedMeasureAdd()));
     connect( ui->actionDeviceClose,SIGNAL(triggered()),this,SLOT(clickedDeviceClose()));
@@ -67,6 +68,11 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
 
     statusBar()->showMessage(tr("Tsunami ver %1").arg( TSUNAMI_VERSION ));
 
+#ifdef QT_DEBUG
+    openDevice(1);
+#else
+    clickedDeviceClose();
+#endif
 }
 
 DeviceWindow::~DeviceWindow() {
@@ -88,7 +94,7 @@ void DeviceWindow::openDevice(int deviceId) {
 
     updateDeviceWindow();
 
-    ui->deviceModelText->setText( device_->model() );
+    ui->deviceModelText->setText(  db::DeviceModel::modelNameToTitle( device_->model() ) );
     setWindowTitle( tr("%1 - Devices Manager").arg(device_->name()) );
 
     QPixmap deviceImage;
@@ -160,6 +166,7 @@ void DeviceWindow::clickedOpenDeviceAction() {
 
 void DeviceWindow::clickedParametersEditor() {
     delete libraryWindow_;
+    libraryWindow_ = 0;
     libraryWindow_ = new LibraryWindow(deviceId_);
     libraryWindow_->show();
 }
@@ -216,6 +223,10 @@ void DeviceWindow::clickedAnalysisAdd() {
 
 void DeviceWindow::clickedLibraryAdd() {
     clickedParametersEditor();
+
+    if(libraryWindow_  != 0){
+        libraryWindow_->openLibrary(-1);
+    }
 }
 
 void DeviceWindow::clickedDeviceClose() {
@@ -223,9 +234,9 @@ void DeviceWindow::clickedDeviceClose() {
     if(device_ != 0){
         device_->changeAt( QDateTime::currentDateTime() );
         if(!storage_->saveDevice( device_ )){
-            Q_ASSERT(false);
+            log::logError() << "Can not save device";
         }
-        deviceId_;
+        deviceId_ = -1;
         delete device_;
         measureList_->clear();
         libraryList_->clear();

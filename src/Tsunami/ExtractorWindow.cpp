@@ -11,6 +11,7 @@ namespace tsunami{
 ExtractorWindow::ExtractorWindow(DeviceType type, int libraryId, QList<int> measures, const QString& optimize,
                                  QWidget *parent) :
     QMainWindow(parent),
+    running_(false),
     ui(new Ui::ExtractorWindow) {
     ui->setupUi(this);
 
@@ -34,6 +35,7 @@ ExtractorWindow::ExtractorWindow(DeviceType type, int libraryId, QList<int> meas
     connect(ui->runButton,SIGNAL(clicked()),this,SLOT(runExtraction()));
     connect(ui->stopButton,SIGNAL(clicked()),this,SLOT(clickedStop()));
     connect(ui->showPlotButton,SIGNAL(clicked()),this,SLOT(clickedShowPlotButton()));
+    connect(ui->closeButton,SIGNAL(clicked()),this,SLOT(clickedCloseButton()));
 }
 
 
@@ -42,6 +44,7 @@ ExtractorWindow::~ExtractorWindow() {
 }
 
 void ExtractorWindow::finishExtraction() {
+    running_ = false;
     ui->runButton->setEnabled(true);
     ui->stopButton->setEnabled(false);
     ui->saveParametersButton->setEnabled(true);
@@ -78,6 +81,7 @@ void ExtractorWindow::runExtraction() {
     connect(extractor,SIGNAL(finished()),this,SLOT(finishExtraction()));
     connect(extractor,SIGNAL(log(QString)),this,SLOT(log(QString)),Qt::QueuedConnection);
 
+    running_ = true;
     thread->start();
 
 
@@ -99,6 +103,13 @@ void ExtractorWindow::clickedShowPlotButton(){
     PlotExtractionDialog dialog( library_->deviceId(), library_, measures_ );
     dialog.exec();
 
+}
+// FIXME: undefined behaviour
+void ExtractorWindow::clickedCloseButton() {
+    if(running_){
+        emit stop();
+    }
+    close();
 }
 
 }

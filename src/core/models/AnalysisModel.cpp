@@ -84,7 +84,7 @@ void AnalysisModel::sourcesJson(const QString &json){
 
 }
 
-QString AnalysisModel::typeJson() {
+QString AnalysisModel::typeJson() const {
     switch( type_ ){
     case ANALYSIS_DC: return QString("dc");
     case ANALYSIS_AC: return QString("ac");
@@ -96,7 +96,7 @@ QString AnalysisModel::typeJson() {
     return QString("unknown");
 }
 
-QList<Source> AnalysisModel::sources(SourceDirection direction) {
+QList<Source> AnalysisModel::sources(SourceDirection direction) const{
     QList<Source> sources;
     int nSources = sources_.size();
     for(int i=0; i < nSources; ++i){

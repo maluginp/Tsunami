@@ -26,7 +26,7 @@ ChoiceAnalysisForm::ChoiceAnalysisForm(int deviceId, QWidget *parent) :
 
     connect(ui->addButton,SIGNAL(clicked()),this,SLOT(clickedAddButton()));
     connect(ui->editButton,SIGNAL(clicked()),this,SLOT(clickedEditButton()));
-    connect(ui->openButton,SIGNAL(clicked()),this,SLOT(accept()));
+    connect(ui->openButton,SIGNAL(clicked()),this,SLOT(clickedOpenButton()));
     connect(ui->closeButton,SIGNAL(clicked()),this,SLOT(reject()));
 
 }
@@ -69,6 +69,16 @@ void ChoiceAnalysisForm::clickedEditButton() {
     Q_ASSERT(false);
 }
 
+void ChoiceAnalysisForm::clickedOpenButton() {
+    if( currentModel_ != 0 ){
+        accept();
+    }else{
+        QMessageBox::information(this, windowTitle(), tr("Analysis didn't choice"), QMessageBox::Ok );
+    }
+
+    return;
+}
+
 void ChoiceAnalysisForm::updateList() {
     QMap<int,QString> list = storage_->listAnalysis(deviceId_);
 
@@ -80,23 +90,19 @@ void ChoiceAnalysisForm::updateList() {
 
 }
 
-void ChoiceAnalysisForm::showAnalysisDescription(db::AnalysisModel *model) {
+void ChoiceAnalysisForm::showAnalysisDescription(const db::AnalysisModel *model) {
 
     QString desc;
+    desc.append( tr("<b>Name:</b> %1<br/>").arg(model->name()) );
+    QString typeAnalysis = model->typeJson();
 
-    desc.append( QString("<b>Name:</b> %1<br/>").arg(model->name()) );
+    desc.append( tr("<b>Analysis type:</b> %1<br/>").arg( typeAnalysis.toUpper() ) );
 
-    QString typeAnalysis;
-    switch(model->type()){
-    case ANALYSIS_DC:
-        typeAnalysis = "DC"; break;
-    case ANALYSIS_AC:
-        typeAnalysis = "AC"; break;
-    case ANALYSIS_TRAN:
-        typeAnalysis = "TRAN"; break;
+    desc.append( tr("<b>Sources</b><br/>") );
+    QList<Source> sources = model->sources( SOURCE_DIRECTION_INPUT );
+    foreach(Source source, sources){
+        desc.append( source.title("%MODE %NODE %METHOD<br/>"));
     }
-
-    desc.append( QString("<b>Analysis type:</b> %1<br/>").arg(typeAnalysis) );
 
     ui->descriptionLabel->setText( desc );
 

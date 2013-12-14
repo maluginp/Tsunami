@@ -225,6 +225,18 @@ inline LogStream operator<<(LogStream debug, const QMap<aKey, aT> &map)
     return debug.space();
 }
 
+template <class aKey>
+inline LogStream operator<<(LogStream debug, const QMap<aKey, QVariant> &map)
+{
+    debug.nospace() << "QMap(";
+    for (typename QMap<aKey, QVariant>::const_iterator it = map.constBegin();
+         it != map.constEnd(); ++it) {
+        debug << '(' << it.key() << ", " << it.value().toString() << ')';
+    }
+    debug << ')';
+    return debug.space();
+}
+
 template <class aKey, class aT>
 inline LogStream operator<<(LogStream debug, const QHash<aKey, aT> &hash)
 {

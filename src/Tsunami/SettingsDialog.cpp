@@ -1,7 +1,7 @@
 #include "SettingsDialog.h"
 #include "ui_SettingsDialog.h"
-#include "defines.h"
 
+#include "Log.h"
 namespace tsunami{
 SettingsDialog::SettingsDialog(QWidget *parent) :
     QDialog(parent),
@@ -9,11 +9,15 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     ui->setupUi(this);
 
     storage_ = db::SettingStorage::instance();
-    openSettings();
+
 
     connect(ui->closeButton,SIGNAL(clicked()),this,SLOT(reject()));
     connect(ui->applyButton,SIGNAL(clicked()),this,SLOT(clickedApplyButton()));
     connect(ui->saveButton,SIGNAL(clicked()),this,SLOT(clickedSaveButton()));
+    connect(ui->spicePathLineEdit,SIGNAL(textChanged(QString)),this,SLOT(changedSimulatorPath(QString)));
+    connect(ui->setSimulatorPathButton,SIGNAL(clicked()),this,SLOT(clickedSetSimulatorPathButton()));
+
+    openSettings();
 }
 
 SettingsDialog::~SettingsDialog()
@@ -28,6 +32,7 @@ void SettingsDialog::saveSettings() {
     storage_->saveValue("optimize/max_iteration", ui->optimizeMaxIterationsLineEdit->text().toInt());
     storage_->saveValue("optimize/tolerance/function",ui->optimizeToleranceFunctionLineEdit->text().toDouble());
 
+    ui->settingSaveStateText->setText( tr("Settings saved.") );
 
 }
 
@@ -43,6 +48,7 @@ void SettingsDialog::openSettings() {
     ui->optimizeToleranceFunctionLineEdit->setText( storage_->value("optimize/tolerance/function").toString() );
 
 
+
 }
 
 void SettingsDialog::clickedApplyButton() {
@@ -52,6 +58,27 @@ void SettingsDialog::clickedApplyButton() {
 void SettingsDialog::clickedSaveButton() {
     saveSettings();
     accept();
+
+}
+
+void SettingsDialog::clickedSetSimulatorPathButton() {
+   QString pathSimulator =  QFileDialog::getOpenFileName( this, tr("Simulator path"), qApp->applicationDirPath(), QString("*.exe") );
+
+
+   if(!pathSimulator.isEmpty()){
+       log::logTrace() << "Path simulator is setted to " << pathSimulator;
+       ui->spicePathLineEdit->setText( pathSimulator );
+   }
+}
+
+void SettingsDialog::changedSimulatorPath(const QString &pathSimulator) {
+
+    QPalette palette;
+    palette.setColor( QPalette::Base, Qt::red );
+    if(QFile::exists(pathSimulator)){
+        palette.setColor( QPalette::Base, Qt::green );
+    }
+    ui->spicePathLineEdit->setPalette(  palette );
 
 }
 }

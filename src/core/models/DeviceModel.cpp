@@ -76,5 +76,14 @@ QStringList DeviceModel::nodes() {
     return QStringList();
 }
 
+// FIXME: Add translations
+QString DeviceModel::modelNameToTitle(const QString &modelName) {
+    if(modelName == "gummelpoon"){
+        return QString("Gummel-Poon");
+    }
+
+    return QString();
+}
+
 }
 }

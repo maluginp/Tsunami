@@ -38,7 +38,7 @@ public:
     bool hasConfiguration( const QString& key ) { return configuration_.contains(key); }
     void addConfiguration(const QString& key, const QVariant& value);
 
-    QString directionJson();
+    QString directionJson() const;
 
     void node(const QString& node) { node_ = node; }
     void mode(SourceMode mode) { mode_ = mode; }
@@ -60,7 +60,7 @@ public:
     Source& operator=(const Source& other);
 
     QString name( bool upper = false );
-    QString title();
+    QString title( const QString& format = QString() ) const;
 private:
     SourceMode mode_;
     SourceMethod method_;

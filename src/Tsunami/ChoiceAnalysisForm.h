@@ -26,7 +26,7 @@ public:
 
 private:
     void updateList();
-    void showAnalysisDescription(  db::AnalysisModel* model );
+    void showAnalysisDescription( const db::AnalysisModel* model );
 
     db::AnalysisModel* currentModel_;
     Ui::ChoiceAnalysisForm *ui;
@@ -38,6 +38,7 @@ private slots:
     void clickedAnalysis( const QModelIndex& index );
     void clickedAddButton();
     void clickedEditButton();
+    void clickedOpenButton();
 };
 
 }

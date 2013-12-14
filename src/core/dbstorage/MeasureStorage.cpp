@@ -1,5 +1,5 @@
 #include "MeasureStorage.h"
-
+#include "Log.h"
 namespace tsunami{
 namespace db{
 
