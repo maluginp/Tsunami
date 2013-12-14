@@ -50,6 +50,8 @@ int MeasureStorage::lastInsertId(const QString &table) {
 }
 
 void MeasureStorage::testData() {
+    log::logTrace() << "Test data is added to database";
+
     MeasureModel* model = new MeasureModel();
     model->id(1);
     model->deviceId(1);
@@ -113,7 +115,7 @@ void MeasureStorage::testData() {
     model->userId(1);
 
     if(!saveMeasure( model )){
-        // Error
+        log::logError() << "Measure save is failed";
     }
 
     delete model;
@@ -137,6 +139,7 @@ QList<MeasureModel *> MeasureStorage::getMeasuresByDeviceIdImpl(int deviceId) {
 
     if(!q.exec()){
         setLastError( q.lastError().text() );
+        log::logError() << "Sql error:" << q.lastError().text();
         return QList<MeasureModel*>();
     }
 
@@ -179,6 +182,7 @@ MeasureModel *MeasureStorage::openMeasureImpl(int measureId) {
     q.bindValue(":id",measureId);
 
     if(!q.exec() || !q.next()){
+        log::logError() << "Sql error:" << q.lastError().text();
         setLastError( q.lastError().text() );
         return NULL;
     }
@@ -256,6 +260,7 @@ bool MeasureStorage::saveMeasureImpl(MeasureModel *measure) {
 
     int measureId = measure->id();
     if(!beginTransaction()){
+        log::logError() << "Can not begin transaction";
         return false;
     }
 
@@ -263,7 +268,7 @@ bool MeasureStorage::saveMeasureImpl(MeasureModel *measure) {
 
     if(measureId == -1){
         measureId = lastInsertId(TABLE_NAME_MEASURES) + 1;
-
+        log::logTrace() << "Create new measure with ID" << measureId;
     }
     q.bindValue(":id", measureId);
     q.bindValue(":device_id", measure->deviceId());
@@ -281,12 +286,13 @@ bool MeasureStorage::saveMeasureImpl(MeasureModel *measure) {
 
     if(!q.exec()){
         setLastError( q.lastError().text() );
+        log::logError() << "Sql error:" << q.lastError().text() << ". Rollback";
         rollback();
         return false;
     }
 
     if(!endTransaction()){
-////        roolback();
+        log::logError() << "Can not end transaction";
         return false;
     }
 
@@ -305,6 +311,8 @@ MeasureModel *MeasureStorage::openMeasure(int measureId) {
 QList<MeasureModel*> MeasureStorage::findMeasures(const QVariantMap &criteria) {
     QList<MeasureModel*> measures;
 
+    log::logTrace() << "Looking for measures with criteria" << criteria;
+
     QString sqlQuery = sql("SELECT * FROM %1 WHERE ").arg(TABLE_NAME_MEASURES);
     QStringList criteriaSql;
 
@@ -322,6 +330,7 @@ QList<MeasureModel*> MeasureStorage::findMeasures(const QVariantMap &criteria) {
     }
 
     if(criteriaSql.isEmpty()){
+        log::logWarning() << "Criteria is empty";
         return measures;
     }
     sqlQuery.append( criteriaSql.join(" AND ") );

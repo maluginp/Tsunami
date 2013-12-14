@@ -27,6 +27,7 @@ addMeasureForm::addMeasureForm(addMeasureForm::Action action, int id, QWidget *p
 
     ui->setupUi( this );
 
+
     headerView_ = new gui::KeyValueView();
     attributesView_ = new gui::KeyValueView();
     measureView_ = NULL;
@@ -150,6 +151,8 @@ void addMeasureForm::showSourcesDescription() {
 void addMeasureForm::openAnalysis(int analysisId) {
     analysisId_ = analysisId;
 
+    log::logTrace() << "Open analysis: " << analysisId;
+
     headerView_->setPairs( headerPairs_, nPairs_ );
 
     db::AnalysisStorage* storage = db::AnalysisStorage::instance();
@@ -178,12 +181,13 @@ void addMeasureForm::openAnalysis(int analysisId) {
 }
 
 void addMeasureForm::openMeasure(int measureId) {
-
+    log::logTrace() << "Open measure:" << measureId;
     measureStorage_ = db::MeasureStorage::instance();
     measure_ = measureStorage_->openMeasure( measureId );
 
     if(measure_ == 0){
-        Q_ASSERT(false);
+        log::logError() << "Opening measure is failed";
+        return;
     }
 
     measureView_ = new gui::MeasureItemView( measure_ );
