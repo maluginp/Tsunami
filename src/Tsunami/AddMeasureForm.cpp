@@ -1,13 +1,8 @@
 #include "AddMeasureForm.h"
 #include "ui_AddMeasureForm.h"
-#include <views/KeyValueView.h>
-#include <views/MeasureItemView.h>
-#include "dbstorage/MeasureStorage.h"
-#include "dbstorage/AnalysisStorage.h"
-#include "models/AnalysisModel.h"
-#include <QTableView>
+#include "views/Views.h"
+#include "dbstorage/DbStorages.h"
 #include "delegates/DelegateDoubleItem.h"
-#include <QFileDialog>
 
 #include "Log.h"
 
@@ -258,20 +253,43 @@ void addMeasureForm::clickedExportButton() {
 }
 
 void addMeasureForm::clickedImportButton() {
+    log::logTrace() << "Clicked import button";
     QString fileName = QFileDialog::getOpenFileName(this, tr("Import from file"),QString(),QString("*.tmb"));
-    if(!fileName.isEmpty()){
-        QFile file(fileName);
-        if(file.open(QIODevice::ReadOnly)){
-            QByteArray data = file.readAll();
-            measure_ = db::MeasureModel::importFrom( data );
-
-            measureView_ = new gui::MeasureItemView( measure_ );
-            ui->dataTableView->setModel( measureView_ );
-
-        }
-        file.close();
+    if(fileName.isEmpty()){
+        return;
     }
 
+    QFile file(fileName);
+    if(file.open(QIODevice::ReadOnly)){
+        QByteArray data = file.readAll();
+        db::MeasureModel* importedMeasure = db::MeasureModel::importFrom( data );
+
+        if(!Source::compare(measure_->sources(),
+                            importedMeasure->sources())) {
+            return;
+        }
+
+        // Check attributes
+        QVariantMap attributes = measure_->attrs();
+        foreach( QString name, attributes.keys()){
+            if(!importedMeasure->attrs().contains(name)
+               || ( importedMeasure->attrs().value(name) != attributes.value(name) )){
+                return;
+            }
+        }
+
+        measure_->columns( importedMeasure->columns() );
+        measure_->data( importedMeasure->data() );
+
+        delete importedMeasure;
+
+        measureView_ = new gui::MeasureItemView( measure_ );
+        ui->dataTableView->setModel( measureView_ );
+
+    }
+    file.close();
+
+    return;
 
 }
 

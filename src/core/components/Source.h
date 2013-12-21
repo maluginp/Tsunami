@@ -49,6 +49,10 @@ public:
     void direction(SourceDirection direction) { direction_ = direction; }
     void direction(const QString& _direction);
 
+    static bool compare( const QList<Source>& sources1,
+                         const QList<Source>& sources2 );
+
+    bool operator==(const Source& other);
 
     Source( const QString& _node, SourceMode _mode,
             SourceDirection _direction = SOURCE_DIRECTION_INPUT,

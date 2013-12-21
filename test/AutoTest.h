@@ -4,7 +4,6 @@
 #include <QtCore>
 #include <QtTest>
 
-
 typedef QList<QObject*> TestList;
 inline TestList& getTestList(){
     static TestList tests;
@@ -58,10 +57,6 @@ public:
     }
 };
 
-
-
 #define DECLARE_TEST(className) static Test<className> t(#className);
-
-
 
 #endif // AUTOTEST_H

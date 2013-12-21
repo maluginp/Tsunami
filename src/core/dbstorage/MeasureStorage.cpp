@@ -124,7 +124,6 @@ void MeasureStorage::testData() {
 }
 
 QList<MeasureModel *> MeasureStorage::getMeasuresByDeviceIdImpl(int deviceId) {
-
     setLastError( QString() );
 
     QList<MeasureModel*> measures;
@@ -158,7 +157,7 @@ QList<MeasureModel *> MeasureStorage::getMeasuresByDeviceIdImpl(int deviceId) {
         model->columnsJson( ITEM("columns").toString());
         model->dataJson(    ITEM("data").toString());
         model->createAt(    ITEM("created_at").toDateTime());
-        model->changeAt(    ITEM("changet_at").toDateTime());
+        model->changeAt(    ITEM("changed_at").toDateTime());
         model->enable(      ITEM("enable").toBool());
         model->userId(      ITEM("user_id").toInt());
 
@@ -200,7 +199,7 @@ MeasureModel *MeasureStorage::openMeasureImpl(int measureId) {
     model->columnsJson( ITEM("columns").toString());
     model->dataJson(    ITEM("data").toString());
     model->createAt(    ITEM("created_at").toDateTime());
-    model->changeAt(    ITEM("changet_at").toDateTime());
+    model->changeAt(    ITEM("changed_at").toDateTime());
     model->enable(      ITEM("enable").toBool());
     model->userId(      ITEM("user_id").toInt());
 
@@ -356,7 +355,7 @@ QList<MeasureModel*> MeasureStorage::findMeasures(const QVariantMap &criteria) {
         model->columnsJson( ITEM("columns").toString());
         model->dataJson(    ITEM("data").toString());
         model->createAt(    ITEM("created_at").toDateTime());
-        model->changeAt(    ITEM("changet_at").toDateTime());
+        model->changeAt(    ITEM("changed_at").toDateTime());
         model->enable(      ITEM("enable").toBool());
         model->userId(      ITEM("user_id").toInt());
 

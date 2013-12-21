@@ -2,6 +2,7 @@
 #include "components/Json.h"
 #include "math/Matrix.h"
 #include <QtXml>
+#include "Log.h"
 namespace tsunami{
 namespace db{
 
@@ -117,6 +118,18 @@ void MeasureModel::data(const QVector<QVector<double> > &data) {
     }
 
 
+}
+
+QVector<QVector<double> > MeasureModel::data() {
+    QVector< QVector<double> > data;
+    for(int i=0; i < dataRows(); ++i) {
+        QVector<double> row;
+        for(int j=0; j < dataColumns(); ++j){
+            row.append( data_->at(i,j) );
+        }
+        data.append(row);
+    }
+    return data;
 }
 
 QString MeasureModel::typeJson() const {
@@ -329,17 +342,17 @@ bool MeasureModel::isSourceDirection(const QString &name, SourceDirection direct
 }
 
 MeasureModel *MeasureModel::importFrom(const QByteArray &data) {
+
+    log::logDebug() << "Import measure model from " << data.count() << " bytes";
+
     MeasureModel* model = new MeasureModel();
     QXmlStreamReader* reader = new QXmlStreamReader(data);
-
 
     while( !reader->atEnd() ){
         QXmlStreamReader::TokenType token = reader->readNext();
         if(token == QXmlStreamReader::StartElement){
-            if( reader->name() == "measures" ){
+            if( reader->name() == "measure" ){
                 QXmlStreamAttributes attrs = reader->attributes();
-
-                model->name( attrs.value("name").toString() );
                 model->type( attrs.value("type").toString() );
 //                model->createAt( attrs.value("createAt").toString() );
             }else if( reader->name() == "attributes" ){
@@ -377,9 +390,6 @@ MeasureModel *MeasureModel::importFrom(const QByteArray &data) {
                         break;
                     }
                 }
-            }else if( reader->name() == "header" ){
-                MeasureHeader header;
-                model->header( header );
             }else if( reader->name() == "columns" ){
                 while( true ){
                     token = reader->readNext();
@@ -414,6 +424,10 @@ MeasureModel *MeasureModel::importFrom(const QByteArray &data) {
         }
     }
 
+    log::logDebug() << "Imported measure: " << model->typeJson()
+                    << "with" << model->dataRows()
+                    << "items (" << model->dataColumns() << "columns)";
+
     return model;
 }
 
@@ -423,12 +437,11 @@ QByteArray MeasureModel::exportTo(const MeasureModel *model) {
     QXmlStreamWriter* writer = new QXmlStreamWriter(&data);
     writer->setAutoFormatting(true);
     writer->writeStartDocument();
-
-    writer->writeStartElement( "measures" );
-    writer->writeAttribute("name",model->name());
+    writer->writeStartElement("measure");
+//    writer->writeAttribute("name",model->name());
     writer->writeAttribute("type",model->typeJson());
-    writer->writeAttribute("created",model->createAt().toString());
-    writer->writeAttribute("changed",model->changeAt().toString());
+//    writer->writeAttribute("created",model->createAt().toString());
+//    writer->writeAttribute("changed",model->changeAt().toString());
 //    writer->writeAttribute("enable",);
     writer->writeStartElement("attributes");
     QVariantMap attrs = model->attrs();
@@ -459,14 +472,6 @@ QByteArray MeasureModel::exportTo(const MeasureModel *model) {
     }
     writer->writeEndElement();
 
-    MeasureHeader header = model->header();
-    writer->writeStartElement("header");
-    writer->writeAttribute("fabrication_date",header.fabricationDate.toString());
-    writer->writeAttribute("user_date",header.userDate.toString());
-    writer->writeAttribute("dubious",QString::number(header.dubious));
-    writer->writeCDATA( header.comment );
-    writer->writeEndElement();
-
     writer->writeStartElement("columns");
     foreach(QString column, model->columns()){
         writer->writeStartElement("column");
@@ -485,15 +490,13 @@ QByteArray MeasureModel::exportTo(const MeasureModel *model) {
          }
          writer->writeEndElement();
     }
-
-
     writer->writeEndElement();
+
     writer->writeEndElement();
     writer->writeEndDocument();
 
     return data;
 }
 
-
-}
-}
+} // db
+} // tsunami

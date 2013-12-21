@@ -71,6 +71,7 @@ public:
 
     void dataJson( const QString& json );
     void data( const QVector< QVector<double> >& data);
+    QVector< QVector<double> > data();
     void createAt( const QDateTime& createAt ) { createdAt_ = createAt; }
     void changeAt( const QDateTime& changeAt ) { changedAt_ = changeAt; }
 
