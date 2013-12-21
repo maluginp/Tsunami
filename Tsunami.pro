@@ -3,7 +3,8 @@ TEMPLATE = subdirs
 SUBDIRS += \
     src/core  \
     src/logger \
-    src/Tsunami
+    src/Tsunami \
+    test
 
 OTHER_FILES += \
     Tsunami.pri
