@@ -140,7 +140,7 @@
   <customwidget>
    <class>TsunamiPlot</class>
    <extends>QWidget</extends>
-   <header location="global">plots/tsunamiplot.h</header>
+   <header location="global">plots/TsunamiPlot.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

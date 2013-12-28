@@ -1,4 +1,4 @@
-#include "source.h"
+#include "Source.h"
 
 #include <QStringList>
 #include "Log.h"

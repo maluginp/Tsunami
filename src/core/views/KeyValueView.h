@@ -28,12 +28,12 @@ struct KeyValuePair{
     KeyValuePair( const QString& keyPair, const QVariant& valuePair,
                   const ValueType& typePair, const QString& titlePair,
                   const QVariant& dataPair=QVariant())
-        : key(keyPair), value(valuePair), type(typePair), title(titlePair), data(dataPair) { }
+        : key(keyPair), title(titlePair), value(valuePair), type(typePair), data(dataPair) { }
 
     KeyValuePair() :
         key(QString()),value(QVariant()),type(KeyValuePair::TYPE_TEXT) {}
     KeyValuePair(const KeyValuePair& pair):
-        key(pair.key),value(pair.value),type(pair.type),title(pair.title),data(pair.data) {}
+        key(pair.key),title(pair.title),value(pair.value),type(pair.type),data(pair.data) {}
     KeyValuePair& operator=(const KeyValuePair& pair){
         key = pair.key;
         value= pair.value;

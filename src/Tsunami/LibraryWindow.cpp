@@ -4,7 +4,7 @@
 #include "OpenLibraryDialog.h"
 #include "dbstorage/ParameterStorage.h"
 #include "views/ParameterItemView.h"
-#include "delegates/Delegatecheckbox.h"
+#include "delegates/DelegateCheckBox.h"
 #include "delegates/DelegateDoubleItem.h"
 #include "ShowTextDialog.h"
 #include "dbstorage/DeviceStorage.h"

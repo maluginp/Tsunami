@@ -1,12 +1,12 @@
 #include "PrepareExtractorDialog.h"
 #include "ui_PrepareExtractorDialog.h"
 #include "views/MeasureEnableView.h"
-#include "delegates/Delegatecheckbox.h"
+#include "delegates/DelegateCheckBox.h"
 
 namespace tsunami{
 PrepareExtractorDialog::PrepareExtractorDialog(int deviceId, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::PrepareExtractorDialog),deviceId_(deviceId),measures_(0) {
+    ui(new Ui::PrepareExtractorDialog),measures_(0),deviceId_(deviceId) {
     ui->setupUi(this);
 
     ui->measuresTableView->setItemDelegateForColumn(0,new DelegateCheckBox(ui->measuresTableView));

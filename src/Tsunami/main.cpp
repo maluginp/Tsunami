@@ -1,4 +1,4 @@
-#include "devicewindow.h"
+#include "DeviceWindow.h"
 #include <QApplication>
 #include "AnalysisWindow.h"
 

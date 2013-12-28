@@ -2,7 +2,7 @@
 #define APIOBJECT_H
 
 #include "defines.h"
-#include "models/analysismodel.h"
+#include "models/AnalysisModel.h"
 
 class TSUNAMI_EXPORT APIObject : public QObject
 {

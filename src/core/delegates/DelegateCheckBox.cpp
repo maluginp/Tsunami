@@ -1,4 +1,4 @@
-#include "Delegatecheckbox.h"
+#include "DelegateCheckBox.h"
 
 static QRect CheckBoxRect(const QStyleOptionViewItem &view_item_style_options) {
   QStyleOptionButton check_box_style_option;

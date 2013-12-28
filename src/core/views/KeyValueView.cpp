@@ -6,7 +6,7 @@
 #else
 #include <QtWidgets/QAbstractItemView>
 #endif
-#include "../delegates/keyvaluedelegate.h"
+#include "../delegates/KeyValueDelegate.h"
 
 #include <QDebug>
 
