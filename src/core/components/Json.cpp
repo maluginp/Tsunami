@@ -20,7 +20,7 @@
  * \file json.cpp
  */
 
-#include "json.h"
+#include "Json.h"
 
 namespace QtJson {
     static QString sanitizeString(QString str);

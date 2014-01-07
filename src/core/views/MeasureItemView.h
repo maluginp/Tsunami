@@ -2,7 +2,7 @@
 #define MEASUREITEMVIEW_H
 
 #include "defines.h"
-#include "dbstorage/measurestorage.h"
+#include "dbstorage/MeasureStorage.h"
 
 namespace tsunami {
 namespace gui{

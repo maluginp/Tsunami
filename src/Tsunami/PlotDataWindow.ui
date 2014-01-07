@@ -399,7 +399,7 @@
   <customwidget>
    <class>QCustomPlot</class>
    <extends>QWidget</extends>
-   <header location="global">plots/tsunamiplot.h</header>
+   <header location="global">plots/TsunamiPlot.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

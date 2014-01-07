@@ -1,8 +1,8 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    src/core  \
     src/logger \
+    src/core  \
     src/Tsunami \
     test
 

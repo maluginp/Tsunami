@@ -9,13 +9,38 @@ namespace db{
 MeasureModel::MeasureModel() : data_(NULL){
 
 }
-MeasureModel::MeasureModel(const MeasureModel& other){
-    Q_ASSERT(false);
-}
+// @fixme Copy @var data pointer and @var rows
+MeasureModel::MeasureModel(const MeasureModel& other) :
+    measureId_(other.measureId_),
+    deviceId_(other.deviceId_),
+    name_(other.name_),
+    type_(other.type_),
+    attributes_(other.attributes_),
+    sources_(other.sources_),
+    header_(other.header_),
+    columns_(other.columns_),
+    createdAt_(other.createdAt_),
+    changedAt_(other.changedAt_),
+    enable_(other.enable_),
+    userId_(other.userId_) {
 
-MeasureModel &MeasureModel::operator=(const MeasureModel &other)
-{
-    Q_ASSERT(false);
+}
+// @fixme description upper
+MeasureModel &MeasureModel::operator=(const MeasureModel &other) {
+
+    measureId_  = other.measureId_;
+    deviceId_   = other.deviceId_;
+    name_       = other.name_;
+    type_       = other.type_;
+    attributes_ = other.attributes_;
+    sources_    = other.sources_;
+    header_     = other.header_;
+    columns_    = other.columns_;
+    createdAt_  = other.createdAt_;
+    changedAt_  = other.changedAt_;
+    enable_     = other.enable_;
+    userId_     = other.userId_;
+
     return *this;
 }
 
@@ -33,8 +58,6 @@ void MeasureModel::type( const QString& type){
         Q_ASSERT(false);
         type_ = ANALYSIS_UNKNOWN;
     }
-
-
 
 }
 
@@ -145,7 +168,7 @@ QString MeasureModel::typeJson() const {
 QString MeasureModel::attrsJson() const {
     return QtJson::serializeStr(attributes_);
 }
-// FIXME: need implementation method
+// @fixme need implementation method
 Source MeasureModel::getSource(const QString &name) {
     QString modeChar = name[0].toLower();
 //    SourceMode mode = SOURCE_MODE_

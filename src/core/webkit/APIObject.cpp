@@ -1,5 +1,5 @@
 #include "APIObject.h"
-#include "dbstorage/analysisstorage.h"
+#include "dbstorage/AnalysisStorage.h"
 #include <QDebug>
 #include "defines.h"
 APIObject::APIObject(QObject *parent) :
