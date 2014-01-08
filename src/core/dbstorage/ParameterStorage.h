@@ -24,12 +24,14 @@ public:
     const LibraryModel& library() const;
 
     bool saveLibrary( LibraryModel* library );
+    bool saveTemplateLibrary( LibraryTemplateModel* templateLibrary );
 
     LibraryModel* openLibrary( int libraryId );
 
     QMap<int,QString> listLibraries(int deviceId);
     QList<LibraryModel*> getLibrariesByDeviceId( int deviceId );
     QList<LibraryModel*> getTemplateLibrariesByDeviceType( DeviceType type);
+    LibraryModel* openTemplateLibrary( const QString& templateName );
 
     bool removeLibrary( int libraryId );
     bool exists( const QString& name );
@@ -45,6 +47,7 @@ private:
     QList<LibraryModel*> getLibrariesByDeviceIdImpl( int deviceId );
     LibraryTemplateModel* openTemplateLibraryImpl( const QString& templateName );
     bool removeLibraryImpl( int libraryId );
+    bool saveTemplateLibraryImpl( LibraryTemplateModel* templateLibrary );
 
     bool createTable( const ParameterTable& table);
 

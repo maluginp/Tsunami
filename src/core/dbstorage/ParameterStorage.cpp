@@ -39,6 +39,10 @@ bool ParameterStorage::saveLibrary(LibraryModel *library) {
     return res;
 }
 
+bool ParameterStorage::saveTemplateLibrary(LibraryTemplateModel *templateLibrary) {
+    return saveTemplateLibraryImpl( templateLibrary );
+}
+
 
 LibraryModel* ParameterStorage::openLibrary(int libraryId){
     return openLibraryImpl(libraryId);
@@ -105,6 +109,19 @@ QList<LibraryModel *> ParameterStorage::getTemplateLibrariesByDeviceType(DeviceT
     }
 
     return libraries;
+}
+
+LibraryModel *ParameterStorage::openTemplateLibrary(const QString &templateName) {
+    LibraryTemplateModel* templateLibrary = openTemplateLibraryImpl(templateName);
+
+    if(templateLibrary != NULL){
+        LibraryModel* library = templateLibrary->convertToLibraryModel();
+        delete templateLibrary;
+
+        return library;
+    }
+
+    return NULL;
 }
 
 bool ParameterStorage::removeLibrary(int libraryId)
@@ -481,6 +498,39 @@ bool ParameterStorage::removeLibraryImpl(int libraryId){
 
 
     return true;
+}
+
+bool ParameterStorage::saveTemplateLibraryImpl(LibraryTemplateModel *templateLibrary) {
+
+    QString sqlQuery = sql("INSERT OR REPLACE INTO %1(name,devices,parameters) "
+                           "VALUES(:name,:devices,:parameters)")
+                          .arg(TABLE_NAME_TEMPLATE_LIBRARIES);
+
+
+    if(!beginTransaction()){
+        return false;
+    }
+
+    QSqlQuery q(sqlQuery,db());
+
+    q.bindValue(":name",templateLibrary->name());
+    q.bindValue(":devices",templateLibrary->devicesJson());
+    q.bindValue(":parameters",templateLibrary->parametersJson());
+
+    if(!q.exec()){
+        setLastError( q.lastError().text() );
+        rollback();
+        return false;
+    }
+
+    if(!endTransaction()){
+        rollback();
+        return false;
+    }
+
+
+    return true;
+
 }
 
 bool ParameterStorage::createTable(const ParameterStorage::ParameterTable &table) {
