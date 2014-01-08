@@ -59,6 +59,7 @@ typedef core::Vector<int>    VectorInt;
 
 
 
+
 }
 
 #endif // DEFINES_H

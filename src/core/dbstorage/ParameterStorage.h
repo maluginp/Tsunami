@@ -13,7 +13,8 @@ namespace db{
 class TSUNAMI_EXPORT ParameterStorage : public DbStorage, public Singleton<ParameterStorage> {
     enum ParameterTable{
         TABLE_PARAMETERS,
-        TABLE_LIBRARIES
+        TABLE_LIBRARIES,
+        TABLE_TEMPLATE_LIBRARIES
     };
 public:
     ParameterStorage();
@@ -45,6 +46,7 @@ private:
 
     static QString TABLE_NAME_PARAMETERS;
     static QString TABLE_NAME_LIBRARIES;
+    static QString TABLE_NAME_TEMPLATE_LIBRARIES;
     static QString CONNECTION_NAME_PARAMETER;
 };
 

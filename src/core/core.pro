@@ -65,7 +65,8 @@ SOURCES += main.cpp \
     webkit/WebKit.cpp \
     webkit/APIObject.cpp \
     views/ListTreeView.cpp \
-    plots/PlotItem.cpp
+    plots/PlotItem.cpp \
+    models/LibraryTemplateModel.cpp
 
 HEADERS += \
     components/Json.h \
@@ -114,5 +115,6 @@ HEADERS += \
     dbstorage/DbStorages.h \
     views/Views.h \
     views/ListTreeView.h \
-    plots/PlotItem.h
+    plots/PlotItem.h \
+    models/LibraryTemplateModel.h
 

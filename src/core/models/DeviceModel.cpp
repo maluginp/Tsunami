@@ -85,5 +85,56 @@ QString DeviceModel::modelNameToTitle(const QString &modelName) {
     return QString();
 }
 
+DeviceType DeviceModel::nameToType(const QString &name) {
+    DeviceType type;
+    if(name.compare("nbjt")==0){
+        type = DEVICE_NBJT;
+    }else if(name.compare("pbjt") == 0){
+        type = DEVICE_PBJT;
+    }else if(name.compare("nfet") == 0){
+        type = DEVICE_NFET;
+    }else if(name.compare("pfet") == 0){
+        type = DEVICE_PFET;
+    }else if(name.compare("nmos") == 0){
+        type = DEVICE_NMOS;
+    }else if(name.compare("pmos") == 0){
+        type = DEVICE_PMOS;
+    }else if(name.compare("diode") == 0){
+        type = DEVICE_DIODE;
+    }else if(name.compare("res") == 0){
+        type = DEVICE_RESISTOR;
+    }else if(name.compare("isource") == 0){
+        type = DEVICE_ISOURCE;
+    }else if(name.compare("vsource") == 0){
+        type = DEVICE_VSOURCE;
+    }else if(name.compare("cap") == 0){
+        type = DEVICE_CAPACITOR;
+    }else{
+        type = DEVICE_UNKNOWN;
+    }
+
+    return type;
+}
+
+QString DeviceModel::typeToName(DeviceType type) {
+    switch(type){
+    case DEVICE_NBJT : return QString("nbjt");
+    case DEVICE_PBJT : return QString("pbjt");
+    case DEVICE_NFET : return QString("nfet");
+    case DEVICE_PFET : return QString("pfet");
+    case DEVICE_NMOS : return QString("nmos");
+    case DEVICE_PMOS : return QString("pmos");
+    case DEVICE_DIODE : return QString("diode");
+    case DEVICE_RESISTOR : return QString("res");
+    case DEVICE_ISOURCE : return QString("isource");
+    case DEVICE_VSOURCE : return QString("vsource");
+
+    case DEVICE_CAPACITOR : return QString("cap");
+    }
+
+    return QString();
+
+}
+
 }
 }

@@ -5,6 +5,7 @@ namespace db{
 
 QString ParameterStorage::TABLE_NAME_PARAMETERS = QString("parameters");
 QString ParameterStorage::TABLE_NAME_LIBRARIES  = QString("libraries");
+QString ParameterStorage::TABLE_NAME_TEMPLATE_LIBRARIES = QString("lib_templates");
 QString ParameterStorage::CONNECTION_NAME_PARAMETER = QString("parameter_connection");
 
 
@@ -15,6 +16,12 @@ ParameterStorage::ParameterStorage() : DbStorage(0) {
 
     if( !tableExists( TABLE_NAME_PARAMETERS ) ){
         createTable( TABLE_PARAMETERS );
+    }
+
+    if( !tableExists(TABLE_NAME_TEMPLATE_LIBRARIES)){
+        if(createTable( TABLE_TEMPLATE_LIBRARIES )){
+
+        }
     }
 }
 
@@ -442,7 +449,12 @@ bool ParameterStorage::createTable(const ParameterStorage::ParameterTable &table
                        "enable NUMERIC"
                        ")").arg(TABLE_NAME_PARAMETERS);
 
-    }else{
+    }else if(table == ParameterStorage::TABLE_TEMPLATE_LIBRARIES){
+        sqlQuery = sql("CREATE TABLE IF NOT EXISTS %1 ("
+                       "name TEXT PRIMARY KEY ON CONFLICT REPLACE,"
+                       "devices TEXT,"
+                       "parameters TEXT)").arg(TABLE_NAME_TEMPLATE_LIBRARIES);
+    }  else {
         return false;
     }
 

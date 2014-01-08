@@ -33,6 +33,8 @@ public:
 
     static QString modelNameToTitle(const QString& modelName);
 
+    static DeviceType nameToType( const QString& name );
+    static QString typeToName( DeviceType type );
 private:
 
     int deviceId_;
