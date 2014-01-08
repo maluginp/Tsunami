@@ -62,10 +62,17 @@ QModelIndex ListTreeView::index(int row, int column, const QModelIndex &parent) 
         parentItem = static_cast<ListTreeViewItem *>(parent.internalPointer());
     }
     ListTreeViewItem *childItem = parentItem->child(row);
-    if (childItem)
-        return createIndex(row, column, childItem);
-    else
-        return QModelIndex();
+    if (childItem){
+        if(childItem->parent() == rootItem_){
+            if(childItem->numberChilds() > 0){
+               return createIndex(row, column, childItem);
+            }
+        } else {
+            return createIndex(row, column, childItem);
+        }
+    }
+
+    return QModelIndex();
 }
 
 QModelIndex ListTreeView::parent(const QModelIndex &index) const{

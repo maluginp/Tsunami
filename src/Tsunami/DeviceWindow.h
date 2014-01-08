@@ -23,21 +23,25 @@ public:
 
     void openDevice( int deviceId );
 private:
+    Ui::DeviceWindow *ui;
+
+    db::DeviceStorage* storage_;
+    db::DeviceModel* device_;
+
     LibraryWindow* libraryWindow_;
     ExtractorWindow* extractorWindow_;
     addMeasureForm* measuresWindow_;
     AnalysisWindow* analysisWindow_;
 
-    Ui::DeviceWindow *ui;
-    db::DeviceStorage* storage_;
     int deviceId_;
-    db::DeviceModel* device_;
+
     QTranslator* translator_;
 
 
     gui::ListTreeView* measureList_;
     gui::ListItemView* libraryList_;
     gui::ListTreeView* analysisList_;
+
 private slots:
     void updateDeviceWindow();
 

@@ -12,8 +12,16 @@ namespace tsunami{
 
 DeviceWindow::DeviceWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::DeviceWindow), storage_(NULL), device_(NULL),extractorWindow_(NULL),measuresWindow_(NULL),
-    measureList_(NULL),libraryList_(NULL),analysisList_(NULL), analysisWindow_(NULL) {
+    ui(new Ui::DeviceWindow),
+    storage_(NULL),
+    device_(NULL),
+    libraryWindow_(NULL),
+    extractorWindow_(NULL),
+    measuresWindow_(NULL),
+    analysisWindow_(NULL),
+    measureList_(NULL),
+    libraryList_(NULL),
+    analysisList_(NULL)  {
 
     // Load Translator
     translator_ = new QTranslator();
@@ -131,6 +139,7 @@ void DeviceWindow::updateDeviceWindow() {
                                 measure->id() );
     }
     qDeleteAll( measures );
+    ui->datasetTreeView->expandAll();
 
     analysisList_->clear();
     db::AnalysisStorage* analysisStorage = db::AnalysisStorage::instance();
@@ -138,8 +147,8 @@ void DeviceWindow::updateDeviceWindow() {
     foreach( db::AnalysisModel* analysis, analyses ){
         analysisList_->addChild( analysis->typeJson(), analysis->name(), analysis->id() );
     }
-
     qDeleteAll( analyses );
+    ui->analysisTreeView->expandAll();
 
     libraryList_->clear();
     db::ParameterStorage* parameterStorage = db::ParameterStorage::instance();
@@ -155,13 +164,11 @@ void DeviceWindow::updateDeviceWindow() {
 void DeviceWindow::clickedOpenDeviceAction() {
     int deviceId = OpenDeviceDialog::getDeviceId();
 
-    if(deviceId == -1){
-        return;
+    if(deviceId != -1){
+        openDevice(deviceId);
     }
 
-    openDevice(deviceId);
-
-
+    return;
 }
 
 void DeviceWindow::clickedParametersEditor() {
@@ -169,6 +176,8 @@ void DeviceWindow::clickedParametersEditor() {
     libraryWindow_ = 0;
     libraryWindow_ = new LibraryWindow(deviceId_);
     libraryWindow_->show();
+
+    return;
 }
 void DeviceWindow::clickedExtractionRunAction() {
 
@@ -186,6 +195,8 @@ void DeviceWindow::clickedExtractionRunAction() {
     delete extractorWindow_;
     extractorWindow_ = new ExtractorWindow(device_->type(),libraryId,measureIds, optimize );
     extractorWindow_->show();
+
+    return;
 }
 
 void DeviceWindow::clickedMeasureEditor() {
@@ -194,20 +205,23 @@ void DeviceWindow::clickedMeasureEditor() {
     if(measureId != -1){
         delete measuresWindow_;
 
-        measuresWindow_ = new tsunami::addMeasureForm(tsunami::addMeasureForm::EDIT,1,0);
+        measuresWindow_ = new addMeasureForm(addMeasureForm::EDIT,1,0);
         measuresWindow_->show();
     }
+
+    return;
 }
 
 void DeviceWindow::clickedMeasureAdd() {
-//    int analysisId = 1;
-        int analysisId = tsunami::ChoiceAnalysisForm::getAnalysisId( deviceId_);
+    int analysisId = ChoiceAnalysisForm::getAnalysisId( deviceId_);
 
     if( analysisId != -1){
         delete measuresWindow_;
-        measuresWindow_ = new tsunami::addMeasureForm(tsunami::addMeasureForm::NEW,analysisId,0);
+        measuresWindow_ = new addMeasureForm(addMeasureForm::NEW,analysisId,0);
         measuresWindow_->show();
     }
+
+    return;
 }
 
 void DeviceWindow::clickedAnalysisAdd() {
