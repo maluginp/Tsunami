@@ -71,7 +71,7 @@ LibraryModel::LibraryModel() :
 }
 
 LibraryModel::LibraryModel(const QString &name, int deviceId) :
-    libraryId_(-1),name_(name),deviceId_(deviceId), createdAt_(QDateTime::currentDateTime()),
+    libraryId_(-1),deviceId_(deviceId),name_(name), createdAt_(QDateTime::currentDateTime()),
     changedAt_(QDateTime::currentDateTime()),enable_(false)
 {
 
@@ -165,6 +165,11 @@ void LibraryModel::removeParameters(const QList<int>& indexes) {
 
 void LibraryModel::addParameter(const ParameterModel &parameter) {
     parameters_.append( parameter );
+}
+
+void LibraryModel::addParameter(const QList<ParameterModel> &parameters) {
+    parameters_.append(parameters);
+
 }
 
 bool LibraryModel::parameterExists(const QString &name) {

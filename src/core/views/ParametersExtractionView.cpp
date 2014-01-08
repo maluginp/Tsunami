@@ -8,7 +8,7 @@ namespace tsunami{
 namespace gui{
 ParametersExtractionView::ParametersExtractionView(db::LibraryModel *library,
                                                    QObject *parent)
-    : library_(library),QAbstractItemModel(parent){
+    : QAbstractItemModel(parent),library_(library){
 
 }
 

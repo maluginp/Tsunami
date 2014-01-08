@@ -43,6 +43,7 @@ public:
     void removeParameters(const QList<int>& indexes );
 
     void addParameter( const ParameterModel& parameter );
+    void addParameter( const QList<ParameterModel>& parameters);
     bool parameterExists( const QString& name );
     void setParameter(const QString& name, const ParameterModel& parameter);
 

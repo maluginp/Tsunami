@@ -7,6 +7,7 @@ namespace tsunami {
 namespace db{
 
 class ParameterModel;
+class LibraryModel;
 /*!
  * \brief The LibraryTemplateModel class
  *
@@ -25,6 +26,8 @@ public:
     const QString& name() const { return name_; }
     QString devicesJson();
     QString parametersJson();
+
+    LibraryModel* convertToLibraryModel();
 
     bool satisfyDevice( const QString& device);
     bool satisfyDevice( DeviceType device );

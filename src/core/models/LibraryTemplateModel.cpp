@@ -1,5 +1,6 @@
 #include "LibraryTemplateModel.h"
 #include "models/ParameterModel.h"
+#include "models/LibraryModel.h"
 #include "models/DeviceModel.h"
 #include "components/Json.h"
 namespace tsunami {
@@ -73,6 +74,17 @@ QString LibraryTemplateModel::parametersJson() {
     }
 
     return QtJson::serializeStr(parameters);
+}
+
+LibraryModel *LibraryTemplateModel::convertToLibraryModel() {
+    LibraryModel* library = new LibraryModel();
+
+    library->id(-1);
+    library->name( name_ );
+    library->addParameter( parameters_ );
+
+    library->enable( true );
+    return library;
 }
 
 bool LibraryTemplateModel::satisfyDevice(const QString &device) {

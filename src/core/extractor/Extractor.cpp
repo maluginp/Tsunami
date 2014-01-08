@@ -12,9 +12,14 @@
 namespace tsunami{
 namespace core{
 
-Extractor::Extractor(DeviceType type, db::LibraryModel* library, const QList<int> &measures) : simulator_(0),
-    dataset_(0),storageParameters_(0),previousFunctionError_(DBL_MAX),
-    currentFunctionError_(DBL_MAX), library_(library){
+Extractor::Extractor(DeviceType type, db::LibraryModel* library, const QList<int> &measures) :
+        previousFunctionError_(DBL_MAX),
+        currentFunctionError_(DBL_MAX),
+        simulator_(0),
+        library_(library),
+        dataset_(0),
+        storageParameters_(0) {
+
     type_ = type;
 
     db::SettingStorage* setting = db::SettingStorage::instance();

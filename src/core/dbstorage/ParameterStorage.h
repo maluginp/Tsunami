@@ -3,6 +3,7 @@
 #include "DbStorage.h"
 #include <singleton.h>
 #include "models/LibraryModel.h"
+#include "models/LibraryTemplateModel.h"
 #include "models/ParameterModel.h"
 
 namespace tsunami{
@@ -25,8 +26,10 @@ public:
     bool saveLibrary( LibraryModel* library );
 
     LibraryModel* openLibrary( int libraryId );
+
     QMap<int,QString> listLibraries(int deviceId);
     QList<LibraryModel*> getLibrariesByDeviceId( int deviceId );
+    QList<LibraryModel*> getTemplateLibrariesByDeviceType( DeviceType type);
 
     bool removeLibrary( int libraryId );
     bool exists( const QString& name );
@@ -40,6 +43,7 @@ private:
     bool saveLibraryImpl( LibraryModel* library );
     LibraryModel* openLibraryImpl( int libraryId );
     QList<LibraryModel*> getLibrariesByDeviceIdImpl( int deviceId );
+    LibraryTemplateModel* openTemplateLibraryImpl( const QString& templateName );
     bool removeLibraryImpl( int libraryId );
 
     bool createTable( const ParameterTable& table);

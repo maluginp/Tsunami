@@ -44,12 +44,67 @@ LibraryModel* ParameterStorage::openLibrary(int libraryId){
     return openLibraryImpl(libraryId);
 }
 
+LibraryTemplateModel *ParameterStorage::openTemplateLibraryImpl(const QString &templateName) {
+
+    QString sqlQuery;
+
+    sqlQuery = sql( "SELECT * FROM %1 WHERE name=:name")
+                  .arg(TABLE_NAME_TEMPLATE_LIBRARIES);
+
+    QSqlQuery q(sqlQuery,db());
+    q.bindValue(":name",templateName);
+
+    if(q.exec() && q.next()){
+        QSqlRecord rec(q.record());
+        LibraryTemplateModel* templateLibrary = new LibraryTemplateModel();
+
+        templateLibrary->name( ITEM("name").toString() );
+        templateLibrary->devices( ITEM("devices").toString() );
+        templateLibrary->parameters(ITEM("parameters").toString() );
+
+        return templateLibrary;
+    }
+
+
+    return NULL;
+}
+
 QMap<int,QString>  ParameterStorage::listLibraries(int deviceId){
     return listLibrariesImpl(deviceId);
 }
 
 QList<LibraryModel *> ParameterStorage::getLibrariesByDeviceId(int deviceId) {
     return getLibrariesByDeviceIdImpl(deviceId);
+}
+
+QList<LibraryModel *> ParameterStorage::getTemplateLibrariesByDeviceType(DeviceType type) {
+    setLastError(QString());
+
+    QString sqlQuery;
+    // Load Library
+
+    sqlQuery = sql("SELECT name FROM %1").arg(TABLE_NAME_TEMPLATE_LIBRARIES);
+
+    QSqlQuery q(sqlQuery,db());
+
+    if(!q.exec()){
+        setLastError( q.lastError().text() );
+        return QList<LibraryModel*>();
+    }
+
+    QList<LibraryModel*> libraries;
+
+    while(q.next()){
+        QSqlRecord rec = QSqlRecord(q.record());
+
+        LibraryTemplateModel* templateLibrary =  openTemplateLibraryImpl( ITEM("name").toString());
+        if(templateLibrary->satisfyDevice(type)){
+            libraries.append( templateLibrary->convertToLibraryModel() );
+        }
+        delete templateLibrary;
+    }
+
+    return libraries;
 }
 
 bool ParameterStorage::removeLibrary(int libraryId)
@@ -376,7 +431,11 @@ QList<LibraryModel *> ParameterStorage::getLibrariesByDeviceIdImpl(int deviceId)
 
     while(q.next()){
         QSqlRecord rec = QSqlRecord(q.record());
-        libraries.append(  openLibrary( ITEM("id").toInt() )  );
+        library =  openLibrary( ITEM("id").toInt() );
+
+        if(library != NULL){
+            libraries.append( library );
+        }
     }
 
     return libraries;
