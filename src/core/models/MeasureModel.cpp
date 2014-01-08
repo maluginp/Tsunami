@@ -447,6 +447,8 @@ MeasureModel *MeasureModel::importFrom(const QByteArray &data) {
         }
     }
 
+    delete reader;
+
     log::logDebug() << "Imported measure: " << model->typeJson()
                     << "with" << model->dataRows()
                     << "items (" << model->dataColumns() << "columns)";

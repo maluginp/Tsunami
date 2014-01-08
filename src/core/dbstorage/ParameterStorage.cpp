@@ -20,7 +20,7 @@ ParameterStorage::ParameterStorage() : DbStorage(0) {
 
     if( !tableExists(TABLE_NAME_TEMPLATE_LIBRARIES)){
         if(createTable( TABLE_TEMPLATE_LIBRARIES )){
-
+            syncTemplateDirectory();
         }
     }
 }
@@ -563,6 +563,7 @@ bool ParameterStorage::createTable(const ParameterStorage::ParameterTable &table
                        "name TEXT PRIMARY KEY ON CONFLICT REPLACE,"
                        "devices TEXT,"
                        "parameters TEXT)").arg(TABLE_NAME_TEMPLATE_LIBRARIES);
+
     }  else {
         return false;
     }
@@ -582,6 +583,17 @@ bool ParameterStorage::createTable(const ParameterStorage::ParameterTable &table
 
     return true;
 
+}
+
+void ParameterStorage::syncTemplateDirectory() {
+
+    QList<LibraryTemplateModel*> templates = LibraryTemplateModel::parseDirectory();
+
+    foreach( LibraryTemplateModel* templateLibrary, templates ){
+        saveTemplateLibrary( templateLibrary );
+    }
+
+    return;
 }
 
 

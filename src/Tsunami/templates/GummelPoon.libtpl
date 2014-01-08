@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library name="Gummel-Poon" devices="nbjt,pbjt">
+	<parameter name="IS"   initial="1e-16" minimum="1e-17" maximum="1e-15" />
+	<parameter name="BF"   initial="100"   minimum="10" maximum="1000" />
+	<parameter name="NF"   initial="1"     minimum="0.1" maximum="10" />
+	<parameter name="VAF"  initial="inf"   minimum="0" maximum="inf" />
+	<parameter name="IKF"  initial="inf"   minimum="0" maximum="inf" />
+	<parameter name="ISE"  initial="0"     minimum="0" maximum="1" />
+	<parameter name="NE"   initial="1.5"   minimum="0.15" maximum="15" />
+	<parameter name="BR"   initial="1"     minimum="0.1" maximum="10" />
+	<parameter name="NR"   initial="1" minimum="0.1" maximum="inf" />
+	<parameter name="VAR"  initial="inf" minimum="0" maximum="inf" />
+	<parameter name="IKR"  initial="inf" minimum="0" maximum="inf" />
+	<parameter name="ISC"  initial="0" minimum="0" maximum="1" />
+	<parameter name="NC"   initial="2" minimum="0.2" maximum="20" />
+	<parameter name="RB"   initial="0" minimum="0" maximum="1" />
+	<parameter name="IRB"  initial="inf" minimum="0" maximum="inf" />
+	<parameter name="RBM"  initial="0" minimum="0" maximum="1" />
+	<parameter name="RE"   initial="0" minimum="0" maximum="1" />
+	<parameter name="RC"   initial="0" minimum="0" maximum="1" />
+	<parameter name="CJE"  initial="0" minimum="0" maximum="1" />
+	<parameter name="VJE"  initial="0.75" minimum="0.075" maximum="7.5" />
+	<parameter name="MJE"  initial="0.33" minimum="0.033" maximum="3.3" />
+	<parameter name="TF"   initial="0" minimum="0" maximum="1" />
+	<parameter name="XTF"  initial="0" minimum="0" maximum="1" />
+	<parameter name="VTF"  initial="inf" minimum="0" maximum="inf" />
+	<parameter name="ITF"  initial="0" minimum="0" maximum="1" />
+	<parameter name="PTF"  initial="0" minimum="0" maximum="1" />
+	<parameter name="CJC"  initial="0" minimum="0" maximum="1" />
+	<parameter name="VJC"  initial="0.75" minimum="0.075" maximum="7.5" />
+	<parameter name="MJC"  initial="0.33" minimum="0.033" maximum="3.3" />
+	<parameter name="XCJC" initial="1" minimum="0.1" maximum="10" />
+	<parameter name="TR"   initial="0" minimum="0" maximum="1" />
+	<parameter name="CJS"  initial="0" minimum="0" maximum="1" />
+	<parameter name="VJS"  initial="0.75" minimum="0.075" maximum="7.5" />
+	<parameter name="MJS"  initial="0" minimum="0" maximum="1" />
+	<parameter name="XTB"  initial="0" minimum="0" maximum="1" />
+	<parameter name="EG"   initial="1.1" minimum="0.11" maximum="2" />
+	<parameter name="XTI"  initial="3" minimum="0.3" maximum="30" />
+	<parameter name="KF"   initial="0" minimum="0" maximum="1" />
+	<parameter name="AF"   initial="1" minimum="0.1" maximum="10" />
+	<parameter name="FC"   initial="0.5" minimum="0.05" maximum="5" />
+	<parameter name="TNOM" initial="27" minimum="27" maximum="27" />	
+</library>

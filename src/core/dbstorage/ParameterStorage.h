@@ -51,6 +51,8 @@ private:
 
     bool createTable( const ParameterTable& table);
 
+    void syncTemplateDirectory();
+
     static QString TABLE_NAME_PARAMETERS;
     static QString TABLE_NAME_LIBRARIES;
     static QString TABLE_NAME_TEMPLATE_LIBRARIES;

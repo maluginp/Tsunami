@@ -3,6 +3,8 @@
 #include "models/LibraryModel.h"
 #include "models/DeviceModel.h"
 #include "components/Json.h"
+
+#include <limits>
 namespace tsunami {
 namespace db{
 
@@ -27,6 +29,24 @@ void LibraryTemplateModel::devices(const QString &devicesJson) {
    return;
 }
 
+void LibraryTemplateModel::addDevice(const QString &deviceName) {
+    DeviceType deviceType = DeviceModel::nameToType(deviceName);
+    if(deviceType != DEVICE_UNKNOWN){
+        addDevice( deviceType );
+    }
+}
+
+void LibraryTemplateModel::addDevice(const QStringList &deviceNames) {
+    foreach(QString deviceName, deviceNames){
+        deviceName = deviceName.trimmed();
+        addDevice(deviceName);
+    }
+}
+
+void LibraryTemplateModel::addDevice(DeviceType device) {
+    devices_.append( device );
+}
+
 void LibraryTemplateModel::parameters(const QString &parametersJson) {
     QVariantList parameters = QtJson::parse(parametersJson).toList();
     parameters_.clear();
@@ -47,6 +67,10 @@ void LibraryTemplateModel::parameters(const QString &parametersJson) {
     }
 }
 
+void LibraryTemplateModel::addParameter(const ParameterModel &parameter) {
+    parameters_.append( parameter );
+}
+
 QString LibraryTemplateModel::devicesJson() {
     QVariantList devices;
     foreach(DeviceType type,devices_){
@@ -61,19 +85,24 @@ QString LibraryTemplateModel::parametersJson() {
     foreach(ParameterModel param, parameters_){
         QVariantMap parameter;
 
-        parameter.insert( "name", param.id() );
-        parameter.insert("initial", param.initial());
-        parameter.insert("fitted", param.fitted());
-        parameter.insert("minimum", param.minimum());
-        parameter.insert("maximum", param.maximum());
-        parameter.insert("fixed", param.fixed());
-        parameter.insert("enable", param.enable());
+
+
+
+        parameter.insert("name", param.name() );
+        parameter.insert("initial", checkInfinity(param.initial()));
+        parameter.insert("fitted",  checkInfinity(param.fitted()));
+        parameter.insert("minimum", checkInfinity(param.minimum()));
+        parameter.insert("maximum", checkInfinity(param.maximum()));
+        parameter.insert("fixed",   param.fixed());
+        parameter.insert("enable",  param.enable());
 
         parameters.append( parameter );
 
     }
+    bool ok;
+    QString json = QtJson::serializeStr(parameters,ok);
 
-    return QtJson::serializeStr(parameters);
+    return json;
 }
 
 LibraryModel *LibraryTemplateModel::convertToLibraryModel() {
@@ -95,6 +124,75 @@ bool LibraryTemplateModel::satisfyDevice(const QString &device) {
 bool LibraryTemplateModel::satisfyDevice(DeviceType device) {
     return devices_.contains( device );
 
+}
+
+QList<LibraryTemplateModel *> LibraryTemplateModel::parseDirectory() {
+
+    QList<LibraryTemplateModel *> templateModels;
+    LibraryTemplateModel* templateModel;
+
+    QDir dir(TEMPLATE_DIRECTORY);
+
+    QStringList filter;
+    filter << QString("*.%1").arg(TEMPLATE_EXTENSION);
+
+    QFileInfoList templates = dir.entryInfoList( filter, QDir::Files );
+
+    foreach(QFileInfo templateFileInfo, templates){
+        QFile templateFile( templateFileInfo.filePath());
+
+        if(templateFile.open(QIODevice::ReadOnly)){
+            QXmlStreamReader reader( &templateFile );
+            templateModel = new LibraryTemplateModel();
+            while(!reader.atEnd()){
+                QXmlStreamReader::TokenType token = reader.readNext();
+                if(token != QXmlStreamReader::StartElement){
+                    continue;
+                }
+
+                if(reader.name() == "library") {
+                    QXmlStreamAttributes attrs = reader.attributes();
+
+                    QStringList devices =  attrs.value("devices").toString()
+                                                .split(",",QString::SkipEmptyParts);
+
+                    templateModel->addDevice(devices);
+                    templateModel->name( attrs.value("name").toString() );
+
+                }else if(reader.name() == "parameter"){
+                    QXmlStreamAttributes attrs = reader.attributes();
+
+                    ParameterModel parameter;
+                    parameter.name( attrs.value("name").toString() );
+                    parameter.initial(attrs.value("initial").toString().toDouble());
+                    parameter.fitted(  parameter.initial() );
+                    parameter.minimum( attrs.value("minimum").toString().toDouble() );
+                    parameter.maximum( attrs.value("maximum").toString().toDouble());
+                    parameter.fixed( false );
+                    parameter.enable( true );
+
+
+                    templateModel->addParameter( parameter );
+
+                }
+
+            }
+            templateModels.append( templateModel );
+        }else{
+//            qDebug() << templateFile.errorString();
+        }
+    }
+
+    return templateModels;
+}
+
+QVariant LibraryTemplateModel::checkInfinity(double value) {
+    double infinity = std::numeric_limits<double>::infinity();
+
+    if(value == infinity){
+        return QVariant("inf");
+    }
+    return value;
 }
 
 }
