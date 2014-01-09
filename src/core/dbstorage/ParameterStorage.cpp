@@ -8,6 +8,7 @@ QString ParameterStorage::TABLE_NAME_LIBRARIES  = QString("libraries");
 QString ParameterStorage::TABLE_NAME_TEMPLATE_LIBRARIES = QString("lib_templates");
 QString ParameterStorage::CONNECTION_NAME_PARAMETER = QString("parameter_connection");
 
+#define SYNC_TEMPLATE_DIRECTORY true
 
 ParameterStorage::ParameterStorage() : DbStorage(0) {
     if( !tableExists(TABLE_NAME_LIBRARIES)){
@@ -19,10 +20,13 @@ ParameterStorage::ParameterStorage() : DbStorage(0) {
     }
 
     if( !tableExists(TABLE_NAME_TEMPLATE_LIBRARIES)){
-        if(createTable( TABLE_TEMPLATE_LIBRARIES )){
-            syncTemplateDirectory();
-        }
+        createTable( TABLE_TEMPLATE_LIBRARIES );
     }
+
+#ifdef SYNC_TEMPLATE_DIRECTORY
+    syncTemplateDirectory();
+#endif
+
 }
 
 ParameterStorage::~ParameterStorage() {
