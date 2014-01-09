@@ -2,7 +2,8 @@
 #define CREATELIBRARYDIALOG_H
 
 #include <QDialog>
-#include <dbstorage/ParameterStorage.h>
+#include <dbstorage/DbStorages.h>
+#include <views/ListTreeView.h>
 namespace Ui {
 class CreateLibraryDialog;
 }
@@ -17,10 +18,16 @@ public:
     ~CreateLibraryDialog();
     db::LibraryModel* library(){ return library_; }
 private:
+    void loadLibrariesTreeView();
+
     Ui::CreateLibraryDialog *ui;
     db::ParameterStorage* storage_;
     db::LibraryModel* library_;
     int deviceId_;
+    DeviceType deviceType_;
+
+    gui::ListTreeView* libraryTree_;
+
 private slots:
     void clickedCreateButton();
     void changedLibraryCopied(int copied);

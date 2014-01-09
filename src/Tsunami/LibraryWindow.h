@@ -24,6 +24,8 @@ public:
     void openLibrary(int libraryId);
 private:
     void showParameters(db::LibraryModel* library);
+    void enableButtons(bool enable);
+
     Ui::LibraryWindow *ui;
     db::ParameterStorage* storage_;
     db::LibraryModel* library_;

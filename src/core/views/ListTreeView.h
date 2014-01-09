@@ -46,7 +46,8 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
 
-    void addChild(const QString& rootName, const QString& name, const QVariant& value );
+    void addChild(const QString &rootName, const QString& name, const QVariant& value );
+    void addChildByValue(const QVariant& rootValue, const QString& name, const QVariant& value );
 
     void clear();
 private:

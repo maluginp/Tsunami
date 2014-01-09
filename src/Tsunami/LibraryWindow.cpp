@@ -33,8 +33,6 @@ LibraryWindow::LibraryWindow(int deviceId,QWidget *parent) :
     connect(ui->searchButton,SIGNAL(clicked()),this,SLOT(clickedSearchButton()));
     connect(ui->actionRemoveLibrary,SIGNAL(triggered()),this,SLOT(clickedRemoveLibrary()));
     connect(ui->actionCloseLibrary,SIGNAL(triggered()),this,SLOT(clickedCloseLibrary()));
-    //    connect(ui->libraryParameterComboBox,SIGNAL(editTextChanged(QString)),
-//            this,SLOT()
 
     clickedCloseLibrary();
 }
@@ -51,13 +49,8 @@ void LibraryWindow::openLibrary(int libraryId) {
     library_ = storage_->openLibrary(libraryId);
 
     showParameters( library_ );
+    enableButtons(true);
 
-
-    ui->libraryNameLineEdit->setEnabled( true );
-    ui->searchButton->setEnabled(true);
-    ui->addButton->setEnabled(true);
-    ui->removeButton->setEnabled(true);
-    ui->saveButton->setEnabled(true);
 }
 
 void LibraryWindow::showParameters(db::LibraryModel *library) {
@@ -77,6 +70,15 @@ void LibraryWindow::showParameters(db::LibraryModel *library) {
 
 }
 
+void LibraryWindow::enableButtons(bool enable) {
+    ui->libraryNameLineEdit->setEnabled( enable );
+    ui->searchButton->setEnabled(enable);
+    ui->addButton->setEnabled(enable);
+    ui->removeButton->setEnabled(enable);
+    ui->saveButton->setEnabled(enable);
+
+}
+
 
 void LibraryWindow::clickedOpenLibraryAction() {
 
@@ -92,6 +94,9 @@ void LibraryWindow::clickedNewLibraryAction() {
     if(dialog.exec() == QDialog::Accepted){
         library_ = dialog.library();
         showParameters(library_);
+
+        enableButtons(true);
+
     }
     return;
 }
@@ -216,11 +221,8 @@ void LibraryWindow::clickedCloseLibrary() {
     parameters_ = 0;
     library_ = 0;
 
-    ui->libraryNameLineEdit->setEnabled( false );
-    ui->searchButton->setEnabled(false);
-    ui->addButton->setEnabled(false);
-    ui->removeButton->setEnabled(false);
-    ui->saveButton->setEnabled(false);
+    enableButtons(false);
+
 }
 
 }

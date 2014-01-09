@@ -124,6 +124,20 @@ void ListTreeView::addChild(const QString &rootName, const QString &name, const 
     endResetModel();
 }
 
+void ListTreeView::addChildByValue(const QVariant &rootValue, const QString &name, const QVariant &value) {
+    beginResetModel();
+
+    int nItems = rootItem_->numberChilds();
+    for(int i=0; i < nItems; ++i){
+        ListTreeViewItem* item = rootItem_->child(i);
+        if(item->value() == rootValue ) {
+            item->addChild( new ListTreeViewItem(name,value,item) );
+        }
+    }
+    endResetModel();
+
+}
+
 void ListTreeView::clear() {
    beginResetModel();
    int nItems = rootItem_->numberChilds();
