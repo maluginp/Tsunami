@@ -9,6 +9,9 @@ CreateDeviceDialog::CreateDeviceDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
+
+    ui->deviceNameErrorText->setText("");
+
     ui->deviceTypeComboBox->addItem( QString("NBJT"), "nbjt" );
     ui->deviceTypeComboBox->addItem("PBJT","pbjt");
     ui->deviceTypeComboBox->addItem("NFET","nfet");
@@ -31,29 +34,41 @@ CreateDeviceDialog::~CreateDeviceDialog() {
 }
 
 void CreateDeviceDialog::clickedCreateButton() {
+    db::DeviceStorage* storage = db::DeviceStorage::instance();
+    ui->deviceNameErrorText->setText("");
 
     QString deviceName = ui->deviceNameLineEdit->text();
-    QString deviceType = ui->deviceTypeComboBox->itemData(
-                ui->deviceTypeComboBox->currentIndex() ).toString();
-    QString deviceModel = ui->deviceModelComboBox->itemData(
-                ui->deviceModelComboBox->currentIndex() ).toString();
-    db::DeviceStorage* storage = db::DeviceStorage::instance();
-
-    if(storage->exists( "name", deviceName )){
+    if(deviceName.isEmpty()){
+        ui->deviceNameErrorText->setText(tr("Device name is empty"));
+        return;
+    }
+    if(storage->existsByKey( "name", deviceName )){
         ui->deviceNameErrorText->setText( tr("This is name use for other device.") );
         return;
     }
 
+    if(ui->deviceTypeComboBox->currentIndex() == -1){
+        ui->deviceNameErrorText->setText( tr("Not choiced device type") );
+        return;
+    }
+    QString deviceType = ui->deviceTypeComboBox->itemData(
+                ui->deviceTypeComboBox->currentIndex() ).toString();
+
+    if(ui->deviceModelComboBox->currentIndex() == -1){
+        ui->deviceNameErrorText->setText( tr("Not choiced device model") );
+        return;
+    }
+    QString deviceModel = ui->deviceModelComboBox->itemData(
+                ui->deviceModelComboBox->currentIndex() ).toString();
 
 
-    db::DeviceModel* device;
+    db::DeviceModel* device = new db::DeviceModel();
     device->name(deviceName);
     device->model(deviceModel);
     device->type(deviceType);
     device->createAt(QDateTime::currentDateTime());
     device->changeAt(QDateTime::currentDateTime());
     device->enable(true);
-
 
 
     if(storage->saveDevice( device )){

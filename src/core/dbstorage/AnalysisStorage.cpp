@@ -32,6 +32,10 @@ QMap<int, QString> AnalysisStorage::listAnalysis(int deviceId) {
     return listAnalysisImpl(deviceId);
 }
 
+int AnalysisStorage::numberAnalysis(int deviceId) {
+    return listAnalysis(deviceId).count();
+}
+
 bool AnalysisStorage::exists(int deviceId, const QString &name) {
     QString sqlQuery;
     sqlQuery = sql( "SELECT id FROM %1 WHERE name=:name AND device_id=:device_id").arg(TABLE_NAME_ANALYSES);

@@ -126,7 +126,7 @@
     <number>0</number>
    </property>
    <property name="text">
-    <string/>
+    <string>Placeholder error</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

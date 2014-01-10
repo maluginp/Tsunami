@@ -10,7 +10,10 @@ namespace db{
 
 class TSUNAMI_EXPORT DeviceModel {
 public:
-    DeviceModel(){}
+    DeviceModel();
+    DeviceModel(const DeviceModel& other);
+    DeviceModel& operator=(const DeviceModel& other);
+
     void id( int deviceId ) { deviceId_ = deviceId; }
     void name( const QString& name) { name_ = name; }
     void type( DeviceType type) { type_ = type; }

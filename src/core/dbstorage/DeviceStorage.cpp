@@ -60,7 +60,7 @@ QMap<QString, int> DeviceStorage::listDevices(bool onlyEnabled) {
 
 }
 
-bool DeviceStorage::exists(const QString &column, const QVariant &value) {    
+bool DeviceStorage::existsByKey(const QString &column, const QVariant &value) {
     QString sqlQuery;
     sqlQuery = sql( "SELECT id FROM %1 WHERE %2=:value").arg(TABLE_NAME_DEVICES).
             arg(column);

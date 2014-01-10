@@ -52,6 +52,28 @@ LibraryModel* ParameterStorage::openLibrary(int libraryId){
     return openLibraryImpl(libraryId);
 }
 
+int ParameterStorage::numberLibraries(int deviceId) {
+    int nLibraries = 0;
+    QString sqlQuery;
+    sqlQuery = sql("SELECT id FROM %1 WHERE device_id=:device_id").arg(TABLE_NAME_LIBRARIES);
+
+    QSqlQuery q(sqlQuery,db());
+    q.bindValue(":device_id", deviceId);
+
+    if(!q.exec()){
+        setLastError( q.lastError().text() );
+        return 0;
+    }
+
+
+    while(q.next()){
+        nLibraries++;
+    }
+
+    return nLibraries;
+
+}
+
 LibraryTemplateModel *ParameterStorage::openTemplateLibraryImpl(const QString &templateName) {
 
     QString sqlQuery;

@@ -53,6 +53,7 @@ private slots:
     void clickedAnalysisAdd();
     void clickedLibraryAdd();
     void clickedDeviceClose();
+    void clickedDeviceNew();
     void clickedDeviceRemove();
     void clickedSettingsOpen();
     void clickedAboutOpen();

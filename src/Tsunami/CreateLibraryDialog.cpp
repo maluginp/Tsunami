@@ -95,6 +95,10 @@ void CreateLibraryDialog::clickedCreateButton(){
                 library_ = storage_->openLibrary( libraryId  );
                 library_->id(-1);
             }
+
+            if(library_){
+                library_->name( libraryName );
+            }
         }else{
             ui->errorLibraryText->setText( tr("Not choiced library") );
             return;

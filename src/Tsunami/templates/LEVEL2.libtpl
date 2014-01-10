@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library name="LEVEL2" devices="nmos,pmos">
+	<parameter name="LD"   initial="0" minimum="0" maximum="0" />
+	<parameter name="WD"   initial="0" minimum="0" maximum="0" />
+	<parameter name="VT0"   initial="0" minimum="0" maximum="0" />
+	<parameter name="KP"   initial="2e-5" minimum="2e-5" maximum="2e-5" />
+	<parameter name="GAMMA"   initial="0" minimum="0" maximum="0" />
+	<parameter name="PHI"   initial="0.6" minimum="0.6" maximum="0.6" />
+	<parameter name="LAMBDA"   initial="0" minimum="0" maximum="0" />
+	<parameter name="RD"   initial="0" minimum="0" maximum="0" />
+	<parameter name="RS"   initial="0" minimum="0" maximum="0" />
+	<parameter name="RG"   initial="0" minimum="0" maximum="0" />
+	<parameter name="RB"   initial="0" minimum="0" maximum="0" />
+	<parameter name="RDS"   initial="inf" minimum="inf" maximum="inf" />
+	<parameter name="RSH"   initial="0" minimum="0" maximum="0" />
+	<parameter name="IS"   initial="1e-14" minimum="1e-14" maximum="1e-14" />
+	<parameter name="JS"   initial="0" minimum="0" maximum="0" />
+	<parameter name="PB"   initial="0.8" minimum="0.8" maximum="0.8" />
+	<parameter name="CBD"   initial="0" minimum="0" maximum="0" />
+	<parameter name="CBS"   initial="0" minimum="0" maximum="0" />
+	<parameter name="CJ"   initial="0" minimum="0" maximum="0" />
+	<parameter name="CJSW"   initial="0" minimum="0" maximum="" />
+	<parameter name="MJ"   initial="0.5" minimum="0.5" maximum="0.5" />
+	<parameter name="MJSW"   initial="0.33" minimum="0.33" maximum="0.33" />
+	<parameter name="FC"   initial="0.5" minimum="0.5" maximum="0.5" />
+	<parameter name="CGS0"   initial="0" minimum="0" maximum="0" />
+	<parameter name="CGD0"   initial="0" minimum="0" maximum="0" />
+	<parameter name="CGB0"   initial="0" minimum="0" maximum="0" />
+	<parameter name="NSUB"   initial="0" minimum="0" maximum="0" />
+	<parameter name="NSS"   initial="0" minimum="0" maximum="0" />
+	<parameter name="NFS"   initial="0" minimum="0" maximum="0" />
+	<parameter name="TOX"   initial="inf" minimum="inf" maximum="inf" />
+	<parameter name="TPG"   initial="1" minimum="1" maximum="1" />
+	<parameter name="XJ"   initial="0" minimum="0" maximum="0" />
+	<parameter name="UCRIT"   initial="1e4" minimum="1e4" maximum="1e4" />
+	<parameter name="UEXP"   initial="0" minimum="0" maximum="0" />
+	<parameter name="UTRA"   initial="0" minimum="0" maximum="0" />
+	<parameter name="VMAX"   initial="0" minimum="0" maximum="0" />
+	<parameter name="NEFF"   initial="1" minimum="1" maximum="1" />
+	<parameter name="XQC"   initial="1" minimum="1" maximum="1" />
+	<parameter name="DELTA"   initial="0" minimum="0" maximum="0" />
+	<parameter name="KF"   initial="0" minimum="0" maximum="0" />
+	<parameter name="AF"   initial="1" minimum="1" maximum="1" />
+</library>

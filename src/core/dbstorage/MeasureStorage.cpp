@@ -369,6 +369,32 @@ QList<MeasureModel *> MeasureStorage::getMeasuresByDeviceId(int deviceId) {
     return getMeasuresByDeviceIdImpl(deviceId);
 }
 
+int MeasureStorage::numberMeasures(int deviceId) {
+    int nMeasures = 0;
+
+    setLastError( QString() );
+
+    QString sqlQuery;
+
+    sqlQuery = sql("SELECT id FROM %1 WHERE device_id=:device_id")
+            .arg( TABLE_NAME_MEASURES );
+
+    QSqlQuery q(sqlQuery,db());
+    q.bindValue(":device_id", deviceId);
+
+    if(!q.exec()){
+        setLastError( q.lastError().text() );
+        log::logError() << "Sql error:" << q.lastError().text();
+        return 0;
+    }
+
+    while(q.next()){
+        nMeasures++;
+    }
+
+    return nMeasures;
+}
+
 QList<MeasureModel *> MeasureStorage::getMeasures(const QList<int> &measureIds) {
     QList<MeasureModel*> measures;
 

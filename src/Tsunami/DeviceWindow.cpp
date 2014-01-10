@@ -12,16 +12,16 @@ namespace tsunami{
 
 DeviceWindow::DeviceWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::DeviceWindow),
-    storage_(NULL),
-    device_(NULL),
-    libraryWindow_(NULL),
-    extractorWindow_(NULL),
-    measuresWindow_(NULL),
-    analysisWindow_(NULL),
-    measureList_(NULL),
-    libraryList_(NULL),
-    analysisList_(NULL)  {
+     ui(new Ui::DeviceWindow),
+     storage_(NULL),
+     device_(NULL),
+     libraryWindow_(NULL),
+     extractorWindow_(NULL),
+     measuresWindow_(NULL),
+     analysisWindow_(NULL),
+     measureList_(NULL),
+     libraryList_(NULL),
+     analysisList_(NULL)  {
 
     // Load Translator
     translator_ = new QTranslator();
@@ -76,11 +76,11 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
 
     statusBar()->showMessage(tr("Tsunami ver %1").arg( TSUNAMI_VERSION ));
 
-#ifdef QT_DEBUG
-    openDevice(1);
-#else
+//#ifdef QT_DEBUG
+//    openDevice(1);
+//#else
     clickedDeviceClose();
-#endif
+//#endif
 }
 
 DeviceWindow::~DeviceWindow() {
@@ -92,7 +92,6 @@ DeviceWindow::~DeviceWindow() {
 }
 
 void DeviceWindow::openDevice(int deviceId) {
-
     device_ = storage_->openDevice( deviceId );
     if(device_ == 0) Q_ASSERT(false);
     deviceId_ = device_->id();
@@ -180,22 +179,29 @@ void DeviceWindow::clickedParametersEditor() {
     return;
 }
 void DeviceWindow::clickedExtractionRunAction() {
+    if(db::ParameterStorage::instance()->numberLibraries(deviceId_) > 0
+            && db::MeasureStorage::instance()->numberMeasures(deviceId_) > 0 ) {
 
-    PrepareExtractorDialog dialog(deviceId_);
+        PrepareExtractorDialog dialog(deviceId_);
 
-    if(dialog.exec() != QDialog::Accepted){
-        return;
+        if(dialog.exec() != QDialog::Accepted){
+            return;
+        }
+
+        int libraryId = dialog.libraryId();
+        QList<int> measureIds = dialog.measures();
+        db::SettingStorage* settings = db::SettingStorage::instance();
+        QString optimize = settings->value("optimize/method").toString();
+
+        delete extractorWindow_;
+        extractorWindow_ = new ExtractorWindow(device_->type(),libraryId,measureIds, optimize );
+
+
+        extractorWindow_->show();
+    }else{
+        QMessageBox::information(this,windowTitle(),tr("Not enough measures or "
+                                                       "libraries for extraction"));
     }
-
-    int libraryId = dialog.libraryId();
-    QList<int> measureIds = dialog.measures();
-    db::SettingStorage* settings = db::SettingStorage::instance();
-    QString optimize = settings->value("optimize/method").toString();
-
-    delete extractorWindow_;
-    extractorWindow_ = new ExtractorWindow(device_->type(),libraryId,measureIds, optimize );
-    extractorWindow_->show();
-
     return;
 }
 
@@ -213,6 +219,13 @@ void DeviceWindow::clickedMeasureEditor() {
 }
 
 void DeviceWindow::clickedMeasureAdd() {
+    db::AnalysisStorage* storage = db::AnalysisStorage::instance();
+
+    if (storage->numberAnalysis(deviceId_) == 0) {
+        QMessageBox::information(this,windowTitle(),tr("Analysis null"));
+        return;
+    }
+
     int analysisId = ChoiceAnalysisForm::getAnalysisId( deviceId_);
 
     if( analysisId != -1){
@@ -246,7 +259,6 @@ void DeviceWindow::clickedLibraryAdd() {
 }
 
 void DeviceWindow::clickedDeviceClose() {
-
     if(device_ != 0){
         device_->changeAt( QDateTime::currentDateTime() );
         if(!storage_->saveDevice( device_ )){
@@ -269,6 +281,13 @@ void DeviceWindow::clickedDeviceClose() {
     ui->deviceImage->hide();
 }
 
+void DeviceWindow::clickedDeviceNew() {
+//    OpenDeviceDialog dialog;
+//    dialog.clickedCreateButton();
+//    if(dialog.exec() == QDialog::Accepted){
+//    }
+}
+
 void DeviceWindow::clickedDeviceRemove() {
     if(device_ == 0 || deviceId_ == -1){
         return;
@@ -276,11 +295,12 @@ void DeviceWindow::clickedDeviceRemove() {
 
     int button =  QMessageBox::question(this,
                                         tr("Remove device"),
-                                        tr("Do you want remove %1").arg(device_->name()),
+                                        tr("Do you want remove %1")
+                                        .arg(device_->name()),
                                         QMessageBox::No | QMessageBox::Yes,
                                         QMessageBox::No);
-    if(button == QMessageBox::Yes){
-        if(storage_->removeDevice( deviceId_ )){
+    if (button == QMessageBox::Yes) {
+        if (storage_->removeDevice( deviceId_ )) {
             clickedDeviceClose();
 
             delete device_;

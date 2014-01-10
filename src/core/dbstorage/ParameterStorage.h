@@ -27,6 +27,8 @@ public:
     bool saveTemplateLibrary( LibraryTemplateModel* templateLibrary );
 
     LibraryModel* openLibrary( int libraryId );
+    int numberLibraries(int deviceId);
+
 
     QMap<int,QString> listLibraries(int deviceId);
     QList<LibraryModel*> getLibrariesByDeviceId( int deviceId );

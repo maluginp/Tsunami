@@ -21,7 +21,7 @@ public:
      bool removeDevice( int deviceId );
      QMap<QString,int> listDevices( bool onlyEnabled = true );
 
-     bool exists( const QString& column, const QVariant& value);
+     bool existsByKey( const QString& column, const QVariant& value);
 
 protected:
     QString connectionName() const;

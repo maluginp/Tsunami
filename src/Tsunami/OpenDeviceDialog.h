@@ -20,6 +20,8 @@ public:
     ~OpenDeviceDialog();
 
     static int getDeviceId(QWidget *parent=0);
+public slots:
+    void clickedCreateButton();
 private:
     void updateList();
     void showDescription(int deviceId);
@@ -32,7 +34,7 @@ private slots:
     void clickedDeviceListItem(const QModelIndex& index);
     void clickedOpenButton();
     void clickedRemoveButton();
-    void clickedCreateButton();
+
 
     void changedDeviceName(const QString& name);
 };

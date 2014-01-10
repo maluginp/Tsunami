@@ -22,6 +22,8 @@ public:
     QList<AnalysisModel*> getAnalysesByDeviceId( int deviceId );
     QMap<int,QString> listAnalysis(int deviceId);
 
+    int numberAnalysis(int deviceId);
+
     bool exists( int deviceId, const QString& name );
 
 protected:

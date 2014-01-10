@@ -4,6 +4,43 @@
 namespace tsunami{
 namespace db{
 
+
+
+DeviceModel::DeviceModel() :
+     deviceId_(-1),
+     type_(DEVICE_UNKNOWN),
+     createdAt_(QDateTime::currentDateTime()),
+     changedAt_(QDateTime::currentDateTime()),
+     enable_(true) {
+
+    // constructor
+
+}
+
+DeviceModel::DeviceModel(const DeviceModel &other) :
+    deviceId_(other.deviceId_),
+    name_(other.name_),
+    type_(other.type_),
+    model_(other.model_),
+    createdAt_(other.createdAt_),
+    changedAt_(other.changedAt_),
+    enable_(other.enable_) {
+
+}
+
+DeviceModel &DeviceModel::operator=(const DeviceModel &other) {
+    deviceId_   = other.deviceId_;
+    name_       = other.name_;
+    type_       = other.type_;
+    model_      = other.model_;
+    createdAt_  = other.createdAt_;
+    changedAt_  = other.changedAt_;
+    enable_     = other.enable_;
+
+    return *this;
+}
+
+
 void DeviceModel::type(const QString &type){
     if(type.compare("nbjt")==0){
         type_ = DEVICE_NBJT;
@@ -82,7 +119,9 @@ QString DeviceModel::modelNameToTitle(const QString &modelName) {
         return QString("Gummel-Poon");
     }
 
-    return QString();
+    QString name = modelName;
+
+    return name.toUpper();
 }
 
 DeviceType DeviceModel::nameToType(const QString &name) {
