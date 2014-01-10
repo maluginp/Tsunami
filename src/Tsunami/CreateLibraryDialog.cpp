@@ -16,7 +16,7 @@ CreateLibraryDialog::CreateLibraryDialog(int deviceId,QWidget *parent) :
     db::DeviceStorage* deviceStorage = db::DeviceStorage::instance();
     db::DeviceModel* device = deviceStorage->openDevice(deviceId_);
 
-    if(!device){
+    if(device){
         deviceType_ = device->type();
         delete device;
     }

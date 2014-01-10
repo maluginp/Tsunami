@@ -240,6 +240,8 @@ void DeviceWindow::clickedLibraryAdd() {
 
     if(libraryWindow_  != 0){
         libraryWindow_->openLibrary(-1);
+        libraryWindow_->clickedNewLibraryAction();
+
     }
 }
 

@@ -22,6 +22,10 @@ public:
     explicit LibraryWindow(int deviceId, QWidget *parent = 0);
     ~LibraryWindow();
     void openLibrary(int libraryId);
+
+public slots:
+    void clickedNewLibraryAction();
+
 private:
     void showParameters(db::LibraryModel* library);
     void enableButtons(bool enable);
@@ -35,7 +39,6 @@ private:
 
 private slots:
     void clickedOpenLibraryAction();
-    void clickedNewLibraryAction();
     void clickedAddParameterAction();
     void clickedRemoveParameterAction();
     void clickedExportNetList();
