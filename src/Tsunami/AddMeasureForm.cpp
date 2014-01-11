@@ -237,6 +237,7 @@ void addMeasureForm::addButtonClick() {
     measure_->changeAt( QDateTime::currentDateTime()  );
 
     measureStorage_->saveMeasure( measure_ );
+    emit updatedDataBase();
 }
 
 void addMeasureForm::clickedExportButton() {

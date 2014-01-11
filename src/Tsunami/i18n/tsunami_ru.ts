@@ -10,18 +10,24 @@
     </message>
     <message utf8="true">
         <location filename="../AboutDialog.ui" line="26"/>
-        <source>Tsunami
-Экстрактор параметорв</source>
+        <source>Программа применяется для задач связанных с экстракцией SPICE-параметров из компактных SPICE-моделей.
+Разработана на Qt4 </source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
-        <location filename="../AboutDialog.ui" line="40"/>
+        <location filename="../AboutDialog.ui" line="43"/>
         <source>Разработчик
-Малюгин Платон</source>
+Малюгин Платон
+malugin.p@gmail.com</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../AboutDialog.ui" line="79"/>
+        <source>Tsunami</source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
-        <location filename="../AboutDialog.ui" line="54"/>
+        <location filename="../AboutDialog.ui" line="58"/>
         <source>Закрыть</source>
         <translation type="unfinished"></translation>
     </message>
@@ -174,6 +180,11 @@
         <source>Модель:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../CreateDeviceDialog.ui" line="129"/>
+        <source>Placeholder error</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CreateLibraryDialog</name>
@@ -182,86 +193,91 @@
         <source>Создать библиотеку</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../CreateLibraryDialog.ui" line="112"/>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message utf8="true">
-        <location filename="../CreateLibraryDialog.ui" line="29"/>
+        <location filename="../CreateLibraryDialog.ui" line="131"/>
         <source>Название библиотеки</source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
-        <location filename="../CreateLibraryDialog.ui" line="73"/>
+        <location filename="../CreateLibraryDialog.ui" line="50"/>
         <source>Скопировать параметры</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../CreateLibraryDialog.ui" line="34"/>
+        <source>Placeholder error</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message utf8="true">
-        <location filename="../CreateLibraryDialog.ui" line="102"/>
+        <location filename="../CreateLibraryDialog.ui" line="79"/>
         <source>Закрыть</source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
-        <location filename="../CreateLibraryDialog.ui" line="109"/>
+        <location filename="../CreateLibraryDialog.ui" line="86"/>
         <source>Создать</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../CreateLibraryDialog.ui" line="128"/>
-        <source>Из библиотеки:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>DeviceWindow</name>
     <message>
-        <location filename="../DeviceWindow.ui" line="241"/>
+        <location filename="../DeviceWindow.ui" line="247"/>
         <source>Devices</source>
         <translation>Устройства</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.ui" line="249"/>
+        <location filename="../DeviceWindow.ui" line="255"/>
         <source>Measures</source>
         <translation>Измерения</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.ui" line="256"/>
+        <location filename="../DeviceWindow.ui" line="262"/>
         <source>Parameters</source>
         <translation>Параметры</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.ui" line="262"/>
+        <location filename="../DeviceWindow.ui" line="268"/>
         <source>Extraction</source>
         <translation>Экстракция</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.ui" line="268"/>
+        <location filename="../DeviceWindow.ui" line="274"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.ui" line="303"/>
+        <location filename="../DeviceWindow.ui" line="309"/>
         <source>Open</source>
         <translation>Открыть</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.ui" line="308"/>
+        <location filename="../DeviceWindow.ui" line="314"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.ui" line="313"/>
+        <location filename="../DeviceWindow.ui" line="319"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.ui" line="318"/>
+        <location filename="../DeviceWindow.ui" line="324"/>
         <source>Editor</source>
         <translation>Редактор</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.ui" line="323"/>
+        <location filename="../DeviceWindow.ui" line="329"/>
         <source>Run</source>
         <translation>Запустить</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.ui" line="328"/>
+        <location filename="../DeviceWindow.ui" line="334"/>
         <source>Add</source>
         <translation>Добавить</translation>
     </message>
@@ -273,49 +289,49 @@
     <message>
         <location filename="../DeviceWindow.ui" line="27"/>
         <location filename="../DeviceWindow.ui" line="40"/>
-        <location filename="../DeviceWindow.ui" line="213"/>
+        <location filename="../DeviceWindow.ui" line="219"/>
         <source>Choice device</source>
         <translation>Выберите устройство</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.ui" line="101"/>
+        <location filename="../DeviceWindow.ui" line="107"/>
         <source>Name:</source>
         <translation>Название:</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.ui" line="120"/>
+        <location filename="../DeviceWindow.ui" line="126"/>
         <source>Type:</source>
         <translation>Тип:</translation>
     </message>
     <message utf8="true">
-        <location filename="../DeviceWindow.ui" line="149"/>
-        <location filename="../DeviceWindow.ui" line="165"/>
-        <location filename="../DeviceWindow.ui" line="181"/>
+        <location filename="../DeviceWindow.ui" line="155"/>
+        <location filename="../DeviceWindow.ui" line="171"/>
+        <location filename="../DeviceWindow.ui" line="187"/>
         <source>Добавить</source>
         <translation>Добавить</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.ui" line="200"/>
+        <location filename="../DeviceWindow.ui" line="206"/>
         <source>Model:</source>
         <translation>Модель:</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.ui" line="226"/>
+        <location filename="../DeviceWindow.ui" line="232"/>
         <source>Run Extraction</source>
         <translation>Экстракция</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.ui" line="333"/>
+        <location filename="../DeviceWindow.ui" line="339"/>
         <source>Edit</source>
         <translation>Редактировать</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.ui" line="338"/>
+        <location filename="../DeviceWindow.ui" line="344"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.ui" line="343"/>
+        <location filename="../DeviceWindow.ui" line="349"/>
         <source>About</source>
         <translation>О программе</translation>
     </message>
@@ -893,65 +909,85 @@
 <context>
     <name>tsunami::ChoiceAnalysisForm</name>
     <message>
-        <location filename="../ChoiceAnalysisForm.cpp" line="86"/>
+        <location filename="../ChoiceAnalysisForm.cpp" line="76"/>
+        <source>Analysis didn&apos;t choice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ChoiceAnalysisForm.cpp" line="96"/>
         <source>&lt;b&gt;Name:&lt;/b&gt; %1&lt;br/&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ChoiceAnalysisForm.cpp" line="89"/>
+        <location filename="../ChoiceAnalysisForm.cpp" line="99"/>
         <source>&lt;b&gt;Analysis type:&lt;/b&gt; %1&lt;br/&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ChoiceAnalysisForm.cpp" line="91"/>
-        <source>&lt;b&gt;Sources&lt;b/&gt;&lt;br/&gt;</source>
+        <location filename="../ChoiceAnalysisForm.cpp" line="101"/>
+        <source>&lt;b&gt;Sources&lt;/b&gt;&lt;br/&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>tsunami::CreateDeviceDialog</name>
     <message>
-        <location filename="../CreateDeviceDialog.cpp" line="43"/>
+        <location filename="../CreateDeviceDialog.cpp" line="42"/>
+        <source>Device name is empty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CreateDeviceDialog.cpp" line="46"/>
         <source>This is name use for other device.</source>
         <translation>Имя устройства занято.</translation>
     </message>
     <message>
-        <location filename="../CreateDeviceDialog.cpp" line="71"/>
+        <location filename="../CreateDeviceDialog.cpp" line="51"/>
+        <source>Not choiced device type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CreateDeviceDialog.cpp" line="58"/>
+        <source>Not choiced device model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CreateDeviceDialog.cpp" line="86"/>
         <source>Gummel-Poon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CreateDeviceDialog.cpp" line="72"/>
+        <location filename="../CreateDeviceDialog.cpp" line="87"/>
         <source>VBIC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CreateDeviceDialog.cpp" line="74"/>
+        <location filename="../CreateDeviceDialog.cpp" line="89"/>
         <source>Shichman-Hodges</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CreateDeviceDialog.cpp" line="76"/>
+        <location filename="../CreateDeviceDialog.cpp" line="91"/>
         <source>LEVEL2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CreateDeviceDialog.cpp" line="77"/>
+        <location filename="../CreateDeviceDialog.cpp" line="92"/>
         <source>LEVEL3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CreateDeviceDialog.cpp" line="78"/>
+        <location filename="../CreateDeviceDialog.cpp" line="93"/>
         <source>BSIM3v3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CreateDeviceDialog.cpp" line="79"/>
+        <location filename="../CreateDeviceDialog.cpp" line="94"/>
         <source>BSIM4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CreateDeviceDialog.cpp" line="81"/>
+        <location filename="../CreateDeviceDialog.cpp" line="96"/>
         <source>Diode</source>
         <translation type="unfinished"></translation>
     </message>
@@ -959,57 +995,87 @@
 <context>
     <name>tsunami::CreateLibraryDialog</name>
     <message>
-        <location filename="../CreateLibraryDialog.cpp" line="35"/>
+        <location filename="../CreateLibraryDialog.cpp" line="25"/>
+        <source>Device libraries</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CreateLibraryDialog.cpp" line="26"/>
+        <source>Templates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CreateLibraryDialog.cpp" line="27"/>
+        <source>Libraries</source>
+        <translation type="unfinished">Библиотеки</translation>
+    </message>
+    <message>
+        <location filename="../CreateLibraryDialog.cpp" line="74"/>
         <source>Library name is empty.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CreateLibraryDialog.cpp" line="40"/>
+        <location filename="../CreateLibraryDialog.cpp" line="79"/>
         <source>Library is existed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CreateLibraryDialog.cpp" line="103"/>
+        <source>Not choiced library</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>tsunami::DeviceWindow</name>
     <message>
-        <location filename="../DeviceWindow.cpp" line="42"/>
+        <location filename="../DeviceWindow.cpp" line="50"/>
         <source>Measures</source>
         <translation>Измерения</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.cpp" line="43"/>
+        <location filename="../DeviceWindow.cpp" line="51"/>
         <source>Libraries</source>
         <translation>Библиотеки</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.cpp" line="44"/>
+        <location filename="../DeviceWindow.cpp" line="52"/>
         <source>Analyses</source>
         <translation>Анализы</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.cpp" line="69"/>
+        <location filename="../DeviceWindow.cpp" line="77"/>
         <source>Tsunami ver %1</source>
         <translation>Tsunami версия %1</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.cpp" line="98"/>
+        <location filename="../DeviceWindow.cpp" line="105"/>
         <source>%1 - Devices Manager</source>
         <translation>%1 - Менеджер устройств</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.cpp" line="240"/>
-        <location filename="../DeviceWindow.cpp" line="241"/>
-        <location filename="../DeviceWindow.cpp" line="242"/>
+        <location filename="../DeviceWindow.cpp" line="246"/>
+        <source>Not enough measures or libraries for extraction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../DeviceWindow.cpp" line="266"/>
+        <source>Analysis null</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../DeviceWindow.cpp" line="305"/>
+        <location filename="../DeviceWindow.cpp" line="306"/>
+        <location filename="../DeviceWindow.cpp" line="307"/>
         <source>Choice device</source>
         <translation>Выберите устройство</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.cpp" line="257"/>
+        <location filename="../DeviceWindow.cpp" line="329"/>
         <source>Remove device</source>
         <translation>Удалить устройство</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.cpp" line="258"/>
+        <location filename="../DeviceWindow.cpp" line="330"/>
         <source>Do you want remove %1</source>
         <translation>Вы хотите удалить %1</translation>
     </message>
@@ -1017,22 +1083,22 @@
 <context>
     <name>tsunami::LibraryWindow</name>
     <message>
-        <location filename="../LibraryWindow.cpp" line="166"/>
+        <location filename="../LibraryWindow.cpp" line="174"/>
         <source>Export NetList</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../LibraryWindow.cpp" line="193"/>
+        <location filename="../LibraryWindow.cpp" line="203"/>
         <source>Remove library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../LibraryWindow.cpp" line="194"/>
+        <location filename="../LibraryWindow.cpp" line="204"/>
         <source>Do you want remove %1</source>
         <translation type="unfinished">Вы хотите удалить %1</translation>
     </message>
     <message>
-        <location filename="../LibraryWindow.cpp" line="212"/>
+        <location filename="../LibraryWindow.cpp" line="222"/>
         <source>Choice library</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1109,22 +1175,22 @@
 <context>
     <name>tsunami::addMeasureForm</name>
     <message>
-        <location filename="../AddMeasureForm.cpp" line="46"/>
+        <location filename="../AddMeasureForm.cpp" line="41"/>
         <source>Add</source>
         <translation>Добавить</translation>
     </message>
     <message>
-        <location filename="../AddMeasureForm.cpp" line="49"/>
+        <location filename="../AddMeasureForm.cpp" line="44"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="../AddMeasureForm.cpp" line="248"/>
+        <location filename="../AddMeasureForm.cpp" line="244"/>
         <source>Export to file</source>
         <translation>Экспорт в файл</translation>
     </message>
     <message>
-        <location filename="../AddMeasureForm.cpp" line="261"/>
+        <location filename="../AddMeasureForm.cpp" line="258"/>
         <source>Import from file</source>
         <translation>Импорт из файла</translation>
     </message>

@@ -46,6 +46,10 @@ private slots:
     void clickedSearchButton();
     void clickedRemoveLibrary();
     void clickedCloseLibrary();
+
+signals:
+    void updatedDataBase();
+
 };
 
 }

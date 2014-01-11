@@ -57,6 +57,8 @@ private slots:
     void clickedExportButton();
     void clickedImportButton();
 
+signals:
+    void updatedDataBase();
 };
 
 }

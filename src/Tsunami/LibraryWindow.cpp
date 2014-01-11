@@ -97,6 +97,8 @@ void LibraryWindow::clickedNewLibraryAction() {
 
         enableButtons(true);
 
+        emit updatedDataBase();
+
     }
     return;
 }
@@ -178,6 +180,8 @@ void LibraryWindow::clickedExportNetList() {
 void LibraryWindow::clickedSaveButton() {
     if(!storage_->saveLibrary( library_ )){
         qDebug() << "Can not save library";
+    }else{
+        emit updatedDataBase();
     }
 }
 

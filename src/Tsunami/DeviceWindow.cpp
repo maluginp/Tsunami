@@ -125,6 +125,53 @@ void DeviceWindow::openDevice(int deviceId) {
     ui->addMeasureButton->setEnabled(true);
 }
 
+bool DeviceWindow::createLibraryWindow() {
+    if(libraryWindow_){
+        libraryWindow_->disconnect();
+        delete libraryWindow_;
+    }
+
+    libraryWindow_ = 0;
+    libraryWindow_ = new LibraryWindow(deviceId_);
+    libraryWindow_->show();
+
+    connect(libraryWindow_,SIGNAL(updatedDataBase()),
+            SLOT(updateDeviceWindow()));
+    return (libraryWindow_ != 0);
+}
+
+bool DeviceWindow::createAnalysisWindow() {
+    if(analysisWindow_) {
+        analysisWindow_->disconnect();
+        delete analysisWindow_;
+        analysisWindow_ = 0;
+    }
+
+    analysisWindow_ = new AnalysisWindow( deviceId_);
+    analysisWindow_->show();
+    QEventLoop eventLoop;
+    connect(analysisWindow_,SIGNAL(pageLoadFinished()),&eventLoop,SLOT(quit()));
+    eventLoop.exec();
+
+    connect(analysisWindow_,SIGNAL(updatedDataBase()),
+            SLOT(updateDeviceWindow()));
+    return (analysisWindow_ != 0);
+}
+
+bool DeviceWindow::createMeasureWindow(addMeasureForm::Action action, int measureId) {
+    if(measuresWindow_){
+        measuresWindow_->disconnect();
+        delete measuresWindow_;
+        measuresWindow_ = 0;
+    }
+    measuresWindow_ = new addMeasureForm(action,measureId);
+    measuresWindow_->show();
+    connect(measuresWindow_,SIGNAL(updatedDataBase()),
+            SLOT(updateDeviceWindow()));
+
+    return (measuresWindow_ != 0);
+}
+
 void DeviceWindow::updateDeviceWindow() {
     if( device_ == 0) return;
 
@@ -171,11 +218,7 @@ void DeviceWindow::clickedOpenDeviceAction() {
 }
 
 void DeviceWindow::clickedParametersEditor() {
-    delete libraryWindow_;
-    libraryWindow_ = 0;
-    libraryWindow_ = new LibraryWindow(deviceId_);
-    libraryWindow_->show();
-
+    createLibraryWindow();
     return;
 }
 void DeviceWindow::clickedExtractionRunAction() {
@@ -193,6 +236,7 @@ void DeviceWindow::clickedExtractionRunAction() {
         db::SettingStorage* settings = db::SettingStorage::instance();
         QString optimize = settings->value("optimize/method").toString();
 
+
         delete extractorWindow_;
         extractorWindow_ = new ExtractorWindow(device_->type(),libraryId,measureIds, optimize );
 
@@ -208,11 +252,8 @@ void DeviceWindow::clickedExtractionRunAction() {
 void DeviceWindow::clickedMeasureEditor() {
     int measureId = OpenMeasureDialog::getMeasureId( deviceId_, this );
 
-    if(measureId != -1){
-        delete measuresWindow_;
-
-        measuresWindow_ = new addMeasureForm(addMeasureForm::EDIT,1,0);
-        measuresWindow_->show();
+    if(measureId != -1) {
+        createMeasureWindow(addMeasureForm::EDIT,measureId);
     }
 
     return;
@@ -229,32 +270,23 @@ void DeviceWindow::clickedMeasureAdd() {
     int analysisId = ChoiceAnalysisForm::getAnalysisId( deviceId_);
 
     if( analysisId != -1){
-        delete measuresWindow_;
-        measuresWindow_ = new addMeasureForm(addMeasureForm::NEW,analysisId,0);
-        measuresWindow_->show();
+        createMeasureWindow(addMeasureForm::NEW,analysisId);
     }
 
     return;
 }
 
 void DeviceWindow::clickedAnalysisAdd() {
-    delete analysisWindow_;
-    analysisWindow_ = new AnalysisWindow( deviceId_);
-    analysisWindow_->show();
-    QEventLoop eventLoop;
-    connect(analysisWindow_,SIGNAL(pageLoadFinished()),&eventLoop,SLOT(quit()));
-    eventLoop.exec();
-
-    analysisWindow_->openAnalysis( -1 );
+    if(createAnalysisWindow()){
+        analysisWindow_->openAnalysis( -1 );
+    }
 }
 
 void DeviceWindow::clickedLibraryAdd() {
-    clickedParametersEditor();
-
-    if(libraryWindow_  != 0){
+//    clickedParametersEditor();
+    if(createLibraryWindow()) {
         libraryWindow_->openLibrary(-1);
         libraryWindow_->clickedNewLibraryAction();
-
     }
 }
 
@@ -327,9 +359,9 @@ void DeviceWindow::selectedMeasure(const QModelIndex &index) {
     if(!ok || measureId == -1){
         return;
     }
-    delete measuresWindow_;
-    measuresWindow_ = new addMeasureForm( addMeasureForm::EDIT, measureId );
-    measuresWindow_->show();
+
+    createMeasureWindow(addMeasureForm::EDIT, measureId);
+    return;
 }
 
 void DeviceWindow::selectedAnalysis(const QModelIndex &index) {
@@ -338,17 +370,10 @@ void DeviceWindow::selectedAnalysis(const QModelIndex &index) {
     if(!ok || analysisId == -1){
         return;
     }
-    delete analysisWindow_;
-    analysisWindow_ = new AnalysisWindow(deviceId_);
-    analysisWindow_->show();
 
-    // Some trick
-    QEventLoop eventLoop;
-    connect(analysisWindow_,SIGNAL(pageLoadFinished()),&eventLoop,SLOT(quit()));
-    eventLoop.exec();
-
-    analysisWindow_->openAnalysis( analysisId );
-
+    if(createAnalysisWindow()){
+        analysisWindow_->openAnalysis( analysisId );
+    }
 }
 
 void DeviceWindow::selectedLibrary(const QModelIndex &index) {
@@ -357,10 +382,11 @@ void DeviceWindow::selectedLibrary(const QModelIndex &index) {
     if(!ok || libraryId == -1){
         return;
     }
-    delete libraryWindow_;
-    libraryWindow_ = new LibraryWindow(deviceId_);
-    libraryWindow_->openLibrary( libraryId );
-    libraryWindow_->show();
+
+    if(createLibraryWindow()){
+        libraryWindow_->openLibrary( libraryId );
+    }
+    return;
 }
 
 }

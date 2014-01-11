@@ -73,6 +73,8 @@ void AnalysisWindow::updateAnalysisList() {
     foreach(int analysisId,list.keys()){
         listAnalysis_->addItem( list.value(analysisId), QVariant(analysisId) );
     }
+
+    emit updatedDataBase();
 }
 
 void AnalysisWindow::clickedOpenAnalysis() {

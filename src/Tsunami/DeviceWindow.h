@@ -23,6 +23,9 @@ public:
 
     void openDevice( int deviceId );
 private:
+    bool createLibraryWindow();
+    bool createAnalysisWindow();
+    bool createMeasureWindow(addMeasureForm::Action action,int measureId);
     Ui::DeviceWindow *ui;
 
     db::DeviceStorage* storage_;

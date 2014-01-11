@@ -42,7 +42,7 @@ private slots:
     void loadFinished(bool);
 signals:
     void pageLoadFinished();
-
+    void updatedDataBase();
 };
 }
 
