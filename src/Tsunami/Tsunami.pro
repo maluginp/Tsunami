@@ -36,7 +36,7 @@ SOURCES += main.cpp\
     LibraryWindow.cpp \
     ChoiceAnalysisForm.cpp \
     AnalysisForm.cpp \
-    AddMeasureForm.cpp \
+    MeasureWindow.cpp \
     OpenDeviceDialog.cpp \
     OpenLibraryDialog.cpp \
     PlotDataWindow.cpp \
@@ -51,7 +51,7 @@ HEADERS  += \
     CreateDeviceDialog.h \
     CreateLibraryDialog.h \
     PlotExtractionDialog.h \
-    AddMeasureForm.h \
+    MeasureWindow.h \
     AnalysisForm.h \
     ChoiceAnalysisForm.h \
     DeviceWindow.h \
@@ -71,7 +71,7 @@ FORMS    += DeviceWindow.ui \
     PlotDataWindow.ui \
     ChoiceAnalysisForm.ui \
     AnalysisForm.ui \
-    AddMeasureForm.ui \
+    MeasureWindow.ui \
     OpenMeasureDialog.ui \
     ShowTextDialog.ui \
     AnalysisWindow.ui \

@@ -1,5 +1,5 @@
-#include "AddMeasureForm.h"
-#include "ui_AddMeasureForm.h"
+#include "MeasureWindow.h"
+#include "ui_MeasureWindow.h"
 #include "views/Views.h"
 #include "dbstorage/DbStorages.h"
 #include "delegates/DelegateDoubleItem.h"
@@ -8,8 +8,8 @@
 
 namespace tsunami{
 
-const int addMeasureForm::nPairs_ = 6;
-gui::KeyValuePair addMeasureForm::headerPairs_[] = {
+const int MeasureWindow::nPairs_ = 6;
+gui::KeyValuePair MeasureWindow::headerPairs_[] = {
     gui::KeyValuePair("type",  QVariant("dc"),  gui::KeyValuePair::TYPE_READONLY, QString("Analysis Type")),
     gui::KeyValuePair("user",  QVariant(""),  gui::KeyValuePair::TYPE_READONLY, QString("User")),
     gui::KeyValuePair("user_date",  QVariant(QDate::currentDate()),  gui::KeyValuePair::TYPE_DATE, QString("User date")),
@@ -19,9 +19,9 @@ gui::KeyValuePair addMeasureForm::headerPairs_[] = {
 };
 
 
-addMeasureForm::addMeasureForm(int deviceId, addMeasureForm::Action action, int id, QWidget *parent) :
+MeasureWindow::MeasureWindow(int deviceId, MeasureWindow::Action action, int id, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::addMeasureForm),
+    ui(new Ui::MeasureWindow),
     deviceId_(deviceId),
     analysisId_(-1),
     headerView_(NULL),
@@ -66,12 +66,12 @@ addMeasureForm::addMeasureForm(int deviceId, addMeasureForm::Action action, int 
                                    SLOT(clickedAddAttributeButton()));
 }
 
-addMeasureForm::~addMeasureForm() {
+MeasureWindow::~MeasureWindow() {
     delete ui;
 
 }
 
-void addMeasureForm::showSourcesDescription() {
+void MeasureWindow::showSourcesDescription() {
     QString sourcesDescription;
     QList<Source> sources = measure_->sources();
     foreach(Source source,sources){
@@ -82,7 +82,7 @@ void addMeasureForm::showSourcesDescription() {
     }
     ui->measureSources->setText( sourcesDescription );
 }
- void addMeasureForm::prepareNewMeasureData() {
+ void MeasureWindow::prepareNewMeasureData() {
     Q_ASSERT(measure_ != 0);
 
     QStringList columns;
@@ -161,7 +161,7 @@ void addMeasureForm::showSourcesDescription() {
 
 }
 
-void addMeasureForm::openAnalysis(int analysisId) {
+void MeasureWindow::openAnalysis(int analysisId) {
     analysisId_ = analysisId;
 
     log::logTrace() << "Open analysis: " << analysisId;
@@ -194,7 +194,7 @@ void addMeasureForm::openAnalysis(int analysisId) {
     showSourcesDescription();
 }
 
-void addMeasureForm::openMeasure(int measureId) {
+void MeasureWindow::openMeasure(int measureId) {
     log::logTrace() << "Open measure:" << measureId;
 
     measure_ = measureStorage_->openMeasure( measureId );
@@ -235,11 +235,11 @@ void addMeasureForm::openMeasure(int measureId) {
 
 }
 
-void addMeasureForm::clickedAddAttributeButton() {
+void MeasureWindow::clickedAddAttributeButton() {
     attributesView_->addPair("","",gui::KeyValuePair::TYPE_TEXT,"");
 }
 
-void addMeasureForm::clickedAddButton() {
+void MeasureWindow::clickedAddButton() {
     log::logTrace() << "Creating measure";
 
     QString name = ui->nameMeasureLineEdit->text();
@@ -283,7 +283,7 @@ void addMeasureForm::clickedAddButton() {
     }
 }
 
-void addMeasureForm::clickedExportButton() {
+void MeasureWindow::clickedExportButton() {
     QString fileName = QFileDialog::getSaveFileName( this, tr("Export to file"), QString(), QString("*.tmb") );
 
     if(!fileName.isEmpty()){
@@ -297,7 +297,7 @@ void addMeasureForm::clickedExportButton() {
     }
 }
 
-void addMeasureForm::clickedImportButton() {
+void MeasureWindow::clickedImportButton() {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Import from file"),QString(),QString("*.tmb"));
     if(fileName.isEmpty()){
         return;

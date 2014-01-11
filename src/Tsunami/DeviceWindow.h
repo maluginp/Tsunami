@@ -4,7 +4,7 @@
 #include <dbstorage/DbStorages.h>
 #include <views/Views.h>
 #include "LibraryWindow.h"
-#include "AddMeasureForm.h"
+#include "MeasureWindow.h"
 #include "ExtractorWindow.h"
 #include "AnalysisWindow.h"
 #include "defines.h"
@@ -25,7 +25,7 @@ public:
 private:
     bool createLibraryWindow();
     bool createAnalysisWindow();
-    bool createMeasureWindow(addMeasureForm::Action action,int measureId);
+    bool createMeasureWindow(MeasureWindow::Action action,int measureId);
     Ui::DeviceWindow *ui;
 
     db::DeviceStorage* storage_;
@@ -33,7 +33,7 @@ private:
 
     LibraryWindow* libraryWindow_;
     ExtractorWindow* extractorWindow_;
-    addMeasureForm* measuresWindow_;
+    MeasureWindow* measuresWindow_;
     AnalysisWindow* analysisWindow_;
 
     int deviceId_;

@@ -5,7 +5,7 @@
 
 
 namespace Ui {
-class addMeasureForm;
+class MeasureWindow;
 }
 
 namespace tsunami{
@@ -21,7 +21,7 @@ namespace gui{
     class KeyValuePair;
 }
 
-class addMeasureForm : public QWidget {
+class MeasureWindow : public QWidget {
     Q_OBJECT
 public:
     enum Action{
@@ -29,15 +29,15 @@ public:
         EDIT
     };
 
-    addMeasureForm(int deviceId,Action action, int id, QWidget *parent = 0);
-    ~addMeasureForm();
+    MeasureWindow(int deviceId,Action action, int id, QWidget *parent = 0);
+    ~MeasureWindow();
 private:
     void showSourcesDescription();
     void prepareNewMeasureData();
     void openAnalysis(int analysisId);
     void openMeasure(int measureId);
 
-    Ui::addMeasureForm *ui;
+    Ui::MeasureWindow *ui;
     int deviceId_;
     int analysisId_;
     Action action_;
