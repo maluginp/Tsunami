@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Управлениями типами анализов</string>
+   <string>Manager analysis</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -38,14 +38,14 @@
         <item>
          <widget class="QPushButton" name="addButton">
           <property name="text">
-           <string>Добавить</string>
+           <string>Add</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="openButton">
           <property name="text">
-           <string>Открыть</string>
+           <string>Open</string>
           </property>
          </widget>
         </item>
@@ -61,7 +61,7 @@
       <item>
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Название</string>
+         <string>Name:</string>
         </property>
        </widget>
       </item>
@@ -90,7 +90,7 @@
          </size>
         </property>
         <property name="text">
-         <string>Анализ</string>
+         <string>Analysis:</string>
         </property>
        </widget>
       </item>
@@ -100,7 +100,7 @@
       <item>
        <widget class="QCheckBox" name="analysisEnableCheckBox">
         <property name="text">
-         <string>Включить</string>
+         <string>Enable</string>
         </property>
        </widget>
       </item>
@@ -124,7 +124,7 @@
      <x>0</x>
      <y>0</y>
      <width>989</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

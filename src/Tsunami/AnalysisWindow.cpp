@@ -6,7 +6,7 @@
 #include "dbstorage/DbStorages.h"
 
 #include "webkit/APIObject.h"
-
+#include "Log.h"
 namespace tsunami{
 AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
     QMainWindow(parent),
@@ -84,13 +84,15 @@ void AnalysisWindow::clickedOpenAnalysis() {
 }
 
 void AnalysisWindow::clickedSaveAnalysis(const QList<tsunami::Source> &sources) {
-
+    log::logTrace() << "Saving analysis";
     QString analysisName = ui->analysisNameLineEdit->text();
     if(analysisName.isEmpty()){
         return;
     }
     if(storage_->exists( deviceId_, analysisName )){
         // TODO: show message if analysis exists
+        QMessageBox::warning(this,windowTitle(),tr("Analysis is existed"));
+        log::logDebug() << "Analysis existed";
         return;
     }
 
@@ -101,11 +103,17 @@ void AnalysisWindow::clickedSaveAnalysis(const QList<tsunami::Source> &sources) 
     currentAnalysis_->enable( ui->analysisEnableCheckBox->checkState() == Qt::Checked );
 
     if(storage_->saveAnalysis( currentAnalysis_ )){
+        log::logTrace() << QString("Analysis #%1 has saved ")
+                           .arg(currentAnalysis_->id());
         updateAnalysisList();
+    }else{
+        log::logDebug() << "Analysis has not saved. Sql error: "
+                        << storage_->lastError();
     }
 }
 
 void AnalysisWindow::clickedCreateAnalysis() {
+    log::logTrace() << "Creating analysis";
     currentAnalysis_ = new db::AnalysisModel();
     currentAnalysis_->deviceId( deviceId_ );
 
@@ -129,7 +137,7 @@ void AnalysisWindow::selectedAnalysisItem(const QModelIndex &index) {
 }
 
 void AnalysisWindow::openAnalysis(int analysisId) {
-
+    log::logTrace() << QString("Opening analysis %1").arg(analysisId);
     if(analysisId == -1){
         clickedCreateAnalysis();
         return;
@@ -156,10 +164,14 @@ void AnalysisWindow::openAnalysis(int analysisId) {
 }
 
 void AnalysisWindow::loadStarted() {
-//    delete api_;
+    if(!api_){
+        log::logError() << "API is not initialized";
+        return;
+    }
     api_->disconnect( );
-    connect(api_,SIGNAL(savedAnalysis(QList<tsunami::Source>)),this,SLOT(clickedSaveAnalysis(QList<tsunami::Source>)));
-//    disconnect( api_, SIGNAL(analysisOpened(QVariantList)) );
+    connect(api_, SIGNAL(savedAnalysis(QList<tsunami::Source>)),
+            this, SLOT(clickedSaveAnalysis(QList<tsunami::Source>)));
+
     ui->webView->page()->mainFrame()->addToJavaScriptWindowObject("Api",api_);
 }
 

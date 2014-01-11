@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Plot extraction</string>
   </property>
   <widget class="TsunamiPlot" name="plotter" native="true">
    <property name="geometry">
@@ -49,14 +49,14 @@
     <item>
      <widget class="QPushButton" name="closeButton">
       <property name="text">
-       <string>Закрыть</string>
+       <string>Close</string>
       </property>
      </widget>
     </item>
     <item>
      <widget class="QPushButton" name="buildButton">
       <property name="text">
-       <string>Построить</string>
+       <string>Build</string>
       </property>
      </widget>
     </item>
@@ -75,7 +75,7 @@
     <item>
      <widget class="QLabel" name="label_5">
       <property name="text">
-       <string>Тип параметров</string>
+       <string>Type parameters</string>
       </property>
      </widget>
     </item>
@@ -85,7 +85,7 @@
     <item>
      <widget class="QLabel" name="label">
       <property name="text">
-       <string>Измерение</string>
+       <string>Measure</string>
       </property>
      </widget>
     </item>
@@ -123,7 +123,7 @@
     <item>
      <widget class="QLabel" name="label_4">
       <property name="text">
-       <string>Постоянная</string>
+       <string>Constant</string>
       </property>
      </widget>
     </item>

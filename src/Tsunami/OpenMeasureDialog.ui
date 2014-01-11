@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Открыть измерения</string>
+   <string>Open measure</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Поиск</string>
+      <string>Search</string>
      </property>
     </widget>
    </item>

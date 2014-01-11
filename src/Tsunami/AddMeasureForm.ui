@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Добавить измерения</string>
+   <string>Add measure</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
@@ -19,11 +19,11 @@
      <item>
       <widget class="QTabWidget" name="measureTabs">
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tabHeader">
         <attribute name="title">
-         <string>Описание</string>
+         <string>Description</string>
         </attribute>
         <layout class="QGridLayout" name="gridLayout_2">
          <item row="0" column="0">
@@ -46,7 +46,7 @@
                 </size>
                </property>
                <property name="text">
-                <string>Узлы</string>
+                <string>Nodes</string>
                </property>
               </widget>
              </item>
@@ -69,7 +69,7 @@
                 </size>
                </property>
                <property name="text">
-                <string>Атрибуты</string>
+                <string>Attributes</string>
                </property>
               </widget>
              </item>
@@ -91,7 +91,7 @@
        </widget>
        <widget class="QWidget" name="tabData">
         <attribute name="title">
-         <string>Измерения</string>
+         <string>Measures</string>
         </attribute>
         <layout class="QGridLayout" name="gridLayout_3">
          <item row="0" column="0">
@@ -125,14 +125,14 @@
            <item>
             <widget class="QPushButton" name="importButton">
              <property name="text">
-              <string>Импорт</string>
+              <string>Import</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QPushButton" name="exportButton">
              <property name="text">
-              <string>Экспорт</string>
+              <string>Export</string>
              </property>
             </widget>
            </item>
@@ -160,14 +160,14 @@
        <item>
         <widget class="QPushButton" name="cancelButton">
          <property name="text">
-          <string>Закрыть</string>
+          <string>Close</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QPushButton" name="addButton">
          <property name="text">
-          <string>Добавить</string>
+          <string>Add</string>
          </property>
         </widget>
        </item>

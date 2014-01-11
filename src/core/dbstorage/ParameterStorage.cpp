@@ -1,5 +1,6 @@
 #include "ParameterStorage.h"
 
+#include "Log.h"
 namespace tsunami{
 namespace db{
 
@@ -612,11 +613,14 @@ bool ParameterStorage::createTable(const ParameterStorage::ParameterTable &table
 }
 
 void ParameterStorage::syncTemplateDirectory() {
-
+    log::logTrace() << "Syncing template directory";
     QList<LibraryTemplateModel*> templates = LibraryTemplateModel::parseDirectory();
 
     foreach( LibraryTemplateModel* templateLibrary, templates ){
-        saveTemplateLibrary( templateLibrary );
+        if(saveTemplateLibrary( templateLibrary )){
+            log::logDebug() << QString("Template '%1' saved")
+                               .arg(templateLibrary->name());
+        }
     }
 
     return;

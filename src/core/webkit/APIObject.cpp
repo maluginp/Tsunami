@@ -1,7 +1,10 @@
 #include "APIObject.h"
 #include "dbstorage/AnalysisStorage.h"
-#include <QDebug>
+#include "Log.h"
 #include "defines.h"
+
+using namespace tsunami;
+
 APIObject::APIObject(QObject *parent) :
     QObject(parent), analysis_(0) {
 
@@ -10,13 +13,20 @@ APIObject::APIObject(QObject *parent) :
 
 }
 
-void APIObject::openAnalysis( tsunami::db::AnalysisModel* analysis ) {
+void APIObject::openAnalysis( db::AnalysisModel* analysis ) {
+    log::logTrace() << "Opening analysis";
+    if(!analysis){
+        log::logError() << "Analysis object is empty";
+        return;
+    }
+
     analysis_ = analysis;
-    QList<tsunami::Source> sources = analysis_->sources();
+
+    QList<Source> sources = analysis_->sources();
 
     QVariantMap sourcesJson;
-    foreach( tsunami::Source source, sources ){
-        if( source.direction() == tsunami::SOURCE_DIRECTION_INPUT ){
+    foreach( Source source, sources ){
+        if( source.direction() == SOURCE_DIRECTION_INPUT ){
             QVariantMap sourceJson;
             sourceJson.insert( "mode", source.modeJson() );
             sourceJson.insert("method", source.methodJson());
@@ -37,10 +47,11 @@ QString APIObject::test() {
 }
 
 void APIObject::saveAnalysis(const QVariantMap &sourcesJson){
-    QList<tsunami::Source> sources;
+    log::logTrace() << "Saving analysis";
+    QList<Source> sources;
     foreach(QString node, sourcesJson.keys()){
         QVariantMap sourceJson = sourcesJson[node].toMap();
-        tsunami::Source source;
+        Source source;
         source.mode( sourceJson.value("mode").toString() );
 //        sourceJson.remove( "mode" );
         source.method( sourceJson.value("method").toString() );
@@ -53,20 +64,20 @@ void APIObject::saveAnalysis(const QVariantMap &sourcesJson){
 
     int nSources = sources.count();
     for(int i=0; i < nSources; ++i){
-        if(sources[i].mode() != tsunami::SOURCE_MODE_GND){
-            tsunami::SourceMode mode;
-            if( sources[i].mode() == tsunami::SOURCE_MODE_VOLTAGE ){
-                mode = tsunami::SOURCE_MODE_CURRENT;
-            }else if(sources[i].mode() == tsunami::SOURCE_MODE_CURRENT){
-                mode = tsunami::SOURCE_MODE_VOLTAGE;
+        if(sources[i].mode() != SOURCE_MODE_GND){
+            SourceMode mode;
+            if( sources[i].mode() == SOURCE_MODE_VOLTAGE ){
+                mode = SOURCE_MODE_CURRENT;
+            }else if(sources[i].mode() == SOURCE_MODE_CURRENT){
+                mode = SOURCE_MODE_VOLTAGE;
             }
-            sources.append( tsunami::Source(sources[i].node(), mode,
-                                            tsunami::SOURCE_DIRECTION_OUTPUT,
-                                            tsunami::SOURCE_METHOD_CONST) );
+            sources.append( Source(sources[i].node(), mode,
+                                            SOURCE_DIRECTION_OUTPUT,
+                                            SOURCE_METHOD_CONST) );
         }
     }
 
     emit savedAnalysis(sources);
-
+    return;
 }
 

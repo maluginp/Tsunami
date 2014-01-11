@@ -11,9 +11,9 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Выберите тип анализа для измерения</string>
+   <string>Choice type analysis</string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>40</x>
@@ -42,7 +42,7 @@
        <bool>false</bool>
       </property>
       <property name="text">
-       <string>Редактировать</string>
+       <string>Edit</string>
       </property>
      </widget>
     </item>
@@ -52,7 +52,7 @@
        <bool>false</bool>
       </property>
       <property name="text">
-       <string>Добавить</string>
+       <string>Add</string>
       </property>
      </widget>
     </item>
@@ -84,13 +84,13 @@
     </rect>
    </property>
    <property name="text">
-    <string>Выберите анализ</string>
+    <string>Choice analysis</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignJustify|Qt::AlignTop</set>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>330</x>
@@ -116,14 +116,14 @@
     <item>
      <widget class="QPushButton" name="closeButton">
       <property name="text">
-       <string>Закрыть</string>
+       <string>Close</string>
       </property>
      </widget>
     </item>
     <item>
      <widget class="QPushButton" name="openButton">
       <property name="text">
-       <string>Выбрать</string>
+       <string>Select</string>
       </property>
      </widget>
     </item>

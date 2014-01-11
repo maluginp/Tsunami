@@ -3,10 +3,10 @@
 <TS version="2.0" language="en_US">
 <context>
     <name>AboutDialog</name>
-    <message utf8="true">
+    <message>
         <location filename="../AboutDialog.ui" line="14"/>
-        <source>О программе</source>
-        <translation type="unfinished"></translation>
+        <source>About</source>
+        <translation type="unfinished">About</translation>
     </message>
     <message utf8="true">
         <location filename="../AboutDialog.ui" line="26"/>
@@ -35,150 +35,162 @@ malugin.p@gmail.com</source>
 <context>
     <name>AnalysisForm</name>
     <message utf8="true">
+        <source>Добавить</source>
+        <translation type="obsolete">Add</translation>
+    </message>
+    <message>
         <location filename="../AnalysisForm.ui" line="14"/>
-        <source>Добавить анализ</source>
+        <source>Add analysis</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../AnalysisForm.ui" line="30"/>
-        <source>Название:</source>
-        <translation type="unfinished"></translation>
+        <source>Name:</source>
+        <translation type="unfinished">Name:</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../AnalysisForm.ui" line="46"/>
-        <source>Тип анализа:</source>
+        <source>Type analysis:</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../AnalysisForm.ui" line="69"/>
-        <source>Измерения</source>
-        <translation type="unfinished"></translation>
+        <source>Measures</source>
+        <translation type="unfinished">Measures</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../AnalysisForm.ui" line="164"/>
         <location filename="../AnalysisForm.ui" line="283"/>
-        <source>Удалить</source>
-        <translation type="unfinished"></translation>
+        <source>Remove</source>
+        <translation type="unfinished">Remove</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../AnalysisForm.ui" line="171"/>
         <location filename="../AnalysisForm.ui" line="290"/>
-        <source>Добавить</source>
+        <source>Add</source>
         <translation type="unfinished">Add</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../AnalysisForm.ui" line="185"/>
-        <source>Анализ</source>
+        <source>Analysis</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../AnalysisForm.ui" line="322"/>
-        <source>Отменить</source>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../AnalysisForm.ui" line="329"/>
-        <source>Сохранить</source>
-        <translation type="unfinished"></translation>
+        <source>Save</source>
+        <translation type="unfinished">Save</translation>
     </message>
 </context>
 <context>
     <name>AnalysisWindow</name>
     <message utf8="true">
+        <source>Добавить</source>
+        <translation type="obsolete">Add</translation>
+    </message>
+    <message>
         <location filename="../AnalysisWindow.ui" line="14"/>
-        <source>Управлениями типами анализов</source>
+        <source>Manager analysis</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../AnalysisWindow.ui" line="41"/>
-        <source>Добавить</source>
+        <source>Add</source>
         <translation type="unfinished">Add</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../AnalysisWindow.ui" line="48"/>
-        <source>Открыть</source>
+        <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../AnalysisWindow.ui" line="64"/>
-        <source>Название</source>
-        <translation type="unfinished"></translation>
+        <source>Name:</source>
+        <translation type="unfinished">Name:</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../AnalysisWindow.ui" line="93"/>
-        <source>Анализ</source>
+        <source>Analysis:</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../AnalysisWindow.ui" line="103"/>
-        <source>Включить</source>
+        <source>Enable</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ChoiceAnalysisForm</name>
     <message utf8="true">
-        <location filename="../ChoiceAnalysisForm.ui" line="14"/>
-        <source>Выберите тип анализа для измерения</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../ChoiceAnalysisForm.ui" line="45"/>
-        <source>Редактировать</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../ChoiceAnalysisForm.ui" line="55"/>
         <source>Добавить</source>
+        <translation type="obsolete">Add</translation>
+    </message>
+    <message>
+        <location filename="../ChoiceAnalysisForm.ui" line="14"/>
+        <source>Choice type analysis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ChoiceAnalysisForm.ui" line="45"/>
+        <source>Edit</source>
+        <translation type="unfinished">Edit</translation>
+    </message>
+    <message>
+        <location filename="../ChoiceAnalysisForm.ui" line="55"/>
+        <source>Add</source>
         <translation type="unfinished">Add</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../ChoiceAnalysisForm.ui" line="87"/>
-        <source>Выберите анализ</source>
+        <source>Choice analysis</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../ChoiceAnalysisForm.ui" line="119"/>
-        <source>Закрыть</source>
-        <translation type="unfinished"></translation>
+        <source>Close</source>
+        <translation type="unfinished">Close</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../ChoiceAnalysisForm.ui" line="126"/>
-        <source>Выбрать</source>
+        <source>Select</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CreateDeviceDialog</name>
-    <message utf8="true">
+    <message>
         <location filename="../CreateDeviceDialog.ui" line="14"/>
-        <source>Создать устройство</source>
+        <source>Create device</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../CreateDeviceDialog.ui" line="26"/>
-        <source>Создать</source>
+        <source>Create</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../CreateDeviceDialog.ui" line="39"/>
-        <source>Закрыть</source>
-        <translation type="unfinished"></translation>
+        <source>Close</source>
+        <translation type="unfinished">Close</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../CreateDeviceDialog.ui" line="52"/>
-        <source>Название:</source>
-        <translation type="unfinished"></translation>
+        <source>Name:</source>
+        <translation type="unfinished">Name:</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../CreateDeviceDialog.ui" line="85"/>
-        <source>Тип</source>
-        <translation type="unfinished"></translation>
+        <source>Type:</source>
+        <translation type="unfinished">Type:</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../CreateDeviceDialog.ui" line="98"/>
-        <source>Модель:</source>
-        <translation type="unfinished"></translation>
+        <source>Model:</source>
+        <translation type="unfinished">Model:</translation>
     </message>
     <message>
         <location filename="../CreateDeviceDialog.ui" line="129"/>
@@ -188,9 +200,24 @@ malugin.p@gmail.com</source>
 </context>
 <context>
     <name>CreateLibraryDialog</name>
-    <message utf8="true">
+    <message>
         <location filename="../CreateLibraryDialog.ui" line="14"/>
-        <source>Создать библиотеку</source>
+        <source>Create library</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CreateLibraryDialog.ui" line="50"/>
+        <source>Copy parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CreateLibraryDialog.ui" line="79"/>
+        <source>Close</source>
+        <translation type="unfinished">Close</translation>
+    </message>
+    <message>
+        <location filename="../CreateLibraryDialog.ui" line="86"/>
+        <source>Create</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -198,29 +225,14 @@ malugin.p@gmail.com</source>
         <source>TextLabel</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../CreateLibraryDialog.ui" line="131"/>
-        <source>Название библиотеки</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../CreateLibraryDialog.ui" line="50"/>
-        <source>Скопировать параметры</source>
+        <source>Name library:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../CreateLibraryDialog.ui" line="34"/>
         <source>Placeholder error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../CreateLibraryDialog.ui" line="79"/>
-        <source>Закрыть</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../CreateLibraryDialog.ui" line="86"/>
-        <source>Создать</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -338,78 +350,42 @@ malugin.p@gmail.com</source>
 </context>
 <context>
     <name>ExtractorWindow</name>
-    <message utf8="true">
+    <message>
         <location filename="../ExtractorWindow.ui" line="14"/>
-        <source>Экстракция</source>
+        <source>Extraction process</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../ExtractorWindow.ui" line="39"/>
-        <source>График</source>
+        <source>Graphic</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../ExtractorWindow.ui" line="52"/>
-        <source>Закрыть</source>
-        <translation type="unfinished"></translation>
+        <source>Close</source>
+        <translation type="unfinished">Close</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../ExtractorWindow.ui" line="112"/>
-        <source>Сохранить</source>
-        <translation type="unfinished"></translation>
+        <source>Save</source>
+        <translation type="unfinished">Save</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../ExtractorWindow.ui" line="125"/>
-        <source>Остановить</source>
-        <translation type="unfinished"></translation>
+        <source>Stop</source>
+        <translation type="unfinished">Stop</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../ExtractorWindow.ui" line="138"/>
-        <source>Запустить</source>
-        <translation type="unfinished"></translation>
+        <source>Run</source>
+        <translation type="unfinished">Run</translation>
     </message>
 </context>
 <context>
     <name>LibraryWindow</name>
     <message utf8="true">
-        <location filename="../LibraryWindow.ui" line="14"/>
-        <source>Редактор библиотек</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../LibraryWindow.ui" line="23"/>
-        <source>Библиотека:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../LibraryWindow.ui" line="30"/>
-        <source>Выберите библиотеку</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../LibraryWindow.ui" line="53"/>
-        <source>Поиск</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../LibraryWindow.ui" line="67"/>
-        <source>Удалить</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../LibraryWindow.ui" line="74"/>
         <source>Добавить</source>
-        <translation type="unfinished">Add</translation>
-    </message>
-    <message utf8="true">
-        <location filename="../LibraryWindow.ui" line="94"/>
-        <source>Закрыть</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../LibraryWindow.ui" line="101"/>
-        <source>Сохранить</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Add</translation>
     </message>
     <message>
         <location filename="../LibraryWindow.ui" line="120"/>
@@ -432,15 +408,42 @@ malugin.p@gmail.com</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../LibraryWindow.ui" line="67"/>
         <location filename="../LibraryWindow.ui" line="152"/>
         <location filename="../LibraryWindow.ui" line="162"/>
         <source>Remove</source>
         <translation type="unfinished">Remove</translation>
     </message>
     <message>
+        <location filename="../LibraryWindow.ui" line="14"/>
+        <source>Manager libraries</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../LibraryWindow.ui" line="23"/>
+        <source>Library:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../LibraryWindow.ui" line="30"/>
+        <source>Choice library</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../LibraryWindow.ui" line="53"/>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../LibraryWindow.ui" line="74"/>
         <location filename="../LibraryWindow.ui" line="157"/>
         <source>Add</source>
         <translation type="unfinished">Add</translation>
+    </message>
+    <message>
+        <location filename="../LibraryWindow.ui" line="101"/>
+        <source>Save</source>
+        <translation type="unfinished">Save</translation>
     </message>
     <message>
         <location filename="../LibraryWindow.ui" line="167"/>
@@ -453,6 +456,7 @@ malugin.p@gmail.com</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../LibraryWindow.ui" line="94"/>
         <location filename="../LibraryWindow.ui" line="177"/>
         <source>Close</source>
         <translation type="unfinished">Close</translation>
@@ -465,80 +469,84 @@ malugin.p@gmail.com</source>
         <source>Открыть устройство</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../OpenDeviceDialog.ui" line="26"/>
-        <source>Закрыть</source>
-        <translation type="unfinished"></translation>
+        <source>Close</source>
+        <translation type="unfinished">Close</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../OpenDeviceDialog.ui" line="39"/>
-        <source>Выберите устройство</source>
-        <translation type="unfinished"></translation>
+        <source>Choice device</source>
+        <translation type="unfinished">Choice device</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../OpenDeviceDialog.ui" line="58"/>
-        <source>Открыть</source>
+        <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../OpenDeviceDialog.ui" line="71"/>
-        <source>Создать</source>
+        <source>Create</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../OpenDeviceDialog.ui" line="84"/>
-        <source>Удалить</source>
-        <translation type="unfinished"></translation>
+        <source>Remove</source>
+        <translation type="unfinished">Remove</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../OpenDeviceDialog.ui" line="100"/>
-        <source>Поиск</source>
+        <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>OpenLibraryDialog</name>
     <message utf8="true">
-        <location filename="../OpenLibraryDialog.ui" line="81"/>
-        <source>Удалить</source>
+        <source>Добавить</source>
+        <translation type="obsolete">Add</translation>
+    </message>
+    <message>
+        <location filename="../OpenLibraryDialog.ui" line="14"/>
+        <source>Open library</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
-        <location filename="../OpenLibraryDialog.ui" line="97"/>
-        <source>Добавить</source>
-        <translation type="unfinished">Add</translation>
+    <message>
+        <location filename="../OpenLibraryDialog.ui" line="26"/>
+        <source>Close</source>
+        <translation type="unfinished">Close</translation>
     </message>
     <message>
         <location filename="../OpenLibraryDialog.ui" line="39"/>
         <source>Select library for description</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
-        <location filename="../OpenLibraryDialog.ui" line="14"/>
-        <source>Открыть библиотеку</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../OpenLibraryDialog.ui" line="26"/>
-        <source>Закрыть</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
+    <message>
         <location filename="../OpenLibraryDialog.ui" line="55"/>
-        <source>Выбрать</source>
+        <source>Select</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../OpenLibraryDialog.ui" line="81"/>
+        <source>Remove</source>
+        <translation type="unfinished">Remove</translation>
+    </message>
+    <message>
+        <location filename="../OpenLibraryDialog.ui" line="97"/>
+        <source>Add</source>
+        <translation type="unfinished">Add</translation>
     </message>
 </context>
 <context>
     <name>OpenMeasureDialog</name>
-    <message utf8="true">
+    <message>
         <location filename="../OpenMeasureDialog.ui" line="14"/>
-        <source>Открыть измерения</source>
+        <source>Open measure</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../OpenMeasureDialog.ui" line="20"/>
-        <source>Поиск</source>
+        <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -565,13 +573,17 @@ malugin.p@gmail.com</source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
+        <source>Добавить</source>
+        <translation type="obsolete">Add</translation>
+    </message>
+    <message>
         <location filename="../PlotDataWindow.ui" line="100"/>
-        <source>Фильтр</source>
+        <source>Filter</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../PlotDataWindow.ui" line="144"/>
-        <source>Добавить</source>
+        <source>Add</source>
         <translation type="unfinished">Add</translation>
     </message>
     <message>
@@ -589,14 +601,14 @@ malugin.p@gmail.com</source>
         <source>Откатить</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../PlotDataWindow.ui" line="279"/>
-        <source>Сохранить</source>
-        <translation type="unfinished"></translation>
+        <source>Save</source>
+        <translation type="unfinished">Save</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../PlotDataWindow.ui" line="296"/>
-        <source>Фильтр по параметру</source>
+        <source>Filter by paramater</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -610,27 +622,27 @@ malugin.p@gmail.com</source>
     <name>PlotExtractionDialog</name>
     <message>
         <location filename="../PlotExtractionDialog.ui" line="14"/>
-        <source>Dialog</source>
+        <source>Plot extraction</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../PlotExtractionDialog.ui" line="52"/>
-        <source>Закрыть</source>
-        <translation type="unfinished"></translation>
+        <source>Close</source>
+        <translation type="unfinished">Close</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../PlotExtractionDialog.ui" line="59"/>
-        <source>Построить</source>
+        <source>Build</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../PlotExtractionDialog.ui" line="78"/>
-        <source>Тип параметров</source>
+        <source>Type parameters</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../PlotExtractionDialog.ui" line="88"/>
-        <source>Измерение</source>
+        <source>Measure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -643,22 +655,22 @@ malugin.p@gmail.com</source>
         <source>Y:</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../PlotExtractionDialog.ui" line="126"/>
-        <source>Постоянная</source>
+        <source>Constant</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>PrepareExtractorDialog</name>
-    <message utf8="true">
+    <message>
         <location filename="../PrepareExtractorDialog.ui" line="14"/>
-        <source>Подготовка к экстракции</source>
+        <source>Prepare to extraction process</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../PrepareExtractorDialog.ui" line="52"/>
-        <source>Используемый метод:</source>
+        <source>Used method optimize:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -666,20 +678,20 @@ malugin.p@gmail.com</source>
         <source>Method</source>
         <translation type="unfinished">Method</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../PrepareExtractorDialog.ui" line="78"/>
-        <source>Библиотека:</source>
+        <source>Library:</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
-        <location filename="../PrepareExtractorDialog.ui" line="114"/>
-        <source>Закрыть</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
+    <message>
         <location filename="../PrepareExtractorDialog.ui" line="101"/>
-        <source>Запустить</source>
-        <translation type="unfinished"></translation>
+        <source>Extraction</source>
+        <translation type="unfinished">Extraction</translation>
+    </message>
+    <message>
+        <location filename="../PrepareExtractorDialog.ui" line="114"/>
+        <source>Close</source>
+        <translation type="unfinished">Close</translation>
     </message>
 </context>
 <context>
@@ -690,65 +702,63 @@ malugin.p@gmail.com</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SettingsDialog.ui" line="164"/>
-        <source>...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../SettingsDialog.ui" line="203"/>
-        <source>Закрыть</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../SettingsDialog.ui" line="210"/>
-        <source>Сохранить</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../SettingsDialog.ui" line="217"/>
-        <source>Применить</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
         <location filename="../SettingsDialog.ui" line="26"/>
-        <source>Основные</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../SettingsDialog.ui" line="31"/>
-        <source>Оптимизация</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../SettingsDialog.ui" line="43"/>
-        <source>Метод:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../SettingsDialog.ui" line="76"/>
-        <source>Максимальное
-число итераций:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../SettingsDialog.ui" line="90"/>
-        <source>Допустимое отклонение
-функции:</source>
+        <source>Main</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SettingsDialog.ui" line="107"/>
+        <location filename="../SettingsDialog.ui" line="31"/>
+        <source>Optimize</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../SettingsDialog.ui" line="43"/>
+        <source>Method:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../SettingsDialog.ui" line="76"/>
+        <source>Maximum count iteration:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../SettingsDialog.ui" line="89"/>
+        <source>Avalaible tolerance function:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../SettingsDialog.ui" line="117"/>
+        <source>Simulator:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../SettingsDialog.ui" line="143"/>
+        <source>Path to simulator:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../SettingsDialog.ui" line="162"/>
+        <source>...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../SettingsDialog.ui" line="201"/>
+        <source>Close</source>
+        <translation type="unfinished">Close</translation>
+    </message>
+    <message>
+        <location filename="../SettingsDialog.ui" line="208"/>
+        <source>Save</source>
+        <translation type="unfinished">Save</translation>
+    </message>
+    <message>
+        <location filename="../SettingsDialog.ui" line="215"/>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../SettingsDialog.ui" line="105"/>
         <source>SPICE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../SettingsDialog.ui" line="119"/>
-        <source>Симулятор:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../SettingsDialog.ui" line="145"/>
-        <source>Путь к симулятору:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -756,7 +766,7 @@ malugin.p@gmail.com</source>
     <name>ShowTextDialog</name>
     <message>
         <location filename="../ShowTextDialog.ui" line="14"/>
-        <source>Dialog</source>
+        <source>Text editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -777,55 +787,59 @@ malugin.p@gmail.com</source>
 </context>
 <context>
     <name>addMeasureForm</name>
-    <message utf8="true">
+    <message>
         <location filename="../AddMeasureForm.ui" line="14"/>
-        <source>Добавить измерения</source>
+        <source>Add measure</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../AddMeasureForm.ui" line="26"/>
-        <source>Описание</source>
+        <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../AddMeasureForm.ui" line="49"/>
-        <source>Узлы</source>
+        <source>Nodes</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../AddMeasureForm.ui" line="72"/>
-        <source>Атрибуты</source>
+        <source>Attributes</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../AddMeasureForm.ui" line="94"/>
-        <source>Измерения</source>
-        <translation type="unfinished"></translation>
+        <source>Measures</source>
+        <translation type="unfinished">Measures</translation>
     </message>
     <message>
         <location filename="../AddMeasureForm.ui" line="100"/>
         <source>Sources description</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
-        <location filename="../AddMeasureForm.ui" line="163"/>
-        <source>Закрыть</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
+    <message>
         <location filename="../AddMeasureForm.ui" line="128"/>
-        <source>Импорт</source>
+        <source>Import</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../AddMeasureForm.ui" line="135"/>
-        <source>Экспорт</source>
+        <source>Export</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
+        <location filename="../AddMeasureForm.ui" line="163"/>
+        <source>Close</source>
+        <translation type="unfinished">Close</translation>
+    </message>
+    <message>
         <location filename="../AddMeasureForm.ui" line="170"/>
-        <source>Добавить</source>
+        <source>Add</source>
         <translation type="unfinished">Add</translation>
+    </message>
+    <message utf8="true">
+        <source>Добавить</source>
+        <translation type="obsolete">Add</translation>
     </message>
 </context>
 <context>
@@ -1055,12 +1069,12 @@ malugin.p@gmail.com</source>
     <message>
         <location filename="../DeviceWindow.cpp" line="246"/>
         <source>Not enough measures or libraries for extraction</source>
-        <translation type="unfinished"></translation>
+        <translation>Not enough measures or libraries for extraction</translation>
     </message>
     <message>
         <location filename="../DeviceWindow.cpp" line="266"/>
         <source>Analysis null</source>
-        <translation type="unfinished"></translation>
+        <translation>Analysis null</translation>
     </message>
     <message>
         <location filename="../DeviceWindow.cpp" line="305"/>
@@ -1085,12 +1099,12 @@ malugin.p@gmail.com</source>
     <message>
         <location filename="../LibraryWindow.cpp" line="174"/>
         <source>Export NetList</source>
-        <translation type="unfinished"></translation>
+        <translation>Export NetList</translation>
     </message>
     <message>
         <location filename="../LibraryWindow.cpp" line="203"/>
         <source>Remove library</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Remove library</translation>
     </message>
     <message>
         <location filename="../LibraryWindow.cpp" line="204"/>

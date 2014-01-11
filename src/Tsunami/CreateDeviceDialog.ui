@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Создать устройство</string>
+   <string>Create device</string>
   </property>
   <widget class="QPushButton" name="createButton">
    <property name="geometry">
@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Создать</string>
+    <string>Create</string>
    </property>
   </widget>
   <widget class="QPushButton" name="closeButton">
@@ -36,7 +36,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Закрыть</string>
+    <string>Close</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">
@@ -49,7 +49,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Название:</string>
+    <string>Name:</string>
    </property>
   </widget>
   <widget class="QComboBox" name="deviceTypeComboBox">
@@ -82,7 +82,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Тип</string>
+    <string>Type:</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_3">
@@ -95,7 +95,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Модель:</string>
+    <string>Model:</string>
    </property>
   </widget>
   <widget class="QComboBox" name="deviceModelComboBox">

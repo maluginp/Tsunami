@@ -1,5 +1,5 @@
 Analysis = function(){
-	
+	'use strict';	
 	this._sources = {};
 
 

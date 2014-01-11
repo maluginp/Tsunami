@@ -10,6 +10,9 @@
 #include "dbstorage/DeviceStorage.h"
 #include "models/DeviceModel.h"
 #include "CreateLibraryDialog.h"
+
+#include "Log.h"
+
 namespace tsunami{
 
 LibraryWindow::LibraryWindow(int deviceId,QWidget *parent) :
@@ -47,7 +50,10 @@ void LibraryWindow::openLibrary(int libraryId) {
     }
 
     library_ = storage_->openLibrary(libraryId);
-
+    if(library_){
+        log::logDebug() << QString("Library #%1 opened")
+                           .arg(libraryId);
+    }
     showParameters( library_ );
     enableButtons(true);
 
@@ -76,36 +82,33 @@ void LibraryWindow::enableButtons(bool enable) {
     ui->addButton->setEnabled(enable);
     ui->removeButton->setEnabled(enable);
     ui->saveButton->setEnabled(enable);
-
 }
 
 
 void LibraryWindow::clickedOpenLibraryAction() {
-
+    log::logTrace() << "Opening library";
     int libraryId =  OpenLibraryDialog::getLibraryId(deviceId_);
 
     openLibrary( libraryId );
-
+    return;
 }
 
 void LibraryWindow::clickedNewLibraryAction() {
-
+    log::logTrace() << "Creating new library";
     CreateLibraryDialog dialog(deviceId_);
     if(dialog.exec() == QDialog::Accepted){
         library_ = dialog.library();
         showParameters(library_);
-
         enableButtons(true);
 
         emit updatedDataBase();
-
     }
     return;
 }
 
 void LibraryWindow::clickedAddParameterAction() {
+    log::logTrace() << "Adding parameter";
     parameters_->addEmptyParameter();
-
 }
 
 void LibraryWindow::clickedRemoveParameterAction() {
@@ -125,6 +128,8 @@ void LibraryWindow::clickedRemoveParameterAction() {
 void LibraryWindow::clickedExportNetList() {
     QString libraryName;
     QString netlist;
+
+    log::logTrace() << "Exporting netlist";
 
     db::DeviceModel* device = db::DeviceStorage::instance()->openDevice(deviceId_);
 
@@ -171,6 +176,9 @@ void LibraryWindow::clickedExportNetList() {
 //    netlist.chop(1);
     netlist.append(")");
 
+    log::logDebug() << QString("Exported netlist:\n%1")
+                       .arg(netlist);
+
     ShowTextDialog dialog( tr("Export NetList"), netlist );
     dialog.exec();
 
@@ -178,22 +186,33 @@ void LibraryWindow::clickedExportNetList() {
 }
 
 void LibraryWindow::clickedSaveButton() {
+    log::logTrace() << "Saving library";
     if(!storage_->saveLibrary( library_ )){
-        qDebug() << "Can not save library";
+        log::logDebug() << QString("Library #%1 is not saved. Sql error:%2")
+                           .arg(library_->id())
+                           .arg(storage_->lastError());
     }else{
+        log::logTrace() << "Library has saved";
         emit updatedDataBase();
     }
 }
 
 void LibraryWindow::clickedSearchButton() {
     QString name = ui->libraryNameLineEdit->text();
+    log::logTrace() << QString("Searching %1 parameter")
+                       .arg(name);
+
     if(parameters_ == 0 || name.isEmpty()){
         return;
     }
-    ui->parametersTableView->setCurrentIndex( parameters_->findByParameterName(name) );
+    QModelIndex index = parameters_->findByParameterName(name);
+    log::logDebug() << QString("Parameter %1")
+                       .arg(index.isValid() ? "found" : "not found");
+    ui->parametersTableView->setCurrentIndex( index );
 }
 
 void LibraryWindow::clickedRemoveLibrary() {
+    log::logTrace() << "Removing library";
     if(library_ != 0){
         if(library_->id() == -1){
             return;
@@ -206,19 +225,19 @@ void LibraryWindow::clickedRemoveLibrary() {
                                             QMessageBox::No);
         if(button == QMessageBox::Yes){
             if(storage_->removeLibrary( library_->id() )){
+                log::logDebug() << QString("Library #%1 has removed")
+                                   .arg(library_->id());
                 clickedCloseLibrary();
                 delete library_;
                 library_ = 0;
             }
+        }
     }
-}
-
-
-
-
+    return;
 }
 
 void LibraryWindow::clickedCloseLibrary() {
+    log::logTrace() << "Closing library";
     ui->libraryNameText->setText(tr("Choice library"));
     delete parameters_;
     ui->parametersTableView->setModel(0);
@@ -226,7 +245,6 @@ void LibraryWindow::clickedCloseLibrary() {
     library_ = 0;
 
     enableButtons(false);
-
 }
 
-}
+} // tsunami

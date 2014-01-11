@@ -19,16 +19,16 @@
      <item>
       <widget class="QTabWidget" name="settingTabs">
        <property name="currentIndex">
-        <number>2</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="mainTab">
         <attribute name="title">
-         <string>Основные</string>
+         <string>Main</string>
         </attribute>
        </widget>
        <widget class="QWidget" name="optimizeTab">
         <attribute name="title">
-         <string>Оптимизация</string>
+         <string>Optimize</string>
         </attribute>
         <widget class="QLabel" name="label_3">
          <property name="geometry">
@@ -40,7 +40,7 @@
           </rect>
          </property>
          <property name="text">
-          <string>Метод:</string>
+          <string>Method:</string>
          </property>
         </widget>
         <widget class="QComboBox" name="optimizeMethodComboBox">
@@ -73,8 +73,7 @@
           </rect>
          </property>
          <property name="text">
-          <string>Максимальное
-число итераций:</string>
+          <string>Maximum count iteration:</string>
          </property>
         </widget>
         <widget class="QLabel" name="label_5">
@@ -87,8 +86,7 @@
           </rect>
          </property>
          <property name="text">
-          <string>Допустимое отклонение
-функции:</string>
+          <string>Avalaible tolerance function:</string>
          </property>
         </widget>
         <widget class="QLineEdit" name="optimizeToleranceFunctionLineEdit">
@@ -116,7 +114,7 @@
           </rect>
          </property>
          <property name="text">
-          <string>Симулятор:</string>
+          <string>Simulator:</string>
          </property>
         </widget>
         <widget class="QComboBox" name="spiceSimulatorComboBox">
@@ -142,10 +140,10 @@
           </rect>
          </property>
          <property name="text">
-          <string>Путь к симулятору:</string>
+          <string>Path to simulator:</string>
          </property>
         </widget>
-        <widget class="QWidget" name="">
+        <widget class="QWidget" name="layoutWidget">
          <property name="geometry">
           <rect>
            <x>30</x>
@@ -200,21 +198,21 @@
      <item>
       <widget class="QPushButton" name="closeButton">
        <property name="text">
-        <string>Закрыть</string>
+        <string>Close</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="saveButton">
        <property name="text">
-        <string>Сохранить</string>
+        <string>Save</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="applyButton">
        <property name="text">
-        <string>Применить</string>
+        <string>Apply</string>
        </property>
       </widget>
      </item>

@@ -32,7 +32,7 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
         translator_ = 0;
     }
 
-    log::logDebug() << "Tsunami is started";
+    log::logDebug() << "Tsunami started";
 
     ui->setupUi(this);
     storage_ = db::DeviceStorage::instance();
@@ -92,6 +92,7 @@ DeviceWindow::~DeviceWindow() {
 }
 
 void DeviceWindow::openDevice(int deviceId) {
+    log::logDebug() << QString("Open device %1").arg(deviceId);
     device_ = storage_->openDevice( deviceId );
     if(device_ == 0) Q_ASSERT(false);
     deviceId_ = device_->id();
@@ -205,6 +206,7 @@ void DeviceWindow::updateDeviceWindow() {
 
     qDeleteAll( libraries );
 
+    log::logTrace() << "Device window has updated";
 }
 
 void DeviceWindow::clickedOpenDeviceAction() {
@@ -296,6 +298,8 @@ void DeviceWindow::clickedDeviceClose() {
         if(!storage_->saveDevice( device_ )){
             log::logError() << "Can not save device";
         }
+        log::logTrace() << QString("Device #%1 closed")
+                           .arg(deviceId_);
         deviceId_ = -1;
         delete device_;
         measureList_->clear();
@@ -333,17 +337,18 @@ void DeviceWindow::clickedDeviceRemove() {
                                         QMessageBox::No);
     if (button == QMessageBox::Yes) {
         if (storage_->removeDevice( deviceId_ )) {
+            log::logDebug() << QString("Device #%1 has removed")
+                               .arg(deviceId_);
             clickedDeviceClose();
-
             delete device_;
             device_ = 0;
-
         }
     }
 
 }
 
 void DeviceWindow::clickedSettingsOpen() {
+    log::logTrace() << "Opening settings";
     SettingsDialog settings;
     settings.exec();
 }

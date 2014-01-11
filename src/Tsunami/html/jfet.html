@@ -55,7 +55,7 @@
 				analysis.onChangeMethod( node, method );
 			})
 		});
-		$('.config"]').each( function(i, obj){
+		$('.config').each( function(i, obj){
 			$(obj).bind('change', function(){
 				node = $(obj).parent().parent().attr('node');
 				item = $(this).parent().attr('name');
@@ -173,8 +173,9 @@
 		<label name="step"   method="linear">Шаг: <input  class="config"/><br/></label>
 		<label name="end"    method="linear">Конец: <input  class="config"/></label>
 	</div>
-	<div style="clear:both;"></div>
+	
 </div>
+<div style="clear:both;"></div>
 <div style="float:right; padding:20px 30px 0 0">
 		<input style="width:100px; height:50px" type="button" name="save" value="Сохранить" >
 	</div>

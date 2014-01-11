@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Открыть устройство</string>
+   <string>Open device</string>
   </property>
   <widget class="QPushButton" name="closeButton">
    <property name="geometry">
@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Закрыть</string>
+    <string>Close</string>
    </property>
   </widget>
   <widget class="QLabel" name="deviceDescriptionText">
@@ -36,7 +36,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Выберите устройство</string>
+    <string>Choice device</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -55,7 +55,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Открыть</string>
+    <string>Open</string>
    </property>
   </widget>
   <widget class="QPushButton" name="createButton">
@@ -68,7 +68,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Создать</string>
+    <string>Create</string>
    </property>
   </widget>
   <widget class="QPushButton" name="removeButton">
@@ -81,10 +81,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>Удалить</string>
+    <string>Remove</string>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>13</x>
@@ -97,7 +97,7 @@
     <item>
      <widget class="QLineEdit" name="deviceNameLineEdit">
       <property name="placeholderText">
-       <string>Поиск</string>
+       <string>Search</string>
       </property>
      </widget>
     </item>

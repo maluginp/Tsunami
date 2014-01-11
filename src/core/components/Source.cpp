@@ -66,7 +66,9 @@ QString Source::title( const QString& format ) const {
         title.replace( "%method", methodJson()).replace("%METHOD",methodJson().toUpper());
         title.replace( "%mode", modeJson() ).replace("%MODE", modeJson().toUpper());
         title.replace( "%dir", directionJson()).replace("%DIR",directionJson().toUpper());
-        log::logDebug() << "Format: " << format << " Result: " << title;
+        log::logDebug() << QString("Formating title source:\n"
+                                   "Input: %1\nOutput: %2")
+                           .arg(format).arg(title);
     }
     return title;
 }

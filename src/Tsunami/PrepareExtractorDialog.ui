@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Подготовка к экстракции</string>
+   <string>Prepare to extraction process</string>
   </property>
   <widget class="QTableView" name="measuresTableView">
    <property name="geometry">
@@ -49,7 +49,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Используемый метод:</string>
+    <string>Used method optimize:</string>
    </property>
   </widget>
   <widget class="QLabel" name="methodText">
@@ -75,7 +75,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Библиотека:</string>
+    <string>Library:</string>
    </property>
   </widget>
   <widget class="QComboBox" name="libraryComboBox">
@@ -98,7 +98,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Запустить</string>
+    <string>Extraction</string>
    </property>
   </widget>
   <widget class="QPushButton" name="closeButton">
@@ -111,7 +111,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Закрыть</string>
+    <string>Close</string>
    </property>
   </widget>
  </widget>

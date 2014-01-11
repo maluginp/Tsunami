@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Создать библиотеку</string>
+   <string>Create library</string>
   </property>
   <property name="windowOpacity">
    <double>1.000000000000000</double>
@@ -47,7 +47,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Скопировать параметры</string>
+    <string>Copy parameters</string>
    </property>
   </widget>
   <widget class="QWidget" name="layoutWidget">
@@ -76,14 +76,14 @@
     <item>
      <widget class="QPushButton" name="closeButton">
       <property name="text">
-       <string>Закрыть</string>
+       <string>Close</string>
       </property>
      </widget>
     </item>
     <item>
      <widget class="QPushButton" name="createButton">
       <property name="text">
-       <string>Создать</string>
+       <string>Create</string>
       </property>
      </widget>
     </item>
@@ -115,7 +115,7 @@
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>12</x>
@@ -128,7 +128,7 @@
     <item>
      <widget class="QLabel" name="label">
       <property name="text">
-       <string>Название библиотеки</string>
+       <string>Name library:</string>
       </property>
      </widget>
     </item>

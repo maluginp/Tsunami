@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Редактор библиотек</string>
+   <string>Manager libraries</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -20,14 +20,14 @@
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Библиотека:</string>
+         <string>Library:</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QLabel" name="libraryNameText">
         <property name="text">
-         <string>Выберите библиотеку</string>
+         <string>Choice library</string>
         </property>
        </widget>
       </item>
@@ -50,7 +50,7 @@
       <item>
        <widget class="QPushButton" name="searchButton">
         <property name="text">
-         <string>Поиск</string>
+         <string>Search</string>
         </property>
        </widget>
       </item>
@@ -64,14 +64,14 @@
       <item>
        <widget class="QPushButton" name="removeButton">
         <property name="text">
-         <string>Удалить</string>
+         <string>Remove</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="addButton">
         <property name="text">
-         <string>Добавить</string>
+         <string>Add</string>
         </property>
        </widget>
       </item>
@@ -91,14 +91,14 @@
       <item>
        <widget class="QPushButton" name="closeButton">
         <property name="text">
-         <string>Закрыть</string>
+         <string>Close</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="saveButton">
         <property name="text">
-         <string>Сохранить</string>
+         <string>Save</string>
         </property>
        </widget>
       </item>
@@ -112,7 +112,7 @@
      <x>0</x>
      <y>0</y>
      <width>640</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuLibrary">
