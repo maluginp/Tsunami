@@ -50,7 +50,7 @@ class TSUNAMI_EXPORT  KeyValueView : public QAbstractItemModel {
     Q_OBJECT
 public:
     explicit KeyValueView(QObject *parent = 0);
-
+    void hideHeader(bool hide=true);
     // Model
     QModelIndex index(int row, int column,
                       const QModelIndex &parent = QModelIndex()) const;
@@ -64,7 +64,7 @@ public:
 
     // API
     void setPairs( const KeyValuePair* pairs,  const int& num );
-    void addPair ( const QString& key, const QVariant& value, const KeyValuePair::ValueType& type, const QString& title );
+    void addPair (const QString& key, const QVariant& value, KeyValuePair::ValueType type, const QString& title );
     void addPair ( const KeyValuePair& pair );
     void setValue( const QString& key, const QVariant& value );
     void setPairData(  const QString& key, const QVariant& data);
@@ -79,6 +79,7 @@ signals:
 public slots:
 private:
     QList<KeyValuePair> pairs_;
+    bool headerHidden_;
 
 };
 

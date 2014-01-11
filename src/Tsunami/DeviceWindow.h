@@ -25,7 +25,7 @@ public:
 private:
     bool createLibraryWindow();
     bool createAnalysisWindow();
-    bool createMeasureWindow(MeasureWindow::Action action,int measureId);
+    bool createMeasureWindow(MeasureWindow::Action action,int id);
     Ui::DeviceWindow *ui;
 
     db::DeviceStorage* storage_;

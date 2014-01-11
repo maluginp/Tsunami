@@ -2,24 +2,14 @@
 #define ADDMEASUREFORM_H
 
 #include <QWidget>
-
+#include "dbstorage/DbStorages.h"
+#include "views/Views.h"
 
 namespace Ui {
 class MeasureWindow;
 }
 
 namespace tsunami{
-
-namespace db{
-    class AnalysisModel;
-    class MeasureModel;
-    class MeasureStorage;
-}
-namespace gui{
-    class KeyValueView;
-    class MeasureItemView;
-    class KeyValuePair;
-}
 
 class MeasureWindow : public QWidget {
     Q_OBJECT
@@ -29,18 +19,20 @@ public:
         EDIT
     };
 
-    MeasureWindow(int deviceId,Action action, int id, QWidget *parent = 0);
+    MeasureWindow(int deviceId, QWidget *parent = 0);
+    void createMeasure( int analysisId );
+    void updateMeasure( int measureId );
+
     ~MeasureWindow();
 private:
+    void showMeasure(db::MeasureModel* measure);
     void showSourcesDescription();
-    void prepareNewMeasureData();
-    void openAnalysis(int analysisId);
-    void openMeasure(int measureId);
+    bool prepareMeasureData(db::MeasureModel* measure);
+
+    void setHeaderData();
 
     Ui::MeasureWindow *ui;
     int deviceId_;
-    int analysisId_;
-    Action action_;
 
     gui::KeyValueView* headerView_;
     gui::KeyValueView* attributesView_;
@@ -49,8 +41,7 @@ private:
     db::MeasureModel* measure_;
     db::MeasureStorage* measureStorage_;
 
-    static gui::KeyValuePair headerPairs_[];
-    static const int nPairs_;
+    QVector< gui::KeyValuePair > headerPair_;
 private slots:
     void clickedAddAttributeButton();
     void clickedAddButton();

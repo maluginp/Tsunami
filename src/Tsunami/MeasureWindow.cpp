@@ -8,22 +8,10 @@
 
 namespace tsunami{
 
-const int MeasureWindow::nPairs_ = 6;
-gui::KeyValuePair MeasureWindow::headerPairs_[] = {
-    gui::KeyValuePair("type",  QVariant("dc"),  gui::KeyValuePair::TYPE_READONLY, QString("Analysis Type")),
-    gui::KeyValuePair("user",  QVariant(""),  gui::KeyValuePair::TYPE_READONLY, QString("User")),
-    gui::KeyValuePair("user_date",  QVariant(QDate::currentDate()),  gui::KeyValuePair::TYPE_DATE, QString("User date")),
-    gui::KeyValuePair("fabricate_date",  QVariant(QDate::currentDate()),  gui::KeyValuePair::TYPE_DATE, QString("Fabrication date")),
-    gui::KeyValuePair("comment",  QVariant(""),  gui::KeyValuePair::TYPE_TEXT, QString("Comment")),
-    gui::KeyValuePair("dubious",  QVariant(""),  gui::KeyValuePair::TYPE_CHECKBOX, QString("Dubious"))
-};
-
-
-MeasureWindow::MeasureWindow(int deviceId, MeasureWindow::Action action, int id, QWidget *parent) :
+MeasureWindow::MeasureWindow(int deviceId,QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MeasureWindow),
     deviceId_(deviceId),
-    analysisId_(-1),
     headerView_(NULL),
     attributesView_(NULL),
     measureView_(NULL),
@@ -35,23 +23,11 @@ MeasureWindow::MeasureWindow(int deviceId, MeasureWindow::Action action, int id,
 
     measureStorage_ = db::MeasureStorage::instance();
 
-    headerView_ = new gui::KeyValueView();
+
     attributesView_ = new gui::KeyValueView();
-    measureView_ = NULL;
-
-    action_ = action;
-
-    ui->headerTableView->setModel( headerView_ );
     ui->attributesTableView->setModel( attributesView_ );
+    setHeaderData();
 
-
-    if(action == NEW){
-        openAnalysis(id);
-        ui->addButton->setText( tr("Add") );
-    }else if(action == EDIT){
-        openMeasure(id);
-        ui->addButton->setText( tr("Save") );
-    }
     connect(ui->addButton,SIGNAL(clicked()),
                           SLOT(clickedAddButton()));
     connect(ui->cancelButton,SIGNAL(clicked()),
@@ -63,7 +39,39 @@ MeasureWindow::MeasureWindow(int deviceId, MeasureWindow::Action action, int id,
                              SLOT(clickedImportButton()));
     //    openAnalysis( analysisId );
     connect(ui->addAttributeButton,SIGNAL(clicked()),
-                                   SLOT(clickedAddAttributeButton()));
+            SLOT(clickedAddAttributeButton()));
+
+
+}
+
+void MeasureWindow::createMeasure(int analysisId) {
+    if(analysisId == -1){
+        return;
+    }
+
+    ui->addButton->setText( tr("Add") );
+
+    db::AnalysisStorage* storage = db::AnalysisStorage::instance();
+    db::AnalysisModel* analysis = storage->openAnalysis( analysisId );
+    if(!analysis) { return; }
+
+    db::MeasureModel* measure = new db::MeasureModel();
+    measure->sources( analysis->sources() );
+    measure->type( analysis->type() );
+//    measure->deviceId(deviceId_);
+    prepareMeasureData( measure );
+    delete analysis;
+
+    showMeasure(measure);
+}
+
+void MeasureWindow::updateMeasure(int measureId) {
+    if(measureId == -1) { return; }
+    ui->addButton->setText( tr("Save") );
+
+    db::MeasureModel* measure = measureStorage_->openMeasure(measureId);
+    showMeasure(measure);
+
 }
 
 MeasureWindow::~MeasureWindow() {
@@ -71,28 +79,64 @@ MeasureWindow::~MeasureWindow() {
 
 }
 
+void MeasureWindow::showMeasure(db::MeasureModel *measure) {
+    if(measure_){
+        delete measure_;
+        measure_ = 0;
+    }
+
+    measure_ = measure;
+
+    ui->nameMeasureLineEdit->setText(measure->name());
+
+    headerView_->setValue( "type", measure_->typeJson() );
+    headerView_->setValue( "comment", measure_->header().comment );
+    headerView_->setValue( "user_date", measure_->header().userDate );
+    headerView_->setValue( "fabricate_date", measure_->header().fabricationDate );
+    headerView_->setValue( "dubious", measure_->header().dubious );
+
+    QVariantMap attrs = measure_->attrs();
+
+    foreach( QString attrName, attrs.keys() ){
+        attributesView_->addPair( attrName, attrs.value(attrName),
+                                  gui::KeyValuePair::TYPE_TEXT, attrName.toUpper() );
+    }
+
+
+    measureView_ = new gui::MeasureItemView(measure_);
+    ui->dataTableView->setModel( measureView_ );
+    int nColumns = measureView_->columnCount();
+    for(int i=0; i < nColumns; ++i){
+        if(!measureView_->isColumnReadOnly(i)){
+            ui->dataTableView->setItemDelegateForColumn(i, new DelegateDoubleItem(ui->dataTableView));
+        }
+    }
+
+    showSourcesDescription();
+}
+
 void MeasureWindow::showSourcesDescription() {
     QString sourcesDescription;
     QList<Source> sources = measure_->sources();
-    foreach(Source source,sources){
+    foreach(Source source,sources){        
         if(source.direction() == SOURCE_DIRECTION_INPUT){
-            sourcesDescription.append( QString("%1 %2 %3\n").arg(source.node()).arg(source.modeJson().toUpper())
-                                       .arg(source.methodJson().toUpper()));
+            sourcesDescription.append(
+                        source.title("%MODE %NODE %METHOD\n")
+                        );
         }
     }
     ui->measureSources->setText( sourcesDescription );
 }
- void MeasureWindow::prepareNewMeasureData() {
-    Q_ASSERT(measure_ != 0);
+ bool MeasureWindow::prepareMeasureData(db::MeasureModel* measure) {
+     if(!measure) { return false; }
 
     QStringList columns;
-
     QVector< QVector<double> > data;
 
     int nNonLinearSources = 0;
     QMap< int, QVector<double> > nonLinearSourcesData;
 
-    foreach(Source source, measure_->sources()){
+    foreach(Source source, measure->sources()){
         columns.append( source.name() );
         if( source.method() == SOURCE_METHOD_LINEAR ) {
             double start = source.configuration("start").toDouble();
@@ -104,7 +148,6 @@ void MeasureWindow::showSourcesDescription() {
             for(int i=0; i<= count;++i){
                 sourceData.append(start+step*i);
             }
-            qDebug() << source.configurations();
 
             int number= source.configuration("number").toInt();
             if(number > 0){
@@ -124,7 +167,7 @@ void MeasureWindow::showSourcesDescription() {
        foreach(double dc2, nonLinearSourcesData[2]){
            foreach(double dc1, nonLinearSourcesData[1]){
                QVector<double> rowData;
-               foreach(Source source, measure_->sources()){
+               foreach(Source source, measure->sources()){
                    if(source.direction() == SOURCE_DIRECTION_INPUT){
                        switch(source.method()){
                        case SOURCE_METHOD_CONST:
@@ -154,86 +197,40 @@ void MeasureWindow::showSourcesDescription() {
        }
 //    }
 
-    qDebug() << data.size();
-    qDebug() << columns.size();
-    measure_->columns( columns );
-    measure_->data( data );
+    measure->columns( columns );
+    measure->data( data );
 
-}
+    return true;
 
-void MeasureWindow::openAnalysis(int analysisId) {
-    analysisId_ = analysisId;
+ }
 
-    log::logTrace() << "Open analysis: " << analysisId;
+ void MeasureWindow::setHeaderData() {
 
-    headerView_->setPairs( headerPairs_, nPairs_ );
+     if(headerView_){
+         delete headerView_;
+         headerView_ = 0;
+     }
 
-    db::AnalysisStorage* storage = db::AnalysisStorage::instance();
-    db::AnalysisModel* analysis = storage->openAnalysis( analysisId_ );
+     headerView_ = new gui::KeyValueView();
+     headerView_->hideHeader();
 
-    QList<Source> sources = analysis->sources();
+     headerView_->addPair("type", "dc",
+                          gui::KeyValuePair::TYPE_READONLY,tr("Analysis Type"));
+     headerView_->addPair("user",  QVariant(""),
+                          gui::KeyValuePair::TYPE_READONLY, tr("User"));
+     headerView_->addPair("user_date",  QVariant(QDate::currentDate()),
+                          gui::KeyValuePair::TYPE_DATE, tr("User date"));
+     headerView_->addPair("fabricate_date",  QVariant(QDate::currentDate()),
+                          gui::KeyValuePair::TYPE_DATE, tr("Fabrication date"));
+     headerView_->addPair("comment",  QVariant(""),
+                          gui::KeyValuePair::TYPE_TEXT, tr("Comment"));
+     headerView_->addPair("dubious",  QVariant(""),
+                          gui::KeyValuePair::TYPE_CHECKBOX, QString("Dubious"));
 
-    measure_ = new db::MeasureModel();
-    measure_->sources( analysis->sources() );
-
-    measure_->type( analysis->type() );
-    measure_->deviceId( deviceId_ );
-
-    prepareNewMeasureData();
-
-
-    measureView_ = new gui::MeasureItemView( measure_ );
-    ui->dataTableView->setModel( measureView_ );
-    int nColumns = measureView_->columnCount();
-    for(int i=0; i < nColumns; ++i){
-        if(!measureView_->isColumnReadOnly(i)){
-            ui->dataTableView->setItemDelegateForColumn(i, new DelegateDoubleItem(ui->dataTableView));
-        }
-    }
-
-    showSourcesDescription();
-}
-
-void MeasureWindow::openMeasure(int measureId) {
-    log::logTrace() << "Open measure:" << measureId;
-
-    measure_ = measureStorage_->openMeasure( measureId );
-
-    if(measure_ == 0){
-        log::logError() << "Opening measure is failed";
-        return;
-    }
-
-    ui->nameMeasureLineEdit->setText( measure_->name() );
-
-    measureView_ = new gui::MeasureItemView( measure_ );
-    ui->dataTableView->setModel( measureView_ );
-
-    int nColumns = measureView_->columnCount();
-    for(int i=0; i < nColumns; ++i){
-        if(!measureView_->isColumnReadOnly(i)){
-            ui->dataTableView->setItemDelegateForColumn(i, new DelegateDoubleItem(ui->dataTableView));
-        }
-    }
-
-    headerView_->setPairs( headerPairs_, nPairs_ );
-    headerView_->setValue( "type", measure_->typeJson() );
-    headerView_->setValue( "comment", measure_->header().comment );
-    headerView_->setValue( "user_date", measure_->header().userDate );
-    headerView_->setValue( "fabricate_date", measure_->header().fabricationDate );
-    headerView_->setValue( "dubious", measure_->header().dubious );
-
-    QVariantMap attrs = measure_->attrs();
-
-    foreach( QString attrName, attrs.keys() ){
-        attributesView_->addPair( attrName, attrs.value(attrName),
-                                  gui::KeyValuePair::TYPE_TEXT, attrName.toUpper() );
-    }
-
-    showSourcesDescription();
-
-
-}
+     ui->headerTableView->setModel( headerView_ );
+     ui->headerTableView->setColumnWidth(0,150);
+     headerView_->fillDelegates( ui->headerTableView );
+ }
 
 void MeasureWindow::clickedAddAttributeButton() {
     attributesView_->addPair("","",gui::KeyValuePair::TYPE_TEXT,"");
@@ -268,16 +265,16 @@ void MeasureWindow::clickedAddButton() {
     measure_->header( header );
     measure_->changeAt( QDateTime::currentDateTime()  );
 
-
+    bool isNew = measure_->id() == -1;
     if(measureStorage_->saveMeasure( measure_ )){
         log::logDebug() << "Measure saved";
         emit updatedDataBase();
 
         // \todo Stub
-        if(action_ == NEW){
-            close();
+        if(isNew){
+            int measureId = measure_->id();
+            updateMeasure(measureId);
         }
-
     }else{
         log::logError() << "Measure not saved";
     }

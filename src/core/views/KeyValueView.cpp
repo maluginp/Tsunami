@@ -15,8 +15,13 @@ namespace gui{
 
 
 KeyValueView::KeyValueView(QObject *parent) :
-    QAbstractItemModel(parent)
+    QAbstractItemModel(parent),headerHidden_(false)
 {
+}
+
+void KeyValueView::hideHeader(bool hide) {
+    headerHidden_ = hide;
+
 }
 
 QModelIndex KeyValueView::index(int row, int column, const QModelIndex &parent) const {
@@ -82,7 +87,7 @@ bool KeyValueView::setData(const QModelIndex &index, const QVariant &value, int 
 }
 
 QVariant KeyValueView::headerData(int section, Qt::Orientation orientation, int role) const {
-    if( role == Qt::DisplayRole && orientation == Qt::Horizontal ){
+    if( !headerHidden_ && role == Qt::DisplayRole && orientation == Qt::Horizontal ){
         if(section == 0){
             return QVariant(tr("Key"));
         }else if(section == 1){
@@ -103,7 +108,7 @@ void KeyValueView::setPairs(const KeyValuePair *pairs, const int &num) {
 //    reset()
 }
 
-void KeyValueView::addPair(const QString &key, const QVariant &value, const KeyValuePair::ValueType &type, const QString &title) {
+void KeyValueView::addPair(const QString &key, const QVariant &value, KeyValuePair::ValueType type, const QString &title) {
 
     KeyValuePair pair(key,value,type,title);
     addPair(pair);
@@ -168,11 +173,12 @@ const KeyValuePair &KeyValueView::getPair(const QString &key) const {
 }
 
 void KeyValueView::fillDelegates(QAbstractItemView *view) {
+    if(view->itemDelegate()){
+        view->itemDelegate()->deleteLater();
+        view->setItemDelegate( NULL );
+    }
 
-    view->itemDelegate()->deleteLater();
-    view->setItemDelegate( NULL );
-
-//    view->setItemDelegate( new KeyValueDelegate( pairs_, view ) );
+    view->setItemDelegate( new KeyValueDelegate( pairs_, view ) );
 
 }
 

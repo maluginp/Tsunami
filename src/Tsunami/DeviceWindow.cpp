@@ -77,9 +77,9 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
     statusBar()->showMessage(tr("Tsunami ver %1").arg( TSUNAMI_VERSION ));
 
 //#ifdef QT_DEBUG
-//    openDevice(1);
+    openDevice(1);
 //#else
-    clickedDeviceClose();
+//    clickedDeviceClose();
 //#endif
 }
 
@@ -159,13 +159,20 @@ bool DeviceWindow::createAnalysisWindow() {
     return (analysisWindow_ != 0);
 }
 
-bool DeviceWindow::createMeasureWindow(addMeasureForm::Action action, int measureId) {
+bool DeviceWindow::createMeasureWindow(MeasureWindow::Action action, int id) {
     if(measuresWindow_){
         measuresWindow_->disconnect();
         delete measuresWindow_;
         measuresWindow_ = 0;
     }
-    measuresWindow_ = new addMeasureForm(deviceId_,action,measureId);
+    measuresWindow_ = new MeasureWindow(deviceId_);
+
+    if(action == MeasureWindow::NEW){
+        measuresWindow_->createMeasure(id);
+    }else{
+        measuresWindow_->updateMeasure(id);
+    }
+
     measuresWindow_->show();
     connect(measuresWindow_,SIGNAL(updatedDataBase()),
             SLOT(updateDeviceWindow()));
@@ -255,7 +262,7 @@ void DeviceWindow::clickedMeasureEditor() {
     int measureId = OpenMeasureDialog::getMeasureId( deviceId_, this );
 
     if(measureId != -1) {
-        createMeasureWindow(addMeasureForm::EDIT,measureId);
+        createMeasureWindow(MeasureWindow::EDIT,measureId);
     }
 
     return;
@@ -272,7 +279,7 @@ void DeviceWindow::clickedMeasureAdd() {
     int analysisId = ChoiceAnalysisForm::getAnalysisId( deviceId_);
 
     if( analysisId != -1){
-        createMeasureWindow(addMeasureForm::NEW,analysisId);
+        createMeasureWindow(MeasureWindow::NEW,analysisId);
     }
 
     return;
@@ -365,7 +372,7 @@ void DeviceWindow::selectedMeasure(const QModelIndex &index) {
         return;
     }
 
-    createMeasureWindow(addMeasureForm::EDIT, measureId);
+    createMeasureWindow(MeasureWindow::EDIT, measureId);
     return;
 }
 
