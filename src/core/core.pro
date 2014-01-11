@@ -66,7 +66,8 @@ SOURCES += main.cpp \
     webkit/APIObject.cpp \
     views/ListTreeView.cpp \
     plots/PlotItem.cpp \
-    models/LibraryTemplateModel.cpp
+    models/LibraryTemplateModel.cpp \
+    components/ParseMeasureModel.cpp
 
 HEADERS += \
     components/Json.h \
@@ -116,5 +117,6 @@ HEADERS += \
     views/Views.h \
     views/ListTreeView.h \
     plots/PlotItem.h \
-    models/LibraryTemplateModel.h
+    models/LibraryTemplateModel.h \
+    components/ParseMeasureModel.h
 

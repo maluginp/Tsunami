@@ -37,7 +37,7 @@ public:
     QVariant configuration(const QString& key, const QVariant &defaultValue = QVariant()) const;
     bool hasConfiguration( const QString& key ) { return configuration_.contains(key); }
     void addConfiguration(const QString& key, const QVariant& value);
-
+    void addConfiguration( const QPair<QString,QVariant>& pair);
     QString directionJson() const;
 
     void node(const QString& node) { node_ = node; }

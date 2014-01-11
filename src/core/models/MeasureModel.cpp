@@ -1,7 +1,7 @@
 #include "MeasureModel.h"
 #include "components/Json.h"
 #include "math/Matrix.h"
-#include <QtXml>
+#include "components/ParseMeasureModel.h"
 #include "Log.h"
 namespace tsunami{
 namespace db{
@@ -73,6 +73,10 @@ void MeasureModel::header(const QString &comment, const QDate &fabrication, cons
 void MeasureModel::attrsJson( const QString& json ){
     QVariantMap attrs = QtJson::parse(json).toMap();
     attributes_ = attrs;
+}
+
+void MeasureModel::addAttr(const QPair<QString, QVariant> &pair) {
+    addAttr( pair.first, pair.second );
 }
 
 void MeasureModel::sourcesJson(const QString &json) {
@@ -368,86 +372,7 @@ MeasureModel *MeasureModel::importFrom(const QByteArray &data) {
 
     log::logDebug() << "Import measure model from " << data.count() << " bytes";
 
-    MeasureModel* model = new MeasureModel();
-    QXmlStreamReader* reader = new QXmlStreamReader(data);
-
-    while( !reader->atEnd() ){
-        QXmlStreamReader::TokenType token = reader->readNext();
-        if(token == QXmlStreamReader::StartElement){
-            if( reader->name() == "measure" ){
-                QXmlStreamAttributes attrs = reader->attributes();
-                model->type( attrs.value("type").toString() );
-//                model->createAt( attrs.value("createAt").toString() );
-            }else if( reader->name() == "attributes" ){
-                while( true ){
-                    token = reader->readNext();
-                    if(reader->name() == "attribute" && token == QXmlStreamReader::StartElement){
-                        QXmlStreamAttributes attrs = reader->attributes();
-                        model->addAttr( attrs.value("name").toString(), attrs.value("value").toString() );
-                    }else if( reader->name() == "attributes" && token == QXmlStreamReader::EndElement ){
-                        break;
-                    }
-                }
-            }else if( reader->name() == "sources"){
-                while( true ){
-                    token = reader->readNext();
-                    if(reader->name() == "source" && token == QXmlStreamReader::StartElement){
-                        QXmlStreamAttributes attrs = reader->attributes();
-                        Source source;
-                        source.node(  attrs.value("node").toString() );
-                        source.mode( attrs.value("mode").toString() );
-                        source.direction( attrs.value("direction").toString() );
-                        source.method( attrs.value("method").toString() );
-
-                        if( source.method() == SOURCE_METHOD_CONST){
-                            source.addConfiguration( "const", attrs.value("const").toString() );
-                        }else if( source.method() == SOURCE_METHOD_LINEAR){
-                            source.addConfiguration( "start", attrs.value("start").toString() );
-                            source.addConfiguration( "step", attrs.value("step").toString() );
-                            source.addConfiguration( "end", attrs.value("end").toString() );
-                            source.addConfiguration( "number", attrs.value("number").toString() );
-                        }
-
-                        model->addSource( source );
-                    }else if( reader->name() == "sources" && token == QXmlStreamReader::EndElement ){
-                        break;
-                    }
-                }
-            }else if( reader->name() == "columns" ){
-                while( true ){
-                    token = reader->readNext();
-                    if(reader->name() == "column" && token == QXmlStreamReader::StartElement){
-                        QXmlStreamAttributes attrs = reader->attributes();
-                        model->addColumn( attrs.value("name").toString() );
-                    }else if(reader->name() =="columns" && token == QXmlStreamReader::EndElement){
-                        break;
-                    }
-                }
-            }else if( reader->name() == "items"){
-                QStringList columns = model->columns();
-                QVector< QVector<double> > data;
-                while( true ){
-                    token = reader->readNext();
-                    if(reader->name() == "item" && token == QXmlStreamReader::StartElement){
-                        QVector<double> row;
-                        QXmlStreamAttributes attrs = reader->attributes();
-
-                        foreach(QString column, columns){
-                            row.append( attrs.value(column).toString().toDouble() );
-                        }
-
-                        data.append( row );
-                    }else if(reader->name() == "items" && token == QXmlStreamReader::EndElement){
-                        break;
-                    }
-
-                }
-                model->data( data );
-            }
-        }
-    }
-
-    delete reader;
+    MeasureModel* model = ParseMeasureModel::parse( data );
 
     log::logDebug() << "Imported measure: " << model->typeJson()
                     << "with" << model->dataRows()
@@ -459,66 +384,53 @@ MeasureModel *MeasureModel::importFrom(const QByteArray &data) {
 QByteArray MeasureModel::exportTo(const MeasureModel *model) {
     QByteArray data;
 
-    QXmlStreamWriter* writer = new QXmlStreamWriter(&data);
-    writer->setAutoFormatting(true);
-    writer->writeStartDocument();
-    writer->writeStartElement("measure");
-//    writer->writeAttribute("name",model->name());
-    writer->writeAttribute("type",model->typeJson());
-//    writer->writeAttribute("created",model->createAt().toString());
-//    writer->writeAttribute("changed",model->changeAt().toString());
-//    writer->writeAttribute("enable",);
-    writer->writeStartElement("attributes");
+    data.append(QString("TYPE %1\n").arg(model->typeJson()));
+    data.append("\n");
+    // Attributes
+    data.append(QString("BEGIN_ATTRIBUTES\n"));
     QVariantMap attrs = model->attrs();
-    foreach( QString name, attrs.keys() ){
-        writer->writeStartElement("attribute");
-        writer->writeAttribute("name",name);
-        writer->writeAttribute("value",attrs.value(name,QVariant()).toString());
-        writer->writeEndElement();
+    foreach( QString name, attrs.keys() ) {
+        QString value = attrs.value(name,QString()).toString();
+        if(!value.isEmpty()){
+            data.append(QString(" ATTRIBUTE %1 %2\n")
+                        .arg(name).arg(value)
+                        );
+        }
     }
-    writer->writeEndElement();
-
-    writer->writeStartElement("sources");
+    data.append(QString("END_ATTRIBUTES\n"));
+    data.append("\n");
+    // Sources
+    data.append(QString("BEGIN_SOURCES\n"));
     QList<Source> sources = model->sources();
     foreach(Source source, sources){
-        writer->writeStartElement("source");
-        writer->writeAttribute("node",source.node());
-        writer->writeAttribute("mode",source.modeJson());
-        writer->writeAttribute("direction",source.directionJson());
-        writer->writeAttribute("method",source.methodJson());
-
+        QString sourceData = source.title(" SOURCE %DIR %NODE %MODE %METHOD");
         if( source.configurations().count() > 0 ){
             foreach(QString name, source.configurations().keys()){
-                writer->writeAttribute(name, source.configuration(name).toString());
+                sourceData.append(QString(" %1=%2")
+                                  .arg(name)
+                                  .arg(source.configuration(name).toString())
+                                  );
             }
         }
-
-        writer->writeEndElement();
+        sourceData.append("\n");
+        data.append(sourceData);
     }
-    writer->writeEndElement();
+    data.append(QString("END_SOURCES\n"));
+    data.append("\n");
 
-    writer->writeStartElement("columns");
-    foreach(QString column, model->columns()){
-        writer->writeStartElement("column");
-        writer->writeAttribute("name", column);
-        writer->writeEndElement();
-    }
-    writer->writeEndElement();
-
-    writer->writeStartElement("items");
+    data.append(QString("BEGIN_MEASURE\n"));
+    QStringList columns = model->columns();
+    data.append("#").append(columns.join(",").append("\n"));
     int nItems = model->dataRows();
     for(int i=0; i < nItems; ++i){
-         QMap<QString, double> row = model->get(i);
-         writer->writeStartElement("item");
-         foreach(QString name,row.keys()){
-             writer->writeAttribute( name, QString::number( row.value(name,.0)) );
-         }
-         writer->writeEndElement();
+        QStringList dataRow;
+        QMap<QString, double> row = model->get(i);
+        foreach(QString column, columns){
+            dataRow << QString::number(row.value(column,0.0));
+        }
+        data.append(dataRow.join(",").append("\n"));
     }
-    writer->writeEndElement();
-
-    writer->writeEndElement();
-    writer->writeEndDocument();
+    data.append(QString("END_MEASURE\n"));
 
     return data;
 }

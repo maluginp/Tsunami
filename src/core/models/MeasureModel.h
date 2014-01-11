@@ -57,6 +57,7 @@ public:
     void attrs( const QVariantMap& attributes ) { attributes_ = attributes; }
     void attrsJson( const QString& json );
     void addAttr( const QString& key, const QVariant& value )  { attributes_.insert( key,value ); }
+    void addAttr( const QPair<QString,QVariant>& pair);
     void sources( const QList<Source>& sources ) { sources_ = sources; }
     void sourcesJson( const QString& json);
     void addSource( const Source& source ) { sources_.append( source ); }

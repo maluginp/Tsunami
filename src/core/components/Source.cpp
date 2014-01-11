@@ -77,6 +77,10 @@ void Source::addConfiguration(const QString &key, const QVariant &value) {
     configuration_.insert(key,value);
 }
 
+void Source::addConfiguration(const QPair<QString, QVariant> &pair) {
+    addConfiguration(pair.first,pair.second);
+}
+
 QString Source::directionJson() const {
     if(direction_ == SOURCE_DIRECTION_INPUT){
         return "input";
@@ -87,9 +91,9 @@ QString Source::directionJson() const {
 }
 
 void Source::direction(const QString &_direction) {
-    if(_direction.compare("input") == 0){
+    if(_direction.compare("input", Qt::CaseInsensitive) == 0){
         direction_ = SOURCE_DIRECTION_INPUT;
-    }else if(_direction.compare("output") == 0){
+    }else if(_direction.compare("output", Qt::CaseInsensitive) == 0){
         direction_ = SOURCE_DIRECTION_OUTPUT;
     }else{
         Q_ASSERT(false);
@@ -97,11 +101,11 @@ void Source::direction(const QString &_direction) {
 }
 
 void Source::method(const QString &_method) {
-    if(_method.compare("linear") == 0){
+    if(_method.compare("linear", Qt::CaseInsensitive) == 0){
         method_ = SOURCE_METHOD_LINEAR;
-    }else if(_method.compare("list") == 0){
+    }else if(_method.compare("list", Qt::CaseInsensitive) == 0){
         method_ = SOURCE_METHOD_LIST;
-    }else if(_method.compare("const") == 0){
+    }else if(_method.compare("const", Qt::CaseInsensitive) == 0){
         method_ = SOURCE_METHOD_CONST;
     }else{
         method_ = SOURCE_METHOD_UNKNOWN;
@@ -109,11 +113,11 @@ void Source::method(const QString &_method) {
 }
 
 void Source::mode(const QString &_mode) {
-    if(_mode.compare("voltage")==0){
+    if(_mode.compare("voltage", Qt::CaseInsensitive)==0){
         mode_ = SOURCE_MODE_VOLTAGE;
-    }else if(_mode.compare("current") ==0){
+    }else if(_mode.compare("current", Qt::CaseInsensitive) ==0){
         mode_ = SOURCE_MODE_CURRENT;
-    }else if(_mode.compare("gnd") == 0){
+    }else if(_mode.compare("gnd", Qt::CaseInsensitive) == 0){
         mode_ = SOURCE_MODE_GND;
     }else{
         Q_ASSERT(false);
