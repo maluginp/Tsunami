@@ -6,7 +6,16 @@
 namespace tsunami{
 namespace db{
 
-MeasureModel::MeasureModel() : data_(NULL){
+MeasureModel::MeasureModel() :
+    measureId_(-1),
+    deviceId_(-1),
+    createdAt_(QDateTime::currentDateTime()),
+    changedAt_(QDateTime::currentDateTime()),
+    data_(NULL),
+    type_(ANALYSIS_UNKNOWN),
+    enable_(true),
+    userId_(-1)
+    {
 
 }
 // @fixme Copy @var data pointer and @var rows
@@ -369,14 +378,7 @@ bool MeasureModel::isSourceDirection(const QString &name, SourceDirection direct
 }
 
 MeasureModel *MeasureModel::importFrom(const QByteArray &data) {
-
-    log::logDebug() << "Import measure model from " << data.count() << " bytes";
-
     MeasureModel* model = ParseMeasureModel::parse( data );
-
-    log::logDebug() << "Imported measure: " << model->typeJson()
-                    << "with" << model->dataRows()
-                    << "items (" << model->dataColumns() << "columns)";
 
     return model;
 }

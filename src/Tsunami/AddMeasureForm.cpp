@@ -218,6 +218,7 @@ void addMeasureForm::openMeasure(int measureId) {
 }
 
 void addMeasureForm::addButtonClick() {
+    log::logTrace() << "Creating measure";
     QVariantMap attributes;
     for(int i=0;i < attributesView_->rowCount(); ++i){
         attributes.insert( attributesView_->getPair( i  ).key,
@@ -244,6 +245,7 @@ void addMeasureForm::clickedExportButton() {
     QString fileName = QFileDialog::getSaveFileName( this, tr("Export to file"), QString(), QString("*.tmb") );
 
     if(!fileName.isEmpty()){
+        log::logTrace() << "Exporting to " << fileName;
         QFile file(fileName);
         if(file.open(QIODevice::WriteOnly)){
             QByteArray data = db::MeasureModel::exportTo( measure_ );
@@ -254,19 +256,26 @@ void addMeasureForm::clickedExportButton() {
 }
 
 void addMeasureForm::clickedImportButton() {
-    log::logTrace() << "Clicked import button";
     QString fileName = QFileDialog::getOpenFileName(this, tr("Import from file"),QString(),QString("*.tmb"));
     if(fileName.isEmpty()){
         return;
     }
+
+    log::logTrace() << "Importing from " << fileName;
 
     QFile file(fileName);
     if(file.open(QIODevice::ReadOnly)){
         QByteArray data = file.readAll();
         db::MeasureModel* importedMeasure = db::MeasureModel::importFrom( data );
 
+        log::logDebug() << QString("Imported measure %1 with %2 items(%3 columns)")
+                           .arg(importedMeasure->typeJson())
+                           .arg(importedMeasure->dataRows())
+                           .arg(importedMeasure->dataColumns());
+
         if(!Source::compare(measure_->sources(),
                             importedMeasure->sources())) {
+            log::logError() << "Import not passed by sources";
             return;
         }
 
@@ -275,6 +284,7 @@ void addMeasureForm::clickedImportButton() {
         foreach( QString name, attributes.keys()){
             if(!importedMeasure->attrs().contains(name)
                || ( importedMeasure->attrs().value(name) != attributes.value(name) )){
+                log::logError() << "Import not passed by attributes";
                 return;
             }
         }
