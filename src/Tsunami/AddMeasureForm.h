@@ -29,18 +29,17 @@ public:
         EDIT
     };
 
-    addMeasureForm(Action action, int id, QWidget *parent = 0);
+    addMeasureForm(int deviceId,Action action, int id, QWidget *parent = 0);
     ~addMeasureForm();
 private:
     void showSourcesDescription();
     void prepareNewMeasureData();
-
-    int analysisId_;
     void openAnalysis(int analysisId);
     void openMeasure(int measureId);
 
     Ui::addMeasureForm *ui;
-
+    int deviceId_;
+    int analysisId_;
     Action action_;
 
     gui::KeyValueView* headerView_;
@@ -53,7 +52,8 @@ private:
     static gui::KeyValuePair headerPairs_[];
     static const int nPairs_;
 private slots:
-    void addButtonClick();
+    void clickedAddAttributeButton();
+    void clickedAddButton();
     void clickedExportButton();
     void clickedImportButton();
 

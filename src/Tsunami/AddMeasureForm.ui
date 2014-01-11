@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>660</width>
-    <height>526</height>
+    <width>710</width>
+    <height>603</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,6 +15,20 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Name:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="nameMeasureLineEdit"/>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="0">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <widget class="QTabWidget" name="measureTabs">
@@ -27,59 +41,82 @@
         </attribute>
         <layout class="QGridLayout" name="gridLayout_2">
          <item row="0" column="0">
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <widget class="QTableView" name="headerTableView">
+           <attribute name="horizontalHeaderStretchLastSection">
+            <bool>true</bool>
+           </attribute>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
-            <widget class="QTableView" name="headerTableView">
-             <attribute name="horizontalHeaderStretchLastSection">
-              <bool>true</bool>
-             </attribute>
+            <widget class="QLabel" name="label_2">
+             <property name="maximumSize">
+              <size>
+               <width>250</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Nodes</string>
+             </property>
             </widget>
            </item>
            <item>
-            <layout class="QVBoxLayout" name="verticalLayout_2">
+            <widget class="QListView" name="nodesListView">
+             <property name="maximumSize">
+              <size>
+               <width>255</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="maximumSize">
+              <size>
+               <width>250</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Attributes</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QTableView" name="attributesTableView">
+             <property name="maximumSize">
+              <size>
+               <width>255</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
              <item>
-              <widget class="QLabel" name="label_2">
-               <property name="maximumSize">
+              <spacer name="horizontalSpacer_3">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
                 <size>
-                 <width>250</width>
-                 <height>16777215</height>
+                 <width>40</width>
+                 <height>20</height>
                 </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="addAttributeButton">
+               <property name="enabled">
+                <bool>false</bool>
                </property>
                <property name="text">
-                <string>Nodes</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QListView" name="nodesListView">
-               <property name="maximumSize">
-                <size>
-                 <width>255</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="label">
-               <property name="maximumSize">
-                <size>
-                 <width>250</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="text">
-                <string>Attributes</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QTableView" name="attributesTableView">
-               <property name="maximumSize">
-                <size>
-                 <width>255</width>
-                 <height>16777215</height>
-                </size>
+                <string>Add</string>
                </property>
               </widget>
              </item>

@@ -165,7 +165,7 @@ bool DeviceWindow::createMeasureWindow(addMeasureForm::Action action, int measur
         delete measuresWindow_;
         measuresWindow_ = 0;
     }
-    measuresWindow_ = new addMeasureForm(action,measureId);
+    measuresWindow_ = new addMeasureForm(deviceId_,action,measureId);
     measuresWindow_->show();
     connect(measuresWindow_,SIGNAL(updatedDataBase()),
             SLOT(updateDeviceWindow()));

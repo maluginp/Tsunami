@@ -19,12 +19,21 @@ gui::KeyValuePair addMeasureForm::headerPairs_[] = {
 };
 
 
-addMeasureForm::addMeasureForm(addMeasureForm::Action action, int id, QWidget *parent) :
+addMeasureForm::addMeasureForm(int deviceId, addMeasureForm::Action action, int id, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::addMeasureForm) {
+    ui(new Ui::addMeasureForm),
+    deviceId_(deviceId),
+    analysisId_(-1),
+    headerView_(NULL),
+    attributesView_(NULL),
+    measureView_(NULL),
+    measure_(NULL),
+    measureStorage_(NULL)
+{
 
     ui->setupUi( this );
 
+    measureStorage_ = db::MeasureStorage::instance();
 
     headerView_ = new gui::KeyValueView();
     attributesView_ = new gui::KeyValueView();
@@ -43,12 +52,18 @@ addMeasureForm::addMeasureForm(addMeasureForm::Action action, int id, QWidget *p
         openMeasure(id);
         ui->addButton->setText( tr("Save") );
     }
-    connect(ui->addButton,SIGNAL(clicked()),this,SLOT(addButtonClick()));
-    connect(ui->cancelButton,SIGNAL(clicked()),this,SLOT(close()));
+    connect(ui->addButton,SIGNAL(clicked()),
+                          SLOT(clickedAddButton()));
+    connect(ui->cancelButton,SIGNAL(clicked()),
+                             SLOT(close()));
 
-    connect(ui->exportButton,SIGNAL(clicked()),this,SLOT(clickedExportButton()));
-    connect(ui->importButton,SIGNAL(clicked()),this,SLOT(clickedImportButton()));
+    connect(ui->exportButton,SIGNAL(clicked()),
+                             SLOT(clickedExportButton()));
+    connect(ui->importButton,SIGNAL(clicked()),
+                             SLOT(clickedImportButton()));
     //    openAnalysis( analysisId );
+    connect(ui->addAttributeButton,SIGNAL(clicked()),
+                                   SLOT(clickedAddAttributeButton()));
 }
 
 addMeasureForm::~addMeasureForm() {
@@ -162,6 +177,7 @@ void addMeasureForm::openAnalysis(int analysisId) {
     measure_->sources( analysis->sources() );
 
     measure_->type( analysis->type() );
+    measure_->deviceId( deviceId_ );
 
     prepareNewMeasureData();
 
@@ -180,13 +196,15 @@ void addMeasureForm::openAnalysis(int analysisId) {
 
 void addMeasureForm::openMeasure(int measureId) {
     log::logTrace() << "Open measure:" << measureId;
-    measureStorage_ = db::MeasureStorage::instance();
+
     measure_ = measureStorage_->openMeasure( measureId );
 
     if(measure_ == 0){
         log::logError() << "Opening measure is failed";
         return;
     }
+
+    ui->nameMeasureLineEdit->setText( measure_->name() );
 
     measureView_ = new gui::MeasureItemView( measure_ );
     ui->dataTableView->setModel( measureView_ );
@@ -217,8 +235,21 @@ void addMeasureForm::openMeasure(int measureId) {
 
 }
 
-void addMeasureForm::addButtonClick() {
+void addMeasureForm::clickedAddAttributeButton() {
+    attributesView_->addPair("","",gui::KeyValuePair::TYPE_TEXT,"");
+}
+
+void addMeasureForm::clickedAddButton() {
     log::logTrace() << "Creating measure";
+
+    QString name = ui->nameMeasureLineEdit->text();
+
+    if(name.isEmpty()){
+        return;
+    }
+
+    measure_->name( name );
+
     QVariantMap attributes;
     for(int i=0;i < attributesView_->rowCount(); ++i){
         attributes.insert( attributesView_->getPair( i  ).key,
@@ -226,7 +257,7 @@ void addMeasureForm::addButtonClick() {
 
     }
     measure_->attrs(attributes );
-
+    measure_->deviceId( deviceId_ );
     db::MeasureHeader header;
 
     header.comment = headerView_->getPair( "comment" ).value.toString();
@@ -237,8 +268,19 @@ void addMeasureForm::addButtonClick() {
     measure_->header( header );
     measure_->changeAt( QDateTime::currentDateTime()  );
 
-    measureStorage_->saveMeasure( measure_ );
-    emit updatedDataBase();
+
+    if(measureStorage_->saveMeasure( measure_ )){
+        log::logDebug() << "Measure saved";
+        emit updatedDataBase();
+
+        // \todo Stub
+        if(action_ == NEW){
+            close();
+        }
+
+    }else{
+        log::logError() << "Measure not saved";
+    }
 }
 
 void addMeasureForm::clickedExportButton() {

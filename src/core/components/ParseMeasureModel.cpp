@@ -1,5 +1,6 @@
 #include "ParseMeasureModel.h"
 namespace tsunami{
+
 ParseMeasureModel::ParseMeasureModel(const QByteArray& data) {
     data_ = data;
     model_ = new db::MeasureModel();
@@ -24,12 +25,12 @@ ParseMeasureModel::ParseMeasureModel(const QByteArray& data) {
     QStringList columns = readColumns(measures[0]);
     model_->columns( columns  );
     measures.pop_front();
-    QVector< QVector<double> > data;
+    QVector< QVector<double> > items;
     foreach(QString measure, measures){
-        data.append( readDataRow(measure) );
+        items.append( readDataRow(measure) );
     }
 
-    model_->data( data );
+    model_->data( items );
 }
 
 db::MeasureModel *ParseMeasureModel::parse(const QByteArray &data) {

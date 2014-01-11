@@ -23,7 +23,7 @@ private:
     QString data_;
     db::MeasureModel* model_;
 
-
+//    static QString splitChar;
 };
 } // tsunami
 #endif // PARSEMEASUREMODEL_H

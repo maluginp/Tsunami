@@ -60,6 +60,7 @@ void DbStorage::setLastError(const QString &msg){
     if(!msg.isEmpty()){
         log::logError() << QString("Db error: %1").arg(msg);
     }
+    lastErrors_.hasLocalData();
     lastErrors_.setLocalData( new QString(msg) );
 }
 
