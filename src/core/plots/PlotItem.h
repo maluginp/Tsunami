@@ -41,10 +41,11 @@ private:
 
     void setStyleGraph( PlotType type, QCPGraph* graph );
 
-    QMap<PlotAxis, QString> axes_;
-    QString name_;
     TsunamiPlot* plotter_;
+    QString name_;
     PlotType type_;
+
+    QMap<PlotAxis, QString> axes_;
     QVector<double> keys_;
     QVector<double> measured_,simulated_;
 };
