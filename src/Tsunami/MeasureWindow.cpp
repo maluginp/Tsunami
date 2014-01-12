@@ -121,12 +121,13 @@ void MeasureWindow::showSourcesDescription() {
     foreach(Source source,sources){        
         if(source.direction() == SOURCE_DIRECTION_INPUT){
             sourcesDescription.append(
-                        source.title("%MODE %NODE %METHOD\n")
+                        source.title("%MODE %NODE %METHOD %CONFIG\n")
                         );
         }
     }
     ui->measureSources->setText( sourcesDescription );
 }
+// \fixme stub code :(
  bool MeasureWindow::prepareMeasureData(db::MeasureModel* measure) {
      if(!measure) { return false; }
 

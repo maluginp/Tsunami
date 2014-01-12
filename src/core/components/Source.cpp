@@ -63,9 +63,29 @@ QString Source::title( const QString& format ) const {
     }else{
         title = format;
         title.replace( "%node", node() ).replace("%NODE", node().toUpper() );
-        title.replace( "%method", methodJson()).replace("%METHOD",methodJson().toUpper());
+        if(mode_ == SOURCE_MODE_GND){
+            title.replace( "%method", "",Qt::CaseInsensitive);
+        }else{
+            title.replace( "%method", methodJson()).replace("%METHOD",methodJson().toUpper());
+        }
         title.replace( "%mode", modeJson() ).replace("%MODE", modeJson().toUpper());
         title.replace( "%dir", directionJson()).replace("%DIR",directionJson().toUpper());
+
+        if(title.contains("%config",Qt::CaseInsensitive)){
+            if(!configuration_.isEmpty()){
+                QStringList configs;
+                foreach(QString key, configuration_.keys()){
+                    configs.append( QString("%1=%2").arg(key)
+                                    .arg(configuration_.value(key).toString()) );
+                }
+
+                title.replace("%config", configs.join(" ") );
+                title.replace("%CONFIG", configs.join(" ").toUpper());
+            }else{
+                title.replace("%config","",Qt::CaseInsensitive);
+            }
+        }
+
         log::logDebug() << QString("Formating title source:\n"
                                    "Input: %1\nOutput: %2")
                            .arg(format).arg(title);

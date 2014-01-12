@@ -5,7 +5,9 @@
 #include "Device.h"
 #include "Terminal.h"
 #include "models/MeasureModel.h"
-#include <QDebug>
+
+#include "Log.h"
+
 namespace tsunami{
 namespace spice{
 
@@ -15,17 +17,22 @@ NgSpiceSimulator::NgSpiceSimulator(const QString &path) :
 }
 
 bool NgSpiceSimulator::simulate() {
-
+    log::logTrace() << "Simulating";
     // Append models;
     QString fileName = randomName(8);
 
     QFile file( QString("%1.net").arg(fileName) );
+    log::logTrace() << QString("Create netlist file %1")
+                       .arg(file.fileName());
 
     if(!file.open(QIODevice::WriteOnly)){
+        log::logError() << QString("Can not open file for write %1")
+                           .arg(file.fileName());
         return false;
     }
 
     QByteArray netlist = generateNetList();
+    log::logTrace() << QString("Generated NetList\n%1").arg(QString(netlist));
 
     if(file.write( netlist ) == -1){
         file.close();
@@ -44,6 +51,8 @@ bool NgSpiceSimulator::simulate() {
     if(!exec( output, arguments )){
         return false;
     }
+
+    log::logTrace() << QString("Result simulated\n%1").arg(QString(output));
 
     // BULLSHIT: code
     int positionStartIndex = output.indexOf("Index");

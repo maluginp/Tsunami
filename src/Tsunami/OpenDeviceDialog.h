@@ -34,7 +34,7 @@ private slots:
     void clickedDeviceListItem(const QModelIndex& index);
     void clickedOpenButton();
     void clickedRemoveButton();
-
+    void clickedDoubleDeviceListItem(const QModelIndex& index);
 
     void changedDeviceName(const QString& name);
 };

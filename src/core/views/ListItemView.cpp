@@ -114,6 +114,10 @@ void ListItemView::clear() {
     endResetModel();
 }
 
+QModelIndex ListItemView::first() const {
+    return createIndex(0,0);
+}
+
 QModelIndex ListItemView::findByKey(const QString &name) {
     if(name.isEmpty()){
         return QModelIndex();

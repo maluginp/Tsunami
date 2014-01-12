@@ -35,7 +35,7 @@ private:
 
     int libraryId_;
     int deviceId_;
-
+    QString currentAnalysis_;
 private slots:
     void clickedRunButton();
     void changedLibraryComboBox(int index);

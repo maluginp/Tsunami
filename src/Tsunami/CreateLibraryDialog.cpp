@@ -75,7 +75,7 @@ void CreateLibraryDialog::clickedCreateButton(){
         return;
     }
 
-    if(storage_->exists(libraryName)){
+    if(storage_->exists(deviceId_,libraryName)){
         ui->errorLibraryNameText->setText( tr("Library is existed.") );
         return;
     }

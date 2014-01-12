@@ -156,12 +156,14 @@ bool ParameterStorage::removeLibrary(int libraryId)
     return removeLibraryImpl(libraryId);
 }
 
-bool ParameterStorage::exists(const QString &name) {
+bool ParameterStorage::exists(int deviceId,const QString &name) {
     QString sqlQuery;
-    sqlQuery = sql( "SELECT id FROM %1 WHERE name=:name").arg(TABLE_NAME_LIBRARIES);
+    sqlQuery = sql( "SELECT id FROM %1 WHERE name=:name AND device_id=:device_id")
+               .arg(TABLE_NAME_LIBRARIES);
 
      QSqlQuery q( sqlQuery, db() );
      q.bindValue(":name", name);
+     q.bindValue(":device_id",deviceId);
 
      if(!q.exec()){
          setLastError( q.lastError().text() );

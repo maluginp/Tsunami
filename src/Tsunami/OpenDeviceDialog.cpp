@@ -25,6 +25,8 @@ OpenDeviceDialog::OpenDeviceDialog(QWidget *parent) :
     connect(ui->closeButton,SIGNAL(clicked()),this,SLOT(close()));
     connect(ui->deviceNameLineEdit,SIGNAL(textChanged(QString)),this,SLOT(changedDeviceName(QString)));
 
+    connect(ui->devicesListView,SIGNAL(doubleClicked(QModelIndex)),
+            SLOT(clickedDoubleDeviceListItem(QModelIndex)));
 
 }
 
@@ -108,6 +110,11 @@ void OpenDeviceDialog::clickedRemoveButton() {
         }
     }
 
+}
+
+void OpenDeviceDialog::clickedDoubleDeviceListItem(const QModelIndex &index) {
+    clickedDeviceListItem(index);
+    clickedOpenButton();
 }
 
 

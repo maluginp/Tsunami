@@ -27,6 +27,8 @@ public:
     ListItemView& addItem( const QString& key, const QVariant& value);
     void clear();
 
+    QModelIndex first() const;
+
     QModelIndex findByKey( const QString& name );
     QModelIndex findByValue( const QVariant& value );
 signals:

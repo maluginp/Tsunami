@@ -25,7 +25,9 @@ public:
     QList<MeasureModel *> findMeasures( const QVariantMap& criteria );
 
     QList<MeasureModel*> getMeasuresByDeviceId( int deviceId );
+
     int numberMeasures(int deviceId);
+    int numberMeasuresByAnalysis(int deviceId,const QString& analysis);
 
     QList<MeasureModel*> getMeasures(const QList<int>& measureIds );
 

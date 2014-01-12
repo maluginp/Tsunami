@@ -2,6 +2,7 @@
 #include "ui_PrepareExtractorDialog.h"
 #include "views/MeasureEnableView.h"
 #include "delegates/DelegateCheckBox.h"
+#include "Log.h"
 
 namespace tsunami{
 PrepareExtractorDialog::PrepareExtractorDialog(int deviceId, QWidget *parent) :
@@ -11,13 +12,20 @@ PrepareExtractorDialog::PrepareExtractorDialog(int deviceId, QWidget *parent) :
 
     ui->measuresTableView->setItemDelegateForColumn(0,new DelegateCheckBox(ui->measuresTableView));
 
+    db::MeasureStorage* storage =  db::MeasureStorage::instance();
 
     analysisTypeView_ = new gui::ListItemView("Analysis");
-    analysisTypeView_->addItem( "AC","ac");
-    analysisTypeView_->addItem( "DC", "dc" );
-    analysisTypeView_->addItem( "TRAN", "tran");
-    ui->analysisTreeView->setModel( analysisTypeView_ );
-    loadMeasures( "ac" );
+    if(storage->numberMeasuresByAnalysis(deviceId_,"ac") > 0){
+        analysisTypeView_->addItem( "AC","ac");
+    }
+    if(storage->numberMeasuresByAnalysis(deviceId_,"dc") > 0){
+        analysisTypeView_->addItem( "DC", "dc" );
+    }
+    if(storage->numberMeasuresByAnalysis(deviceId_,"tran") > 0){
+        analysisTypeView_->addItem( "TRAN", "tran");
+    }
+
+     ui->analysisTreeView->setModel( analysisTypeView_ );
 
     loadListLibraries();
 
@@ -32,6 +40,14 @@ PrepareExtractorDialog::PrepareExtractorDialog(int deviceId, QWidget *parent) :
             this,SLOT(changedLibraryComboBox(int)));
     connect(ui->runButton,SIGNAL(clicked()),this,SLOT(clickedRunButton()));
     connect(ui->closeButton,SIGNAL(clicked()),this,SLOT(reject()));
+
+
+    if(analysisTypeView_->rowCount() == 0){
+        reject();
+    }else{
+        clickedAnalysisType( analysisTypeView_->first() );
+    }
+
 }
 
 PrepareExtractorDialog::~PrepareExtractorDialog() {
@@ -42,7 +58,7 @@ QList<int> PrepareExtractorDialog::measures() {
     return measures_->listEnabledMeasures();
 }
 
-void PrepareExtractorDialog::loadListLibraries() {
+void PrepareExtractorDialog::loadListLibraries() {  
     db::ParameterStorage* storage =  db::ParameterStorage::instance();
     QMap<int,QString> libraries = storage->listLibraries(deviceId_);
 
@@ -56,6 +72,7 @@ void PrepareExtractorDialog::loadListLibraries() {
 }
 
 void PrepareExtractorDialog::loadMeasures(const QString &analysis) {
+    currentAnalysis_ = analysis;
     delete measures_;
 
     measures_ = new gui::MeasureEnableView(deviceId_,analysis);
@@ -66,9 +83,15 @@ void PrepareExtractorDialog::loadMeasures(const QString &analysis) {
 
 }
 
-void PrepareExtractorDialog::clickedRunButton()
-{
-    accept();
+void PrepareExtractorDialog::clickedRunButton() {
+    log::logTrace() << "Clicking";
+    QList<int> numberMeasures = measures();
+    if(numberMeasures.count() > 0 && libraryId_ != -1) {
+        log::logTrace() << "Number measures " << numberMeasures;
+        accept();
+    }else{
+        QMessageBox::warning(this,windowTitle(),tr("Measures are not choice"));
+    }
 }
 
 void PrepareExtractorDialog::changedLibraryComboBox(int index){
@@ -77,6 +100,8 @@ void PrepareExtractorDialog::changedLibraryComboBox(int index){
 
 void PrepareExtractorDialog::clickedAnalysisType(const QModelIndex &index) {
     QString type = index.data( Qt::UserRole ).toString();
-    loadMeasures(type);
+    if(currentAnalysis_ != type ){
+        loadMeasures(type);
+    }
 }
 }

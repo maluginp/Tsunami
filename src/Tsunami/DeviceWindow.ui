@@ -222,10 +222,10 @@
    <widget class="QPushButton" name="runExtractButton">
     <property name="geometry">
      <rect>
-      <x>120</x>
-      <y>420</y>
-      <width>141</width>
-      <height>31</height>
+      <x>70</x>
+      <y>410</y>
+      <width>191</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
