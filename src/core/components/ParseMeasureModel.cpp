@@ -60,15 +60,17 @@ Source ParseMeasureModel::readSource(const QString &data) {
 
     QStringList elementAttrs = sourceElement.split(" ",QString::SkipEmptyParts);
 
-    if(elementAttrs.count() >= 4){
+    if(elementAttrs.count() >= 3){
         source.direction( elementAttrs[0] );
         source.node( elementAttrs[1] );
         source.mode( elementAttrs[2] );
-        source.method( elementAttrs[3] );
+        if(source.mode() != SOURCE_MODE_GND){
+            source.method( elementAttrs[3] );
 
-        int countElements = elementAttrs.count();
-        for(int i=4; i < countElements; ++i){
-            source.addConfiguration( readConfigParam(elementAttrs[i]) );
+            int countElements = elementAttrs.count();
+            for(int i=4; i < countElements; ++i){
+                source.addConfiguration( readConfigParam(elementAttrs[i]) );
+            }
         }
     }
 

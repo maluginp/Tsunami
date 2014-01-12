@@ -52,13 +52,15 @@ bool NgSpiceSimulator::simulate() {
         return false;
     }
 
+    // No. of Data Rows :
+
     log::logTrace() << QString("Result simulated\n%1").arg(QString(output));
 
     // BULLSHIT: code
     int positionStartIndex = output.indexOf("Index");
     Q_ASSERT(positionStartIndex != -1);
 
-    output = output.mid(positionStartIndex);
+    output = output.mid(positionStartIndex).replace("\r","");;
 
     QList<QByteArray> list =  output.split( '\n' );
     list.removeAt(0);
@@ -83,22 +85,25 @@ bool NgSpiceSimulator::simulate() {
     QVector< QVector<double> > data;
 
     foreach(QByteArray str,list){
+
         QList<QByteArray> vals = str.split('\t');
         if(vals.last().isEmpty()){
             vals.removeLast();
         }
 
         if( columns_.size() != vals.size() ){
-//            qDebug() <<  "No parsing string:" << str;
+            log::logDebug() << "Can not parsing "
+                            << str;
             continue;
         }
+
         QVector<double> row;
         foreach(QByteArray val, vals){
             row.append( val.toDouble() );
         }
         data.append(row);
     }
-//    qDebug() << "Number of parsed row:"<<data.size();
+    log::logDebug() << "Number of parsed row:"<<data.size();
 
     simulated_->data(data);
 

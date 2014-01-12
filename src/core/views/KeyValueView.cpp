@@ -8,8 +8,6 @@
 #endif
 #include "../delegates/KeyValueDelegate.h"
 
-#include <QDebug>
-
 namespace tsunami {
 namespace gui{
 

@@ -319,9 +319,9 @@ Circuit *Circuit::createCircuitDevice(DeviceType type, const QList<Source> &sour
         }
         circuit->mainDeviceId_  = circuit->createFet( circuit, type );
     }else if( type == DEVICE_NMOS || type == DEVICE_PMOS){
-        if(sources.count() != 4){
-            Q_ASSERT(false);
-        }
+//        if(sources.count() != 4){
+//            Q_ASSERT(false);
+//        }
         circuit->mainDeviceId_  = circuit->createMosfet(circuit, type);
     }else if( type == DEVICE_DIODE ){
         if(sources.count() != 2){

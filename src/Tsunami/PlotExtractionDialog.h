@@ -18,10 +18,12 @@ public:
     explicit PlotExtractionDialog(int deviceId, db::LibraryModel* library, const QList<int>& measures, QWidget *parent = 0);
     ~PlotExtractionDialog();
 
-    db::MeasureModel *simulate();
+    db::MeasureModel *simulate(db::MeasureModel *measure);
 private:
-    int deviceId_;
+    bool checkInputValues();
+
     Ui::PlotExtractionDialog *ui;
+    int deviceId_;
     QList<db::MeasureModel*> measures_;
     db::LibraryModel* library_;
     spice::Simulator* simulator_;

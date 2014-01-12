@@ -185,9 +185,15 @@ QString Source::modeJson() const{
 
 bool Source::operator==(const Source& other){
     bool res =  (node_ == other.node_)
-                && (method_ == other.method_)
                 && (mode_ == other.mode_)
                 && (direction_ == other.direction_);
+
+    if(!res) { return false; }
+
+    if(mode_ != SOURCE_MODE_GND){
+        res = (method_ == other.method_);
+    }
+
 
     if(res){
         foreach(QString param,configuration_.keys()){

@@ -2,11 +2,11 @@
 #define KEYVALUEDELEGATE_H
 
 #include <QItemDelegate>
+#include "views/KeyValueView.h"
 
 namespace tsunami {
 namespace gui{
-class KeyValuePair;
-class KeyValueDelegate : public QItemDelegate {
+class TSUNAMI_EXPORT KeyValueDelegate : public QItemDelegate {
 public:
     KeyValueDelegate(const QList<KeyValuePair>& pairs, QObject *parent = 0);
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
@@ -24,7 +24,7 @@ private:
     QList<KeyValuePair> pairs_;
 };
 
-}
-}
+} //gui
+} //tsunami
 
 #endif // KEYVALUEDELEGATE_H

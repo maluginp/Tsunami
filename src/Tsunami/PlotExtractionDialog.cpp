@@ -4,6 +4,8 @@
 #include "spice/Circuit.h"
 #include "spice/NgSpiceSimulator.h"
 #include "spice/SpiceModel.h"
+#include "Log.h"
+
 namespace tsunami{
 
 PlotExtractionDialog::PlotExtractionDialog(int deviceId,
@@ -12,8 +14,9 @@ PlotExtractionDialog::PlotExtractionDialog(int deviceId,
                                            QWidget *parent) :
     QDialog(parent),
     ui(new Ui::PlotExtractionDialog),
+    deviceId_(deviceId),
     library_(library),
-    deviceId_(deviceId)
+    simulator_(NULL)
 {
     ui->setupUi(this);
 
@@ -43,8 +46,8 @@ PlotExtractionDialog::~PlotExtractionDialog()
     delete ui;
 }
 
-db::MeasureModel* PlotExtractionDialog::simulate() {
-    db::MeasureModel* measure = measures_[ui->measureComboBox->currentIndex()];
+db::MeasureModel* PlotExtractionDialog::simulate(db::MeasureModel* measure) {
+    log::logTrace() << "Simulating";
     db::DeviceStorage* storage = db::DeviceStorage::instance();
     db::DeviceModel* device = storage->openDevice( deviceId_ );
 
@@ -65,10 +68,32 @@ db::MeasureModel* PlotExtractionDialog::simulate() {
     return simulate;
 }
 
+bool PlotExtractionDialog::checkInputValues() {
+    QString keyName = ui->axisKeyComboBox->currentText();
+    QString valueName = ui->axisValueComboxBox->currentText();
+    QString constName = ui->constComboBox->currentText();
+
+
+    if(keyName == valueName || keyName == constName || valueName == constName){
+        log::logError() << QString("Incorrect key=%1,value=%2,const=%3")
+                           .arg(keyName).arg(valueName).arg(constName);
+        return false;
+    }
+
+    return true;
+}
+
 void PlotExtractionDialog::clickedBuildButton() {
+    log::logTrace() << "Building plot";
+
+    if(!checkInputValues()){
+        QMessageBox::warning(this,windowTitle(),tr("Incorrect input values"));
+        return;
+    }
+
     int index = ui->measureComboBox->currentIndex();
     db::MeasureModel* measureModel = measures_[index];
-    db::MeasureModel* simulateModel = simulate();
+    db::MeasureModel* simulateModel = simulate(measureModel);
     int rows = measureModel->rows();
 
     QString keyName = ui->axisKeyComboBox->currentText();
@@ -98,6 +123,7 @@ void PlotExtractionDialog::clickedBuildButton() {
 
 
     ui->plotter->build();
+    return;
 }
 
 void PlotExtractionDialog::changedMeasure(int index) {
