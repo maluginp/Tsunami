@@ -13,9 +13,9 @@ public:
 //    void createAnalysis();
 public slots:
     QString test();
-    void saveAnalysis(const QVariantMap& sources);
+    int saveAnalysis(const QVariantMap& sources);
 signals:
-    void openedAnalysis(const QVariantMap& analysis);
+    void openedAnalysis(int analysisId,const QVariantMap& analysis);
     void savedAnalysis( const QList<tsunami::Source>& sources );
 public slots:
 private:

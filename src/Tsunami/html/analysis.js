@@ -1,13 +1,19 @@
 Analysis = function( _names ){
 	'use strict';	
 	var _sources = [];
-
+	var _id = -1;
 	var _modes   = [{key: 'voltage', value:'Напряжение'},
 		 		    {key: 'current', value:'Ток'},
 		 		    {key: 'gnd',     value:'Земля'}];
 	var _methods = [{key: 'const',   value:'Константа'},
 				    {key: 'linear',  value:'Линейный'}]
 
+    this.new = function(){
+    	$.each(_names,function(node,_){
+    		_sources[node] = {'mode':'gnd'};
+    		showNode(node);
+    	});
+    }
 	function hiddenNode(){
 		$('div[node="-"]').each( function(_,obj){
 		 	$(obj).hide();
@@ -133,6 +139,8 @@ Analysis = function( _names ){
 			$('select[name="method"]').each( function(_,obj){
 				if($(obj).val() == numberSource){
 					return conditionError(false,'Eq number source');
+				}else{
+					numberSource = $(obj).val();
 				}
 				if($(obj).val() == undefined){
 					return conditionError(false,'undefined number source');
@@ -175,10 +183,10 @@ Analysis = function( _names ){
 		});
 	}
 
-	this.init = function( sources ){
-		console.log( 'Initialization', sources);
+	this.init = function( id,sources ){
+		console.log( 'Initialization analysis',id );
 		var nodeNames = Object.keys(sources);
-		
+		_id = id;
 		_sources = sources;
 		
 		hiddenNode();
@@ -191,6 +199,7 @@ Analysis = function( _names ){
 
 	this.save = function(){
 		var checkedSave = checkConditions();
+		console.log('Analysis id',_id);
 		console.log('Conditions', checkedSave.result, checkedSave.error);
 		// Api.saveAnalysis(_sources);
 	}

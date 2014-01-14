@@ -106,6 +106,7 @@ void AnalysisWindow::clickedSaveAnalysis(const QList<tsunami::Source> &sources) 
         log::logTrace() << QString("Analysis #%1 has saved ")
                            .arg(currentAnalysis_->id());
         updateAnalysisList();
+        openAnalysis(currentAnalysis_->id());
     }else{
         log::logDebug() << "Analysis has not saved. Sql error: "
                         << storage_->lastError();

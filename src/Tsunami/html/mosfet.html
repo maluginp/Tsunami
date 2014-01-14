@@ -38,7 +38,12 @@
 	<script type="text/javascript" src="analysis.js"> </script>
 	<script type="text/javascript">
 		var analysis = new Analysis({'D':'Drain','S':'Source','B':'Bulk','G':'Gate'});
-		analysis.connect(Api.openedAnalysis);
+		$(document).ready(function(){
+			analysis.new();
+
+			analysis.connect(Api.openedAnalysis);
+		});
+		
 	</script>
 
 </head>

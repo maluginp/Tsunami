@@ -37,7 +37,7 @@ void APIObject::openAnalysis( db::AnalysisModel* analysis ) {
     }
 
 //    if(!sourcesJson.isEmpty()){
-        emit openedAnalysis( sourcesJson );
+    emit openedAnalysis(analysis_->id(), sourcesJson );
 //    }
 
 }
@@ -46,7 +46,7 @@ QString APIObject::test() {
     return "APIObject::test()";
 }
 
-void APIObject::saveAnalysis(const QVariantMap &sourcesJson){
+int APIObject::saveAnalysis(const QVariantMap &sourcesJson){
     log::logTrace() << "Saving analysis";
     db::DeviceStorage* storage = db::DeviceStorage::instance();
     db::DeviceModel* device = storage->openDevice( deviceId_ );
@@ -81,6 +81,6 @@ void APIObject::saveAnalysis(const QVariantMap &sourcesJson){
     }
 
     emit savedAnalysis(sources);
-    return;
+    return -1;
 }
 
