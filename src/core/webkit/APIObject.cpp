@@ -1,12 +1,12 @@
 #include "APIObject.h"
-#include "dbstorage/AnalysisStorage.h"
+#include "dbstorage/DbStorages.h"
 #include "Log.h"
 #include "defines.h"
 
 using namespace tsunami;
 
-APIObject::APIObject(QObject *parent) :
-    QObject(parent), analysis_(0) {
+APIObject::APIObject(int deviceId,QObject *parent) :
+    QObject(parent), analysis_(0),deviceId_(deviceId) {
 
     setObjectName("Api");
 
@@ -48,6 +48,9 @@ QString APIObject::test() {
 
 void APIObject::saveAnalysis(const QVariantMap &sourcesJson){
     log::logTrace() << "Saving analysis";
+    db::DeviceStorage* storage = db::DeviceStorage::instance();
+    db::DeviceModel* device = storage->openDevice( deviceId_ );
+
     QList<Source> sources;
     foreach(QString node, sourcesJson.keys()){
         QVariantMap sourceJson = sourcesJson[node].toMap();

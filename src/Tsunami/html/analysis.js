@@ -1,140 +1,211 @@
-Analysis = function(){
-	// 'use strict';	
-	this._sources = {};
+Analysis = function( _names ){
+	'use strict';	
+	var _sources = [];
 
+	var _modes   = [{key: 'voltage', value:'Напряжение'},
+		 		    {key: 'current', value:'Ток'},
+		 		    {key: 'gnd',     value:'Земля'}];
+	var _methods = [{key: 'const',   value:'Константа'},
+				    {key: 'linear',  value:'Линейный'}]
 
-	this.init = function( sources ){
-		console.log( 'Initialization');
+	function hiddenNode(){
+		$('div[node="-"]').each( function(_,obj){
+		 	$(obj).hide();
+		});
+	}
+	function prepareNode(node){
+		console.log('Prepare node',node);
+		var source = _sources[node];
 
-		nSources = Object.keys(sources).length;
-		console.log( 'Length', nSources );
-
-		App = window.analysis;
-
-
+		var nodeObject = $('div[node="'+node+'"]');
+		$(nodeObject).find('select[name="mode"]').val(_sources[node].mode);
+		$(nodeObject).find('select[name="method"]').val(_sources[node].method );
 		
-		if( nSources == 0){
-			console.log( 'null' );
-			nodes = $( "div[node]" );
-			var i;
-			for(i=0; i < nodes.length; ++i){
-				if( $( nodes[i] ).attr('node') != '-' ){
-					console.log( 'Init', $( nodes[i] ).attr('node'));
-					App._sources[ $( nodes[i] ).attr('node')  ] = { "mode": "gnd", "method":"const", "config" : {} };
-				}
+		changeMode( node, source.mode );			
+	}
+	function configElement( title, key, value ) {
+		if(value == undefined){
+			value = 0.0;
+		}
+		return title+'<br/><input class="cfg" name="'+key+'" value="'+value+'">';
+	}
+	function selectElement( name, array, selected ){
+		var element = '<select name="'+name+'">';
+		$.each(array,function(_,item){
+			element += '<option value="'+item.key+'"';
+			if(item.key == selected){
+				element += ' selected="selected"';
+			}
+			element += '>'+item.value+'</option>';
+		});
+		element += '</select>';
+		return element;
+	}
+
+	function showNode(node){
+		var source = _sources[node];
+		var nodeDiv = $('div[node="'+node+'"]');
+
+		$(nodeDiv).html('');
+		$(nodeDiv).append('<strong>'+_names[node]+'</strong><br/>');
+
+		$(nodeDiv).append('Режим:'+selectElement('mode',   _modes,   source.mode)+'<br/>');
+							
+		if( source.mode != 'gnd' ) {
+			$(nodeDiv).append('Метод:'+selectElement('method', _methods, source.method)+'<br/>');
+			if(source.method == ''){ 
+				source.method = 'const';
 			}
 
-			// console.log('New sources', _sources);
-		}else{
-			App._sources = sources;
+			if( source.method == 'const' ){
+				$(nodeDiv).append(configElement('Константа', 'const', source.config["const"]));
+			} else if( source.method == 'linear' ) {
+				var numbers = 'Номер:';
+
+				numbers += '<select class="cfg" name="number">';
+				numbers += '<option value="1">1</option>';
+				numbers += '<option value="2">2</option>';
+				numbers += '</select><br/>';
+				$(nodeDiv).append(numbers);
+				$(nodeDiv).find('select[name="number"]').val(source.config["number"]);
+
+				$(nodeDiv).append(configElement('Начало', 'start', source.config["start"]) + '<br/>');
+				$(nodeDiv).append(configElement('Шаг',    'step',  source.config["step"])  + '<br/>');
+				$(nodeDiv).append(configElement('Стоп',   'end',   source.config["end"])   + '<br/>');
+			}
 		}
-		$('#device div[node="-"]').each( function(i,obj){
-			$(obj).hide();
+
+		bindHandler(node);
+		// 
+		// <label name="number" method="linear">Номер:
+		// <select class="config">
+		// 	<option value="1">1</option>
+		// 	<option value="2">2</option>
+		// </select>
+		// <br/></label>
+		// <label name="start"  method="linear">Начало: <input class="config"/><br/></label>
+		// <label name="step"   method="linear">Шаг: <input  class="config"/><br/></label>
+		// <label name="end"    method="linear">Конец: <input  class="config"/></label>
+
+
+	}
+
+	this.connect = function( func ){
+		try{
+			func.disconnect(this.init);
+		}catch(err){
+			console.log('disconnect ok');
+		}
+		func.connect( this.init );
+		console.log("Connected function",func);
+	}
+	function numberLinearSource(){
+		var nLinearSource = 0;
+		$('select[name="method"]').each( function(_,obj){
+			if($(obj).val() == 'linear'){
+				nLinearSource++;
+			}
 		});
-		
-		for(node in App._sources){
-			console.log( "Node", node, "Mode",App._sources[node].mode,"Method",App._sources[node].method );
-		 	nodeObject = $('#device div[node="'+node+'"]');
-		 	nodeObject.find('select[name="mode"]').val(App._sources[node].mode);
-		 	nodeObject.find('select[name="method"]').val( App._sources[node].method );
-		 	console.log("pre changeMode");
-		 	App.changeMode( node, App._sources[node].mode );
-
-		}
-
+		return nLinearSource;
+	}
+	function conditionError(result,error){
+		return {
+				'result':result,
+				'error':error
+			   };
+	}
+	function checkConditions(){
 		
 
+		// Count linear method
+		var nLinearSource = numberLinearSource();
 
-	}
-
-	this.changeMode = function( node, mode ){
-		console.log( 'Start changeMode',node,mode);
-
-		App = window.analysis;
-
-		nodeObject = $('#device div[node="'+node+'"]');
-		App._sources[ node ].mode = mode;
-
-		var method;
-		if( mode == "gnd"){
-			method = "";
-			nodeObject.find('select[name="method"]').attr('disabled','disabled');
-		}else{
-			method = nodeObject.find('select[name="method"]').val();
-			nodeObject.find('select[name="method"]').removeAttr('disabled');
+		if(nLinearSource > 2){
+			return conditionError(false,'Many linear sources');
+		}
+		if(nLinearSource == 0){
+			return conditionError(false,'Empty linear sources');
 		}
 
-		// console.log( 'changeMode',node, mode );
+		// Check number source
+		if(nLinearSource == 2){
+			var numberSource = 0;
+			$('select[name="method"]').each( function(_,obj){
+				if($(obj).val() == numberSource){
+					return conditionError(false,'Eq number source');
+				}
+				if($(obj).val() == undefined){
+					return conditionError(false,'undefined number source');
+				}
+			});
+		}
 
-		App.changeMethod(node, method);
-
+		return conditionError(true,' ');
 	}
-	this.onChangeMode = function (node,mode){
-		this.changeMode(node,mode);
+	function bindHandler(node) {
+		var nodeDiv = $('div[node="'+node+'"]');		
+		$(nodeDiv).find('select[name="mode"]').each(function(i, obj){
+			$(obj).on('change', function() {
+				
+				var node = $(obj).parent().attr('node');
+				var mode = $(this).val();
+				_sources[node].mode = mode;
+				showNode(node);
+			});
+		});
+		$(nodeDiv).find('select[name="method"]').each( function(i, obj){
+			$(obj).on('change', function(){
+				var node = $(obj).parent().attr('node');
+				var method = $(this).val();
+
+				// changeMethod( node, method );
+				_sources[node].method = method;
+				showNode(node);
+				
+			})
+		});
+		$(nodeDiv).find('.cfg').each( function(i, obj){
+			$(obj).on('change', function(){
+				var node = $(obj).parent().attr('node');
+				var item = $(this).attr('name');
+				var value = $(this).val();
+				changeConfig( node, item, value );
+				
+			})
+		});
 	}
 
-	this.changeMethod = function( node, method ){
-		console.log( 'Start changeMethod',node,'Method',method );
-		App = window.analysis;
-
-		App._sources[node].method = method;
-		nodeObject = $('#device div[node="'+node+'"]');
-		if(method == ""){
-			nodeObject.find('label').each( function(i, labelObject){
-				$(labelObject).hide();
-			});
-		}else if(method == "const"){
-			nodeObject.find('label[method="const"]').each( function(i, obj){
-				$(obj).show();
-			});
-			nodeObject.find('label[method!="const"]').each( function(i, obj){
-				$(obj).hide();
-			});
-
-			nodeObject.find('label[name="const"] .config').val( App._sources[node].config.const );
-		}else if(method == "linear"){
-			nodeObject.find('label[method="linear"]').each( function(i, obj){
-				$(obj).show();
-			});
-			nodeObject.find('label[method!="linear"]').each( function(i, obj){
-				$(obj).hide();
-			});
+	this.init = function( sources ){
+		console.log( 'Initialization', sources);
+		var nodeNames = Object.keys(sources);
 		
-			nodeObject.find('label[name="start"] .config').val( App._sources[node].config.start );
-			nodeObject.find('label[name="step"] .config').val( App._sources[node].config.step );
-			nodeObject.find('label[name="end"] .config').val( App._sources[node].config.end );
-			nodeObject.find('label[name="number"] .config').val( App._sources[node].config.number );
-		}
-
-		console.log('changeMethod', node, method);
+		_sources = sources;
+		
+		hiddenNode();
+		
+		$.each(nodeNames, function(_,node){
+			showNode(node);
+		});
+		$('input[name="save"]').bind('click', analysis.save);
 	}
 
 	this.save = function(){
-		console.log('Click save');
-		App = window.analysis;
-		Api.saveAnalysis(App._sources);
+		var checkedSave = checkConditions();
+		console.log('Conditions', checkedSave.result, checkedSave.error);
+		// Api.saveAnalysis(_sources);
 	}
 
-	this.onChangeMethod = function(node,method){
-		App = window.analysis;
-		App.changeMethod(node,method);
-	}
-
-	this.onChangeConfig = function( node, item, value ){
-		App = window.analysis;
-		console.log( "onChangeConfig", node, item, value );
-		nodeObject = $('#device div[node="'+node+'"]');
+	function changeConfig( node, item, value ){
+		var source = _sources[node];
 		switch( item ){
-			case 'number' : App._sources[node].config["number"] = value; break;
-			case 'const': App._sources[node].config["const"] = value; break;
-			case 'start': App._sources[node].config["start"] = value; break;
-			case 'step':  App._sources[node].config["step"] = value; break;
-			case 'end':  App._sources[node].config["end"] = value; break;
+			case 'number' : source.config["number"] = value; break;
+			case 'const':   source.config["const"] = value; break;
+			case 'start':   source.config["start"] = value; break;
+			case 'step':    source.config["step"] = value; break;
+			case 'end':     source.config["end"] = value; break;
 			default:
 				return;
 		}
-		
-		// nodeObject.find("label")
 	}
 
 }

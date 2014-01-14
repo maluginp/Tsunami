@@ -18,6 +18,8 @@ WebPage::WebPage(QObject *parent) : QWebPage(parent) {
     settings()->setDefaultTextEncoding( "UTF-8" );
 #ifdef QT_DEBUG
     settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
+    QWebSettings::setMaximumPagesInCache(0);
+    QWebSettings::setObjectCacheCapacities(0, 0, 0);
 #endif
 
 //    mainFrame()->addToJavaScriptWindowObject( api_->objectName(), api_);

@@ -8,7 +8,7 @@ class TSUNAMI_EXPORT APIObject : public QObject
 {
     Q_OBJECT
 public:
-    explicit APIObject(QObject *parent = 0);
+    explicit APIObject(int deviceId, QObject *parent = 0);
     void openAnalysis(tsunami::db::AnalysisModel *analysis );
 //    void createAnalysis();
 public slots:
@@ -20,6 +20,7 @@ signals:
 public slots:
 private:
     tsunami::db::AnalysisModel* analysis_;
+    int deviceId_;
 };
 
 

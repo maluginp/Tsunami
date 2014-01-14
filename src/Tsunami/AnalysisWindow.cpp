@@ -17,7 +17,7 @@ AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
     ui->setupUi(this);
 
 
-    api_ = new APIObject();
+    api_ = new APIObject(deviceId_);
     storage_ = db::AnalysisStorage::instance();
     listAnalysis_ = new gui::ListItemView();
     ui->analysisItemsListView->setModel( listAnalysis_ );
