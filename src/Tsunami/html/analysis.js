@@ -105,6 +105,7 @@ Analysis = function( _names ){
 			$(nodeDiv).append('Метод:'+selectElement('method', _methods, source.method)+'<br/>');
 			if(source.method == '' || source.method == undefined){ 
 				source.method = 'const';
+				source.config["const"] = 0;
 			}
 			// if(source.config)
 
@@ -209,6 +210,7 @@ Analysis = function( _names ){
 	}
 
 	function changeConfig( node, item, value ){
+		console.log('Change config',node,item,value);
 		var source = _sources[node];
 		switch( item ){
 			case 'number' : source.config["number"] = value; break;

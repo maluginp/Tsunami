@@ -3,6 +3,7 @@ namespace tsunami{
 
 ParseMeasureModel::ParseMeasureModel(const QByteArray& data) {
     data_ = data;
+    data_.replace("\r","");
     model_ = new db::MeasureModel();
 
     QString typeModel = readElement("TYPE");
@@ -64,9 +65,10 @@ Source ParseMeasureModel::readSource(const QString &data) {
         source.direction( elementAttrs[0] );
         source.node( elementAttrs[1] );
         source.mode( elementAttrs[2] );
-        if(source.mode() != SOURCE_MODE_GND){
-            source.method( elementAttrs[3] );
+        if(source.mode() != SOURCE_MODE_GND
+           && source.direction() != SOURCE_DIRECTION_OUTPUT){
 
+            source.method( elementAttrs[3] );
             int countElements = elementAttrs.count();
             for(int i=4; i < countElements; ++i){
                 source.addConfiguration( readConfigParam(elementAttrs[i]) );

@@ -61,22 +61,34 @@ int APIObject::saveAnalysis(const QVariantMap &sourcesJson){
 //        source.name( sourceJson.value("name").toString() );
         source.node( node );
         source.configurations( sourceJson.value("config",QVariantMap()).toMap() );
-
         sources << source;
     }
 
-    int nSources = sources.count();
-    for(int i=0; i < nSources; ++i){
-        if(sources[i].mode() != SOURCE_MODE_GND){
-            SourceMode mode;
-            if( sources[i].mode() == SOURCE_MODE_VOLTAGE ){
-                mode = SOURCE_MODE_CURRENT;
-            }else if(sources[i].mode() == SOURCE_MODE_CURRENT){
-                mode = SOURCE_MODE_VOLTAGE;
+    if(device->type() == DEVICE_NMOS || device->type() == DEVICE_PMOS){
+        sources.append(Source("D",SOURCE_MODE_CURRENT,
+                                  SOURCE_DIRECTION_OUTPUT,
+                                  SOURCE_METHOD_UNKNOWN));
+    }else if(device->type() == DEVICE_PFET || device->type() == DEVICE_NFET){
+        sources.append(Source("D",SOURCE_MODE_CURRENT,
+                                  SOURCE_DIRECTION_OUTPUT,
+                                  SOURCE_METHOD_UNKNOWN));
+        sources.append(Source("G",SOURCE_MODE_CURRENT,
+                                  SOURCE_DIRECTION_OUTPUT,
+                                  SOURCE_METHOD_UNKNOWN));
+    }else {
+        int nSources = sources.count();
+        for(int i=0; i < nSources; ++i){
+            if(sources[i].mode() != SOURCE_MODE_GND){
+                SourceMode mode;
+                if( sources[i].mode() == SOURCE_MODE_VOLTAGE ){
+                    mode = SOURCE_MODE_CURRENT;
+                }else if(sources[i].mode() == SOURCE_MODE_CURRENT){
+                    mode = SOURCE_MODE_VOLTAGE;
+                }
+                sources.append( Source(sources[i].node(), mode,
+                                       SOURCE_DIRECTION_OUTPUT,
+                                       SOURCE_METHOD_UNKNOWN));
             }
-            sources.append( Source(sources[i].node(), mode,
-                                            SOURCE_DIRECTION_OUTPUT,
-                                            SOURCE_METHOD_CONST) );
         }
     }
 

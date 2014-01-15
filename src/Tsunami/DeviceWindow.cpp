@@ -77,7 +77,7 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
     statusBar()->showMessage(tr("Tsunami ver %1").arg( TSUNAMI_VERSION ));
 
 //#ifdef QT_DEBUG
-    openDevice(1);
+    openDevice(2);
 //#else
 //    clickedDeviceClose();
 //#endif

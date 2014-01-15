@@ -94,6 +94,10 @@ void PlotExtractionDialog::clickedBuildButton() {
     int index = ui->measureComboBox->currentIndex();
     db::MeasureModel* measureModel = measures_[index];
     db::MeasureModel* simulateModel = simulate(measureModel);
+    if(!simulateModel){
+        log::logError() << "Can not simulate model";
+        return;
+    }
     int rows = measureModel->rows();
 
     QString keyName = ui->axisKeyComboBox->currentText();

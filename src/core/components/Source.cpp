@@ -63,7 +63,7 @@ QString Source::title( const QString& format ) const {
     }else{
         title = format;
         title.replace( "%node", node() ).replace("%NODE", node().toUpper() );
-        if(mode_ == SOURCE_MODE_GND){
+        if(mode_ == SOURCE_MODE_GND || direction_ == SOURCE_DIRECTION_OUTPUT){
             title.replace( "%method", "",Qt::CaseInsensitive);
         }else{
             title.replace( "%method", methodJson()).replace("%METHOD",methodJson().toUpper());
