@@ -9,11 +9,54 @@ Analysis = function( _names ){
 				    {key: 'linear',  value:'Линейный'}]
 
     this.new = function(){
-    	$.each(_names,function(node,_){
-    		_sources[node] = {'mode':'gnd'};
-    		showNode(node);
-    	});
+    	create();
     }
+
+    this.init = function( id,sources ){
+		console.log( 'Initialization analysis',id );
+		if(id == -1){
+			create();
+		}else{
+			_sources = sources;
+		}
+
+		var nodeNames = Object.keys(_sources);
+		_id = id;
+		
+		hiddenNode();
+		
+		$.each(nodeNames, function(_,node){
+			showNode(node);
+		});
+
+		$('input[name="save"]').unbind('click',save);
+		$('input[name="save"]').bind('click',save);
+	}
+
+	function save() {
+		var checkedSave = checkConditions();
+		console.log('Analysis id',_id);
+		console.log('Conditions', checkedSave.result, checkedSave.error);
+		Api.saveAnalysis(_sources);
+	}
+
+	this.connect = function( func ){
+		try{
+			func.disconnect(this.init);
+		}catch(err){
+			console.log('disconnect ok');
+		}
+		func.connect( this.init );
+		console.log("Connected function",func);
+	}
+
+	function create(){
+		$.each(_names,function(node,_){
+    		_sources[node] = {'mode':'gnd','method':'','config':{}};
+    		// showNode(node);
+    	});
+	}
+
 	function hiddenNode(){
 		$('div[node="-"]').each( function(_,obj){
 		 	$(obj).hide();
@@ -30,6 +73,7 @@ Analysis = function( _names ){
 		changeMode( node, source.mode );			
 	}
 	function configElement( title, key, value ) {
+		console.log('Config element',title,key,value);
 		if(value == undefined){
 			value = 0.0;
 		}
@@ -59,9 +103,10 @@ Analysis = function( _names ){
 							
 		if( source.mode != 'gnd' ) {
 			$(nodeDiv).append('Метод:'+selectElement('method', _methods, source.method)+'<br/>');
-			if(source.method == ''){ 
+			if(source.method == '' || source.method == undefined){ 
 				source.method = 'const';
 			}
+			// if(source.config)
 
 			if( source.method == 'const' ){
 				$(nodeDiv).append(configElement('Константа', 'const', source.config["const"]));
@@ -73,8 +118,9 @@ Analysis = function( _names ){
 				numbers += '<option value="2">2</option>';
 				numbers += '</select><br/>';
 				$(nodeDiv).append(numbers);
-				$(nodeDiv).find('select[name="number"]').val(source.config["number"]);
-
+				if(source.config["number"] != undefined){
+					$(nodeDiv).find('select[name="number"]').val(source.config["number"]);
+				}
 				$(nodeDiv).append(configElement('Начало', 'start', source.config["start"]) + '<br/>');
 				$(nodeDiv).append(configElement('Шаг',    'step',  source.config["step"])  + '<br/>');
 				$(nodeDiv).append(configElement('Стоп',   'end',   source.config["end"])   + '<br/>');
@@ -82,29 +128,8 @@ Analysis = function( _names ){
 		}
 
 		bindHandler(node);
-		// 
-		// <label name="number" method="linear">Номер:
-		// <select class="config">
-		// 	<option value="1">1</option>
-		// 	<option value="2">2</option>
-		// </select>
-		// <br/></label>
-		// <label name="start"  method="linear">Начало: <input class="config"/><br/></label>
-		// <label name="step"   method="linear">Шаг: <input  class="config"/><br/></label>
-		// <label name="end"    method="linear">Конец: <input  class="config"/></label>
-
-
 	}
 
-	this.connect = function( func ){
-		try{
-			func.disconnect(this.init);
-		}catch(err){
-			console.log('disconnect ok');
-		}
-		func.connect( this.init );
-		console.log("Connected function",func);
-	}
 	function numberLinearSource(){
 		var nLinearSource = 0;
 		$('select[name="method"]').each( function(_,obj){
@@ -152,7 +177,7 @@ Analysis = function( _names ){
 	}
 	function bindHandler(node) {
 		var nodeDiv = $('div[node="'+node+'"]');		
-		$(nodeDiv).find('select[name="mode"]').each(function(i, obj){
+		$(nodeDiv).find('select[name="mode"]').each(function(i, obj){	
 			$(obj).on('change', function() {
 				
 				var node = $(obj).parent().attr('node');
@@ -181,27 +206,6 @@ Analysis = function( _names ){
 				
 			})
 		});
-	}
-
-	this.init = function( id,sources ){
-		console.log( 'Initialization analysis',id );
-		var nodeNames = Object.keys(sources);
-		_id = id;
-		_sources = sources;
-		
-		hiddenNode();
-		
-		$.each(nodeNames, function(_,node){
-			showNode(node);
-		});
-		$('input[name="save"]').bind('click', analysis.save);
-	}
-
-	this.save = function(){
-		var checkedSave = checkConditions();
-		console.log('Analysis id',_id);
-		console.log('Conditions', checkedSave.result, checkedSave.error);
-		// Api.saveAnalysis(_sources);
 	}
 
 	function changeConfig( node, item, value ){

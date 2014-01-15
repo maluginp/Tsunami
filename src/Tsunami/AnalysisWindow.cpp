@@ -89,12 +89,14 @@ void AnalysisWindow::clickedSaveAnalysis(const QList<tsunami::Source> &sources) 
     if(analysisName.isEmpty()){
         return;
     }
-    if(storage_->exists( deviceId_, analysisName )){
-        // TODO: show message if analysis exists
-        QMessageBox::warning(this,windowTitle(),tr("Analysis is existed"));
-        log::logDebug() << "Analysis existed";
-        return;
-    }
+
+
+//    if(storage_->exists( deviceId_, analysisName )){
+//        // TODO: show message if analysis exists
+//        QMessageBox::warning(this,windowTitle(),tr("Analysis is existed"));
+//        log::logDebug() << "Analysis existed";
+//        return;
+//    }
 
     currentAnalysis_->sources( sources );
 
@@ -102,11 +104,15 @@ void AnalysisWindow::clickedSaveAnalysis(const QList<tsunami::Source> &sources) 
     currentAnalysis_->type( ui->analysisTypeComboBox->itemData( ui->analysisTypeComboBox->currentIndex() ).toString() );
     currentAnalysis_->enable( ui->analysisEnableCheckBox->checkState() == Qt::Checked );
 
+    int analysisId = currentAnalysis_->id();
+
     if(storage_->saveAnalysis( currentAnalysis_ )){
         log::logTrace() << QString("Analysis #%1 has saved ")
                            .arg(currentAnalysis_->id());
         updateAnalysisList();
-        openAnalysis(currentAnalysis_->id());
+        if(analysisId == -1){
+            openAnalysis(currentAnalysis_->id());
+        }
     }else{
         log::logDebug() << "Analysis has not saved. Sql error: "
                         << storage_->lastError();

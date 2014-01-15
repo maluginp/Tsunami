@@ -23,8 +23,8 @@ void APIObject::openAnalysis( db::AnalysisModel* analysis ) {
     analysis_ = analysis;
 
     QList<Source> sources = analysis_->sources();
-
     QVariantMap sourcesJson;
+
     foreach( Source source, sources ){
         if( source.direction() == SOURCE_DIRECTION_INPUT ){
             QVariantMap sourceJson;
