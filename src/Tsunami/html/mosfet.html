@@ -31,102 +31,23 @@
 	float: right;
 	height: 200px;
 	padding:60px 0 0 0;
-
 }
 </style>
 	<script type="text/javascript" src="jquery-1.10.2.js"></script>
 	<script type="text/javascript" src="analysis.js"> </script>
 	<script type="text/javascript">
-		var analysis = new Analysis({'D':'Drain','S':'Source','B':'Bulk','G':'Gate'});
+		var analysis = new Analysis({'D':'Сток','S':'Исток','B':'Подложка','G':'Затвор'});
 		analysis.new();
-		$(document).ready(function(){
-			
-		});
 		analysis.connect(Api.openedAnalysis);
-		
 	</script>
-
 </head>
 <body>
 <div id="device">
-	<div class="node1" node="D">
-		
-	</div>
-	
-	<div class="node2" node="B">
-		<strong>Подложка</strong><br/>
-		Режим: 
-		<select name="mode">
-			<option value="voltage">Напряжение</option>
-			<option value="current">Ток</option>
-			<option value="gnd">Земля</option>
-		</select> <br/>
-		Метод:
-		<select name="method">
-			<option value="const">Константа</option>
-			<option value="linear">Линейный</option>
-		</select><br/>
-		<label name="const"  method="const">Константа: <input class="config"><br/></label>
-		<label name="number" method="linear">Номер:
-		<select class="config">
-			<option value="1">1</option>
-			<option value="2">2</option>
-		</select>
-		<br/></label>
-		<label name="start"  method="linear">Начало: <input class="config"/><br/></label>
-		<label name="step"   method="linear">Шаг: <input  class="config"/><br/></label>
-		<label name="end"    method="linear">Конец: <input  class="config"/></label>
-	</div>
+	<div class="node1" node="D"></div>
+	<div class="node2" node="B"></div>
 	<div style="clear:both;"></div>
-	<div class="node3" node="G">
-		<strong>Затвор</strong><br/>
-		Режим: 
-		<select name="mode">
-			<option value="voltage">Напряжение</option>
-			<option value="current">Ток</option>
-			<option value="gnd">Земля</option>
-		</select> <br/>
-		Метод:
-		<select name="method">
-			<option value="const">Константа</option>
-			<option value="linear">Линейный</option>
-		</select><br/>
-		<label name="const"  method="const">Константа: <input class="config"><br/></label>
-		<label name="number" method="linear">Номер:
-		<select class="config">
-			<option value="1">1</option>
-			<option value="2">2</option>
-		</select>
-		<br/></label>
-		<label name="start"  method="linear">Начало: <input class="config"/><br/></label>
-		<label name="step"   method="linear">Шаг: <input  class="config"/><br/></label>
-		<label name="end"    method="linear">Конец: <input  class="config"/></label>
-	</div>
-	<div class="node4" node="S">
-		<strong>Исток</strong><br/>
-		Режим: 
-		<select name="mode">
-			<option value="voltage">Напряжение</option>
-			<option value="current">Ток</option>
-			<option value="gnd">Земля</option>
-		</select> <br/>
-		Метод:
-		<select name="method">
-			<option value="const">Константа</option>
-			<option value="linear">Линейный</option>
-		</select><br/>
-		<label name="const"  method="const">Константа: <input class="config"><br/></label>
-		<label name="number" method="linear">Номер:
-		<select class="config">
-			<option value="1">1</option>
-			<option value="2">2</option>
-		</select>
-		<br/></label>
-		<label name="start"  method="linear">Начало: <input class="config"/><br/></label>
-		<label name="step"   method="linear">Шаг: <input  class="config"/><br/></label>
-		<label name="end"    method="linear">Конец: <input  class="config"/></label>
-	</div>
-	
+	<div class="node3" node="G"></div>
+	<div class="node4" node="S"></div>
 </div>
 <div style="clear:both;"></div>
 <div style="float:right; padding:20px 30px 0 0">
