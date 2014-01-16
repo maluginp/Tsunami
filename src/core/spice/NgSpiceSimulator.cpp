@@ -222,8 +222,8 @@ QByteArray NgSpiceSimulator::generateNetPrints() {
         Q_ASSERT( device->numberPorts() == 2 );
         Q_ASSERT( source.mode() != SOURCE_MODE_GND );
 
-        int plus = device->terminal(0)->id();
-        int minus = device->terminal(1)->id();
+        int plus  = (!device->terminal(0)->isRef()) ? device->terminal(0)->id() : 0;
+        int minus = (!device->terminal(1)->isRef()) ? device->terminal(1)->id() : 0;
 
         netlist.append( QString(" v(%1,%2)").arg(plus).arg(minus) );
         netlist.append( QString(" i(%1) ").arg(device->name()) );
@@ -235,7 +235,7 @@ QByteArray NgSpiceSimulator::generateNetPrints() {
 
     // Add ground
     int gndId = circuit()->getRefTerminalId();
-    netlist.append( QString(" v(%1)").arg(gndId) ); //.arg(minus) );
+    netlist.append( QString(" v(%1)").arg(0) ); //.arg(minus) );
     columns_ << QString("V%1").arg( circuit()->getTerminal(gndId)->name().toLower() );
 
     netlist.append("\n");

@@ -46,6 +46,10 @@ const QString &GraphNode::name() const {
     return name_;
 }
 
+void GraphNode::name(const QString &name) {
+    name_ = name;
+}
+
 const int &GraphNode::id() const {
     return id_;
 }

@@ -379,6 +379,8 @@ Circuit *Circuit::createCircuitDevice(DeviceType type, const QList<Source> &sour
 
 int Circuit::createBjt(Circuit* circuit, DeviceType type) {
     int bjtId = circuit->addDevice( "BJT", type );
+    circuit->getDevice(bjtId)->name(QString("Q%1").arg(bjtId));
+
     QStringList terms;
     terms << "E" << "B" << "C";
 
@@ -392,6 +394,8 @@ int Circuit::createBjt(Circuit* circuit, DeviceType type) {
 
 int Circuit::createRes(Circuit *circuit, DeviceType type) {
     int resId = circuit->addDevice("RES", type);
+    circuit->getDevice(resId)->name(QString("R%1").arg(resId));
+
 
     QStringList terms;
     terms << "A" << "C";
@@ -420,6 +424,7 @@ int Circuit::createCap(Circuit *circuit, DeviceType type) {
 
 int Circuit::createDiode(Circuit *circuit, DeviceType type) {
     int diodeId = circuit->addDevice("DIODE", type);
+    circuit->getDevice(diodeId)->name(QString("D%1").arg(diodeId));
 
     QStringList terms;
     terms << "A" << "C";
@@ -434,6 +439,7 @@ int Circuit::createDiode(Circuit *circuit, DeviceType type) {
 
 int Circuit::createFet(Circuit *circuit, DeviceType type) {
     int fetId = circuit->addDevice("FET", type);
+    circuit->getDevice(fetId)->name(QString("J%1").arg(fetId));
 
     QStringList terms;
     terms << "S" << "G" << "D" << "B";
@@ -446,16 +452,16 @@ int Circuit::createFet(Circuit *circuit, DeviceType type) {
 }
 
 int Circuit::createMosfet(Circuit *circuit, DeviceType type) {
-    int fetId = circuit->addDevice("MOSFET", type);
-
+    int mosId = circuit->addDevice("MOSFET", type);
+    circuit->getDevice(mosId)->name(QString("M%1").arg(mosId));
     QStringList terms;
     terms << "S" << "G" << "D" << "B";
 
     // Terminals
     foreach(QString term, terms){
-        circuit->connect( fetId, circuit->addTerminal(term) );
+        circuit->connect( mosId, circuit->addTerminal(term) );
     }
-    return fetId;
+    return mosId;
 }
 
 

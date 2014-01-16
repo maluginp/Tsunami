@@ -124,45 +124,15 @@ QByteArray Device::netList() {
 
     QString params = temp.join(" ");
 
-    switch(device_){
-    case DEVICE_CAPACITOR:
-    case DEVICE_RESISTOR:
-    case DEVICE_DIODE:
-    case DEVICE_ISOURCE:
-    case DEVICE_VSOURCE:
-        nets.append( QString("%1 %2 %3 %4").arg(name())
-                     .arg(terminal(0)->id()).arg(terminal(1)->id())
-                     .arg(params).toAscii() );
-        break;
-    case DEVICE_PBJT:
-    case DEVICE_NBJT:
-        nets.append( QString("Q%1 %2 %3 %4 %5").arg(id())
-                     .arg(terminal(0)->id())
-                     .arg(terminal(1)->id())
-                     .arg(terminal(2)->id())
-                     .arg(params).toAscii() );
-        if( model_ != 0 ){
-            nets.append(QString(" %1").arg(model_->name()));
-        }
-        break;
-    case DEVICE_NMOS:
-    case DEVICE_PMOS:
-    case DEVICE_PFET:
-    case DEVICE_NFET:
-        nets.append( QString("%1 %2 %3 %4 %5 %6").arg(name())
-                     .arg(terminal(0)->id())
-                     .arg(terminal(1)->id())
-                     .arg(terminal(2)->id())
-                     .arg(terminal(3)->id())
-                     .arg(params).toAscii() );
-        if( model_ != 0 ){
-            nets.append(QString(" %1").arg(model_->name()));
-        }
-        break;
-    case DEVICE_UNKNOWN:
-    default:
-        Q_ASSERT(false);
+
+    nets.append(name()).append(" ");
+    nets.append(netListConnects());
+    nets.append(params);
+
+    if( model_ != 0 ){
+        nets.append(QString(" %1").arg(model_->name()));
     }
+
 
     return nets;
 }
@@ -178,6 +148,19 @@ QByteArray Device::sourceNetlist() {
                        );
     }
     return netlist;
+}
+
+QByteArray Device::netListConnects() {
+    QByteArray connects;
+    for(int i=0; i < numberPorts(); ++i){
+        if(terminal(i)->isRef()){
+            connects.append("0");
+        }else{
+            connects.append( QByteArray::number(terminal(i)->id()) );
+        }
+        connects.append(" ");
+    }
+    return connects;
 }
 
 

@@ -39,7 +39,9 @@ public:
 
     int numberPorts() { return numberPorts_; }
 
+
 private:
+    QByteArray netListConnects();
     int numberPorts_;
     SpiceModel* model_;
     DeviceType device_;
