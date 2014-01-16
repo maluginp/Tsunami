@@ -275,6 +275,16 @@ QString Circuit::formSourceName(SourceMode mode, QString node) {
     return name;
 }
 
+bool Circuit::hasSource(const QString &node, SourceDirection direction) {
+    foreach(Source source,sources_){
+        if(source.node().compare(node,Qt::CaseInsensitive) == 0
+           && source.direction() == direction) {
+            return true;
+        }
+    }
+    return false;
+}
+
 
 bool Circuit::correct() {
     return true;

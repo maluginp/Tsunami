@@ -64,7 +64,7 @@ public:
 //    static Circuit* createCircuitTran(DeviceType type);
 
     static QString formSourceName( SourceMode mode, QString node );
-
+    bool hasSource(const QString& node, SourceDirection direction);
     QList<Source> sources() { return sources_; }
 protected:
     QList<Source> sources_;

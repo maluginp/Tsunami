@@ -205,12 +205,6 @@ QByteArray NgSpiceSimulator::generateNetPrints() {
         Q_ASSERT(false);
     }
 
-//    int gndId;
-//    int nPorts = device->numberPorts();
-//    for(int i=0; i < nPorts; ++i){
-//        device->terminal(i)->isRef();
-//    }
-
     QList<Source> sources = circuit()->sources();
 
     // Looking for all input source
@@ -226,17 +220,15 @@ QByteArray NgSpiceSimulator::generateNetPrints() {
         int minus = (!device->terminal(1)->isRef()) ? device->terminal(1)->id() : 0;
 
         netlist.append( QString(" v(%1,%2)").arg(plus).arg(minus) );
-        netlist.append( QString(" i(%1) ").arg(device->name()) );
-        columns_ << QString("V%1").arg( source.node().toLower() );
-        columns_ << QString("I%1").arg( source.node().toLower() );
+        columns_ << source.title("V%node");
+
+        if(circuit()->hasSource( source.node(), SOURCE_DIRECTION_OUTPUT)) {
+            netlist.append( QString(" i(%1) ").arg(device->name()) );
+            columns_ << source.title("I%node");
+        }
 
         device = circuit()->nextDevice();
     }
-
-    // Add ground
-    int gndId = circuit()->getRefTerminalId();
-    netlist.append( QString(" v(%1)").arg(0) ); //.arg(minus) );
-    columns_ << QString("V%1").arg( circuit()->getTerminal(gndId)->name().toLower() );
 
     netlist.append("\n");
     return netlist;
