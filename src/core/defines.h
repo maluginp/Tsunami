@@ -57,8 +57,11 @@ typedef core::Vector<int>    VectorInt;
 
 
 
+#include <limits>
 
-
+#define TSUNAMI_DOUBLE_MAX std::numeric_limits<double>::max()
+#define TSUNAMI_DOUBLE_MIN std::numeric_limits<double>::min()
+#define TSUNAMI_DOUBLE_INF std::numeric_limits<double>::infinity()
 
 }
 

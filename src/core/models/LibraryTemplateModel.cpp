@@ -187,9 +187,7 @@ QList<LibraryTemplateModel *> LibraryTemplateModel::parseDirectory() {
 }
 
 QVariant LibraryTemplateModel::checkInfinity(double value) {
-    double infinity = std::numeric_limits<double>::infinity();
-
-    if(value == infinity){
+    if(value == TSUNAMI_DOUBLE_INF){
         return QVariant("inf");
     }
     return value;

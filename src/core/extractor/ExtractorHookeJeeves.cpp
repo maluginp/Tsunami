@@ -31,13 +31,13 @@ void ExtractorHookeJeeves::process() {
 
     emit log( "Extraction started" );
 
-    emit log( QString("Initial function error:%1").arg(currentFunctionError(),0,'g',20) );
+    emit log( tr("Initial function error:%1").arg(currentFunctionError(),0,'g',20) );
 
     tempFunctionError_ = DBL_MAX;
 
     while(checkConvergence()){
         increaseIteration();
-        emit log(QString("Iteration #%1").arg(iteration_));
+        emit log(tr("Iteration #%1").arg(iteration_));
 
         if( currentFunctionError() > tempFunctionError_ ){
             currentFunctionError( tempFunctionError_ );

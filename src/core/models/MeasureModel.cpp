@@ -297,9 +297,9 @@ QMap<QString, double> MeasureModel::find(const QMap<QString, double> &data) {
         }
 
         if(source.mode() == SOURCE_MODE_VOLTAGE){
-            name = QString( "V%1" ).arg(source.node().toLower());
+            name = source.title("V%NODE");
         }else if(source.mode() == SOURCE_MODE_CURRENT){
-            name = QString("I%1").arg(source.node().toLower());
+            name = source.title("I%NODE");
         }
 
         if(!name.isEmpty()){
@@ -312,12 +312,10 @@ QMap<QString, double> MeasureModel::find(const QMap<QString, double> &data) {
     for( int i=0; i < rows_; ++i ){
         found = true;
         foreach(QString column, columnSearch){
-            if( data.contains(column) ){
-                if(fabs(data[column] - at(i,column)) > 1e-15) {
-                    found = false;
-                }
+            if(data.contains(column) && fabs(data[column]-at(i,column)) > 1e-15) {
+                found = false;
             }else{
-                qDebug() << "Not found by column" << column;
+//                log::log << "Not found by column" << column;
                 found = false;
             }
         }
@@ -336,6 +334,9 @@ QMap<QString, double> MeasureModel::find(const QMap<QString, double> &data) {
 
 const double &MeasureModel::at(int row,const QString &name ) const {
     int col = columns_.indexOf(name);
+    if(col == -1){
+        return TSUNAMI_DOUBLE_MAX;
+    }
     return data_->at(row,col);
 }
 
