@@ -62,14 +62,14 @@ QString Source::title( const QString& format ) const {
         title = QString("%1 (%2)").arg(title).arg(configs.join(";"));
     }else{
         title = format;
-        title.replace( "%node", node() ).replace("%NODE", node().toUpper() );
+        title.replace( "%node", node().toLower() ).replace("%NODE", node().toUpper() );
         if(mode_ == SOURCE_MODE_GND || direction_ == SOURCE_DIRECTION_OUTPUT){
             title.replace( "%method", "",Qt::CaseInsensitive);
         }else{
-            title.replace( "%method", methodJson()).replace("%METHOD",methodJson().toUpper());
+            title.replace( "%method", methodJson().toLower()).replace("%METHOD",methodJson().toUpper());
         }
-        title.replace( "%mode", modeJson() ).replace("%MODE", modeJson().toUpper());
-        title.replace( "%dir", directionJson()).replace("%DIR",directionJson().toUpper());
+        title.replace( "%mode", modeJson().toLower() ).replace("%MODE", modeJson().toUpper());
+        title.replace( "%dir", directionJson().toLower()).replace("%DIR",directionJson().toUpper());
 
         if(title.contains("%config",Qt::CaseInsensitive)){
             if(!configuration_.isEmpty()){
@@ -79,16 +79,16 @@ QString Source::title( const QString& format ) const {
                                     .arg(configuration_.value(key).toString()) );
                 }
 
-                title.replace("%config", configs.join(" ") );
+                title.replace("%config", configs.join(" ").toLower() );
                 title.replace("%CONFIG", configs.join(" ").toUpper());
             }else{
                 title.replace("%config","",Qt::CaseInsensitive);
             }
         }
 
-        log::logDebug() << QString("Formating title source:\n"
-                                   "Input: %1\nOutput: %2")
-                           .arg(format).arg(title);
+//        log::logDebug() << QString("Formating title source:\n"
+//                                   "Input: %1\nOutput: %2")
+//                           .arg(format).arg(title);
     }
     return title;
 }

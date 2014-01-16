@@ -23,14 +23,20 @@ PlotItem *TsunamiPlot::plot(const QString &name) {
         }
     }
 
-    return 0;
+    return addPlot(name);
+}
+
+void TsunamiPlot::clearPlots() {
+    clearGraphs();
+    qDeleteAll(plots_);
+    plots_.clear();
 }
 
 void TsunamiPlot::build() {
-    int nGraphs = graphCount();
-    for(int i=0; i < nGraphs; ++i){
-        removeGraph(i);
-    }
+//    int nGraphs = graphCount();
+//    for(int i=0; i < nGraphs; ++i){
+//        removeGraph(i);
+//    }
 
 
     foreach(PlotItem* plot, plots_ ){

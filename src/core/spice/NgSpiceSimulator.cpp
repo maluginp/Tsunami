@@ -220,11 +220,11 @@ QByteArray NgSpiceSimulator::generateNetPrints() {
         int minus = (!device->terminal(1)->isRef()) ? device->terminal(1)->id() : 0;
 
         netlist.append( QString(" v(%1,%2)").arg(plus).arg(minus) );
-        columns_ << source.title("V%NODE");
+        columns_ << source.title("V%node");
 
         if(circuit()->hasSource( source.node(), SOURCE_DIRECTION_OUTPUT)) {
             netlist.append( QString(" i(%1) ").arg(device->name()) );
-            columns_ << source.title("I%NODE");
+            columns_ << source.title("I%node");
         }
 
         device = circuit()->nextDevice();

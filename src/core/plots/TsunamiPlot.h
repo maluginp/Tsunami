@@ -12,7 +12,7 @@ public:
     PlotItem* addPlot(const QString &name );
     PlotItem* plot( const QString& name );
 
-
+    void clearPlots();
 public slots:
     void build();
 private:

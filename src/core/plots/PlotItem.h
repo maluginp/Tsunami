@@ -19,6 +19,7 @@ public:
     };
 
     PlotItem( TsunamiPlot* plotter, const QString& name, PlotType type = PLOT_ALL );
+    ~PlotItem();
     void type( PlotType type ) { type_ = type; }
     void setKeys(const QVector<double>& keys);
     int numberKeys();

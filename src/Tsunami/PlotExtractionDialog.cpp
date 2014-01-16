@@ -104,8 +104,8 @@ void PlotExtractionDialog::clickedBuildButton() {
     QString valueName = ui->axisValueComboxBox->currentText();
     QString constName = ui->constComboBox->currentText();
 
-    QVector<double> constants;
-
+//    QVector<double> constants;
+    ui->plotter->clearPlots();
     for(int i=0; i < rows; ++i){
         QMap<QString, double> measured  = measureModel->get(i);
         QMap<QString, double> simulated = simulateModel->find(measured);
@@ -114,12 +114,13 @@ void PlotExtractionDialog::clickedBuildButton() {
         }
 
         PlotItem* plot;
-        if(constants.contains( measured[constName] )){
+//        if(constants.contains( measured[constName] )){
             plot = ui->plotter->plot( QString::number( measured[constName]) );
-        }else{
-            constants.append( measured[constName] );
-            plot = ui->plotter->addPlot( QString::number( measured[constName]) );
-        }
+//        }else{
+//        if()
+//            constants.append( measured[constName] );
+//            plot = ui->plotter->addPlot( QString::number( measured[constName]) );
+//        }
 
         plot->addRow( measured[keyName], simulated[valueName], measured[valueName] );
 

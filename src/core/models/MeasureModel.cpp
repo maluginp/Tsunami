@@ -297,9 +297,9 @@ QMap<QString, double> MeasureModel::find(const QMap<QString, double> &data) {
         }
 
         if(source.mode() == SOURCE_MODE_VOLTAGE){
-            name = source.title("V%NODE");
+            name = source.title("V%node");
         }else if(source.mode() == SOURCE_MODE_CURRENT){
-            name = source.title("I%NODE");
+            name = source.title("I%node");
         }
 
         if(!name.isEmpty()){
@@ -310,13 +310,10 @@ QMap<QString, double> MeasureModel::find(const QMap<QString, double> &data) {
 
     bool found = false;
     for( int i=0; i < rows_; ++i ){
-        found = true;
+        found = false;
         foreach(QString column, columnSearch){
-            if(data.contains(column) && fabs(data[column]-at(i,column)) > 1e-15) {
-                found = false;
-            }else{
-//                log::log << "Not found by column" << column;
-                found = false;
+            if(data.contains(column) && fabs(data[column]-at(i,column)) < 1e-15) {
+                found = true;
             }
         }
 

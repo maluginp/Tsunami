@@ -8,6 +8,10 @@ PlotItem::PlotItem(TsunamiPlot *plotter, const QString &name, PlotItem::PlotType
     axes_.insert(AXIS_Y, "");
 }
 
+PlotItem::~PlotItem() {
+    plotter_= 0;
+}
+
 void PlotItem::setKeys(const QVector<double> &keys) {
     keys_ = keys;
 
@@ -20,7 +24,6 @@ void PlotItem::setKeys(const QVector<double> &keys) {
         measured_[i] = DBL_MAX;
         simulated_[i] = DBL_MAX;
     }
-
 }
 
 int PlotItem::numberKeys() {
