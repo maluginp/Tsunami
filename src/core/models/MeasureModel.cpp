@@ -9,15 +9,13 @@ namespace db{
 MeasureModel::MeasureModel() :
     measureId_(-1),
     deviceId_(-1),
+    type_(ANALYSIS_UNKNOWN),
+    data_(NULL),
     createdAt_(QDateTime::currentDateTime()),
     changedAt_(QDateTime::currentDateTime()),
-    data_(NULL),
-    type_(ANALYSIS_UNKNOWN),
     enable_(true),
-    userId_(-1)
-    {
+    userId_(-1) { }
 
-}
 // @fixme Copy @var data pointer and @var rows
 MeasureModel::MeasureModel(const MeasureModel& other) :
     measureId_(other.measureId_),

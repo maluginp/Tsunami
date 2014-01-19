@@ -54,10 +54,10 @@ public:
 
     bool operator==(const Source& other);
 
-    Source( const QString& _node, SourceMode _mode,
-            SourceDirection _direction = SOURCE_DIRECTION_INPUT,
-            SourceMethod _method = SOURCE_METHOD_UNKNOWN,
-            const QVariantMap& _configuration = QVariantMap());
+    Source(const QString& node, SourceMode mode,
+            SourceDirection direction = SOURCE_DIRECTION_INPUT,
+            SourceMethod method = SOURCE_METHOD_UNKNOWN,
+            const QVariantMap& configuration = QVariantMap());
 
 
     Source(const Source& other);

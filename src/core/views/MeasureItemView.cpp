@@ -86,7 +86,7 @@ Qt::ItemFlags MeasureItemView::flags(const QModelIndex &index) const {
 bool MeasureItemView::setData(const QModelIndex &index, const QVariant &value, int role) {
     bool ok;
     if(role == Qt::EditRole){
-        measure_->at(index.row(),index.column())  = value.toDouble();
+        measure_->at(index.row(),index.column())  = value.toDouble(&ok);
         return true;
     }
 
