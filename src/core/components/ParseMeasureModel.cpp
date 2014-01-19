@@ -16,19 +16,44 @@ ParseMeasureModel::ParseMeasureModel(const QByteArray& data) {
 
 
     QString dataSources = readSection("SOURCES");
-    QList<QString> sources = dataSources.split('\n',QString::SkipEmptyParts);
-    foreach(QString source,sources){
+    QList<QString> parseSources = dataSources.split('\n',QString::SkipEmptyParts);
+    foreach(QString source,parseSources){
         model_->addSource( readSource(source) );
     }
 
     QString dataMeasure = readSection("MEASURE");
     QList<QString> measures = dataMeasure.split('\n',QString::SkipEmptyParts);
     QStringList columns = readColumns(measures[0]);
-    model_->columns( columns  );
+
+
+    foreach(Source source, model_->sources()){
+        if(source.direction() == SOURCE_DIRECTION_INPUT){
+            if(source.method() == SOURCE_METHOD_CONST
+                    || source.mode() == SOURCE_MODE_GND){
+                columns.append(  source.name() );
+            }
+        }
+    }
+
+    model_->columns( columns );
+
     measures.pop_front();
     QVector< QVector<double> > items;
     foreach(QString measure, measures){
-        items.append( readDataRow(measure) );
+        QVector<double> dataRow = readDataRow(measure);
+        // Добавить из источников
+        foreach(Source source, model_->sources()){
+            if(source.direction() == SOURCE_DIRECTION_INPUT){
+                if(source.method() == SOURCE_METHOD_CONST
+                   && source.mode() != SOURCE_MODE_GND){
+                    dataRow.append( source.configuration("const").toDouble() );
+                }else if(source.mode() == SOURCE_MODE_GND){
+                    dataRow.append(.0);
+                }
+            }
+        }
+
+        items.append( dataRow );
     }
 
     model_->data( items );

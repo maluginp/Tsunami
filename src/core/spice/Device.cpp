@@ -6,10 +6,11 @@ namespace tsunami{
 namespace spice{
 
 Device::Device(const QString &name, DeviceType device)
-    : GraphNode(name)
-    , device_(device)
-    , model_(NULL)
-    , flags_(0x0) {
+    : GraphNode(name),
+      numberPorts_(0),
+      model_(NULL),
+      device_(device),
+      flags_(0x0) {
 
     switch(device_){
     case DEVICE_CAPACITOR:

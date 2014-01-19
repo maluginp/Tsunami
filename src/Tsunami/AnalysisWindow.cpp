@@ -44,20 +44,27 @@ AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
     case DEVICE_PMOS:
     case DEVICE_NMOS:
         url.append("mosfet.html"); break;
+    case DEVICE_CAPACITOR:
+    case DEVICE_RESISTOR:
+    case DEVICE_DIODE:
+        Q_ASSERT(false); break;
+    case DEVICE_VSOURCE:
+    case DEVICE_ISOURCE:
+        Q_ASSERT(false); break;
     }
-
-
 
     ui->webView->load( QUrl(url) );
     ui->webView->setFocus();
 
     updateAnalysisList();
-    connect(ui->addButton,SIGNAL(clicked()),this,SLOT(clickedCreateAnalysis()));
-    connect(ui->openButton,SIGNAL(clicked()),this,SLOT(clickedOpenAnalysis()));
-    connect(ui->webView,SIGNAL(loadFinished(bool)),this,SLOT(loadFinished(bool)));
-    connect(ui->analysisItemsListView,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(selectedAnalysisItem(QModelIndex)));
-    //    ui->analysisWebView->setUrl();
-//    ui->analysisWebView->setPage(  );
+    connect(ui->addButton,SIGNAL(clicked()),
+                     this,SLOT(clickedCreateAnalysis()));
+    connect(ui->openButton,SIGNAL(clicked()),
+                      this,SLOT(clickedOpenAnalysis()));
+    connect(ui->webView,SIGNAL(loadFinished(bool)),
+                   this,SLOT(loadFinished(bool)));
+    connect(ui->analysisItemsListView,SIGNAL(doubleClicked(QModelIndex)),
+                                 this,SLOT(selectedAnalysisItem(QModelIndex)));
 
 }
 

@@ -3,12 +3,19 @@
 #include <QStringList>
 #include "Log.h"
 namespace tsunami{
-Source::Source(const QString &_node, SourceMode _mode, SourceDirection _direction, SourceMethod _method, const QVariantMap &_configuration) {
-    node_ = _node;
-    mode_ = _mode;
-    method_ = _method;
-    configuration_ = _configuration;
-    direction_ = _direction;
+Source::Source(const QString &node, SourceMode mode, SourceDirection direction,
+               SourceMethod method, const QVariantMap &configuration) :
+    mode_(SOURCE_MODE_GND),
+    method_(SOURCE_METHOD_UNKNOWN),
+    direction_(SOURCE_DIRECTION_INPUT)
+{
+    direction_ = direction;
+    node_ = node;
+    mode_   = mode;
+    if( direction_ == SOURCE_DIRECTION_INPUT ){
+        method_ = method;
+        configuration_ = configuration;
+    }
 }
 Source::Source(const Source &other) {
     node_ = other.node_;
