@@ -234,9 +234,9 @@ QByteArray NgSpiceSimulator::generateNetPrints() {
     }
 
     // Add ground
-    int gndId = circuit()->getRefTerminalId();
-    netlist.append( QString(" v(%1)").arg(0) ); //.arg(minus) );
-    columns_ << QString("V%1").arg( circuit()->getTerminal(gndId)->name().toLower() );
+//    int gndId = circuit()->getRefTerminalId();
+//    netlist.append( QString(" v(%1)").arg(0) ); //.arg(minus) );
+//    columns_ << QString("V%1").arg( circuit()->getTerminal(gndId)->name().toLower() );
 
     netlist.append("\n");
     return netlist;
