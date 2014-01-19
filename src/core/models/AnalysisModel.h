@@ -38,7 +38,7 @@ public:
 
     QString sourcesJson() const;
     bool sourceExists( const QString& node, SourceDirection direction  );
-
+    Source source(int i) const;
 
 private:
 

@@ -51,6 +51,12 @@ QByteArray SpiceModel::generateNetList() {
     case DEVICE_PMOS:
         netlist.append(" PMOS");
         break;
+    case DEVICE_NFET:
+        netlist.append(" NJF");
+        break;
+    case DEVICE_PFET:
+        netlist.append(" PJF" );
+        break;
     case DEVICE_UNKNOWN:
     default:
         Q_ASSERT(false);

@@ -44,7 +44,7 @@ public:
     void mode(SourceMode mode) { mode_ = mode; }
     void mode(const QString& _mode);
     void method(SourceMethod method) { method_ = method; }
-    void method(const QString& _method);
+    void method(const QString& method);
     void configurations(const QVariantMap& configurations) { configuration_ = configurations; }
     void direction(SourceDirection direction) { direction_ = direction; }
     void direction(const QString& _direction);
@@ -59,6 +59,7 @@ public:
             SourceMethod method = SOURCE_METHOD_UNKNOWN,
             const QVariantMap& configuration = QVariantMap());
 
+    QVariantMap json() const;
 
     Source(const Source& other);
     Source& operator=(const Source& other);

@@ -17,8 +17,10 @@ ParseMeasureModel::ParseMeasureModel(const QByteArray& data) {
 
     QString dataSources = readSection("SOURCES");
     QList<QString> parseSources = dataSources.split('\n',QString::SkipEmptyParts);
-    foreach(QString source,parseSources){
-        model_->addSource( readSource(source) );
+    foreach(QString parseSource,parseSources){
+        Source source =  readSource(parseSource);
+        qDebug() <<"Parse " << source.configurations();
+        model_->addSource( source );
     }
 
     QString dataMeasure = readSection("MEASURE");

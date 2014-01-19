@@ -17,6 +17,30 @@ Source::Source(const QString &node, SourceMode mode, SourceDirection direction,
         configuration_ = configuration;
     }
 }
+
+QVariantMap Source::json() const{
+    QVariantMap sourceJson;
+    sourceJson.insert("node",      node_ );
+    sourceJson.insert("mode",      modeJson());
+    sourceJson.insert("direction", directionJson());
+    QVariantMap config;
+    if(mode_ != SOURCE_MODE_GND && direction_ == SOURCE_DIRECTION_INPUT){
+        sourceJson.insert( "method", methodJson());
+
+        if( method_ == SOURCE_METHOD_CONST ){
+            config.insert("const", configuration_.value("const") );
+        }else if(method_ == SOURCE_METHOD_LINEAR) {
+            config.insert("number", configuration_.value("number"));
+            config.insert("start",configuration_.value("start"));
+            config.insert("end",configuration_.value("end"));
+            config.insert("step",configuration_.value("step"));
+        }
+    }
+
+    sourceJson.insert( "configuration", config );
+
+    return sourceJson;
+}
 Source::Source(const Source &other) {
     node_ = other.node_;
     mode_ = other.mode_;
@@ -115,6 +139,7 @@ QString Source::directionJson() const {
         return "output";
     }
     Q_ASSERT(false);
+    return QString();
 }
 
 void Source::direction(const QString &_direction) {
@@ -127,12 +152,12 @@ void Source::direction(const QString &_direction) {
     }
 }
 
-void Source::method(const QString &_method) {
-    if(_method.compare("linear", Qt::CaseInsensitive) == 0){
+void Source::method(const QString &method) {
+    if(method.compare("linear", Qt::CaseInsensitive) == 0){
         method_ = SOURCE_METHOD_LINEAR;
-    }else if(_method.compare("list", Qt::CaseInsensitive) == 0){
+    }else if(method.compare("list", Qt::CaseInsensitive) == 0){
         method_ = SOURCE_METHOD_LIST;
-    }else if(_method.compare("const", Qt::CaseInsensitive) == 0){
+    }else if(method.compare("const", Qt::CaseInsensitive) == 0){
         method_ = SOURCE_METHOD_CONST;
     }else{
         method_ = SOURCE_METHOD_UNKNOWN;
@@ -188,32 +213,106 @@ QString Source::modeJson() const{
         return "gnd";
     }
     Q_ASSERT(false);
+    return QString();
 }
 
 bool Source::operator==(const Source& other){
+    // Общие свойства источника
     bool res =  (node_ == other.node_)
                 && (mode_ == other.mode_)
                 && (direction_ == other.direction_);
 
-    if(!res) { return false; }
-
-    if(mode_ != SOURCE_MODE_GND){
-        res = (method_ == other.method_);
+//    if (!res)  {
+//        return false;
+//    }
+    bool ok;
+    if (mode_ == SOURCE_MODE_GND || direction_ == SOURCE_DIRECTION_OUTPUT) {
+        return res;
     }
 
+    res &= (method_ == other.method_);
 
-    if(res){
-        foreach(QString param,configuration_.keys()){
+    if(!res) {
+        return false;
+    }
+
+    if( method_ == SOURCE_METHOD_CONST ){
+
+        res = (configuration_.count() == other.configuration_.count() )
+              && (configuration_.count() == 1)
+              && (configuration_.contains("const"))
+              && (other.configuration_.contains("const"));
+        if(!res){
+            return false;
+        }
+
+        double const1 = configuration_.value("const").toDouble(&ok);
+        if(!ok){
+            return false;
+        }
+        double const2 = other.configuration_.value("const").toDouble(&ok);
+        if(!ok){
+            return false;
+        }
+        if(const1 != const2){
+            return false;
+        }
+
+    }else{
+
+        if( (configuration_.count() != other.configuration_.count())
+              || (configuration_.count() != 4)){
+            return false;
+        }
+
+        QStringList params;
+        params << "number" << "start" << "end" << "step";
+        foreach(QString param, params){
             if( !other.configuration_.contains(param)
-                || (other.configuration_.value(param)
-                    != configuration_.value(param) )){
-                res = false;
-                break;
+                || !configuration_.contains(param) ){
+                return false;
             }
+        }
+
+        int numberSource1, numberSource2;
+        numberSource1 = configuration_.value("number",0).toInt(&ok);
+        if(!ok){
+            return false;
+        }
+        numberSource2 = other.configuration_.value("number",0).toInt(&ok);
+        if(!ok){
+            return false;
+        }
+
+        if( numberSource1 != numberSource1
+              || numberSource1 == 0
+              || numberSource2 == 0 ) {
+            return false;
+        }
+
+        params.removeAt( params.indexOf("number") );
+
+        foreach(QString param, params){
+
+            double param1 = configuration_.value(param).toDouble(&ok);
+            if(!ok){
+                return false;
+            }
+
+            double param2 = other.configuration_.value(param).toDouble(&ok);
+            if(!ok){
+                return false;
+            }
+
+            if( param1 != param2 ){
+                return false;
+            }
+
+
         }
     }
 
-    return res;
+    return true;
 }
 
 bool Source::compare( const QList<Source>& sources1,const QList<Source>& sources2 ) {
@@ -230,7 +329,9 @@ bool Source::compare( const QList<Source>& sources1,const QList<Source>& sources
                 break;
             }
         }
-        if(!found){ return false;}
+        if(!found){
+            return false;
+        }
     }
     return true;
 }

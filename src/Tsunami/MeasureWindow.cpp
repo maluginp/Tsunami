@@ -54,7 +54,7 @@ void MeasureWindow::createMeasure(int analysisId) {
     db::AnalysisStorage* storage = db::AnalysisStorage::instance();
     db::AnalysisModel* analysis = storage->openAnalysis( analysisId );
     if(!analysis) { return; }
-
+    qDebug() << analysis->source(0).configurations();
     db::MeasureModel* measure = new db::MeasureModel();
     measure->sources( analysis->sources() );
     measure->type( analysis->type() );

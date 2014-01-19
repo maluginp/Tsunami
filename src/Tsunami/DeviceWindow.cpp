@@ -75,11 +75,10 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
     connect( ui->analysisTreeView,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(selectedAnalysis(QModelIndex)));
 
     statusBar()->showMessage(tr("Tsunami ver %1").arg( TSUNAMI_VERSION ));
+    clickedDeviceClose();
 
 //#ifdef QT_DEBUG
-    openDevice(2);
-//#else
-//    clickedDeviceClose();
+//    openDevice(2);
 //#endif
 }
 
