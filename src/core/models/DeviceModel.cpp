@@ -73,6 +73,9 @@ QString DeviceModel::typeJson() const {
     case DEVICE_ISOURCE   : return QString("isource");
     case DEVICE_VSOURCE   : return QString("vsource");
     case DEVICE_CAPACITOR : return QString("cap");
+    case DEVICE_UNKNOWN:
+    default:
+        break;
     }
 
     Q_ASSERT(false);
@@ -96,8 +99,11 @@ QStringList DeviceModel::nodes() {
     case DEVICE_ISOURCE:
     case DEVICE_VSOURCE:
         return QStringList() << "M" << "P";
+    case DEVICE_UNKNOWN:
+    default:
+        break;
     }
-
+    Q_ASSERT(false);
     return QStringList();
 }
 
@@ -154,6 +160,9 @@ QString DeviceModel::typeToName(DeviceType type) {
     case DEVICE_ISOURCE   : return QString("isource");
     case DEVICE_VSOURCE   : return QString("vsource");
     case DEVICE_CAPACITOR : return QString("cap");
+    case DEVICE_UNKNOWN:
+    default:
+        break;
     }
 
     return QString();

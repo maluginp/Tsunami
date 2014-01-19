@@ -168,9 +168,12 @@ QVector<QVector<double> > MeasureModel::data() {
 
 QString MeasureModel::typeJson() const {
     switch(type_){
-    case ANALYSIS_AC: return QString("ac");
-    case ANALYSIS_DC: return QString("dc");
-    case ANALYSIS_TRAN: return QString("tran");
+    case ANALYSIS_AC   : return QString("ac");
+    case ANALYSIS_DC   : return QString("dc");
+    case ANALYSIS_TRAN : return QString("tran");
+    case ANALYSIS_UNKNOWN:
+    default:
+        break;
     }
     Q_ASSERT(false);
     return QString();
