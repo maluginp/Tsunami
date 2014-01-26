@@ -102,7 +102,7 @@ public:
     const bool& enable() const { return enable_; }
 
     bool hasAttr( const QString& key, const QVariant& value = QVariant() );
-    QMap<QString, double> get(int row) const;
+    QMap<QString, double> get(int row, const QStringList& onlyColumns = QStringList()) const;
 
     int countSource( );
 

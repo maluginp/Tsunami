@@ -9,15 +9,13 @@ namespace db{
 MeasureModel::MeasureModel() :
     measureId_(-1),
     deviceId_(-1),
+    type_(ANALYSIS_UNKNOWN),
+    data_(NULL),
     createdAt_(QDateTime::currentDateTime()),
     changedAt_(QDateTime::currentDateTime()),
-    data_(NULL),
-    type_(ANALYSIS_UNKNOWN),
     enable_(true),
-    userId_(-1)
-    {
+    userId_(-1) { }
 
-}
 // @fixme Copy @var data pointer and @var rows
 MeasureModel::MeasureModel(const MeasureModel& other) :
     measureId_(other.measureId_),
@@ -170,9 +168,12 @@ QVector<QVector<double> > MeasureModel::data() {
 
 QString MeasureModel::typeJson() const {
     switch(type_){
-    case ANALYSIS_AC: return QString("ac");
-    case ANALYSIS_DC: return QString("dc");
-    case ANALYSIS_TRAN: return QString("tran");
+    case ANALYSIS_AC   : return QString("ac");
+    case ANALYSIS_DC   : return QString("dc");
+    case ANALYSIS_TRAN : return QString("tran");
+    case ANALYSIS_UNKNOWN:
+    default:
+        break;
     }
     Q_ASSERT(false);
     return QString();
@@ -273,13 +274,22 @@ bool MeasureModel::hasAttr(const QString &key, const QVariant &value) {
     return false;
 }
 
-QMap<QString, double> MeasureModel::get(int row) const {
+QMap<QString, double> MeasureModel::get(int row, const QStringList &onlyColumns) const {
     QMap<QString, double> data;
-    foreach(QString column,columns_){
+
+    QStringList columns;
+    if(onlyColumns.empty()){
+        columns = columns_;
+    }else{
+        columns = onlyColumns;
+    }
+
+    foreach(QString column,columns){
         data.insert( column, at(row,column) );
     }
 
     return data;
+
 }
 
 int MeasureModel::countSource() {
@@ -401,6 +411,7 @@ QByteArray MeasureModel::exportTo(const MeasureModel *model) {
     data.append("\n");
     // Sources
     data.append(QString("BEGIN_SOURCES\n"));
+    QStringList columns;
     QList<Source> sources = model->sources();
     foreach(Source source, sources){
         QString sourceData = source.title(" SOURCE %DIR %NODE %MODE %METHOD");
@@ -414,17 +425,26 @@ QByteArray MeasureModel::exportTo(const MeasureModel *model) {
         }
         sourceData.append("\n");
         data.append(sourceData);
+
+        if(source.direction() == SOURCE_DIRECTION_OUTPUT){
+            columns.append( source.name() );
+        }else if(source.method() != SOURCE_METHOD_CONST
+                 && source.mode() != SOURCE_MODE_GND ){
+            columns.append( source.name() );
+        }
+
     }
     data.append(QString("END_SOURCES\n"));
     data.append("\n");
 
     data.append(QString("BEGIN_MEASURE\n"));
-    QStringList columns = model->columns();
+
+
     data.append("#").append(columns.join(",").append("\n"));
     int nItems = model->dataRows();
     for(int i=0; i < nItems; ++i){
         QStringList dataRow;
-        QMap<QString, double> row = model->get(i);
+        QMap<QString, double> row = model->get(i,columns);
         foreach(QString column, columns){
             dataRow << QString::number(row.value(column,0.0));
         }

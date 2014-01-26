@@ -1,21 +1,14 @@
 #include "DeviceModel.h"
 
-
 namespace tsunami{
 namespace db{
-
-
 
 DeviceModel::DeviceModel() :
      deviceId_(-1),
      type_(DEVICE_UNKNOWN),
      createdAt_(QDateTime::currentDateTime()),
      changedAt_(QDateTime::currentDateTime()),
-     enable_(true) {
-
-    // constructor
-
-}
+     enable_(true) { }
 
 DeviceModel::DeviceModel(const DeviceModel &other) :
     deviceId_(other.deviceId_),
@@ -24,9 +17,7 @@ DeviceModel::DeviceModel(const DeviceModel &other) :
     model_(other.model_),
     createdAt_(other.createdAt_),
     changedAt_(other.changedAt_),
-    enable_(other.enable_) {
-
-}
+    enable_(other.enable_) { }
 
 DeviceModel &DeviceModel::operator=(const DeviceModel &other) {
     deviceId_   = other.deviceId_;
@@ -39,7 +30,6 @@ DeviceModel &DeviceModel::operator=(const DeviceModel &other) {
 
     return *this;
 }
-
 
 void DeviceModel::type(const QString &type){
     if(type.compare("nbjt")==0){
@@ -72,18 +62,20 @@ void DeviceModel::type(const QString &type){
 QString DeviceModel::typeJson() const {
 
     switch(type_){
-    case DEVICE_NBJT : return QString("nbjt");
-    case DEVICE_PBJT : return QString("pbjt");
-    case DEVICE_NFET : return QString("nfet");
-    case DEVICE_PFET : return QString("pfet");
-    case DEVICE_NMOS : return QString("nmos");
-    case DEVICE_PMOS : return QString("pmos");
-    case DEVICE_DIODE : return QString("diode");
-    case DEVICE_RESISTOR : return QString("res");
-    case DEVICE_ISOURCE : return QString("isource");
-    case DEVICE_VSOURCE : return QString("vsource");
-
+    case DEVICE_NBJT      : return QString("nbjt");
+    case DEVICE_PBJT      : return QString("pbjt");
+    case DEVICE_NFET      : return QString("nfet");
+    case DEVICE_PFET      : return QString("pfet");
+    case DEVICE_NMOS      : return QString("nmos");
+    case DEVICE_PMOS      : return QString("pmos");
+    case DEVICE_DIODE     : return QString("diode");
+    case DEVICE_RESISTOR  : return QString("res");
+    case DEVICE_ISOURCE   : return QString("isource");
+    case DEVICE_VSOURCE   : return QString("vsource");
     case DEVICE_CAPACITOR : return QString("cap");
+    case DEVICE_UNKNOWN:
+    default:
+        break;
     }
 
     Q_ASSERT(false);
@@ -97,6 +89,7 @@ QStringList DeviceModel::nodes() {
         return QStringList() << "E" << "B" << "C";
     case DEVICE_NFET:
     case DEVICE_PFET:
+        return QStringList() << "S" << "G" << "D";
     case DEVICE_NMOS:
     case DEVICE_PMOS:
         return QStringList() << "S" << "G" << "D" << "B";
@@ -105,22 +98,21 @@ QStringList DeviceModel::nodes() {
     case DEVICE_CAPACITOR:
     case DEVICE_ISOURCE:
     case DEVICE_VSOURCE:
-
         return QStringList() << "M" << "P";
-
+    case DEVICE_UNKNOWN:
+    default:
+        break;
     }
-
+    Q_ASSERT(false);
     return QStringList();
 }
 
 // FIXME: Add translations
 QString DeviceModel::modelNameToTitle(const QString &modelName) {
-    if(modelName == "gummelpoon"){
+    if(modelName == "gummelpoon") {
         return QString("Gummel-Poon");
     }
-
     QString name = modelName;
-
     return name.toUpper();
 }
 
@@ -157,23 +149,24 @@ DeviceType DeviceModel::nameToType(const QString &name) {
 
 QString DeviceModel::typeToName(DeviceType type) {
     switch(type){
-    case DEVICE_NBJT : return QString("nbjt");
-    case DEVICE_PBJT : return QString("pbjt");
-    case DEVICE_NFET : return QString("nfet");
-    case DEVICE_PFET : return QString("pfet");
-    case DEVICE_NMOS : return QString("nmos");
-    case DEVICE_PMOS : return QString("pmos");
-    case DEVICE_DIODE : return QString("diode");
-    case DEVICE_RESISTOR : return QString("res");
-    case DEVICE_ISOURCE : return QString("isource");
-    case DEVICE_VSOURCE : return QString("vsource");
-
+    case DEVICE_NBJT      : return QString("nbjt");
+    case DEVICE_PBJT      : return QString("pbjt");
+    case DEVICE_NFET      : return QString("nfet");
+    case DEVICE_PFET      : return QString("pfet");
+    case DEVICE_NMOS      : return QString("nmos");
+    case DEVICE_PMOS      : return QString("pmos");
+    case DEVICE_DIODE     : return QString("diode");
+    case DEVICE_RESISTOR  : return QString("res");
+    case DEVICE_ISOURCE   : return QString("isource");
+    case DEVICE_VSOURCE   : return QString("vsource");
     case DEVICE_CAPACITOR : return QString("cap");
+    case DEVICE_UNKNOWN:
+    default:
+        break;
     }
 
     return QString();
-
 }
 
-}
-}
+} // db
+} // tsunami
