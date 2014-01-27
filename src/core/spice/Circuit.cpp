@@ -442,7 +442,7 @@ int Circuit::createFet(Circuit *circuit, DeviceType type) {
     circuit->getDevice(fetId)->name(QString("J%1").arg(fetId));
 
     QStringList terms;
-    terms << "S" << "G" << "D"; // << "B";
+    terms << "D" << "G" << "S"; // << "B";
 
     // Terminals
     foreach(QString term, terms){
@@ -455,7 +455,7 @@ int Circuit::createMosfet(Circuit *circuit, DeviceType type) {
     int mosId = circuit->addDevice("MOSFET", type);
     circuit->getDevice(mosId)->name(QString("M%1").arg(mosId));
     QStringList terms;
-    terms << "S" << "G" << "D" << "B";
+    terms << "B" << "D" << "G" << "S";
 
     // Terminals
     foreach(QString term, terms){
