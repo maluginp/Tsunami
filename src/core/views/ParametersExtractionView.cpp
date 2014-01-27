@@ -47,7 +47,6 @@ QVariant ParametersExtractionView::data(const QModelIndex &index, int role) cons
 
     int row = index.row();
     int column = index.column();
-
     if( role == Qt::BackgroundColorRole){
         if( library_->at(row).fixed() ){
             return QVariant(QColor(0xDA,0xDA,0xDA));

@@ -67,7 +67,8 @@ SOURCES += main.cpp \
     views/ListTreeView.cpp \
     plots/PlotItem.cpp \
     models/LibraryTemplateModel.cpp \
-    components/ParseMeasureModel.cpp
+    components/ParseMeasureModel.cpp \
+    spice/devices/VSourceDevice.cpp
 
 HEADERS += \
     components/Json.h \
@@ -118,5 +119,6 @@ HEADERS += \
     views/ListTreeView.h \
     plots/PlotItem.h \
     models/LibraryTemplateModel.h \
-    components/ParseMeasureModel.h
+    components/ParseMeasureModel.h \
+    spice/devices/VSourceDevice.h
 

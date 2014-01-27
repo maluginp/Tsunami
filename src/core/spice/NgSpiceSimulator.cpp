@@ -18,13 +18,13 @@ NgSpiceSimulator::NgSpiceSimulator(const QString &path) :
 
 bool NgSpiceSimulator::simulate() {
     changeSigns_.clear();
-    log::logTrace() << "Simulating";
+//    log::logTrace() << "Simulating";
     // Append models;
     QString fileName = randomName(8);
 
     QFile file( QString("%1.net").arg(fileName) );
-    log::logTrace() << QString("Create netlist file %1")
-                       .arg(file.fileName());
+//    log::logTrace() << QString("Create netlist file %1")
+//                       .arg(file.fileName());
 
     if(!file.open(QIODevice::WriteOnly)){
         log::logError() << QString("Can not open file for write %1")
@@ -33,7 +33,7 @@ bool NgSpiceSimulator::simulate() {
     }
 
     QByteArray netlist = generateNetList();
-    log::logTrace() << QString("Generated NetList\n%1").arg(QString(netlist));
+//    log::logTrace() << QString("Generated NetList\n%1").arg(QString(netlist));
 
     if(file.write( netlist ) == -1){
         file.close();
@@ -55,7 +55,7 @@ bool NgSpiceSimulator::simulate() {
 
     // No. of Data Rows :
 
-    log::logTrace() << QString("Result simulated\n%1").arg(QString(output));
+//    log::logTrace() << QString("Result simulated\n%1").arg(QString(output));
 
 
     int positionStartIndex = output.indexOf("Index");
@@ -245,8 +245,8 @@ void NgSpiceSimulator::parseSimulatedData(const QByteArray &outputData) {
         }
 
         if( columns_.size() != vals.size() ){
-            log::logDebug() << "Can not parsing "
-                            << str;
+//            log::logDebug() << "Can not parsing "
+//                            << str;
             continue;
         }
 
@@ -262,7 +262,7 @@ void NgSpiceSimulator::parseSimulatedData(const QByteArray &outputData) {
         }
         data.append(row);
     }
-    log::logDebug() << "Number of parsed row:"<<data.size();
+//    log::logDebug() << "Number of parsed row:"<<data.size();
 
     simulated_->data(data);
 

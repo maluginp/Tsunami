@@ -53,12 +53,12 @@ db::MeasureModel* Simulator::simulatedData(){
 }
 
 bool Simulator::exec(QByteArray& data, const QStringList &arguments){
-    log::logTrace() << "Execute simulator";
+//    log::logTrace() << "Execute simulator";
     QProcess process;
     process.setProcessChannelMode( QProcess::MergedChannels );
     // Start the process
     process.start(path(), arguments ,QIODevice::ReadWrite);
-    log::logTrace() << "Start" << path() << " with " << arguments;
+//    log::logTrace() << "Start" << path() << " with " << arguments;
 
     data.clear();
     // Wait for it to start
@@ -72,7 +72,7 @@ bool Simulator::exec(QByteArray& data, const QStringList &arguments){
         data.append(process.readAll());
     }
 
-    log::logTrace() << "Data parsed. Count bytes:" << data.count();
+//    log::logTrace() << "Data parsed. Count bytes:" << data.count();
 
     return true;
 }

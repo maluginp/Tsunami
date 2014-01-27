@@ -43,8 +43,8 @@ public:
     const QVariant& config( const QString& key );
     void config(const QString& key, const QVariant& value);
     void config( const QVariantMap& config );
-
-//    const bool& enable(int index) const;
+    QString nameParameter(int index) const;
+    const bool& enable(int index) const;
 //    const double& initial(int index) const;
     const double& fitted(int index) const;
     const double& minimum(int index) const;
@@ -67,6 +67,8 @@ public:
 public slots:
     virtual void process() = 0;
     virtual void stop();
+
+    QString debugSteps();
 protected:
     bool testBoundary( int index, double value );
     void increaseIteration();

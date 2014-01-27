@@ -100,6 +100,15 @@ void Extractor::config(const QVariantMap &config) {
     configuration_ = config;
 }
 
+QString Extractor::nameParameter(int index) const {
+    return library_->at(index).name();
+
+}
+
+const bool &Extractor::enable(int index) const{
+    return library_->at(index).enable();
+}
+
 const double &Extractor::fitted(int index) const {
     return library_->at(index).fitted();
 }
@@ -142,6 +151,24 @@ void Extractor::stop() {
     stopped_ = true;
 }
 
+QString Extractor::debugSteps() {
+    QString dbg;
+
+
+    dbg = "Param\t|Step\t|\n";
+    foreach(int index, currentSteps_.keys()){
+        if(enable(index)){
+            dbg.append( QString("%1\t|%2\t|\n")
+                    .arg(nameParameter(index))
+                    .arg(currentSteps_[index]) );
+
+        }
+    }
+
+    return dbg;
+
+}
+
 bool Extractor::testBoundary(int index, double value) {
     double val = fabs(value);
     return (fabs(minimum(index)) >= val && val <= fabs(maximum(index)));
@@ -159,7 +186,7 @@ bool Extractor::checkConvergence(bool showMessage) {
 
     if( tolerances_.contains(TOLERANCE_FUNCTION) ){
         double tol = tolerances_[TOLERANCE_FUNCTION];
-        qDebug() << previousFunctionError_ - currentFunctionError_;
+//        qDebug() << previousFunctionError_ - currentFunctionError_;
         if( fabs(previousFunctionError_ - currentFunctionError_) < tol ){
             if(showMessage) emit log("- Detected function tolerance condition");
             return false;

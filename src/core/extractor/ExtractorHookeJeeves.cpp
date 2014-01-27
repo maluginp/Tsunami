@@ -1,8 +1,7 @@
 #include "ExtractorHookeJeeves.h"
 #include "models/LibraryModel.h"
 #include "models/ParameterModel.h"
-#include <QDebug>
-
+#include <Log.h>
 namespace tsunami{
 namespace core{
 
@@ -21,15 +20,20 @@ ExtractorHookeJeeves::ExtractorHookeJeeves(DeviceType type, db::LibraryModel *li
         masks_.insert( i, HJ_HOLD );
     }
 
+
+
 }
 
 void ExtractorHookeJeeves::process() {
+    log::logTrace() << "Start Hooke-Jeeves Minimisation";
+
     currentFunctionError(functionError());
-    qDebug() << currentFunctionError();
+    log::logTrace() << QString("Initial error: %1")
+                       .arg(currentFunctionError());
 
     if(stopped_) return;
 
-    emit log( "Extraction started" );
+    emit log( "<b>Extraction started</b>" );
 
     emit log( tr("Initial function error:%1").arg(currentFunctionError(),0,'g',20) );
 
@@ -37,6 +41,7 @@ void ExtractorHookeJeeves::process() {
 
     while(checkConvergence()){
         increaseIteration();
+        log::logTrace() << "Iteration #" << iteration_;
         emit log(tr("Iteration #%1").arg(iteration_));
 
         if( currentFunctionError() > tempFunctionError_ ){
@@ -63,9 +68,9 @@ void ExtractorHookeJeeves::process() {
 
 bool ExtractorHookeJeeves::findBestNearby() {
     double error;
-
+    log::logTrace() << "Find best nearby";
     tempFunctionError_ = currentFunctionError();
-
+    emit log("Find best nearby");
     int nParameters = numberParameters();
     for(int i=0; i < nParameters; ++i){
         if(!fixed(i)){
@@ -79,8 +84,6 @@ bool ExtractorHookeJeeves::findBestNearby() {
                     mask(i,HJ_INC);
                     continue;
                 }
-            }else{
-                qDebug() << "testBoundary failed: " << i;
             }
 
             if(testBoundary(i,value-_step)){
@@ -92,8 +95,6 @@ bool ExtractorHookeJeeves::findBestNearby() {
                     continue;
                 }
 
-            }else{
-                qDebug() << "testBoundary failed: " << i;
             }
 
             fitted(i,value);
@@ -106,12 +107,23 @@ bool ExtractorHookeJeeves::findBestNearby() {
     bool found = ( currentFunctionError() > tempFunctionError_ );
     if(found){
         currentFunctionError( tempFunctionError_ );
+        emit log("Found best nearby");
+    }else{
+        emit log("Best nearby not found");
     }
+
+    log::logTrace() << "Found best nearby: "
+                    << ((found)?"true":"false");
+
+
+
     return found;
 }
 
 void ExtractorHookeJeeves::patternStep() {
     int nParameters = numberParameters();
+    log::logTrace() << "Pattern step";
+    emit log("Pattern step");
     for(int i=0; i < nParameters; ++i){
         if( !fixed(i) ){
             double value = fitted(i);
@@ -135,6 +147,7 @@ void ExtractorHookeJeeves::patternStep() {
     }
 
     tempFunctionError_ = functionError();
+    log::logTrace() << "Pattern step result: " << tempFunctionError_;
     return;
 }
 
@@ -142,6 +155,8 @@ bool ExtractorHookeJeeves::decreaseSteps() {
     double factor = 0.5;
     int nParameters = numberParameters();
 
+
+//    emit log("Decrease step");
     saveSteps();
 
     for(int i=0; i < nParameters; ++i){
@@ -150,6 +165,10 @@ bool ExtractorHookeJeeves::decreaseSteps() {
             step(i, step(i) * factor );
         }
     }
+
+    QString dbg = QString("Decrease steps\n").append(debugSteps());
+    log::logTrace() << dbg;
+    emit log(dbg);
 
 
     return checkConvergence(false);
@@ -165,8 +184,10 @@ const ExtractorHookeJeeves::Masks &ExtractorHookeJeeves::mask(int index) {
 }
 
 bool ExtractorHookeJeeves::checkConvergence(bool showMessage){
-
-    return Extractor::checkConvergence(showMessage);
+    bool convergenced = Extractor::checkConvergence(showMessage);
+    log::logTrace() << "Check convergence: "
+                    << ((convergenced) ? "true" : "false");
+    return convergenced;
 }
 
 }
