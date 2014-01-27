@@ -157,7 +157,7 @@ QString Extractor::debugSteps() {
 
     dbg = "Param\t|Step\t|\n";
     foreach(int index, currentSteps_.keys()){
-        if(enable(index)){
+        if(enable(index) && !fixed(index)){
             dbg.append( QString("%1\t|%2\t|\n")
                     .arg(nameParameter(index))
                     .arg(currentSteps_[index]) );

@@ -25,6 +25,13 @@ ExtractorWindow::ExtractorWindow(DeviceType type, int libraryId, QList<int> meas
     parameters_ = new gui::ParametersExtractionView(library_);
     ui->parametersTableView->setModel( parameters_ );
     ui->parametersTableView->setUpdatesEnabled( true );
+
+    int nParameters = library_->countParameters();
+    for(int i=0; i < nParameters; ++i){
+        if(!library_->at(i).enable()){
+            ui->parametersTableView->hideRow(i);
+        }
+    }
 //    ui->parametersTableView->setItemDelegateForColumn(0, new gui::DelegateReadOnly());
 
     settings_ = db::SettingStorage::instance();
