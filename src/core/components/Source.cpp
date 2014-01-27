@@ -59,6 +59,19 @@ Source &Source::operator=(const Source &other) {
 
 }
 
+bool Source::isPositive() {
+
+    if(method_ == SOURCE_METHOD_CONST){
+        double constant = configuration_.value("const").toDouble();
+        return (constant >= .0);
+    }else if(method_ == SOURCE_METHOD_LINEAR){
+        double stop = configuration_.value("end").toDouble();
+        return (stop >= .0);
+    }
+
+    return true;
+}
+
 QString Source::name(bool upper) {
     QString name;
 

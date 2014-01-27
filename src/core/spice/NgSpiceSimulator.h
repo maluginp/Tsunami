@@ -22,6 +22,11 @@ protected:
 private:
     bool isCorrectForParse();
 
+    void parseSimulatedData(const QByteArray& outputData);
+
+    bool isChangeSign( int numberColumn );
+
+    QStringList changeSigns_;
 };
 
 }

@@ -26,11 +26,17 @@ PlotItem *TsunamiPlot::plot(const QString &name) {
     return 0;
 }
 
+void TsunamiPlot::clearPlots() {
+    clearGraphs();
+    plots_.clear();
+
+}
+
 void TsunamiPlot::build() {
-    int nGraphs = graphCount();
-    for(int i=0; i < nGraphs; ++i){
-        removeGraph(i);
-    }
+//    int nGraphs = graphCount();
+//    for(int i=0; i < nGraphs; ++i){
+//        removeGraph(i);
+//    }
 
 
     foreach(PlotItem* plot, plots_ ){

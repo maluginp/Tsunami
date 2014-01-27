@@ -64,6 +64,8 @@ public:
     Source(const Source& other);
     Source& operator=(const Source& other);
 
+    bool isPositive();
+
     QString name( bool upper = false );
     QString title( const QString& format = QString() ) const;
 private:
