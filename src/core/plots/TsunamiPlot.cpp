@@ -32,6 +32,12 @@ void TsunamiPlot::clearPlots() {
     plots_.clear();
 }
 
+void TsunamiPlot::clearPlots() {
+    clearGraphs();
+    plots_.clear();
+
+}
+
 void TsunamiPlot::build() {
 //    int nGraphs = graphCount();
 //    for(int i=0; i < nGraphs; ++i){

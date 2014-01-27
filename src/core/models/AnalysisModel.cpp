@@ -115,23 +115,7 @@ QString AnalysisModel::sourcesJson() const {
     QVariantList sources;
 
     foreach(Source source, sources_){
-        QVariantMap sourceJson;
-        sourceJson.insert( "node",   source.node() );
-        sourceJson.insert( "method", source.methodJson());
-        sourceJson.insert( "configuration", source.configurations() );
-        sourceJson.insert( "mode",   source.modeJson());
-
-        if(source.direction() == SOURCE_DIRECTION_INPUT){
-            sourceJson.insert("direction","input");
-        }else if(source.direction() == SOURCE_DIRECTION_OUTPUT){
-            sourceJson.insert("direction","output");
-        }else{
-            Q_ASSERT(false);
-        }
-
-
-        sources.append( sourceJson );
-
+        sources.append( source.json() );
     }
 
     json = QtJson::serializeStr( sources );
@@ -148,6 +132,10 @@ bool AnalysisModel::sourceExists(const QString &node, SourceDirection direction)
     }
 
     return false;
+}
+
+Source AnalysisModel::source(int i) const {
+    return sources_[i];
 }
 
 

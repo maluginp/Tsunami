@@ -20,14 +20,15 @@ Device::Device(const QString &name, DeviceType device)
     case DEVICE_ISOURCE:
         numberPorts_ = 2;
         break;
+    case DEVICE_PFET:
+    case DEVICE_NFET:
     case DEVICE_PBJT:
     case DEVICE_NBJT:
         numberPorts_ = 3;
         break;
     case DEVICE_NMOS:
     case DEVICE_PMOS:
-    case DEVICE_PFET:
-    case DEVICE_NFET:
+
         numberPorts_ = 4;
         break;
     case DEVICE_UNKNOWN:

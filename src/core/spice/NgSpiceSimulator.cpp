@@ -17,6 +17,7 @@ NgSpiceSimulator::NgSpiceSimulator(const QString &path) :
 }
 
 bool NgSpiceSimulator::simulate() {
+    changeSigns_.clear();
     log::logTrace() << "Simulating";
     // Append models;
     QString fileName = randomName(8);
@@ -56,56 +57,13 @@ bool NgSpiceSimulator::simulate() {
 
     log::logTrace() << QString("Result simulated\n%1").arg(QString(output));
 
-    // BULLSHIT: code
+
     int positionStartIndex = output.indexOf("Index");
     Q_ASSERT(positionStartIndex != -1);
+    output = output.mid(positionStartIndex).replace("\r","");
 
-    output = output.mid(positionStartIndex).replace("\r","");;
+    parseSimulatedData(output);
 
-    QList<QByteArray> list =  output.split( '\n' );
-    list.removeAt(0);
-    list.removeAt(0);
-    // Remove null items
-    QList<QByteArray>::iterator it = list.begin();
-    while(it!=list.end()){
-        if((*it).isEmpty()){
-            it = list.erase(it);
-        }else{
-            it++;
-        }
-    }
-
-    delete simulated_;
-    simulated_ = new db::MeasureModel();
-    simulated_->sources( circuit()->sources() );
-    simulated_->type( circuit()->typeAnalysis() );
-    simulated_->attrs(QVariantMap());
-    simulated_->columns(columns_);
-
-    QVector< QVector<double> > data;
-
-    foreach(QByteArray str,list){
-
-        QList<QByteArray> vals = str.split('\t');
-        if(vals.last().isEmpty()){
-            vals.removeLast();
-        }
-
-        if( columns_.size() != vals.size() ){
-            log::logDebug() << "Can not parsing "
-                            << str;
-            continue;
-        }
-
-        QVector<double> row;
-        foreach(QByteArray val, vals){
-            row.append( val.toDouble() );
-        }
-        data.append(row);
-    }
-    log::logDebug() << "Number of parsed row:"<<data.size();
-
-    simulated_->data(data);
 
 
     return true;
@@ -162,7 +120,7 @@ QByteArray NgSpiceSimulator::generateNetList() {
 
     int sourceNumber = 1;
 
-    while(sourceNumber < 3){
+    while(sourceNumber <= 2){
         circuit()->beginDevice(DEVICE_FLAG_SOURCE);
         device = circuit()->nextDevice();
         while(device){
@@ -205,6 +163,12 @@ QByteArray NgSpiceSimulator::generateNetPrints() {
         Q_ASSERT(false);
     }
 
+//    int gndId;
+//    int nPorts = device->numberPorts();
+//    for(int i=0; i < nPorts; ++i){
+//        device->terminal(i)->isRef();
+//    }
+
     QList<Source> sources = circuit()->sources();
 
     // Looking for all input source
@@ -219,16 +183,26 @@ QByteArray NgSpiceSimulator::generateNetPrints() {
         int plus  = (!device->terminal(0)->isRef()) ? device->terminal(0)->id() : 0;
         int minus = (!device->terminal(1)->isRef()) ? device->terminal(1)->id() : 0;
 
-        netlist.append( QString(" v(%1,%2)").arg(plus).arg(minus) );
-        columns_ << source.title("V%node");
-
-        if(circuit()->hasSource( source.node(), SOURCE_DIRECTION_OUTPUT)) {
+        if( device->type() == DEVICE_VSOURCE ){
+            netlist.append( QString(" v(%1,%2)").arg(plus).arg(minus) );
             netlist.append( QString(" i(%1) ").arg(device->name()) );
-            columns_ << source.title("I%node");
-        }
+            columns_ << QString("V%1").arg( source.node().toLower() );
 
+            columns_ << QString("I%1").arg( source.node().toLower() );
+
+            if(!source.isPositive()){
+                changeSigns_ << columns_.last();
+            }
+        }else{
+            Q_ASSERT(false);
+        }
         device = circuit()->nextDevice();
     }
+
+    // Add ground
+//    int gndId = circuit()->getRefTerminalId();
+//    netlist.append( QString(" v(%1)").arg(0) ); //.arg(minus) );
+//    columns_ << QString("V%1").arg( circuit()->getTerminal(gndId)->name().toLower() );
 
     netlist.append("\n");
     return netlist;
@@ -236,6 +210,70 @@ QByteArray NgSpiceSimulator::generateNetPrints() {
 
 bool NgSpiceSimulator::isCorrectForParse() {
     return true;
+}
+
+void NgSpiceSimulator::parseSimulatedData(const QByteArray &outputData) {
+
+    QByteArray output = outputData;
+    QList<QByteArray> list =  output.split( '\n' );
+    list.removeAt(0);
+    list.removeAt(0);
+    // Remove null items
+    QList<QByteArray>::iterator it = list.begin();
+    while(it!=list.end()){
+        if((*it).isEmpty()){
+            it = list.erase(it);
+        }else{
+            it++;
+        }
+    }
+
+    delete simulated_;
+    simulated_ = new db::MeasureModel();
+    simulated_->sources( circuit()->sources() );
+    simulated_->type( circuit()->typeAnalysis() );
+    simulated_->attrs(QVariantMap());
+    simulated_->columns(columns_);
+
+    QVector< QVector<double> > data;
+
+    foreach(QByteArray str,list){
+
+        QList<QByteArray> vals = str.split('\t');
+        if(vals.last().isEmpty()){
+            vals.removeLast();
+        }
+
+        if( columns_.size() != vals.size() ){
+            log::logDebug() << "Can not parsing "
+                            << str;
+            continue;
+        }
+
+        QVector<double> row;
+        int nColumn = 0;
+        foreach(QByteArray val, vals){
+            double value = val.toDouble();
+            if(isChangeSign(nColumn)){
+                value *= -1;
+            }
+            row.append(  value );
+            nColumn++;
+        }
+        data.append(row);
+    }
+    log::logDebug() << "Number of parsed row:"<<data.size();
+
+    simulated_->data(data);
+
+}
+
+bool NgSpiceSimulator::isChangeSign(int numberColumn) {
+
+    QString column = columns_[numberColumn];
+
+    return changeSigns_.contains(column);
+
 }
 
 

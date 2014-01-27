@@ -324,9 +324,9 @@ Circuit *Circuit::createCircuitDevice(DeviceType type, const QList<Source> &sour
 
         circuit->mainDeviceId_ = circuit->createBjt( circuit,type );
     }else if( type == DEVICE_NFET || type == DEVICE_PFET ){
-        if(sources.count() != 4){
-            Q_ASSERT(false);
-        }
+//        if(sources.count() != 5){
+//            Q_ASSERT(false);
+//        }
         circuit->mainDeviceId_  = circuit->createFet( circuit, type );
     }else if( type == DEVICE_NMOS || type == DEVICE_PMOS){
 //        if(sources.count() != 4){
@@ -452,7 +452,7 @@ int Circuit::createFet(Circuit *circuit, DeviceType type) {
     circuit->getDevice(fetId)->name(QString("J%1").arg(fetId));
 
     QStringList terms;
-    terms << "S" << "G" << "D" << "B";
+    terms << "D" << "G" << "S"; // << "B";
 
     // Terminals
     foreach(QString term, terms){
@@ -465,7 +465,7 @@ int Circuit::createMosfet(Circuit *circuit, DeviceType type) {
     int mosId = circuit->addDevice("MOSFET", type);
     circuit->getDevice(mosId)->name(QString("M%1").arg(mosId));
     QStringList terms;
-    terms << "S" << "G" << "D" << "B";
+    terms << "B" << "D" << "G" << "S";
 
     // Terminals
     foreach(QString term, terms){
