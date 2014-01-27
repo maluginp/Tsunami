@@ -86,7 +86,7 @@ bool PlotExtractionDialog::checkInputValues() {
 void PlotExtractionDialog::clickedBuildButton() {
     log::logTrace() << "Building plot";
 
-    ui->plotter->clearPlots();
+//    ui->plotter->clearPlots();
 
     if(!checkInputValues()){
         QMessageBox::warning(this,windowTitle(),tr("Incorrect input values"));

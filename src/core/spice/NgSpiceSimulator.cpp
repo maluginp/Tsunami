@@ -255,7 +255,7 @@ void NgSpiceSimulator::parseSimulatedData(const QByteArray &outputData) {
         foreach(QByteArray val, vals){
             double value = val.toDouble();
             if(isChangeSign(nColumn)){
-                value *= -1;
+                value *= -1.0;
             }
             row.append(  value );
             nColumn++;
