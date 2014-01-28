@@ -23,8 +23,8 @@ bool NgSpiceSimulator::simulate() {
     QString fileName = randomName(8);
 
     QFile file( QString("%1.net").arg(fileName) );
-//    log::logTrace() << QString("Create netlist file %1")
-//                       .arg(file.fileName());
+    log::logTrace() << QString("Create netlist file %1")
+                       .arg(file.fileName());
 
     if(!file.open(QIODevice::WriteOnly)){
         log::logError() << QString("Can not open file for write %1")
@@ -33,7 +33,7 @@ bool NgSpiceSimulator::simulate() {
     }
 
     QByteArray netlist = generateNetList();
-//    log::logTrace() << QString("Generated NetList\n%1").arg(QString(netlist));
+    log::logTrace() << QString("Generated NetList\n%1").arg(QString(netlist));
 
     if(file.write( netlist ) == -1){
         file.close();
