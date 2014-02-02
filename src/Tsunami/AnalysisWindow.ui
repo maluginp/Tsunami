@@ -17,16 +17,16 @@
    <widget class="WebView" name="webView" native="true">
     <property name="geometry">
      <rect>
-      <x>270</x>
-      <y>56</y>
-      <width>710</width>
-      <height>600</height>
+      <x>240</x>
+      <y>50</y>
+      <width>421</width>
+      <height>371</height>
      </rect>
     </property>
     <property name="minimumSize">
      <size>
-      <width>710</width>
-      <height>600</height>
+      <width>300</width>
+      <height>300</height>
      </size>
     </property>
    </widget>
@@ -62,8 +62,8 @@
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>110</y>
+      <x>10</x>
+      <y>80</y>
       <width>201</width>
       <height>181</height>
      </rect>
@@ -76,6 +76,9 @@
       <string>DC1</string>
      </attribute>
      <layout class="QFormLayout" name="formLayout">
+      <property name="fieldGrowthPolicy">
+       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+      </property>
       <item row="0" column="0">
        <widget class="QLabel" name="label_6">
         <property name="text">
@@ -282,7 +285,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>320</y>
+      <y>290</y>
       <width>81</width>
       <height>17</height>
      </rect>
@@ -290,6 +293,65 @@
     <property name="text">
      <string>Источник 2</string>
     </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>40</y>
+      <width>261</width>
+      <height>361</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Настройка источника</string>
+    </property>
+    <widget class="QTableView" name="tableView">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>70</y>
+       <width>221</width>
+       <height>221</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBox_5">
+     <property name="geometry">
+      <rect>
+       <x>73</x>
+       <y>31</y>
+       <width>69</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_16">
+     <property name="geometry">
+      <rect>
+       <x>31</x>
+       <y>31</y>
+       <width>36</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Режим:</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>320</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Сохранить</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="">
     <layout class="QHBoxLayout" name="horizontalLayout_2">
