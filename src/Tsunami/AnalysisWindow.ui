@@ -59,239 +59,17 @@
      <string>Analysis:</string>
     </property>
    </widget>
-   <widget class="QTabWidget" name="tabWidget">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>80</y>
-      <width>201</width>
-      <height>181</height>
-     </rect>
-    </property>
-    <property name="currentIndex">
-     <number>0</number>
-    </property>
-    <widget class="QWidget" name="tab">
-     <attribute name="title">
-      <string>DC1</string>
-     </attribute>
-     <layout class="QFormLayout" name="formLayout">
-      <property name="fieldGrowthPolicy">
-       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-      </property>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_6">
-        <property name="text">
-         <string>Тип:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="dc1SourceTypeComboBox"/>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_7">
-        <property name="text">
-         <string>Источник</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QComboBox" name="dc1SourceNodeComboBox"/>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>Начало:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QLineEdit" name="dc1SourceStartLineEdit"/>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_4">
-        <property name="text">
-         <string>Шаг:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QLineEdit" name="dc1SourceStepLineEdit"/>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string>Конец:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="QLineEdit" name="dc1SourceStopLineEdit"/>
-      </item>
-     </layout>
-    </widget>
-    <widget class="QWidget" name="tab_2">
-     <attribute name="title">
-      <string>AC</string>
-     </attribute>
-     <widget class="QLineEdit" name="acStartLineEdit">
-      <property name="geometry">
-       <rect>
-        <x>64</x>
-        <y>18</y>
-        <width>123</width>
-        <height>20</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_13">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>18</y>
-        <width>41</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Начало:</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_14">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>44</y>
-        <width>25</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Шаг:</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="acStepLineEdit">
-      <property name="geometry">
-       <rect>
-        <x>64</x>
-        <y>44</y>
-        <width>123</width>
-        <height>20</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="acStopLineEdit">
-      <property name="geometry">
-       <rect>
-        <x>64</x>
-        <y>70</y>
-        <width>123</width>
-        <height>20</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_15">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>70</y>
-        <width>35</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Конец:</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="tab_4">
-     <attribute name="title">
-      <string>TRAN</string>
-     </attribute>
-    </widget>
-   </widget>
-   <widget class="QTabWidget" name="tabWidget_2">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>310</y>
-      <width>201</width>
-      <height>181</height>
-     </rect>
-    </property>
-    <property name="currentIndex">
-     <number>0</number>
-    </property>
-    <widget class="QWidget" name="tab_3">
-     <attribute name="title">
-      <string>DC2</string>
-     </attribute>
-     <layout class="QFormLayout" name="formLayout_2">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_8">
-        <property name="text">
-         <string>Тип:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="dc2SourceTypeComboBox"/>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_9">
-        <property name="text">
-         <string>Источник</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QComboBox" name="dc2SourceNodeComboBox"/>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_10">
-        <property name="text">
-         <string>Начало:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QLineEdit" name="dc2SourceStartLineEdit"/>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_11">
-        <property name="text">
-         <string>Шаг:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QLineEdit" name="dc2SourceStepLineEdit"/>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_12">
-        <property name="text">
-         <string>Конец:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="QLineEdit" name="dc2SourceStopLineEdit"/>
-      </item>
-     </layout>
-    </widget>
-   </widget>
-   <widget class="QCheckBox" name="dc2Enable">
+   <widget class="QCheckBox" name="sourceSecondEnable">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>290</y>
-      <width>81</width>
+      <width>171</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>Источник 2</string>
+     <string>Второй источник DC</string>
     </property>
    </widget>
    <widget class="QGroupBox" name="groupBox">
@@ -388,6 +166,262 @@
     <property name="text">
      <string>Name:</string>
     </property>
+   </widget>
+   <widget class="QGroupBox" name="sourceFirstGroup">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>80</y>
+      <width>221</width>
+      <height>191</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Источник 1</string>
+    </property>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>16</x>
+       <y>84</y>
+       <width>41</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Начало:</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="sourceFirstNodeComboBox">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>58</y>
+       <width>123</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_6">
+     <property name="geometry">
+      <rect>
+       <x>16</x>
+       <y>32</y>
+       <width>22</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Тип:</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="sourceFirstTypeComboBox">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>32</y>
+       <width>123</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>16</x>
+       <y>136</y>
+       <width>35</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Конец:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_7">
+     <property name="geometry">
+      <rect>
+       <x>16</x>
+       <y>58</y>
+       <width>48</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Источник</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="sourceFirstStartLineEdit">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>84</y>
+       <width>123</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="sourceFirstStopLineEdit">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>136</y>
+       <width>123</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>16</x>
+       <y>110</y>
+       <width>25</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Шаг:</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="sourceFirstStepLineEdit">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>110</y>
+       <width>123</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="sourceSecondGroup">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>320</y>
+      <width>221</width>
+      <height>181</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Источник 2</string>
+    </property>
+    <widget class="QLabel" name="label_12">
+     <property name="geometry">
+      <rect>
+       <x>26</x>
+       <y>100</y>
+       <width>25</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Шаг:</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="sourceSecondTypeComboBox">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>22</y>
+       <width>123</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="sourceSecondStartLineEdit">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>74</y>
+       <width>123</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_11">
+     <property name="geometry">
+      <rect>
+       <x>26</x>
+       <y>48</y>
+       <width>48</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Источник</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_9">
+     <property name="geometry">
+      <rect>
+       <x>26</x>
+       <y>22</y>
+       <width>22</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Тип:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_8">
+     <property name="geometry">
+      <rect>
+       <x>26</x>
+       <y>74</y>
+       <width>41</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Начало:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_10">
+     <property name="geometry">
+      <rect>
+       <x>26</x>
+       <y>126</y>
+       <width>35</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Конец:</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="sourceSecondStopLineEdit">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>126</y>
+       <width>123</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="sourceSecondNodeComboBox">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>48</y>
+       <width>123</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="sourceSecondStepLineEdit">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>100</y>
+       <width>123</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
