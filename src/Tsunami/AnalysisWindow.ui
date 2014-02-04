@@ -69,7 +69,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -82,12 +82,12 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label_6">
         <property name="text">
-         <string>Источник</string>
+         <string>Тип:</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QComboBox" name="comboBox"/>
+       <widget class="QComboBox" name="dc1SourceTypeComboBox"/>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_7">
@@ -97,7 +97,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QComboBox" name="comboBox_2"/>
+       <widget class="QComboBox" name="dc1SourceNodeComboBox"/>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label_3">
@@ -107,7 +107,7 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QLineEdit" name="lineEdit"/>
+       <widget class="QLineEdit" name="dc1SourceStartLineEdit"/>
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="label_4">
@@ -117,7 +117,7 @@
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QLineEdit" name="lineEdit_2"/>
+       <widget class="QLineEdit" name="dc1SourceStepLineEdit"/>
       </item>
       <item row="4" column="0">
        <widget class="QLabel" name="label_5">
@@ -127,7 +127,7 @@
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="QLineEdit" name="lineEdit_3"/>
+       <widget class="QLineEdit" name="dc1SourceStopLineEdit"/>
       </item>
      </layout>
     </widget>
@@ -135,7 +135,7 @@
      <attribute name="title">
       <string>AC</string>
      </attribute>
-     <widget class="QLineEdit" name="lineEdit_7">
+     <widget class="QLineEdit" name="acStartLineEdit">
       <property name="geometry">
        <rect>
         <x>64</x>
@@ -171,7 +171,7 @@
        <string>Шаг:</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_8">
+     <widget class="QLineEdit" name="acStepLineEdit">
       <property name="geometry">
        <rect>
         <x>64</x>
@@ -181,7 +181,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_9">
+     <widget class="QLineEdit" name="acStopLineEdit">
       <property name="geometry">
        <rect>
         <x>64</x>
@@ -214,8 +214,8 @@
    <widget class="QTabWidget" name="tabWidget_2">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>350</y>
+      <x>10</x>
+      <y>310</y>
       <width>201</width>
       <height>181</height>
      </rect>
@@ -231,12 +231,12 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label_8">
         <property name="text">
-         <string>Источник</string>
+         <string>Тип:</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QComboBox" name="comboBox_3"/>
+       <widget class="QComboBox" name="dc2SourceTypeComboBox"/>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_9">
@@ -246,7 +246,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QComboBox" name="comboBox_4"/>
+       <widget class="QComboBox" name="dc2SourceNodeComboBox"/>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label_10">
@@ -256,7 +256,7 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QLineEdit" name="lineEdit_4"/>
+       <widget class="QLineEdit" name="dc2SourceStartLineEdit"/>
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="label_11">
@@ -266,7 +266,7 @@
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QLineEdit" name="lineEdit_5"/>
+       <widget class="QLineEdit" name="dc2SourceStepLineEdit"/>
       </item>
       <item row="4" column="0">
        <widget class="QLabel" name="label_12">
@@ -276,15 +276,15 @@
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="QLineEdit" name="lineEdit_6"/>
+       <widget class="QLineEdit" name="dc2SourceStopLineEdit"/>
       </item>
      </layout>
     </widget>
    </widget>
-   <widget class="QCheckBox" name="checkBox">
+   <widget class="QCheckBox" name="dc2Enable">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>290</y>
       <width>81</width>
       <height>17</height>
@@ -316,7 +316,7 @@
       </rect>
      </property>
     </widget>
-    <widget class="QComboBox" name="comboBox_5">
+    <widget class="QComboBox" name="sourceModeComboBox">
      <property name="geometry">
       <rect>
        <x>73</x>
@@ -353,42 +353,41 @@
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="">
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <property name="sizeConstraint">
-      <enum>QLayout::SetMinimumSize</enum>
-     </property>
-     <item>
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Name:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="analysisNameLineEdit"/>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="analysisEnableCheckBox">
-       <property name="text">
-        <string>Enable</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+   <widget class="QLineEdit" name="analysisNameLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>55</x>
+      <y>9</y>
+      <width>511</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="analysisEnableCheckBox">
+    <property name="geometry">
+     <rect>
+      <x>600</x>
+      <y>10</y>
+      <width>55</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Enable</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>18</x>
+      <y>9</y>
+      <width>31</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Name:</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
