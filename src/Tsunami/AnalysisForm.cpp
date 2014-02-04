@@ -46,63 +46,63 @@ AnalysisForm::AnalysisForm(int analysisId, QWidget *parent) :
     itemValueInputView_  = new gui::KeyValueView();
     itemValueOutputView_ = new gui::KeyValueView();
 
-    ui->typeInputItemComboBox->addItem( tr("Constant"), "const" );
-    ui->typeInputItemComboBox->addItem( tr("Linear"), "linear" );
-    ui->typeInputItemComboBox->addItem( tr("List"), "list" );
+//    ui->typeInputItemComboBox->addItem( tr("Constant"), "const" );
+//    ui->typeInputItemComboBox->addItem( tr("Linear"), "linear" );
+//    ui->typeInputItemComboBox->addItem( tr("List"), "list" );
 
     changeTypeItemInput(0);
     changeTypeItemOutput(0);
 
 
     // Analysis types
-    ui->typeAnalysisComboBox->addItem( tr("DC"),  "dc"  );
-    ui->typeAnalysisComboBox->addItem( tr("AC"),  "ac"  );
-    ui->typeAnalysisComboBox->addItem( tr("TRAN"),"tran");
+//    ui->typeAnalysisComboBox->addItem( tr("DC"),  "dc"  );
+//    ui->typeAnalysisComboBox->addItem( tr("AC"),  "ac"  );
+//    ui->typeAnalysisComboBox->addItem( tr("TRAN"),"tran");
 
     changeTypeAnalysis( 0 );
     openAnalysis( analysisId );
 
     // GUI
-    ui->inputSplitter->widget(1)->setMaximumWidth( 250 );
-    ui->outputSplitter->widget(1)->setMaximumWidth( 250 );
+//    ui->inputSplitter->widget(1)->setMaximumWidth( 250 );
+//    ui->outputSplitter->widget(1)->setMaximumWidth( 250 );
 
-    ui->itemInputTableView->setModel( itemValueInputView_ );
-    ui->itemOutputTableView->setModel( itemValueOutputView_ );
-    ui->inputItemsListView->setModel( itemsInputView_ );
-    ui->outputItemsListView->setModel( itemsOutputView_ );
+//    ui->itemInputTableView->setModel( itemValueInputView_ );
+//    ui->itemOutputTableView->setModel( itemValueOutputView_ );
+//    ui->inputItemsListView->setModel( itemsInputView_ );
+//    ui->outputItemsListView->setModel( itemsOutputView_ );
 
 
     // CONNECTS
-    connect(ui->cancelButton,SIGNAL(clicked()),
-            this,SLOT(restoreAnalysis()));
-    connect(ui->saveButton,SIGNAL(clicked()),
-            this,SLOT(saveAnalysis()));
-    connect(ui->nameAnalysisText,SIGNAL(textChanged(QString)),
-            this,SLOT(changeNameAnalysis(QString)));
-    connect(ui->typeAnalysisComboBox,SIGNAL(currentIndexChanged(int)),
-            this,SLOT(changeTypeAnalysis(int)));
+//    connect(ui->cancelButton,SIGNAL(clicked()),
+//            this,SLOT(restoreAnalysis()));
+//    connect(ui->saveButton,SIGNAL(clicked()),
+//            this,SLOT(saveAnalysis()));
+//    connect(ui->nameAnalysisText,SIGNAL(textChanged(QString)),
+//            this,SLOT(changeNameAnalysis(QString)));
+//    connect(ui->typeAnalysisComboBox,SIGNAL(currentIndexChanged(int)),
+//            this,SLOT(changeTypeAnalysis(int)));
 
     // INPUTS TAB
-    connect( ui->typeInputItemComboBox,SIGNAL(currentIndexChanged(int)),
-             this, SLOT(changeTypeItemInput(int)) );
-    connect( ui->insertItemInputButton,SIGNAL(clicked()),
-             this,SLOT(insertInputItemClick()));
-    connect( ui->removeItemInputButton,SIGNAL(clicked()),
-             this,SLOT(removeInputItemRemove()));
+//    connect( ui->typeInputItemComboBox,SIGNAL(currentIndexChanged(int)),
+//             this, SLOT(changeTypeItemInput(int)) );
+//    connect( ui->insertItemInputButton,SIGNAL(clicked()),
+//             this,SLOT(insertInputItemClick()));
+//    connect( ui->removeItemInputButton,SIGNAL(clicked()),
+//             this,SLOT(removeInputItemRemove()));
 
-    connect( ui->inputItemsListView, SIGNAL(clicked(QModelIndex)),
-             this,SLOT(selectedItemInput(QModelIndex)));
+//    connect( ui->inputItemsListView, SIGNAL(clicked(QModelIndex)),
+//             this,SLOT(selectedItemInput(QModelIndex)));
 
 
-    // OUTPUTS TAB
-    connect( ui->typeOutputItemComboBox,SIGNAL(currentIndexChanged(int)),
-             this,SLOT(changeTypeItemOutput(int)));
-    connect( ui->insertItemOutputButton,SIGNAL(clicked()),
-             this,SLOT(insertOutputItemClick()));
-    connect( ui->removeItemOutputButton,SIGNAL(clicked()),
-             this,SLOT(removeOutputItemClick()));
-    connect( ui->outputItemsListView, SIGNAL(clicked(QModelIndex)),
-             this,SLOT(selectedItemOutput(QModelIndex)));
+//    // OUTPUTS TAB
+//    connect( ui->typeOutputItemComboBox,SIGNAL(currentIndexChanged(int)),
+//             this,SLOT(changeTypeItemOutput(int)));
+//    connect( ui->insertItemOutputButton,SIGNAL(clicked()),
+//             this,SLOT(insertOutputItemClick()));
+//    connect( ui->removeItemOutputButton,SIGNAL(clicked()),
+//             this,SLOT(removeOutputItemClick()));
+//    connect( ui->outputItemsListView, SIGNAL(clicked(QModelIndex)),
+//             this,SLOT(selectedItemOutput(QModelIndex)));
 
 
 
@@ -153,7 +153,7 @@ void AnalysisForm::openAnalysis(int analysisId) {
 
 
 void AnalysisForm::changeTypeItemInput(int index) {
-    QString key = ui->typeInputItemComboBox->itemData( index ).toString();
+//    QString key = ui->typeInputItemComboBox->itemData( index ).toString();
 
     QString node = itemValueInputView_->getPair( "node" ).value.toString();
     SourceDirection direction = SOURCE_DIRECTION_INPUT;
@@ -166,24 +166,24 @@ void AnalysisForm::changeTypeItemInput(int index) {
         source.node(node);
     }
 
-    if(key.compare("linear") == 0){
-        if(source.method() != SOURCE_METHOD_LINEAR){
-            source.method(SOURCE_METHOD_LINEAR);
-            source.addConfiguration("start",0.0);
-            source.addConfiguration("stop",5.0);
-            source.addConfiguration("step",1.0);
-        }
-    }else if(key.compare("list") == 0){
-        if(source.method() != SOURCE_METHOD_LIST){
-            source.method(SOURCE_METHOD_LIST);
-            source.addConfiguration("list","");
-        }
-    }else if( key.compare("const") == 0 ){
-        if(source.method() != SOURCE_METHOD_CONST){
-            source.method(SOURCE_METHOD_CONST);
-            source.addConfiguration( "const", 0.0 );
-        }
-    }
+//    if(key.compare("linear") == 0){
+//        if(source.method() != SOURCE_METHOD_LINEAR){
+//            source.method(SOURCE_METHOD_LINEAR);
+//            source.addConfiguration("start",0.0);
+//            source.addConfiguration("stop",5.0);
+//            source.addConfiguration("step",1.0);
+//        }
+//    }else if(key.compare("list") == 0){
+//        if(source.method() != SOURCE_METHOD_LIST){
+//            source.method(SOURCE_METHOD_LIST);
+//            source.addConfiguration("list","");
+//        }
+//    }else if( key.compare("const") == 0 ){
+//        if(source.method() != SOURCE_METHOD_CONST){
+//            source.method(SOURCE_METHOD_CONST);
+//            source.addConfiguration( "const", 0.0 );
+//        }
+//    }
 
 }
 
@@ -268,8 +268,8 @@ void AnalysisForm::changeNameAnalysis(const QString &name) {
 }
 
 void AnalysisForm::changeTypeAnalysis(int index) {
-    QString key = ui->typeAnalysisComboBox->itemData( index ).toString();
-    model_->type( key );
+//    QString key = ui->typeAnalysisComboBox->itemData( index ).toString();
+//    model_->type( key );
 }
 
 void AnalysisForm::insertInputItemClick() {

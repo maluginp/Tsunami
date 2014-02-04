@@ -19,52 +19,52 @@ AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
 
     api_ = new APIObject(deviceId_);
     storage_ = db::AnalysisStorage::instance();
-    listAnalysis_ = new gui::ListItemView();
-    ui->analysisItemsListView->setModel( listAnalysis_ );
+//    listAnalysis_ = new gui::ListItemView();
+//    ui->analysisItemsListView->setModel( listAnalysis_ );
 
     ui->analysisTypeComboBox->addItem( "AC", "ac" );
     ui->analysisTypeComboBox->addItem( "DC", "dc" );
     ui->analysisTypeComboBox->addItem( "TRAN", "tran" );
 //    connect(ui->webView,SIGNAL(loadStarted()),t   his,SLOT(loadStarted()));
 //    loadStarted();
-    connect(ui->webView->page()->mainFrame(),SIGNAL(javaScriptWindowObjectCleared()),this,SLOT(loadStarted()) );
+//    connect(ui->webView->page()->mainFrame(),SIGNAL(javaScriptWindowObjectCleared()),this,SLOT(loadStarted()) );
 
-    db::DeviceStorage* deviceStorage = db::DeviceStorage::instance();
+//    db::DeviceStorage* deviceStorage = db::DeviceStorage::instance();
 
-    db::DeviceModel* device = deviceStorage->openDevice( deviceId_ );
+//    db::DeviceModel* device = deviceStorage->openDevice( deviceId_ );
 
-    QString url = "html/";
-    switch(device->type()){
-    case DEVICE_NBJT:
-    case DEVICE_PBJT:
-        url.append("bjt.html"); break;
-    case DEVICE_PFET:
-    case DEVICE_NFET:
-        url.append("jfet.html"); break;
-    case DEVICE_PMOS:
-    case DEVICE_NMOS:
-        url.append("mosfet.html"); break;
-    case DEVICE_CAPACITOR:
-    case DEVICE_RESISTOR:
-    case DEVICE_DIODE:
-        Q_ASSERT(false); break;
-    case DEVICE_VSOURCE:
-    case DEVICE_ISOURCE:
-        Q_ASSERT(false); break;
-    }
+//    QString url = "html/";
+//    switch(device->type()){
+//    case DEVICE_NBJT:
+//    case DEVICE_PBJT:
+//        url.append("bjt.html"); break;
+//    case DEVICE_PFET:
+//    case DEVICE_NFET:
+//        url.append("jfet.html"); break;
+//    case DEVICE_PMOS:
+//    case DEVICE_NMOS:
+//        url.append("mosfet.html"); break;
+//    case DEVICE_CAPACITOR:
+//    case DEVICE_RESISTOR:
+//    case DEVICE_DIODE:
+//        Q_ASSERT(false); break;
+//    case DEVICE_VSOURCE:
+//    case DEVICE_ISOURCE:
+//        Q_ASSERT(false); break;
+//    }
 
-    ui->webView->load( QUrl(url) );
-    ui->webView->setFocus();
+//    ui->webView->load( QUrl(url) );
+//    ui->webView->setFocus();
 
-    updateAnalysisList();
-    connect(ui->addButton,SIGNAL(clicked()),
-                     this,SLOT(clickedCreateAnalysis()));
-    connect(ui->openButton,SIGNAL(clicked()),
-                      this,SLOT(clickedOpenAnalysis()));
-    connect(ui->webView,SIGNAL(loadFinished(bool)),
-                   this,SLOT(loadFinished(bool)));
-    connect(ui->analysisItemsListView,SIGNAL(doubleClicked(QModelIndex)),
-                                 this,SLOT(selectedAnalysisItem(QModelIndex)));
+//    updateAnalysisList();
+//    connect(ui->addButton,SIGNAL(clicked()),
+//                     this,SLOT(clickedCreateAnalysis()));
+//    connect(ui->openButton,SIGNAL(clicked()),
+//                      this,SLOT(clickedOpenAnalysis()));
+//    connect(ui->webView,SIGNAL(loadFinished(bool)),
+//                   this,SLOT(loadFinished(bool)));
+//    connect(ui->analysisItemsListView,SIGNAL(doubleClicked(QModelIndex)),
+//                                 this,SLOT(selectedAnalysisItem(QModelIndex)));
 
 }
 
