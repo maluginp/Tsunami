@@ -52,6 +52,19 @@ AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
 
     changedAnalysisType( ui->analysisTypeComboBox->currentIndex() );
 
+    // Типы источников
+    QVariantMap modeSources;
+    modeSources.insert(tr("Ground"),"ground");
+    modeSources.insert(tr("CONST"),"const");
+    modeSources.insert(tr("PULSE"),"pulse");
+    modeSources.insert(tr("SIN"),"sin");
+    modeSources.insert(tr("EXP"),"exp");
+
+    foreach( QVariant modeSource, modeSources.values() ){
+        ui->sourceModeComboBox->addItem( modeSources.key(modeSource),modeSource);
+    }
+
+
 //    connect(ui->webView,SIGNAL(loadStarted()),t   his,SLOT(loadStarted()));
 //    loadStarted();
 //    connect(ui->webView->page()->mainFrame(),SIGNAL(javaScriptWindowObjectCleared()),this,SLOT(loadStarted()) );
