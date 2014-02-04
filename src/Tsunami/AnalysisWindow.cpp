@@ -15,6 +15,8 @@ AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
     deviceId_(deviceId)
 {
     ui->setupUi(this);
+    // Test data
+    nodes_ << "D" << "G" << "S" << "B";
 
 
     api_ = new APIObject(deviceId_);
@@ -22,9 +24,34 @@ AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
 //    listAnalysis_ = new gui::ListItemView();
 //    ui->analysisItemsListView->setModel( listAnalysis_ );
 
+    // Заполняем типы анализов
     ui->analysisTypeComboBox->addItem( "AC", "ac" );
     ui->analysisTypeComboBox->addItem( "DC", "dc" );
     ui->analysisTypeComboBox->addItem( "TRAN", "tran" );
+
+    foreach(QString node, nodes_){
+        ui->sourceFirstNodeComboBox->addItem( node, node );
+        ui->sourceSecondNodeComboBox->addItem( node, node);
+    }
+
+    QVariantMap modes;
+    modes.insert(tr("Current"),"current");
+    modes.insert(tr("Voltage"),"voltage");
+
+    foreach(QVariant mode,modes.values()){
+        ui->sourceFirstTypeComboBox->addItem( modes.key(mode), mode);
+        ui->sourceSecondTypeComboBox->addItem( modes.key(mode), mode);
+    }
+
+    ui->sourceFirstStartLineEdit->setText("0.0");
+    ui->sourceSecondStartLineEdit->setText("0.0");
+    ui->sourceFirstStepLineEdit->setText("1.0");
+    ui->sourceSecondStepLineEdit->setText("1.0");
+    ui->sourceFirstStopLineEdit->setText("10.0");
+    ui->sourceSecondStopLineEdit->setText("10.0");
+
+    changedAnalysisType( ui->analysisTypeComboBox->currentIndex() );
+
 //    connect(ui->webView,SIGNAL(loadStarted()),t   his,SLOT(loadStarted()));
 //    loadStarted();
 //    connect(ui->webView->page()->mainFrame(),SIGNAL(javaScriptWindowObjectCleared()),this,SLOT(loadStarted()) );
@@ -66,6 +93,12 @@ AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
 //    connect(ui->analysisItemsListView,SIGNAL(doubleClicked(QModelIndex)),
 //                                 this,SLOT(selectedAnalysisItem(QModelIndex)));
 
+
+    // -- new
+    connect(ui->analysisTypeComboBox,SIGNAL(currentIndexChanged(int)),
+            this,SLOT(changedAnalysisType(int)));
+    connect(ui->sourceSecondEnable,SIGNAL(toggled(bool)),
+            this,SLOT(checkedSourceSecondEnable(bool)));
 }
 
 AnalysisWindow::~AnalysisWindow() {
@@ -191,6 +224,41 @@ void AnalysisWindow::loadStarted() {
 
 void AnalysisWindow::loadFinished(bool) {
     emit pageLoadFinished();
+}
+/**
+ * @brief Обработчик изменения типа анализа
+ * @param index
+ */
+void AnalysisWindow::changedAnalysisType(int index) {
+
+    QString analysis = ui->analysisTypeComboBox->itemData( index ).toString();
+
+    if(analysis == "dc"){
+        ui->sourceFirstTypeComboBox->setEnabled(true);
+        ui->sourceFirstNodeComboBox->setEnabled(true);
+
+        ui->sourceSecondEnable->setEnabled(true);
+        if(ui->sourceSecondEnable->isChecked()){
+            ui->sourceSecondGroup->setEnabled(true);
+        }else{
+            ui->sourceSecondGroup->setEnabled(false);
+        }
+
+    } else if(analysis == "ac" || analysis == "tran"){
+        ui->sourceFirstTypeComboBox->setEnabled(false);
+        ui->sourceFirstNodeComboBox->setEnabled(false);
+        ui->sourceSecondEnable->setEnabled(false);
+        ui->sourceSecondGroup->setEnabled(false);
+
+    }
+
+}
+/**
+ * @brief Обработчик checkbox включить/выключить дополнительный источник
+ * @param checked
+ */
+void AnalysisWindow::checkedSourceSecondEnable(bool checked) {
+    ui->sourceSecondGroup->setEnabled(checked);
 }
 
 }

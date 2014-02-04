@@ -32,6 +32,8 @@ private:
     db::AnalysisModel* currentAnalysis_;
 
     APIObject* api_;
+
+    QStringList nodes_;
 private slots:
     void clickedOpenAnalysis();
     void clickedSaveAnalysis(const QList<tsunami::Source>& sources);
@@ -40,6 +42,9 @@ private slots:
     void selectedAnalysisItem( const QModelIndex& index );
     void loadStarted();
     void loadFinished(bool);
+    // -- new
+    void changedAnalysisType(int index);
+    void checkedSourceSecondEnable(bool checked);
 signals:
     void pageLoadFinished();
     void updatedDataBase();
