@@ -29,10 +29,13 @@ AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
     ui->analysisTypeComboBox->addItem( "DC", "dc" );
     ui->analysisTypeComboBox->addItem( "TRAN", "tran" );
 
+    ui->sourceNodeComboBox->addItem("","");
     foreach(QString node, nodes_){
         ui->sourceFirstNodeComboBox->addItem( node, node );
         ui->sourceSecondNodeComboBox->addItem( node, node);
+        ui->sourceNodeComboBox->addItem(node,node);
     }
+    showSourceNode("");
 
     QVariantMap modes;
     modes.insert(tr("Current"),"current");
@@ -112,6 +115,8 @@ AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
             this,SLOT(changedAnalysisType(int)));
     connect(ui->sourceSecondEnable,SIGNAL(toggled(bool)),
             this,SLOT(checkedSourceSecondEnable(bool)));
+    connect(ui->sourceNodeComboBox,SIGNAL(currentIndexChanged(int)),
+            this,SLOT(changedSourceNode(int)));
 }
 
 AnalysisWindow::~AnalysisWindow() {
@@ -128,6 +133,28 @@ void AnalysisWindow::updateAnalysisList() {
     }
 
     emit updatedDataBase();
+}
+
+/**
+ * @brief Отобразить настройки источника для узла
+ * @param node
+ */
+void AnalysisWindow::showSourceNode(const QString &node) {
+    if(node.isEmpty()){
+        ui->sourceModeComboBox->setEnabled(false);
+        ui->sourceConfigurationTableView->setEnabled(false);
+        return;
+    }
+
+    if(!ui->sourceModeComboBox->isEnabled()){
+        ui->sourceModeComboBox->setEnabled(true);
+    }
+    if(!ui->sourceConfigurationTableView->isEnabled()){
+       ui->sourceConfigurationTableView->setEnabled(true);
+    }
+
+
+
 }
 
 void AnalysisWindow::clickedOpenAnalysis() {
@@ -265,6 +292,14 @@ void AnalysisWindow::changedAnalysisType(int index) {
 
     }
 
+}
+/**
+ * @brief Обработчик изменения узла источника
+ * @param index
+ */
+void AnalysisWindow::changedSourceNode(int index) {
+    QString node = ui->sourceNodeComboBox->itemData(index).toString();
+    showSourceNode(node);
 }
 /**
  * @brief Обработчик checkbox включить/выключить дополнительный источник

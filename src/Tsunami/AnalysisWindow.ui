@@ -84,7 +84,7 @@
     <property name="title">
      <string>Настройка источника</string>
     </property>
-    <widget class="QTableView" name="tableView">
+    <widget class="QTableView" name="sourceConfigurationTableView">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -97,8 +97,8 @@
     <widget class="QComboBox" name="sourceModeComboBox">
      <property name="geometry">
       <rect>
-       <x>73</x>
-       <y>31</y>
+       <x>172</x>
+       <y>30</y>
        <width>69</width>
        <height>20</height>
       </rect>
@@ -107,8 +107,8 @@
     <widget class="QLabel" name="label_16">
      <property name="geometry">
       <rect>
-       <x>31</x>
-       <y>31</y>
+       <x>130</x>
+       <y>30</y>
        <width>36</width>
        <height>16</height>
       </rect>
@@ -117,17 +117,41 @@
       <string>Режим:</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="saveSourceConfigurationButton">
      <property name="geometry">
       <rect>
-       <x>170</x>
-       <y>320</y>
-       <width>75</width>
-       <height>23</height>
+       <x>144</x>
+       <y>302</y>
+       <width>101</width>
+       <height>41</height>
       </rect>
      </property>
      <property name="text">
-      <string>Сохранить</string>
+      <string>Сохранить
+настройку</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="sourceNodeComboBox">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>30</y>
+       <width>41</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_17">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>30</y>
+       <width>36</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Узел</string>
      </property>
     </widget>
    </widget>

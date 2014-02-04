@@ -23,6 +23,8 @@ public:
     void openAnalysis(int analysisId);
 private:
     void updateAnalysisList();
+    void showSourceNode(const QString& node);
+
 
     Ui::AnalysisWindow *ui;
     gui::ListItemView* listAnalysis_;
@@ -44,6 +46,7 @@ private slots:
     void loadFinished(bool);
     // -- new
     void changedAnalysisType(int index);
+    void changedSourceNode(int index);
     void checkedSourceSecondEnable(bool checked);
 signals:
     void pageLoadFinished();
