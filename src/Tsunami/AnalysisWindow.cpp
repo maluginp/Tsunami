@@ -12,7 +12,8 @@ AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::AnalysisWindow),
     listAnalysis_(0),api_(0),
-    deviceId_(deviceId)
+    deviceId_(deviceId),
+    sourceConfigurationView_(0)
 {
     ui->setupUi(this);
     // Test data
@@ -68,6 +69,9 @@ AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
     }
 
 
+    sourceConfigurationView_ = new gui::KeyValueView();
+    ui->sourceConfigurationTableView->setModel( sourceConfigurationView_ );
+
 //    connect(ui->webView,SIGNAL(loadStarted()),t   his,SLOT(loadStarted()));
 //    loadStarted();
 //    connect(ui->webView->page()->mainFrame(),SIGNAL(javaScriptWindowObjectCleared()),this,SLOT(loadStarted()) );
@@ -117,6 +121,8 @@ AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
             this,SLOT(checkedSourceSecondEnable(bool)));
     connect(ui->sourceNodeComboBox,SIGNAL(currentIndexChanged(int)),
             this,SLOT(changedSourceNode(int)));
+    connect(ui->sourceModeComboBox,SIGNAL(currentIndexChanged(int)),
+            this,SLOT(changedSourceType(int)));
 }
 
 AnalysisWindow::~AnalysisWindow() {
@@ -156,6 +162,78 @@ void AnalysisWindow::showSourceNode(const QString &node) {
 
 
 }
+
+void AnalysisWindow::showSourceGround(const QString &node) {
+    sourceConfigurationView_->clear();
+    ui->sourceConfigurationTableView->setEnabled(false);
+
+}
+
+void AnalysisWindow::showSourceConst(const QString &node) {
+    ui->sourceConfigurationTableView->setEnabled(true);
+    sourceConfigurationView_->clear();
+    sourceConfigurationView_->addPair("constant",QVariant(""),
+                                      gui::KeyValuePair::TYPE_TEXT,
+                                      tr("Constant"));
+
+    //    sourceConfigurationView_->fillDelegates( ui->sourceConfigurationTableView );
+}
+
+void AnalysisWindow::showSourcePulse(const QString &node) {
+    ui->sourceConfigurationTableView->setEnabled(true);
+    sourceConfigurationView_->clear();
+
+    sourceConfigurationView_->addPair("vinitial",QVariant(""),
+                                      gui::KeyValuePair::TYPE_TEXT,
+                                      tr("V Initial"));
+    sourceConfigurationView_->addPair("von",QVariant(""),
+                                      gui::KeyValuePair::TYPE_TEXT,
+                                      tr("V On"));
+    sourceConfigurationView_->addPair("tdelay",QVariant(""),
+                                      gui::KeyValuePair::TYPE_TEXT,
+                                      tr("T Delay"));
+    sourceConfigurationView_->addPair("trise",QVariant(""),
+                                      gui::KeyValuePair::TYPE_TEXT,
+                                      tr("T Rise"));
+    sourceConfigurationView_->addPair("tfall",QVariant(""),
+                                      gui::KeyValuePair::TYPE_TEXT,
+                                      tr("T Fall"));
+    sourceConfigurationView_->addPair("ton",QVariant(""),
+                                      gui::KeyValuePair::TYPE_TEXT,
+                                      tr("T on"));
+    sourceConfigurationView_->addPair("tperiod",QVariant(""),
+                                      gui::KeyValuePair::TYPE_TEXT,
+                                      tr("T Period"));
+    sourceConfigurationView_->addPair("ncycles",QVariant(""),
+                                      gui::KeyValuePair::TYPE_TEXT,
+                                      tr("N cycles"));
+}
+
+void AnalysisWindow::showSourceExp(const QString &node) {
+    ui->sourceConfigurationTableView->setEnabled(true);
+    sourceConfigurationView_->clear();
+
+    sourceConfigurationView_->addPair("vinitial",QVariant(""),
+                                      gui::KeyValuePair::TYPE_TEXT,
+                                      tr("V initial"));
+    sourceConfigurationView_->addPair("vpulsed",QVariant(""),
+                                      gui::KeyValuePair::TYPE_TEXT,
+                                      tr("V pulsed"));
+    sourceConfigurationView_->addPair("rise_delay",QVariant(""),
+                                      gui::KeyValuePair::TYPE_TEXT,
+                                      tr("Rise delay"));
+    sourceConfigurationView_->addPair("rise_tau",QVariant(""),
+                                      gui::KeyValuePair::TYPE_TEXT,
+                                      tr("Rise tau"));
+    sourceConfigurationView_->addPair("fall_delay",QVariant(""),
+                                      gui::KeyValuePair::TYPE_TEXT,
+                                      tr("Fall delay"));
+    sourceConfigurationView_->addPair("fall_tau",QVariant(""),
+                                      gui::KeyValuePair::TYPE_TEXT,
+                                      tr("Fall tau"));
+
+}
+
 
 void AnalysisWindow::clickedOpenAnalysis() {
     if( analysisId_ != -1 ){
@@ -307,6 +385,21 @@ void AnalysisWindow::changedSourceNode(int index) {
  */
 void AnalysisWindow::checkedSourceSecondEnable(bool checked) {
     ui->sourceSecondGroup->setEnabled(checked);
+}
+
+void AnalysisWindow::changedSourceType(int index) {
+    QString type = ui->sourceModeComboBox->itemData(index).toString();
+    int nodeComboBoxId = ui->sourceNodeComboBox->currentIndex();
+    QString node = ui->sourceNodeComboBox->itemData(nodeComboBoxId).toString();
+    if(type == "ground"){
+        showSourceGround( node );
+    } else if(type == "const"){
+        showSourceConst(node);
+    } else if(type == "pulse"){
+        showSourcePulse(node);
+    } else if(type == "exp"){
+        showSourceExp(node);
+    }
 }
 
 }

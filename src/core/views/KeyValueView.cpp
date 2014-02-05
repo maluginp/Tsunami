@@ -170,6 +170,12 @@ const KeyValuePair &KeyValueView::getPair(const QString &key) const {
      return getPair(foundPair);
 }
 
+void KeyValueView::clear() {
+    beginResetModel();
+    pairs_.clear();
+    endResetModel();
+}
+
 void KeyValueView::fillDelegates(QAbstractItemView *view) {
     if(view->itemDelegate()){
         view->itemDelegate()->deleteLater();

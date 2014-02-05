@@ -74,6 +74,8 @@ public:
     const KeyValuePair& getPair( const int& index ) const;
     const KeyValuePair& getPair(const QString& key) const;
 
+    void clear();
+
     void fillDelegates( QAbstractItemView* view);
 signals:    
 public slots:

@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QModelIndex>
 #include "views/ListItemView.h"
+#include "views/KeyValueView.h"
 #include "webkit/APIObject.h"
 namespace Ui {
 class AnalysisWindow;
@@ -24,7 +25,10 @@ public:
 private:
     void updateAnalysisList();
     void showSourceNode(const QString& node);
-
+    void showSourceGround(const QString& node);
+    void showSourceConst(const QString& node);
+    void showSourcePulse(const QString& node);
+    void showSourceExp(const QString& node);
 
     Ui::AnalysisWindow *ui;
     gui::ListItemView* listAnalysis_;
@@ -32,6 +36,8 @@ private:
     int deviceId_;
     int analysisId_;
     db::AnalysisModel* currentAnalysis_;
+
+    gui::KeyValueView* sourceConfigurationView_;
 
     APIObject* api_;
 
@@ -48,6 +54,8 @@ private slots:
     void changedAnalysisType(int index);
     void changedSourceNode(int index);
     void checkedSourceSecondEnable(bool checked);
+    void changedSourceType(int index);
+
 signals:
     void pageLoadFinished();
     void updatedDataBase();
