@@ -378,6 +378,9 @@ void AnalysisWindow::changedAnalysisType(int index) {
 void AnalysisWindow::changedSourceNode(int index) {
     QString node = ui->sourceNodeComboBox->itemData(index).toString();
     showSourceNode(node);
+
+    int sourceTypeId = ui->sourceModeComboBox->currentIndex();
+    changedSourceType( sourceTypeId );
 }
 /**
  * @brief Обработчик checkbox включить/выключить дополнительный источник
