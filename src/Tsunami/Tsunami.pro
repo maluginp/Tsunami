@@ -40,7 +40,9 @@ SOURCES += main.cpp\
     OpenDeviceDialog.cpp \
     OpenLibraryDialog.cpp \
     PlotDataWindow.cpp \
-    PrepareExtractorDialog.cpp
+    PrepareExtractorDialog.cpp \
+    sources/IAnalysisSource.cpp \
+    sources/AnalysisVoltagePulse.cpp
 
 HEADERS  += \
     OpenMeasureDialog.h \
@@ -60,7 +62,9 @@ HEADERS  += \
     OpenDeviceDialog.h \
     OpenLibraryDialog.h \
     PlotDataWindow.h \
-    PrepareExtractorDialog.h
+    PrepareExtractorDialog.h \
+    sources/IAnalysisSource.h \
+    sources/AnalysisVoltagePulse.h
 
 FORMS    += DeviceWindow.ui \
     OpenDeviceDialog.ui \

@@ -28,7 +28,7 @@ QWidget *KeyValueDelegate::createEditor(QWidget *parent, const QStyleOptionViewI
             QVariantMap items = pair.data.toMap();
 
             foreach(QString key,items.keys()){
-                editor->addItem( key, items.value( key ) );
+                editor->addItem(items.value(key).toString(), key);
             }
             return editor;
         }else if(pair.type == KeyValuePair::TYPE_CHECKBOX){
@@ -53,8 +53,8 @@ void KeyValueDelegate::setEditorData(QWidget *editor, const QModelIndex &index) 
 
         if(pair.type == KeyValuePair::TYPE_LIST){
             QComboBox *comboBox = static_cast<QComboBox*>(editor);
-            QVariant value  = index.model()->data(index, Qt::EditRole);
-            comboBox->setCurrentIndex( itemIndex(pair,value) );
+            QString key = index.model()->data(index, Qt::UserRole).toString();
+            comboBox->setCurrentIndex( itemIndex(pair,key) );
             return;
         }else if(pair.type == KeyValuePair::TYPE_CHECKBOX){
             bool value = index.model()->data(index, Qt::DisplayRole).toBool();
@@ -74,14 +74,20 @@ void KeyValueDelegate::setEditorData(QWidget *editor, const QModelIndex &index) 
 }
 
 void KeyValueDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const {
-    if( index.column() == 1 && index.row() < pairs_.size() ){
+    if(index.column() == 1 && index.row() < pairs_.size()) {
         KeyValuePair pair = pairs_[index.row()];
-        if(pair.type == KeyValuePair::TYPE_LIST){
-
+        if (pair.type == KeyValuePair::TYPE_LIST) {
             QComboBox *comboBox = static_cast<QComboBox*>(editor);
-            model->setData(index, comboBox->itemData( comboBox->currentIndex(), Qt::UserRole ), Qt::DisplayRole );
+            QVariant key   = comboBox->itemData(comboBox->currentIndex());
+            QVariant value = comboBox->itemText(comboBox->currentIndex());
+
+            qDebug() << QString("KeyValueDelegate %1=%2").arg(key.toString())
+                        .arg(value.toString());
+
+            model->setData(index,key);
+            model->setData(index,value, Qt::DisplayRole );
             return;
-        }else if(pair.type == KeyValuePair::TYPE_CHECKBOX){
+        } else if(pair.type == KeyValuePair::TYPE_CHECKBOX) {
             QCheckBox *checkBox = static_cast<QCheckBox*>(editor);
             int value = 0;
             if(checkBox->checkState() == Qt::Checked){
@@ -198,15 +204,19 @@ bool KeyValueDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, con
     return QItemDelegate::editorEvent(event,model,option,index);
 }
 
-int KeyValueDelegate::itemIndex(const KeyValuePair &pair, const QVariant &value) const {
+int KeyValueDelegate::itemIndex(const KeyValuePair &pair, const QString &foundKey) const {
     if(pair.type == KeyValuePair::TYPE_LIST){
         int index=0;
         QVariantMap items = pair.data.toMap();
-        foreach(QVariant item, items.values()){
-            if(item==value){
+        foreach(QString key, items.keys()){
+            if(foundKey.compare(key,Qt::CaseInsensitive)==0){
                 return index;
             }
             ++index;
+//            if(item==value){
+//                return index;
+//            }
+//            ++index;
         }
 
     }

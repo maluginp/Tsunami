@@ -26,21 +26,22 @@ public:
     void external( bool external );
     void path( const QString& path );
 
-    bool updateParameters(const QString& library, QList<db::ParameterModel> parameters );
-
     virtual bool simulate() = 0;
     virtual db::MeasureModel *simulatedData();
 
 protected:
     virtual bool exec(QByteArray &data,const QStringList& arguments = QStringList());
-    virtual QByteArray generateNetListModels() = 0;
-    virtual QByteArray generateNetList() = 0;
-    virtual QByteArray generateNetPrints() = 0;
+
+    QByteArray netlist();
     QString randomName(int num);
 
 
     db::MeasureModel* simulated_;
 private:
+    QByteArray netListModels();
+    QByteArray netListPrints();
+    QByteArray netListAnalysis();
+
     bool external_;
     QString path_;
     Circuit* circuit_;

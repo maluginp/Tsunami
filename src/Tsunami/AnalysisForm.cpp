@@ -223,42 +223,42 @@ void AnalysisForm::selectedItemOutput(const QModelIndex &index) {
 }
 
 void AnalysisForm::showSource(const Source &source) {
-    gui::KeyValueView* items;
-    if(source.direction() == SOURCE_DIRECTION_INPUT){
-        items = itemValueInputView_;
-        if(source.method() == SOURCE_METHOD_LINEAR){
-            items->setPairs( ITEM_TYPE_LINEAR, nTypeLinear_ );
+//    gui::KeyValueView* items;
+//    if(source.direction() == SOURCE_DIRECTION_INPUT){
+//        items = itemValueInputView_;
+//        if(source.method() == SOURCE_METHOD_LINEAR){
+//            items->setPairs( ITEM_TYPE_LINEAR, nTypeLinear_ );
 
-            items->setValue( "number", source.configuration("number") );
-            items->setValue("node",source.node());
-            items->setValue("mode",source.modeJson());
-            items->setValue("method",source.methodJson());
-            items->setValue("start", source.configuration("start"));
-            items->setValue("stop",source.configuration("stop"));
-            items->setValue("step",source.configuration("step"));
+//            items->setValue( "number", source.configuration("number") );
+//            items->setValue("node",source.node());
+//            items->setValue("mode",source.modeJson());
+//            items->setValue("method",source.methodJson());
+//            items->setValue("start", source.configuration("start"));
+//            items->setValue("stop",source.configuration("stop"));
+//            items->setValue("step",source.configuration("step"));
 
-        }else if(source.method() == SOURCE_METHOD_CONST){
+//        }else if(source.method() == SOURCE_METHOD_CONST){
 
-            items->setPairs( ITEM_TYPE_CONST, nTypeConst_ );
-            items->setValue("node",source.node());
-            items->setValue("mode",source.modeJson());
-            items->setValue("const", source.configuration("const"));
+//            items->setPairs( ITEM_TYPE_CONST, nTypeConst_ );
+//            items->setValue("node",source.node());
+//            items->setValue("mode",source.modeJson());
+//            items->setValue("const", source.configuration("const"));
 
-        }else if(source.method() == SOURCE_METHOD_LIST){
-            items->setPairs( ITEM_TYPE_LIST, nTypeList_);
-            items->setValue( "number", source.configuration("number") );
-            items->setValue("node",source.node());
-            items->setValue("mode",source.modeJson());
-            items->setValue("method",source.methodJson());
-            items->setValue("list", source.configuration("list"));
-        }
+//        }else if(source.method() == SOURCE_METHOD_LIST){
+//            items->setPairs( ITEM_TYPE_LIST, nTypeList_);
+//            items->setValue( "number", source.configuration("number") );
+//            items->setValue("node",source.node());
+//            items->setValue("mode",source.modeJson());
+//            items->setValue("method",source.methodJson());
+//            items->setValue("list", source.configuration("list"));
+//        }
 
 
-    }else if(source.direction() == SOURCE_DIRECTION_OUTPUT){
-        itemValueOutputView_->setPairs( ITEM_TYPE_OUTPUT, nTypeOutput_ );
-    }else{
-        Q_ASSERT(false);
-    }
+//    }else if(source.direction() == SOURCE_DIRECTION_OUTPUT){
+//        itemValueOutputView_->setPairs( ITEM_TYPE_OUTPUT, nTypeOutput_ );
+//    }else{
+//        Q_ASSERT(false);
+//    }
 
 
 }

@@ -7,6 +7,7 @@ namespace spice{
 
 class TSUNAMI_EXPORT GraphNode {
     friend class Circuit;
+
 public:
     GraphNode(const QString& name);
     void link( GraphNode* node );
@@ -20,7 +21,7 @@ public:
     void name(const QString& name);
     const int& id() const;
 
-
+    void setNode(int index,GraphNode* node);
 private:
     QString name_;
     QVector<GraphNode*> nodes_;

@@ -6,6 +6,9 @@
 #include "views/ListItemView.h"
 #include "views/KeyValueView.h"
 #include "webkit/APIObject.h"
+
+#include "sources/AnalysisVoltagePulse.h"
+
 namespace Ui {
 class AnalysisWindow;
 }

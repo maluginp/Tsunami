@@ -54,6 +54,11 @@ const int &GraphNode::id() const {
     return id_;
 }
 
+void GraphNode::setNode(int index, GraphNode *node) {
+    Q_ASSERT(index < nodes_.size());
+    nodes_[index] = node;
+}
+
 
 
 

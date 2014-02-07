@@ -63,23 +63,23 @@ double Extractor::functionError() {
 //    Q_ASSERT(optimize_  != NULL);
     Q_ASSERT(dataset_   != NULL);
 
-    dataset_->begin();
-    while(dataset_->isNext()){
-        const db::MeasureModel* measure = dataset_->next();
-        spice::Circuit *circuit = spice::Circuit::createCircuitDevice( type_,
-                                                                       measure->sources() );
+//    dataset_->begin();
+//    while(dataset_->isNext()){
+//        const db::MeasureModel* measure = dataset_->next();
+//        spice::Circuit *circuit = spice::Circuit::createCircuitDevice( type_,
+//                                                                       measure->sources() );
 
-        spice::SpiceModel* model = new spice::SpiceModel( "bjt" ,type_);
-        model->setLibrary( library_ );
+//        spice::SpiceModel* model = new spice::SpiceModel( "bjt" ,type_);
+//        model->setLibrary( library_ );
 
 
-        circuit->setSpiceModel( type_, model );
-        simulator_->setCircuit( circuit );
-        funcError += computeError(measure);
+//        circuit->setSpiceModel( type_, model );
+//        simulator_->setCircuit( circuit );
+//        funcError += computeError(measure);
 
-        delete circuit;
-        simulator_->setCircuit(NULL);
-    }
+//        delete circuit;
+//        simulator_->setCircuit(NULL);
+//    }
 
     return funcError;
 }

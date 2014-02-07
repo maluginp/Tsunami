@@ -21,6 +21,8 @@ enum SourceDirection{
     SOURCE_DIRECTION_OUTPUT
 };
 
+
+
 class TSUNAMI_EXPORT Source{
 public:
 
@@ -68,6 +70,10 @@ public:
 
     QString name( bool upper = false );
     QString title( const QString& format = QString() ) const;
+
+    bool isGnd()        { return mode_ == SOURCE_MODE_GND; }
+    bool isCurrent()    { return mode_ == SOURCE_MODE_CURRENT; }
+    bool isVoltage()    { return mode_ == SOURCE_MODE_VOLTAGE; }
 private:
     SourceMode mode_;
     SourceMethod method_;
@@ -75,6 +81,16 @@ private:
     QString node_;
     SourceDirection direction_;
 };
+
+class TSUNAMI_EXPORT SourceManager{
+public:
+    QList<Source*> inputs();
+    QList<Source*> outputs();
+    const Source* inputByNode(const QString& name);
+private:
+    QList<Source *> sources_;
+};
+
 }
 
 #endif // SOURCE_H

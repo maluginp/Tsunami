@@ -18,7 +18,7 @@ public:
     bool editorEvent(QEvent *event, QAbstractItemModel *model,const QStyleOptionViewItem &option,const QModelIndex &index);
 
 private:
-     int itemIndex(const KeyValuePair& pair, const QVariant& value ) const;
+     int itemIndex(const KeyValuePair& pair, const QString &foundKey ) const;
 
 
     QList<KeyValuePair> pairs_;

@@ -45,6 +45,7 @@ AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
     foreach(QVariant mode,modes.values()){
         ui->sourceFirstTypeComboBox->addItem( modes.key(mode), mode);
         ui->sourceSecondTypeComboBox->addItem( modes.key(mode), mode);
+        ui->sourceTypeComboBox->addItem( modes.key(mode), mode );
     }
 
     ui->sourceFirstStartLineEdit->setText("0.0");
@@ -71,6 +72,7 @@ AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
 
     sourceConfigurationView_ = new gui::KeyValueView();
     ui->sourceConfigurationTableView->setModel( sourceConfigurationView_ );
+
 
 //    connect(ui->webView,SIGNAL(loadStarted()),t   his,SLOT(loadStarted()));
 //    loadStarted();
@@ -183,30 +185,15 @@ void AnalysisWindow::showSourcePulse(const QString &node) {
     ui->sourceConfigurationTableView->setEnabled(true);
     sourceConfigurationView_->clear();
 
-    sourceConfigurationView_->addPair("vinitial",QVariant(""),
-                                      gui::KeyValuePair::TYPE_TEXT,
-                                      tr("V Initial"));
-    sourceConfigurationView_->addPair("von",QVariant(""),
-                                      gui::KeyValuePair::TYPE_TEXT,
-                                      tr("V On"));
-    sourceConfigurationView_->addPair("tdelay",QVariant(""),
-                                      gui::KeyValuePair::TYPE_TEXT,
-                                      tr("T Delay"));
-    sourceConfigurationView_->addPair("trise",QVariant(""),
-                                      gui::KeyValuePair::TYPE_TEXT,
-                                      tr("T Rise"));
-    sourceConfigurationView_->addPair("tfall",QVariant(""),
-                                      gui::KeyValuePair::TYPE_TEXT,
-                                      tr("T Fall"));
-    sourceConfigurationView_->addPair("ton",QVariant(""),
-                                      gui::KeyValuePair::TYPE_TEXT,
-                                      tr("T on"));
-    sourceConfigurationView_->addPair("tperiod",QVariant(""),
-                                      gui::KeyValuePair::TYPE_TEXT,
-                                      tr("T Period"));
-    sourceConfigurationView_->addPair("ncycles",QVariant(""),
-                                      gui::KeyValuePair::TYPE_TEXT,
-                                      tr("N cycles"));
+    int typeId = ui->sourceTypeComboBox->currentIndex();
+    QString type = ui->sourceTypeComboBox->itemData( typeId ).toString();
+    if(type == "voltage"){
+        AnalysisVoltagePulse source;
+        sourceConfigurationView_->setPairs( source.pairs() );
+    } else if(type == "current") {
+
+    }
+    sourceConfigurationView_->fillDelegates( ui->sourceConfigurationTableView );
 }
 
 void AnalysisWindow::showSourceExp(const QString &node) {

@@ -53,14 +53,25 @@ int KeyValueView::columnCount(const QModelIndex &parent) const {
 QVariant KeyValueView::data(const QModelIndex &index, int role) const {
     KeyValuePair pair;
 
-    if(role == Qt::EditRole || role == Qt::DisplayRole){
+    if(role == Qt::DisplayRole){
         pair = getPair( index.row() );
         if(index.column() == 0){
             return QVariant( pair.title );
-        }else if(index.column() == 1){
+        }else if(index.column() == 1) {
             return pair.value;
         }
     }
+
+    if(role == Qt::UserRole || role == Qt::EditRole) {
+        pair = getPair( index.row() );
+        if(index.column() == 1){
+
+//            if(pair.type == gui::KeyValuePair::TYPE_LIST){
+                return pair.value;
+//            }
+        }
+    }
+
     return QVariant();
 }
 
@@ -72,14 +83,19 @@ Qt::ItemFlags KeyValueView::flags(const QModelIndex &index) const {
 }
 
 bool KeyValueView::setData(const QModelIndex &index, const QVariant &value, int role) {
-    if( role == Qt::EditRole && index.column() == 1 ){
-        pairs_[index.row()].value = value;
+    gui::KeyValuePair pair = pairs_[index.row()];
+    if((role == Qt::EditRole || role == Qt::UserRole) && index.column() == 1){
+        if(pair.type != gui::KeyValuePair::TYPE_LIST){
+            pairs_[index.row()].value = value;
+        }else{
+            pairs_[index.row()].key   = value.toString();
+        }
         return true;
     }
-    if( role == Qt::DisplayRole && index.column() == 1){
-        pairs_[index.row()].value = value ;
+    if(role == Qt::DisplayRole && index.column() == 1) {
+        pairs_[index.row()].value = value;
     }
-    emit dataChanged( index, index );
+    emit dataChanged(index, index);
 
     return false;
 }
@@ -95,15 +111,10 @@ QVariant KeyValueView::headerData(int section, Qt::Orientation orientation, int 
     return QVariant();
 }
 
-void KeyValueView::setPairs(const KeyValuePair *pairs, const int &num) {
+void KeyValueView::setPairs(const KeyValuePairs& pairs) {
     beginResetModel();
-
-    pairs_.clear();
-    for(int i=0; i < num; ++i){
-        addPair( pairs[i] );
-    }
+    pairs_ = pairs;
     endResetModel();
-//    reset()
 }
 
 void KeyValueView::addPair(const QString &key, const QVariant &value, KeyValuePair::ValueType type, const QString &title) {
@@ -130,28 +141,6 @@ void KeyValueView::setValue(const QString &key, const QVariant &value) {
     }
     return;
 }
-
-void KeyValueView::setPairData(const QString &key, const QVariant &data){
-    int nPairs = pairs_.size();
-    for(int i=0; i < nPairs; ++i){
-        if( pairs_[i].key.compare(key,Qt::CaseInsensitive) == 0){
-            pairs_[i].data = data;
-        }
-    }
-    return;
-}
-
-void KeyValueView::setPair(const QString &key, const KeyValuePair &pair) {
-    int nPairs = pairs_.size();
-    for(int i=0; i < nPairs; ++i){
-        if( pairs_[i].key.compare(key,Qt::CaseInsensitive) == 0){
-            pairs_[i] = pair;
-            break;
-        }
-    }
-    return;
-}
-
 
 const KeyValuePair &KeyValueView::getPair(const int &index) const {
     Q_ASSERT( index <= pairs_.size() );

@@ -88,9 +88,9 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>60</y>
+       <y>90</y>
        <width>241</width>
-       <height>331</height>
+       <height>301</height>
       </rect>
      </property>
      <attribute name="horizontalHeaderStretchLastSection">
@@ -155,6 +155,29 @@
      </property>
      <property name="text">
       <string>Узел</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_18">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>60</y>
+       <width>36</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Режим:</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="sourceTypeComboBox">
+     <property name="geometry">
+      <rect>
+       <x>102</x>
+       <y>60</y>
+       <width>101</width>
+       <height>20</height>
+      </rect>
      </property>
     </widget>
    </widget>

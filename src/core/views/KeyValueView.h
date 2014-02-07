@@ -45,6 +45,7 @@ struct KeyValuePair{
 
 
 };
+typedef QList<KeyValuePair> KeyValuePairs;
 
 class TSUNAMI_EXPORT  KeyValueView : public QAbstractItemModel {
     Q_OBJECT
@@ -63,12 +64,10 @@ public:
     QVariant headerData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
 
     // API
-    void setPairs( const KeyValuePair* pairs,  const int& num );
+    void setPairs(const KeyValuePairs& pairs);
     void addPair (const QString& key, const QVariant& value, KeyValuePair::ValueType type, const QString& title );
     void addPair ( const KeyValuePair& pair );
     void setValue( const QString& key, const QVariant& value );
-    void setPairData(  const QString& key, const QVariant& data);
-    void setPair ( const QString& key, const KeyValuePair& pair );
 
     const QList<KeyValuePair>& getPairs() const { return pairs_; }
     const KeyValuePair& getPair( const int& index ) const;

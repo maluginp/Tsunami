@@ -19,11 +19,18 @@ namespace tsunami{
 
 enum{
     DEVICE_NO_FLAG      = 0,
-    DEVICE_FLAG_SOURCE  = 1 << 0
+    DEVICE_FLAG_SOURCE  = 1 << 0,
+    DEVICE_FLAG_NONLINEAR    = 1 << 1,
+    DEVICE_FLAG_HAVE_MODEL = 1 << 2
 };
+
 typedef unsigned long DeviceFlag;
 
 
+enum DevicePolarity{
+    POLARITY_N,
+    POLARITY_P
+};
 
 
 enum DeviceType{
@@ -38,8 +45,8 @@ enum DeviceType{
     DEVICE_RESISTOR,
     DEVICE_ISOURCE,
     DEVICE_VSOURCE,
-
-    DEVICE_CAPACITOR
+    DEVICE_CAPACITOR,
+    DEVICE_GND
 };
 enum AnalysisType{
     ANALYSIS_UNKNOWN,

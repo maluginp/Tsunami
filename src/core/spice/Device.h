@@ -3,52 +3,50 @@
 
 #include "GraphNode.h"
 #include "defines.h"
+#include "Terminal.h"
+#include "DeviceParameter.h"
 
 namespace tsunami{
 namespace spice{
 
 
 class SpiceModel;
-class Terminal;
+
 class TSUNAMI_EXPORT Device : public GraphNode  {
 public:
 
-    Device( const QString& name,DeviceType device = DEVICE_UNKNOWN);
+    Device( const QString& name );
+    void addTerminal(const QString& name);
+    void addParameter( const QString& name, QVariant::Type type);
 
-    void source( Source source );
-    const Source &source() const;
 
     bool isFlagged( DeviceFlag flag );
     void setFlag( DeviceFlag flag );
     void addFlag( DeviceFlag flag );
+    void connect(const QString& node, Terminal* terminal);
 
-    bool hasModel();
+    virtual DeviceType type() = 0;
+    void setSpiceModel(SpiceModel* model);
+    SpiceModel* spiceModel();
+    bool hasSpiceModel();
+//    void disconnect( Terminal* terminal );
 
-    void setParameters( const QStringList& parameters );
-    DeviceType type() { return device_; }
-    void connect( Terminal* terminal );
-    void disconnect( Terminal* terminal );
-    void setModel( SpiceModel* model );
-    SpiceModel* model();
+    virtual QByteArray netlist() = 0;
+    Terminal* terminal(const QString& node);
 
-    QVector<Terminal*> getTerminals();
-    Terminal* terminal(int num);
+    const QList<DeviceParameter>& parameters() const;
 
-    QByteArray netList();
-    QByteArray sourceNetlist();
-
-    int numberPorts() { return numberPorts_; }
+protected:
 
 
-private:
-    QByteArray netListConnects();
-    int numberPorts_;
-    SpiceModel* model_;
-    DeviceType device_;
-    Source source_;
+
+    int numberTerminals_;
+    QStringList terminals_;
     DeviceFlag flags_;
+    SpiceModel* model_;
 
-    QStringList parameters_;
+    QList<DeviceParameter> parameters_;
+
 };
 
 }

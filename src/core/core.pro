@@ -68,7 +68,16 @@ SOURCES += main.cpp \
     plots/PlotItem.cpp \
     models/LibraryTemplateModel.cpp \
     components/ParseMeasureModel.cpp \
-    spice/devices/VSourceDevice.cpp
+    spice/devices/VoltagePulseDevice.cpp \
+    spice/devices/BjtDevice.cpp \
+    spice/DeviceParameter.cpp \
+    spice/devices/JfetDevice.cpp \
+    spice/devices/MosDevice.cpp \
+    spice/devices/IndependentSourceDevice.cpp \
+    spice/devices/PulseSourceDevice.cpp \
+    spice/devices/SinSourceDevice.cpp \
+    spice/devices/ExpSourceDevice.cpp \
+    spice/devices/DiodeDevice.cpp
 
 HEADERS += \
     components/Json.h \
@@ -120,5 +129,14 @@ HEADERS += \
     plots/PlotItem.h \
     models/LibraryTemplateModel.h \
     components/ParseMeasureModel.h \
-    spice/devices/VSourceDevice.h
+    spice/devices/VoltagePulseDevice.h \
+    spice/devices/BjtDevice.h \
+    spice/DeviceParameter.h \
+    spice/devices/JfetDevice.h \
+    spice/devices/MosDevice.h \
+    spice/devices/IndependentSourceDevice.h \
+    spice/devices/PulseSourceDevice.h \
+    spice/devices/SinSourceDevice.h \
+    spice/devices/ExpSourceDevice.h \
+    spice/devices/DiodeDevice.h
 

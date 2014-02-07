@@ -1,6 +1,6 @@
 #include "AnalysisStorage.h"
 #include "models/AnalysisModel.h"
-#include <QDebug>
+
 namespace tsunami {
 namespace db{
 

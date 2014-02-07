@@ -349,4 +349,16 @@ bool Source::compare( const QList<Source>& sources1,const QList<Source>& sources
     return true;
 }
 
+QList<Source *> SourceManager::inputs() {
+    return sources_;
+}
+
+QList<Source *> SourceManager::outputs() {
+    return sources_;
+}
+
+const Source *SourceManager::inputByNode(const QString &name) {
+    return NULL;
+}
+
 } // tsunami
