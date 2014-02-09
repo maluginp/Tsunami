@@ -6,7 +6,8 @@
 namespace tsunami{
 OpenDeviceDialog::OpenDeviceDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::OpenDeviceDialog) {
+    ui(new Ui::OpenDeviceDialog),
+    currentDeviceId_(-1){
     ui->setupUi(this);
 
 
@@ -88,7 +89,11 @@ void OpenDeviceDialog::clickedDeviceListItem(const QModelIndex &index) {
 }
 
 void OpenDeviceDialog::clickedOpenButton() {
-    accept();
+    if(currentDeviceId_ != -1){
+        accept();
+    }else{
+        reject();
+    }
 }
 
 void OpenDeviceDialog::clickedRemoveButton() {
