@@ -5,7 +5,7 @@
 namespace tsunami{
 namespace spice{
 
-class ExpSourceDevice : public IndependentSourceDevice {
+class TSUNAMI_EXPORT ExpSourceDevice : public IndependentSourceDevice {
 public:
     ExpSourceDevice(const QString &name, SourceMode type);
 

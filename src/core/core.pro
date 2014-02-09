@@ -138,5 +138,6 @@ HEADERS += \
     spice/devices/PulseSourceDevice.h \
     spice/devices/SinSourceDevice.h \
     spice/devices/ExpSourceDevice.h \
-    spice/devices/DiodeDevice.h
+    spice/devices/DiodeDevice.h \
+    spice/Devices.h
 

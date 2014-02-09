@@ -3,7 +3,9 @@
 #include <QVariantMap>
 #include "defines.h"
 namespace tsunami{
-
+namespace spice{
+class DeviceParameter;
+}
 enum SourceMethod{
     SOURCE_METHOD_UNKNOWN,
     SOURCE_METHOD_CONST,
@@ -21,7 +23,13 @@ enum SourceDirection{
     SOURCE_DIRECTION_OUTPUT
 };
 
-
+enum SourceType{
+    SOURCE_TYPE_GND,
+    SOURCE_TYPE_CONST,
+    SOURCE_TYPE_PULSE,
+    SOURCE_TYPE_EXP,
+    SOURCE_TYPE_SIN
+};
 
 class TSUNAMI_EXPORT Source{
 public:
@@ -35,6 +43,9 @@ public:
     QString methodJson() const;
     const SourceDirection& direction() const {return direction_; }
     const QVariantMap& configurations() const {return configuration_; }
+
+    void type(const QString& type);
+    QString typeJson();
 
     QVariant configuration(const QString& key, const QVariant &defaultValue = QVariant()) const;
     bool hasConfiguration( const QString& key ) { return configuration_.contains(key); }
@@ -53,6 +64,9 @@ public:
 
     static bool compare( const QList<Source>& sources1,
                          const QList<Source>& sources2 );
+
+    int numberParameters();
+    const spice::DeviceParameter& parameter(int index) const;
 
     bool operator==(const Source& other);
 
@@ -80,6 +94,9 @@ private:
     QVariantMap configuration_;
     QString node_;
     SourceDirection direction_;
+
+    QList<spice::DeviceParameter> parameters_;
+    SourceType type_;
 };
 
 class TSUNAMI_EXPORT SourceManager{

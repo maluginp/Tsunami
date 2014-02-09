@@ -42,7 +42,8 @@ SOURCES += main.cpp\
     PlotDataWindow.cpp \
     PrepareExtractorDialog.cpp \
     sources/IAnalysisSource.cpp \
-    sources/AnalysisVoltagePulse.cpp
+    sources/AnalysisVoltagePulse.cpp \
+    analysis/IndepedentSourceDialog.cpp
 
 HEADERS  += \
     OpenMeasureDialog.h \
@@ -64,7 +65,8 @@ HEADERS  += \
     PlotDataWindow.h \
     PrepareExtractorDialog.h \
     sources/IAnalysisSource.h \
-    sources/AnalysisVoltagePulse.h
+    sources/AnalysisVoltagePulse.h \
+    analysis/IndepedentSourceDialog.h
 
 FORMS    += DeviceWindow.ui \
     OpenDeviceDialog.ui \
@@ -83,7 +85,8 @@ FORMS    += DeviceWindow.ui \
     AboutDialog.ui \
     CreateDeviceDialog.ui \
     CreateLibraryDialog.ui \
-    PlotExtractionDialog.ui
+    PlotExtractionDialog.ui \
+    analysis/IndepedentSourceDialog.ui
 
 RESOURCES += \
     resources.qrc

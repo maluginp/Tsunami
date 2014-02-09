@@ -349,6 +349,14 @@ bool Source::compare( const QList<Source>& sources1,const QList<Source>& sources
     return true;
 }
 
+int Source::numberParameters() {
+    return parameters_.count();
+}
+
+const spice::DeviceParameter& Source::parameter(int index) const{
+    return parameters_[index];
+}
+
 QList<Source *> SourceManager::inputs() {
     return sources_;
 }

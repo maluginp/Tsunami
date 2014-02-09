@@ -97,7 +97,7 @@
       <bool>false</bool>
      </attribute>
     </widget>
-    <widget class="QComboBox" name="sourceModeComboBox">
+    <widget class="QComboBox" name="sourceTypeComboBox">
      <property name="geometry">
       <rect>
        <x>172</x>
@@ -117,7 +117,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Режим:</string>
+      <string>Тип:</string>
      </property>
     </widget>
     <widget class="QPushButton" name="saveSourceConfigurationButton">
@@ -170,7 +170,7 @@
       <string>Режим:</string>
      </property>
     </widget>
-    <widget class="QComboBox" name="sourceTypeComboBox">
+    <widget class="QComboBox" name="sourceModeComboBox">
      <property name="geometry">
       <rect>
        <x>102</x>

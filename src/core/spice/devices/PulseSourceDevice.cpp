@@ -26,5 +26,9 @@ QByteArray PulseSourceDevice::netlist() {
     return nets.toAscii();
 }
 
+SourceType PulseSourceDevice::typeSource() {
+    return SOURCE_TYPE_PULSE;
+}
+
 }
 }

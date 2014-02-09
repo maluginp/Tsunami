@@ -1,12 +1,11 @@
 #ifndef DEVICEPARAMETER_H
 #define DEVICEPARAMETER_H
-#include <QString>
-#include <QVariant>
+#include "defines.h"
 
 namespace tsunami{
 namespace spice{
 
-class DeviceParameter {
+class TSUNAMI_EXPORT DeviceParameter {
 public:
     DeviceParameter(const QString& name, QVariant::Type type);
 
@@ -15,7 +14,7 @@ public:
     void value(const QVariant& value);
     const QVariant& value() const;
     const QString& name() const;
-
+    QString title();
 private:
     QString name_;
     QVariant::Type type_;

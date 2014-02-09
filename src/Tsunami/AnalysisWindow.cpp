@@ -5,9 +5,13 @@
 #include <QLineEdit>
 #include "dbstorage/DbStorages.h"
 
+#include "spice/Devices.h"
+
 #include "webkit/APIObject.h"
 #include "Log.h"
 namespace tsunami{
+using namespace spice;
+
 AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::AnalysisWindow),
@@ -35,8 +39,10 @@ AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
         ui->sourceFirstNodeComboBox->addItem( node, node );
         ui->sourceSecondNodeComboBox->addItem( node, node);
         ui->sourceNodeComboBox->addItem(node,node);
+
+        sources_.insert(node,new Source());
     }
-    showSourceNode("");
+//    showSourceNode("");
 
     QVariantMap modes;
     modes.insert(tr("Current"),"current");
@@ -45,7 +51,7 @@ AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
     foreach(QVariant mode,modes.values()){
         ui->sourceFirstTypeComboBox->addItem( modes.key(mode), mode);
         ui->sourceSecondTypeComboBox->addItem( modes.key(mode), mode);
-        ui->sourceTypeComboBox->addItem( modes.key(mode), mode );
+        ui->sourceModeComboBox->addItem( modes.key(mode), mode );
     }
 
     ui->sourceFirstStartLineEdit->setText("0.0");
@@ -58,21 +64,18 @@ AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
     changedAnalysisType( ui->analysisTypeComboBox->currentIndex() );
 
     // Типы источников
-    QVariantMap modeSources;
-    modeSources.insert(tr("Ground"),"ground");
-    modeSources.insert(tr("CONST"),"const");
-    modeSources.insert(tr("PULSE"),"pulse");
-    modeSources.insert(tr("SIN"),"sin");
-    modeSources.insert(tr("EXP"),"exp");
+    ui->sourceTypeComboBox->addItem(tr("Ground"),"ground");
+    ui->sourceTypeComboBox->addItem(tr("CONST"),"const");
+    ui->sourceTypeComboBox->addItem(tr("PULSE"),"pulse");
+    ui->sourceTypeComboBox->addItem(tr("SIN"),"sin");
+    ui->sourceTypeComboBox->addItem(tr("EXP"),"exp");
 
-    foreach( QVariant modeSource, modeSources.values() ){
-        ui->sourceModeComboBox->addItem( modeSources.key(modeSource),modeSource);
-    }
-
+//    foreach( QVariant modeSource, modeSources.values() ){
+//        ui->sourceTypeComboBox->addItem( modeSources.key(modeSource),modeSource);
+//    }
 
     sourceConfigurationView_ = new gui::KeyValueView();
     ui->sourceConfigurationTableView->setModel( sourceConfigurationView_ );
-
 
 //    connect(ui->webView,SIGNAL(loadStarted()),t   his,SLOT(loadStarted()));
 //    loadStarted();
@@ -116,6 +119,7 @@ AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
 //                                 this,SLOT(selectedAnalysisItem(QModelIndex)));
 
 
+
     // -- new
     connect(ui->analysisTypeComboBox,SIGNAL(currentIndexChanged(int)),
             this,SLOT(changedAnalysisType(int)));
@@ -123,8 +127,10 @@ AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
             this,SLOT(checkedSourceSecondEnable(bool)));
     connect(ui->sourceNodeComboBox,SIGNAL(currentIndexChanged(int)),
             this,SLOT(changedSourceNode(int)));
-    connect(ui->sourceModeComboBox,SIGNAL(currentIndexChanged(int)),
+    connect(ui->sourceTypeComboBox,SIGNAL(currentIndexChanged(int)),
             this,SLOT(changedSourceType(int)));
+    connect(ui->sourceModeComboBox,SIGNAL(currentIndexChanged(int)),
+            this,SLOT(changedSourceMode(int)));
 }
 
 AnalysisWindow::~AnalysisWindow() {
@@ -143,81 +149,22 @@ void AnalysisWindow::updateAnalysisList() {
     emit updatedDataBase();
 }
 
-/**
- * @brief Отобразить настройки источника для узла
- * @param node
- */
-void AnalysisWindow::showSourceNode(const QString &node) {
-    if(node.isEmpty()){
-        ui->sourceModeComboBox->setEnabled(false);
-        ui->sourceConfigurationTableView->setEnabled(false);
-        return;
-    }
+void AnalysisWindow::showSource(const QString &node, const QString &type, const QString &mode) {
+    Source* source = sources_.value(node);
 
-    if(!ui->sourceModeComboBox->isEnabled()){
-        ui->sourceModeComboBox->setEnabled(true);
-    }
-    if(!ui->sourceConfigurationTableView->isEnabled()){
-       ui->sourceConfigurationTableView->setEnabled(true);
-    }
-
-
-
-}
-
-void AnalysisWindow::showSourceGround(const QString &node) {
-    sourceConfigurationView_->clear();
-    ui->sourceConfigurationTableView->setEnabled(false);
-
-}
-
-void AnalysisWindow::showSourceConst(const QString &node) {
-    ui->sourceConfigurationTableView->setEnabled(true);
-    sourceConfigurationView_->clear();
-    sourceConfigurationView_->addPair("constant",QVariant(""),
-                                      gui::KeyValuePair::TYPE_TEXT,
-                                      tr("Constant"));
-
-    //    sourceConfigurationView_->fillDelegates( ui->sourceConfigurationTableView );
-}
-
-void AnalysisWindow::showSourcePulse(const QString &node) {
-    ui->sourceConfigurationTableView->setEnabled(true);
     sourceConfigurationView_->clear();
 
-    int typeId = ui->sourceTypeComboBox->currentIndex();
-    QString type = ui->sourceTypeComboBox->itemData( typeId ).toString();
-    if(type == "voltage"){
-        AnalysisVoltagePulse source;
-        sourceConfigurationView_->setPairs( source.pairs() );
-    } else if(type == "current") {
+    source->mode( mode );
+    source->type( type );
 
+    for(int i=0; i < source->numberParameters(); ++i){
+       gui::KeyValuePair pair;
+       pair.key = source->parameter(i).name();
+       pair.title = source->parameter(i).title();
+       pair.type = gui::KeyValuePair::TYPE_TEXT;
+       pair.value = QString::number( source->parameter(i).value().toDouble());
+       sourceConfigurationView_->addPair(pair);
     }
-    sourceConfigurationView_->fillDelegates( ui->sourceConfigurationTableView );
-}
-
-void AnalysisWindow::showSourceExp(const QString &node) {
-    ui->sourceConfigurationTableView->setEnabled(true);
-    sourceConfigurationView_->clear();
-
-    sourceConfigurationView_->addPair("vinitial",QVariant(""),
-                                      gui::KeyValuePair::TYPE_TEXT,
-                                      tr("V initial"));
-    sourceConfigurationView_->addPair("vpulsed",QVariant(""),
-                                      gui::KeyValuePair::TYPE_TEXT,
-                                      tr("V pulsed"));
-    sourceConfigurationView_->addPair("rise_delay",QVariant(""),
-                                      gui::KeyValuePair::TYPE_TEXT,
-                                      tr("Rise delay"));
-    sourceConfigurationView_->addPair("rise_tau",QVariant(""),
-                                      gui::KeyValuePair::TYPE_TEXT,
-                                      tr("Rise tau"));
-    sourceConfigurationView_->addPair("fall_delay",QVariant(""),
-                                      gui::KeyValuePair::TYPE_TEXT,
-                                      tr("Fall delay"));
-    sourceConfigurationView_->addPair("fall_tau",QVariant(""),
-                                      gui::KeyValuePair::TYPE_TEXT,
-                                      tr("Fall tau"));
 
 }
 
@@ -363,9 +310,7 @@ void AnalysisWindow::changedAnalysisType(int index) {
  * @param index
  */
 void AnalysisWindow::changedSourceNode(int index) {
-    QString node = ui->sourceNodeComboBox->itemData(index).toString();
-    showSourceNode(node);
-
+//    QString node = ui->sourceNodeComboBox->itemData(index).toString();
     int sourceTypeId = ui->sourceModeComboBox->currentIndex();
     changedSourceType( sourceTypeId );
 }
@@ -378,18 +323,32 @@ void AnalysisWindow::checkedSourceSecondEnable(bool checked) {
 }
 
 void AnalysisWindow::changedSourceType(int index) {
-    QString type = ui->sourceModeComboBox->itemData(index).toString();
-    int nodeComboBoxId = ui->sourceNodeComboBox->currentIndex();
-    QString node = ui->sourceNodeComboBox->itemData(nodeComboBoxId).toString();
+    QString type = ui->sourceTypeComboBox->itemData(index).toString();
+
     if(type == "ground"){
-        showSourceGround( node );
-    } else if(type == "const"){
-        showSourceConst(node);
-    } else if(type == "pulse"){
-        showSourcePulse(node);
-    } else if(type == "exp"){
-        showSourceExp(node);
+        ui->sourceModeComboBox->setEnabled(false);
+        ui->sourceConfigurationTableView->setEnabled(false);
+    } else {
+        int modeId = ui->sourceModeComboBox->currentIndex();
+        changedSourceMode(modeId);
+
+        ui->sourceModeComboBox->setEnabled(true);
+        ui->sourceConfigurationTableView->setEnabled(true);
     }
+
+}
+
+void AnalysisWindow::changedSourceMode(int index) {
+    int nodeId = ui->sourceNodeComboBox->currentIndex();
+    int typeId = ui->sourceTypeComboBox->currentIndex();
+    int modeId = ui->sourceModeComboBox->currentIndex();
+
+    QString node = ui->sourceNodeComboBox->itemData(nodeId).toString();
+    QString type = ui->sourceTypeComboBox->itemData(typeId).toString();
+    QString mode = ui->sourceModeComboBox->itemData(modeId).toString();
+
+    showSource(node,type,mode);
+
 }
 
 }

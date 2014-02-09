@@ -9,6 +9,8 @@
 
 #include "sources/AnalysisVoltagePulse.h"
 
+#include "spice/devices/IndependentSourceDevice.h"
+
 namespace Ui {
 class AnalysisWindow;
 }
@@ -27,11 +29,7 @@ public:
     void openAnalysis(int analysisId);
 private:
     void updateAnalysisList();
-    void showSourceNode(const QString& node);
-    void showSourceGround(const QString& node);
-    void showSourceConst(const QString& node);
-    void showSourcePulse(const QString& node);
-    void showSourceExp(const QString& node);
+    void showSource(const QString& node,const QString& type,const QString& mode);
 
     Ui::AnalysisWindow *ui;
     gui::ListItemView* listAnalysis_;
@@ -43,8 +41,9 @@ private:
     gui::KeyValueView* sourceConfigurationView_;
 
     APIObject* api_;
-
     QStringList nodes_;
+
+    QMap<QString, Source*> sources_;
 private slots:
     void clickedOpenAnalysis();
     void clickedSaveAnalysis(const QList<tsunami::Source>& sources);
@@ -58,7 +57,7 @@ private slots:
     void changedSourceNode(int index);
     void checkedSourceSecondEnable(bool checked);
     void changedSourceType(int index);
-
+    void changedSourceMode(int index);
 signals:
     void pageLoadFinished();
     void updatedDataBase();

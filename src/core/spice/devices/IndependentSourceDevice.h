@@ -5,14 +5,19 @@
 namespace tsunami{
 namespace spice{
 
-class IndependentSourceDevice : public Device {
+class TSUNAMI_EXPORT IndependentSourceDevice : public Device {
 public:
-    IndependentSourceDevice(const QString& name, SourceMode type);
+    IndependentSourceDevice(const QString& name, SourceMode mode);
     DeviceType type();
+
+    virtual SourceType typeSource();
+
+    const SourceMode& mode() const;
+    void mode(SourceMode mode);
 
     virtual QByteArray netlist();
 private:
-    SourceMode type_;
+    SourceMode mode_;
 };
 
 }
