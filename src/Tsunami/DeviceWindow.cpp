@@ -149,9 +149,6 @@ bool DeviceWindow::createAnalysisWindow() {
 
     analysisWindow_ = new AnalysisWindow( deviceId_);
     analysisWindow_->show();
-    QEventLoop eventLoop;
-    connect(analysisWindow_,SIGNAL(pageLoadFinished()),&eventLoop,SLOT(quit()));
-    eventLoop.exec();
 
     connect(analysisWindow_,SIGNAL(updatedDataBase()),
             SLOT(updateDeviceWindow()));
@@ -198,7 +195,7 @@ void DeviceWindow::updateDeviceWindow() {
     db::AnalysisStorage* analysisStorage = db::AnalysisStorage::instance();
     QList<db::AnalysisModel*> analyses = analysisStorage->getAnalysesByDeviceId( deviceId_ );
     foreach( db::AnalysisModel* analysis, analyses ){
-        analysisList_->addChild( analysis->typeJson(), analysis->name(), analysis->id() );
+        analysisList_->addChild( analysis->analysis()->typeJson(), analysis->name(), analysis->id() );
     }
     qDeleteAll( analyses );
     ui->analysisTreeView->expandAll();

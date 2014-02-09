@@ -80,7 +80,7 @@ int AnalysisStorage::lastInsertId(const QString &table) {
 
     }
 
-    return -1;
+    return 0;
 }
 
 void AnalysisStorage::testData() {

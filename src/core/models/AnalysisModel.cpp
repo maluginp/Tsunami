@@ -11,7 +11,8 @@ AnalysisModel::AnalysisModel()
       createdAt_(QDateTime::currentDateTime()),
       enable_(true),
       deviceId_(-1),
-      analysisId_(-1) {
+      analysisId_(-1),
+      analysis_(0){
 
 }
 
@@ -46,7 +47,7 @@ void AnalysisModel::type(const QString &type) {
     }else if(type.compare("tran") == 0){
         type_ = ANALYSIS_TRAN;
     }else{
-        Q_ASSERT(false);
+//        Q_ASSERT(false);
     }
 }
 
@@ -54,14 +55,13 @@ void AnalysisModel::sourcesJson(const QString &json){
     sources_.clear();
     QVariantList sources = QtJson::parse( json ).toList();
 
-    for(int i=0; i < sources.size(); ++i) {
+    for(int i=0; i < sources.count(); i++) {
         QVariantMap sourceJson = sources[i].toMap();
         Source* source = new Source();
         source->node(sourceJson.value( "node" ).toString());
         source->type(sourceJson.value("type").toString());
         source->method(sourceJson.value("method").toString());
-        source->configurations(sourceJson.value("configuration",QVariantMap()).toMap());
-        source->mode( sourceJson.value("mode").toString() );
+        source->configurations(sourceJson.value("configuration",QVariantMap()).toMap()); source->mode( sourceJson.value("mode").toString() );
         source->direction(sourceJson.value("direction").toString());
 
         sources_.append(source);

@@ -99,6 +99,7 @@ void AnalysisWindow::showAnalysis(const Analysis *analysis) const {
     int indexType = ui->analysisTypeComboBox->findData( analysis->typeJson() );
     ui->analysisTypeComboBox->setCurrentIndex( indexType );
     QVariantList sources = analysis->sources();
+    ui->sourceSecondEnable->setChecked(false);
     if(analysis->type() == ANALYSIS_DC){
 
         int modeId = ui->sourceFirstTypeComboBox->findData(sources[0].toMap().value("mode"));
@@ -110,6 +111,7 @@ void AnalysisWindow::showAnalysis(const Analysis *analysis) const {
         ui->sourceFirstStopLineEdit->setText( sources[0].toMap().value("stop").toString() );
 
         if(sources.count() == 2){
+            ui->sourceSecondEnable->setChecked(true);
             modeId = ui->sourceSecondTypeComboBox->findData(sources[1].toMap().value("mode"));
             ui->sourceSecondTypeComboBox->setCurrentIndex(modeId);
             nodeId = ui->sourceSecondNodeComboBox->findData(sources[1].toMap().value("node"));
@@ -230,11 +232,11 @@ void AnalysisWindow::clickedSaveAnalysis() {
 
 
     analysis_->analysis( analysisType );
-    analysis_->clearSources();
+//    analysis_->clearSources();
 
-    foreach(Source* source,sources_.values()){
-        analysis_->addSource( source );
-    }
+//    foreach(Source* source,sources_.values()){
+//        analysis_->addSource( source );
+//    }
 
 
     storage_->saveAnalysis(analysis_);
@@ -277,9 +279,9 @@ void AnalysisWindow::openAnalysis(int analysisId) {
     if(analysisId == -1) {
         analysis_ = new AnalysisModel();
         foreach(QString node, nodes_.values()){
-            Source* source = new Source();
-            source->node( node );
-            analysis_->addSource( source );
+            Source* newSource = new Source();
+            newSource->node( node );
+            analysis_->addSource( newSource );
         }
 
         Analysis* analysisType = new Analysis();
@@ -461,6 +463,8 @@ void AnalysisWindow::clickedSourceParams(int nodeId, const QString& type) {
     IndepedentSourceDialog dlg(source);
 
     dlg.exec();
+
+    return;
 }
 
 
