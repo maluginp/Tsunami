@@ -86,19 +86,19 @@ QStringList DeviceModel::nodes() {
     switch(type_){
     case DEVICE_NBJT :
     case DEVICE_PBJT :
-        return QStringList() << "E" << "B" << "C";
+        return QStringList() << "C" << "B" << "E";
     case DEVICE_NFET:
     case DEVICE_PFET:
-        return QStringList() << "S" << "G" << "D";
+        return QStringList() << "D" << "G" << "S";
     case DEVICE_NMOS:
     case DEVICE_PMOS:
-        return QStringList() << "S" << "G" << "D" << "B";
+        return QStringList() << "D" << "G" << "S" << "B";
     case DEVICE_DIODE:
     case DEVICE_RESISTOR:
     case DEVICE_CAPACITOR:
     case DEVICE_ISOURCE:
     case DEVICE_VSOURCE:
-        return QStringList() << "M" << "P";
+        return QStringList() << "P" << "M";
     case DEVICE_UNKNOWN:
     default:
         break;

@@ -26,33 +26,29 @@ public:
     ~AnalysisWindow();
     void openAnalysis(int analysisId);
 private:
-    void updateAnalysisList();
+    void prepareDevice();
     void showSource(const QString& node);
-
+    void hideSource(int index,bool hide = true);
     QPushButton *getNodeButton(int index);
     QComboBox* getNodeComboBox(int index);
+
     Ui::AnalysisWindow *ui;
-    gui::ListItemView* listAnalysis_;
+
     db::AnalysisStorage* storage_;
-    int deviceId_;
-    int analysisId_;
     db::AnalysisModel* currentAnalysis_;
 
-    gui::KeyValueView* sourceConfigurationView_;
-
-    APIObject* api_;
-//    QStringList nodes_;
+    int deviceId_;
+    int analysisId_;
 
     QMap<int,QString> nodes_;
     QMap<QString, Source*> sources_;
 private slots:
     void clickedOpenAnalysis();
     void clickedSaveAnalysis(const QList<tsunami::Source>& sources);
-    void clickedCreateAnalysis();
+//    void clickedCreateAnalysis();
 
-    void selectedAnalysisItem( const QModelIndex& index );
-    void loadStarted();
-    void loadFinished(bool);
+//    void selectedAnalysisItem( const QModelIndex& index );
+
     // -- new
     void changedAnalysisType(int index);
     void checkedSourceSecondEnable(bool checked);

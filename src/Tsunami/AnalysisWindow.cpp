@@ -1,38 +1,28 @@
 #include "AnalysisWindow.h"
 #include "ui_AnalysisWindow.h"
-#include "webkit/WebKit.h"
+
 #include <QComboBox>
 #include <QLineEdit>
 #include "dbstorage/DbStorages.h"
-
-#include "spice/Devices.h"
-
-#include "webkit/APIObject.h"
 #include "Log.h"
 namespace tsunami{
 using namespace spice;
+using namespace db;
 
 AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::AnalysisWindow),
-    listAnalysis_(0),api_(0),
-    deviceId_(deviceId),
-    sourceConfigurationView_(0)
+    deviceId_(deviceId)
 {
     ui->setupUi(this);
     // Test data
 
-
-
-    api_ = new APIObject(deviceId_);
     storage_ = db::AnalysisStorage::instance();
 
     // Заполняем типы анализов
     ui->analysisTypeComboBox->addItem( "AC", "ac" );
     ui->analysisTypeComboBox->addItem( "DC", "dc" );
     ui->analysisTypeComboBox->addItem( "TRAN", "tran" );
-
-    //    showSourceNode("");
 
     QVariantMap modes;
     modes.insert(tr("Current"),"current");
@@ -59,26 +49,9 @@ AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
 
     changedAnalysisType( ui->analysisTypeComboBox->currentIndex() );
 
-    sourceConfigurationView_ = new gui::KeyValueView();
+    prepareDevice();
 
-
-    nodes_.insert(1, "D");
-    nodes_.insert(2, "G");
-    nodes_.insert(3, "S");
-    nodes_.insert(4, "B");
-
-    foreach(QString node,nodes_.values()){
-        Source* source = new Source();
-        source->node( node );
-        sources_.insert(node,source);
-        showSource(node);
-
-        ui->sourceFirstNodeComboBox->addItem(node,node);
-        ui->sourceSecondNodeComboBox->addItem(node,node);
-    }
-
-
-
+    // Connect
     connect(ui->analysisTypeComboBox,SIGNAL(currentIndexChanged(int)),
             this,SLOT(changedAnalysisType(int)));
     connect(ui->sourceSecondEnable,SIGNAL(toggled(bool)),
@@ -110,18 +83,6 @@ AnalysisWindow::~AnalysisWindow() {
     delete ui;
 }
 
-void AnalysisWindow::updateAnalysisList() {
-    QMap<int,QString> list = storage_->listAnalysis(deviceId_);
-
-    listAnalysis_->clear();
-
-    foreach(int analysisId,list.keys()){
-        listAnalysis_->addItem( list.value(analysisId), QVariant(analysisId) );
-    }
-
-    emit updatedDataBase();
-}
-
 void AnalysisWindow::showSource(const QString &node) {
     Source* source = sources_.value(node);
 
@@ -138,6 +99,11 @@ void AnalysisWindow::showSource(const QString &node) {
     }
     getNodeComboBox( nodeId )->setCurrentIndex(index);
 
+}
+
+void AnalysisWindow::hideSource(int index, bool hide) {
+    getNodeButton(index)->setHidden(hide);
+    getNodeComboBox(index)->setHidden(hide);
 }
 
 QPushButton *AnalysisWindow::getNodeButton(int index) {
@@ -192,93 +158,85 @@ void AnalysisWindow::clickedSaveAnalysis(const QList<tsunami::Source> &sources) 
 //        return;
 //    }
 
-    currentAnalysis_->sources( sources );
-
-    currentAnalysis_->name( analysisName );
-    currentAnalysis_->type( ui->analysisTypeComboBox->itemData( ui->analysisTypeComboBox->currentIndex() ).toString() );
-    currentAnalysis_->enable( ui->analysisEnableCheckBox->checkState() == Qt::Checked );
-
-    int analysisId = currentAnalysis_->id();
-
-    if(storage_->saveAnalysis( currentAnalysis_ )){
-        log::logTrace() << QString("Analysis #%1 has saved ")
-                           .arg(currentAnalysis_->id());
-        updateAnalysisList();
-        if(analysisId == -1){
-            openAnalysis(currentAnalysis_->id());
-        }
-    }else{
-        log::logDebug() << "Analysis has not saved. Sql error: "
-                        << storage_->lastError();
-    }
 }
 
-void AnalysisWindow::clickedCreateAnalysis() {
-    log::logTrace() << "Creating analysis";
-    currentAnalysis_ = new db::AnalysisModel();
-    currentAnalysis_->deviceId( deviceId_ );
+//void AnalysisWindow::clickedCreateAnalysis() {
+//    log::logTrace() << "Creating analysis";
+//    currentAnalysis_ = new db::AnalysisModel();
+//    currentAnalysis_->deviceId( deviceId_ );
 
-    ui->analysisNameLineEdit->setText("");
-    ui->analysisTypeComboBox->setCurrentIndex(0);
-    ui->analysisEnableCheckBox->setCheckState(Qt::Unchecked);
+//    ui->analysisNameLineEdit->setText("");
+//    ui->analysisTypeComboBox->setCurrentIndex(0);
+//    ui->analysisEnableCheckBox->setCheckState(Qt::Unchecked);
 
-    api_->openAnalysis( currentAnalysis_ );
+//    api_->openAnalysis( currentAnalysis_ );
 
-}
+//}
 
-void AnalysisWindow::selectedAnalysisItem(const QModelIndex &index) {
-    bool ok;
-    int analysisId = index.data(Qt::UserRole).toInt(&ok);
-    if(!ok || analysisId == -1){
-        return;
-    }
+//void AnalysisWindow::selectedAnalysisItem(const QModelIndex &index) {
+//    bool ok;
+//    int analysisId = index.data(Qt::UserRole).toInt(&ok);
+//    if(!ok || analysisId == -1){
+//        return;
+//    }
 
-    openAnalysis( analysisId );
+//    openAnalysis( analysisId );
 
-}
+//}
 
 void AnalysisWindow::openAnalysis(int analysisId) {
-    log::logTrace() << QString("Opening analysis %1").arg(analysisId);
-    if(analysisId == -1){
-        clickedCreateAnalysis();
-        return;
-    }
 
-    analysisId_ = analysisId;
 
-    currentAnalysis_ = storage_->openAnalysis( analysisId );
 
-    if(currentAnalysis_ == 0) return;
 
-    int typeIndex = ui->analysisTypeComboBox->findData( currentAnalysis_->typeJson() );
-    ui->analysisTypeComboBox->setCurrentIndex(typeIndex);
 
-    ui->analysisNameLineEdit->setText( currentAnalysis_->name() );
-
-    if(currentAnalysis_->enable()){
-        ui->analysisEnableCheckBox->setCheckState(Qt::Checked);
-    }else{
-        ui->analysisEnableCheckBox->setCheckState(Qt::Unchecked);
-    }
-
-    api_->openAnalysis( currentAnalysis_ );
 }
 
-void AnalysisWindow::loadStarted() {
-    if(!api_){
-        log::logError() << "API is not initialized";
-        return;
+void AnalysisWindow::prepareDevice() {
+    DeviceStorage* deviceStorage = DeviceStorage::instance();
+    DeviceModel* device = deviceStorage->openDevice( deviceId_ );
+
+    int index = 1;
+    foreach(QString node, device->nodes()){
+        nodes_.insert(index,node);
+        Source* source = new Source();
+        source->node( node );
+        sources_.insert(node,source);
+
+        ui->sourceFirstNodeComboBox->addItem(node,node);
+        ui->sourceSecondNodeComboBox->addItem(node,node);
+
+        showSource(node);
+        index++;
     }
-    api_->disconnect( );
-    connect(api_, SIGNAL(savedAnalysis(QList<tsunami::Source>)),
-            this, SLOT(clickedSaveAnalysis(QList<tsunami::Source>)));
 
-//    ui->webView->page()->mainFrame()->addToJavaScriptWindowObject("Api",api_);
+    // Скрываем оставшиеся
+    int MAX_NODES = 4;
+    for(int i=index; i <= MAX_NODES; ++i){
+        hideSource(i);
+    }
+
+    QPixmap deviceImage;
+    if(device->type() == DEVICE_NBJT){
+        deviceImage = QPixmap(":/images/NBJT");
+    }else if(device->type() == DEVICE_PBJT){
+        deviceImage = QPixmap(":/images/PBJT");
+    }else if(device->type() == DEVICE_NFET){
+        deviceImage = QPixmap(":/images/NFET");
+    }else if(device->type() == DEVICE_NFET){
+        deviceImage = QPixmap(":/images/NFET");
+    }else if(device->type() == DEVICE_PFET){
+        deviceImage = QPixmap(":/images/PFET");
+    }else if(device->type() == DEVICE_NMOS){
+        deviceImage = QPixmap(":/images/NMOS");
+    }else if(device->type() == DEVICE_PMOS){
+        deviceImage = QPixmap(":/images/PMOS");
+    }
+
+    ui->imagePixmap->setPixmap( deviceImage );
+
 }
 
-void AnalysisWindow::loadFinished(bool) {
-    emit pageLoadFinished();
-}
 /**
  * @brief Обработчик изменения типа анализа
  * @param index
