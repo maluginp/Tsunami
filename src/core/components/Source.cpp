@@ -145,6 +145,10 @@ void Source::addConfiguration(const QPair<QString, QVariant> &pair) {
     addConfiguration(pair.first,pair.second);
 }
 
+void Source::cleanConfiguration() {
+    configuration_.clear();
+}
+
 QString Source::directionJson() const {
     if(direction_ == SOURCE_DIRECTION_INPUT){
         return "input";
@@ -202,6 +206,14 @@ QString Source::methodJson() const{
     return "";
 }
 
+void Source::type(SourceType type) {
+    type_ = type;
+}
+
+const SourceType &Source::type() {
+    return type_;
+}
+
 QVariant Source::configuration(const QString &key,const QVariant& defaultValue) const{
     if(configuration_.contains(key)){
         return configuration_[key];
@@ -214,7 +226,7 @@ Source::Source() {
     mode_ = SOURCE_MODE_GND;
     method_ = SOURCE_METHOD_UNKNOWN;
     direction_ = SOURCE_DIRECTION_INPUT;
-
+    type_ = SOURCE_TYPE_CONST;
 }
 
 QString Source::modeJson() const{
@@ -349,13 +361,6 @@ bool Source::compare( const QList<Source>& sources1,const QList<Source>& sources
     return true;
 }
 
-int Source::numberParameters() {
-    return parameters_.count();
-}
-
-const spice::DeviceParameter& Source::parameter(int index) const{
-    return parameters_[index];
-}
 
 QList<Source *> SourceManager::inputs() {
     return sources_;

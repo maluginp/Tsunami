@@ -6,30 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>989</width>
-    <height>543</height>
+    <width>791</width>
+    <height>546</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Manager analysis</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="WebView" name="webView" native="true">
-    <property name="geometry">
-     <rect>
-      <x>240</x>
-      <y>50</y>
-      <width>451</width>
-      <height>441</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>300</width>
-      <height>300</height>
-     </size>
-    </property>
-   </widget>
    <widget class="QComboBox" name="analysisTypeComboBox">
     <property name="geometry">
      <rect>
@@ -71,115 +55,6 @@
     <property name="text">
      <string>Второй источник DC</string>
     </property>
-   </widget>
-   <widget class="QGroupBox" name="groupBox">
-    <property name="geometry">
-     <rect>
-      <x>700</x>
-      <y>40</y>
-      <width>261</width>
-      <height>451</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Настройка источника</string>
-    </property>
-    <widget class="QTableView" name="sourceConfigurationTableView">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>90</y>
-       <width>241</width>
-       <height>301</height>
-      </rect>
-     </property>
-     <attribute name="horizontalHeaderStretchLastSection">
-      <bool>false</bool>
-     </attribute>
-    </widget>
-    <widget class="QComboBox" name="sourceTypeComboBox">
-     <property name="geometry">
-      <rect>
-       <x>172</x>
-       <y>30</y>
-       <width>69</width>
-       <height>20</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_16">
-     <property name="geometry">
-      <rect>
-       <x>130</x>
-       <y>30</y>
-       <width>36</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Тип:</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="saveSourceConfigurationButton">
-     <property name="geometry">
-      <rect>
-       <x>140</x>
-       <y>400</y>
-       <width>101</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Сохранить
-настройку</string>
-     </property>
-    </widget>
-    <widget class="QComboBox" name="sourceNodeComboBox">
-     <property name="geometry">
-      <rect>
-       <x>60</x>
-       <y>30</y>
-       <width>41</width>
-       <height>20</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_17">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>30</y>
-       <width>36</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Узел</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_18">
-     <property name="geometry">
-      <rect>
-       <x>60</x>
-       <y>60</y>
-       <width>36</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Режим:</string>
-     </property>
-    </widget>
-    <widget class="QComboBox" name="sourceModeComboBox">
-     <property name="geometry">
-      <rect>
-       <x>102</x>
-       <y>60</y>
-       <width>101</width>
-       <height>20</height>
-      </rect>
-     </property>
-    </widget>
    </widget>
    <widget class="QLineEdit" name="analysisNameLineEdit">
     <property name="geometry">
@@ -473,27 +348,129 @@
      </property>
     </widget>
    </widget>
+   <widget class="QLabel" name="label_13">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>110</y>
+      <width>251</width>
+      <height>281</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="resources.qrc">:/images/NMOS</pixmap>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="node3TypeComboBox">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>350</y>
+      <width>101</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="node3ParamsButton">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>380</y>
+      <width>71</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Настроить</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="node4TypeComboBox">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>230</y>
+      <width>101</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="node4ParamsButton">
+    <property name="geometry">
+     <rect>
+      <x>640</x>
+      <y>260</y>
+      <width>71</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Настроить</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="node1ParamsButton">
+    <property name="geometry">
+     <rect>
+      <x>500</x>
+      <y>100</y>
+      <width>71</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Настроить</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="node1TypeComboBox">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>70</y>
+      <width>101</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="node2TypeComboBox">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>230</y>
+      <width>101</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="node2ParamsButton">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>260</y>
+      <width>71</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Настроить</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>989</width>
+     <width>791</width>
      <height>21</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>WebView</class>
-   <extends>QWidget</extends>
-   <header>webkit/WebKit.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

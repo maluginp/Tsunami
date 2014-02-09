@@ -21,28 +21,18 @@ AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
 {
     ui->setupUi(this);
     // Test data
-    nodes_ << "D" << "G" << "S" << "B";
+
 
 
     api_ = new APIObject(deviceId_);
     storage_ = db::AnalysisStorage::instance();
-//    listAnalysis_ = new gui::ListItemView();
-//    ui->analysisItemsListView->setModel( listAnalysis_ );
 
     // Заполняем типы анализов
     ui->analysisTypeComboBox->addItem( "AC", "ac" );
     ui->analysisTypeComboBox->addItem( "DC", "dc" );
     ui->analysisTypeComboBox->addItem( "TRAN", "tran" );
 
-    ui->sourceNodeComboBox->addItem("","");
-    foreach(QString node, nodes_){
-        ui->sourceFirstNodeComboBox->addItem( node, node );
-        ui->sourceSecondNodeComboBox->addItem( node, node);
-        ui->sourceNodeComboBox->addItem(node,node);
-
-        sources_.insert(node,new Source());
-    }
-//    showSourceNode("");
+    //    showSourceNode("");
 
     QVariantMap modes;
     modes.insert(tr("Current"),"current");
@@ -51,7 +41,13 @@ AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
     foreach(QVariant mode,modes.values()){
         ui->sourceFirstTypeComboBox->addItem( modes.key(mode), mode);
         ui->sourceSecondTypeComboBox->addItem( modes.key(mode), mode);
-        ui->sourceModeComboBox->addItem( modes.key(mode), mode );
+    }
+    modes.insert(tr("Ground"),"gnd");
+    foreach(QVariant mode,modes.values()){
+        ui->node1TypeComboBox->addItem(modes.key(mode),mode);
+        ui->node2TypeComboBox->addItem(modes.key(mode),mode);
+        ui->node3TypeComboBox->addItem(modes.key(mode),mode);
+        ui->node4TypeComboBox->addItem(modes.key(mode),mode);
     }
 
     ui->sourceFirstStartLineEdit->setText("0.0");
@@ -63,74 +59,51 @@ AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
 
     changedAnalysisType( ui->analysisTypeComboBox->currentIndex() );
 
-    // Типы источников
-    ui->sourceTypeComboBox->addItem(tr("Ground"),"ground");
-    ui->sourceTypeComboBox->addItem(tr("CONST"),"const");
-    ui->sourceTypeComboBox->addItem(tr("PULSE"),"pulse");
-    ui->sourceTypeComboBox->addItem(tr("SIN"),"sin");
-    ui->sourceTypeComboBox->addItem(tr("EXP"),"exp");
-
-//    foreach( QVariant modeSource, modeSources.values() ){
-//        ui->sourceTypeComboBox->addItem( modeSources.key(modeSource),modeSource);
-//    }
-
     sourceConfigurationView_ = new gui::KeyValueView();
-    ui->sourceConfigurationTableView->setModel( sourceConfigurationView_ );
 
-//    connect(ui->webView,SIGNAL(loadStarted()),t   his,SLOT(loadStarted()));
-//    loadStarted();
-//    connect(ui->webView->page()->mainFrame(),SIGNAL(javaScriptWindowObjectCleared()),this,SLOT(loadStarted()) );
 
-//    db::DeviceStorage* deviceStorage = db::DeviceStorage::instance();
+    nodes_.insert(1, "D");
+    nodes_.insert(2, "G");
+    nodes_.insert(3, "S");
+    nodes_.insert(4, "B");
 
-//    db::DeviceModel* device = deviceStorage->openDevice( deviceId_ );
+    foreach(QString node,nodes_.values()){
+        Source* source = new Source();
+        source->node( node );
+        sources_.insert(node,source);
+        showSource(node);
 
-//    QString url = "html/";
-//    switch(device->type()){
-//    case DEVICE_NBJT:
-//    case DEVICE_PBJT:
-//        url.append("bjt.html"); break;
-//    case DEVICE_PFET:
-//    case DEVICE_NFET:
-//        url.append("jfet.html"); break;
-//    case DEVICE_PMOS:
-//    case DEVICE_NMOS:
-//        url.append("mosfet.html"); break;
-//    case DEVICE_CAPACITOR:
-//    case DEVICE_RESISTOR:
-//    case DEVICE_DIODE:
-//        Q_ASSERT(false); break;
-//    case DEVICE_VSOURCE:
-//    case DEVICE_ISOURCE:
-//        Q_ASSERT(false); break;
-//    }
-
-//    ui->webView->load( QUrl(url) );
-//    ui->webView->setFocus();
-
-//    updateAnalysisList();
-//    connect(ui->addButton,SIGNAL(clicked()),
-//                     this,SLOT(clickedCreateAnalysis()));
-//    connect(ui->openButton,SIGNAL(clicked()),
-//                      this,SLOT(clickedOpenAnalysis()));
-//    connect(ui->webView,SIGNAL(loadFinished(bool)),
-//                   this,SLOT(loadFinished(bool)));
-//    connect(ui->analysisItemsListView,SIGNAL(doubleClicked(QModelIndex)),
-//                                 this,SLOT(selectedAnalysisItem(QModelIndex)));
+        ui->sourceFirstNodeComboBox->addItem(node,node);
+        ui->sourceSecondNodeComboBox->addItem(node,node);
+    }
 
 
 
-    // -- new
     connect(ui->analysisTypeComboBox,SIGNAL(currentIndexChanged(int)),
             this,SLOT(changedAnalysisType(int)));
     connect(ui->sourceSecondEnable,SIGNAL(toggled(bool)),
             this,SLOT(checkedSourceSecondEnable(bool)));
-    connect(ui->sourceNodeComboBox,SIGNAL(currentIndexChanged(int)),
-            this,SLOT(changedSourceNode(int)));
-    connect(ui->sourceTypeComboBox,SIGNAL(currentIndexChanged(int)),
-            this,SLOT(changedSourceType(int)));
-    connect(ui->sourceModeComboBox,SIGNAL(currentIndexChanged(int)),
-            this,SLOT(changedSourceMode(int)));
+
+    connect(ui->node1TypeComboBox,SIGNAL(currentIndexChanged(int)),
+            this,SLOT(changedSourceTypeNode1(int)));
+    connect(ui->node2TypeComboBox,SIGNAL(currentIndexChanged(int)),
+            this,SLOT(changedSourceTypeNode2(int)));
+    connect(ui->node3TypeComboBox,SIGNAL(currentIndexChanged(int)),
+            this,SLOT(changedSourceTypeNode3(int)));
+    connect(ui->node4TypeComboBox,SIGNAL(currentIndexChanged(int)),
+            this,SLOT(changedSourceTypeNode4(int)));
+
+
+    connect(ui->node1ParamsButton,SIGNAL(clicked()),
+            this,SLOT(clickedSourceParamsNode1()));
+    connect(ui->node2ParamsButton,SIGNAL(clicked()),
+            this,SLOT(clickedSourceParamsNode2()));
+    connect(ui->node3ParamsButton,SIGNAL(clicked()),
+            this,SLOT(clickedSourceParamsNode3()));
+    connect(ui->node4ParamsButton,SIGNAL(clicked()),
+            this,SLOT(clickedSourceParamsNode4()));
+
+
 }
 
 AnalysisWindow::~AnalysisWindow() {
@@ -149,23 +122,52 @@ void AnalysisWindow::updateAnalysisList() {
     emit updatedDataBase();
 }
 
-void AnalysisWindow::showSource(const QString &node, const QString &type, const QString &mode) {
+void AnalysisWindow::showSource(const QString &node) {
     Source* source = sources_.value(node);
 
-    sourceConfigurationView_->clear();
+    int nodeId = nodes_.key(node);
+    int index = -1;
+    getNodeButton(nodeId)->setHidden(false);
+    if(source->mode() == SOURCE_MODE_VOLTAGE){
+        index = getNodeComboBox( nodeId )->findData( "voltage" );
+    }else if(source->mode() == SOURCE_MODE_CURRENT){
+        index = getNodeComboBox( nodeId )->findData( "current" );
+    }else{
+        index = getNodeComboBox( nodeId )->findData( "gnd" );
+        getNodeButton(nodeId)->setHidden(true);
+    }
+    getNodeComboBox( nodeId )->setCurrentIndex(index);
 
-    source->mode( mode );
-    source->type( type );
+}
 
-    for(int i=0; i < source->numberParameters(); ++i){
-       gui::KeyValuePair pair;
-       pair.key = source->parameter(i).name();
-       pair.title = source->parameter(i).title();
-       pair.type = gui::KeyValuePair::TYPE_TEXT;
-       pair.value = QString::number( source->parameter(i).value().toDouble());
-       sourceConfigurationView_->addPair(pair);
+QPushButton *AnalysisWindow::getNodeButton(int index) {
+    switch(index){
+    case 4:
+        return ui->node4ParamsButton;
+    case 3:
+        return ui->node3ParamsButton;
+    case 2:
+        return ui->node2ParamsButton;
+    case 1:
+        return ui->node1ParamsButton;
     }
 
+    return NULL;
+}
+
+QComboBox *AnalysisWindow::getNodeComboBox(int index) {
+    switch(index){
+    case 4:
+        return ui->node4TypeComboBox;
+    case 3:
+        return ui->node3TypeComboBox;
+    case 2:
+        return ui->node2TypeComboBox;
+    case 1:
+        return ui->node1TypeComboBox;
+    }
+
+    return NULL;
 }
 
 
@@ -271,7 +273,7 @@ void AnalysisWindow::loadStarted() {
     connect(api_, SIGNAL(savedAnalysis(QList<tsunami::Source>)),
             this, SLOT(clickedSaveAnalysis(QList<tsunami::Source>)));
 
-    ui->webView->page()->mainFrame()->addToJavaScriptWindowObject("Api",api_);
+//    ui->webView->page()->mainFrame()->addToJavaScriptWindowObject("Api",api_);
 }
 
 void AnalysisWindow::loadFinished(bool) {
@@ -305,15 +307,7 @@ void AnalysisWindow::changedAnalysisType(int index) {
     }
 
 }
-/**
- * @brief Обработчик изменения узла источника
- * @param index
- */
-void AnalysisWindow::changedSourceNode(int index) {
-//    QString node = ui->sourceNodeComboBox->itemData(index).toString();
-    int sourceTypeId = ui->sourceModeComboBox->currentIndex();
-    changedSourceType( sourceTypeId );
-}
+
 /**
  * @brief Обработчик checkbox включить/выключить дополнительный источник
  * @param checked
@@ -322,33 +316,77 @@ void AnalysisWindow::checkedSourceSecondEnable(bool checked) {
     ui->sourceSecondGroup->setEnabled(checked);
 }
 
-void AnalysisWindow::changedSourceType(int index) {
-    QString type = ui->sourceTypeComboBox->itemData(index).toString();
+void AnalysisWindow::changedSourceTypeNode1(int index) {
+    QString type = ui->node1TypeComboBox->itemData(index).toString();
+    changeSourceType(1,type);
+}
 
-    if(type == "ground"){
-        ui->sourceModeComboBox->setEnabled(false);
-        ui->sourceConfigurationTableView->setEnabled(false);
-    } else {
-        int modeId = ui->sourceModeComboBox->currentIndex();
-        changedSourceMode(modeId);
+void AnalysisWindow::changedSourceTypeNode2(int index) {
+    QString type = ui->node2TypeComboBox->itemData(index).toString();
+    changeSourceType(2,type);
 
-        ui->sourceModeComboBox->setEnabled(true);
-        ui->sourceConfigurationTableView->setEnabled(true);
+}
+
+void AnalysisWindow::changedSourceTypeNode3(int index) {
+    QString type = ui->node3TypeComboBox->itemData(index).toString();
+    changeSourceType(3,type);
+
+}
+
+void AnalysisWindow::changedSourceTypeNode4(int index) {
+    QString type = ui->node4TypeComboBox->itemData(index).toString();
+    changeSourceType(4,type);
+
+}
+
+void AnalysisWindow::changeSourceType(int nodeId, const QString &type) {
+
+    if(type == "gnd"){
+        getNodeButton(nodeId)->setHidden(true);
+    }else{
+        getNodeButton(nodeId)->setHidden(false);
     }
 
+    QString node = nodes_.value(nodeId);
+
+    sources_[node]->mode( type );
 }
 
-void AnalysisWindow::changedSourceMode(int index) {
-    int nodeId = ui->sourceNodeComboBox->currentIndex();
-    int typeId = ui->sourceTypeComboBox->currentIndex();
-    int modeId = ui->sourceModeComboBox->currentIndex();
-
-    QString node = ui->sourceNodeComboBox->itemData(nodeId).toString();
-    QString type = ui->sourceTypeComboBox->itemData(typeId).toString();
-    QString mode = ui->sourceModeComboBox->itemData(modeId).toString();
-
-    showSource(node,type,mode);
-
+void AnalysisWindow::clickedSourceParamsNode1() {
+    int index = getNodeComboBox(1)->currentIndex();
+    QString type = getNodeComboBox(1)->itemData(index).toString();
+    clickedSourceParams(1,type);
 }
+
+void AnalysisWindow::clickedSourceParamsNode2() {
+    int index = getNodeComboBox(2)->currentIndex();
+    QString type = getNodeComboBox(2)->itemData(index).toString();
+    clickedSourceParams(2,type);
+}
+
+void AnalysisWindow::clickedSourceParamsNode3() {
+    int index = getNodeComboBox(3)->currentIndex();
+    QString type = getNodeComboBox(3)->itemData(index).toString();
+    clickedSourceParams(3,type);
+}
+
+void AnalysisWindow::clickedSourceParamsNode4() {
+    int index = getNodeComboBox(4)->currentIndex();
+    QString type = getNodeComboBox(4)->itemData(index).toString();
+    clickedSourceParams(4,type);
+}
+
+void AnalysisWindow::clickedSourceParams(int nodeId, const QString& type) {
+    QString node = nodes_.value(nodeId);
+    Source* source = sources_.value(node);
+
+    IndepedentSourceDialog dlg(source);
+
+    dlg.exec();
+}
+
+
+
+
 
 }

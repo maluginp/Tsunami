@@ -45,12 +45,16 @@ public:
     const QVariantMap& configurations() const {return configuration_; }
 
     void type(const QString& type);
+    void type(SourceType type);
+    const SourceType& type();
     QString typeJson();
 
     QVariant configuration(const QString& key, const QVariant &defaultValue = QVariant()) const;
     bool hasConfiguration( const QString& key ) { return configuration_.contains(key); }
     void addConfiguration(const QString& key, const QVariant& value);
     void addConfiguration( const QPair<QString,QVariant>& pair);
+    void cleanConfiguration();
+
     QString directionJson() const;
 
     void node(const QString& node) { node_ = node; }
@@ -65,8 +69,6 @@ public:
     static bool compare( const QList<Source>& sources1,
                          const QList<Source>& sources2 );
 
-    int numberParameters();
-    const spice::DeviceParameter& parameter(int index) const;
 
     bool operator==(const Source& other);
 
@@ -94,8 +96,6 @@ private:
     QVariantMap configuration_;
     QString node_;
     SourceDirection direction_;
-
-    QList<spice::DeviceParameter> parameters_;
     SourceType type_;
 };
 

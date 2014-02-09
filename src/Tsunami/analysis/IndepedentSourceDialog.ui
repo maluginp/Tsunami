@@ -358,6 +358,24 @@
    </property>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>sourceConstRadioButton</tabstop>
+  <tabstop>sourcePulseRadioButton</tabstop>
+  <tabstop>sourceSinRadioButton</tabstop>
+  <tabstop>sourceExpRadioButton</tabstop>
+  <tabstop>parameter1LineEdit</tabstop>
+  <tabstop>parameter2LineEdit</tabstop>
+  <tabstop>parameter3LineEdit</tabstop>
+  <tabstop>parameter4LineEdit</tabstop>
+  <tabstop>parameter5LineEdit</tabstop>
+  <tabstop>parameter6LineEdit</tabstop>
+  <tabstop>parameter7LineEdit</tabstop>
+  <tabstop>parameter8LineEdit</tabstop>
+  <tabstop>dcValueLineEdit</tabstop>
+  <tabstop>acAmplitudeLineEdit</tabstop>
+  <tabstop>acPhaseLineEdit</tabstop>
+  <tabstop>saveButton</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
