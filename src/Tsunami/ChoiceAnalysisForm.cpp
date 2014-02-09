@@ -98,11 +98,11 @@ void ChoiceAnalysisForm::showAnalysisDescription(const db::AnalysisModel *model)
 
     desc.append( tr("<b>Analysis type:</b> %1<br/>").arg( typeAnalysis.toUpper() ) );
 
-    desc.append( tr("<b>Sources</b><br/>") );
-    QList<Source> sources = model->sources( SOURCE_DIRECTION_INPUT );
-    foreach(Source source, sources){
-        desc.append( source.title("%MODE %NODE %METHOD<br/>"));
-    }
+//    desc.append( tr("<b>Sources</b><br/>") );
+//    QList<Source> sources = model->sources( SOURCE_DIRECTION_INPUT );
+//    foreach(Source source, sources){
+//        desc.append( source.title("%MODE %NODE %METHOD<br/>"));
+//    }
 
     ui->descriptionLabel->setText( desc );
 

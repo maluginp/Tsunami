@@ -95,13 +95,13 @@ void AnalysisStorage::testData() {
 
     // Sources;
 
-    model->addSource(Source("E",SOURCE_MODE_GND,SOURCE_DIRECTION_INPUT,SOURCE_METHOD_CONST));
+    model->addSource(new Source("E",SOURCE_MODE_GND,SOURCE_DIRECTION_INPUT,SOURCE_METHOD_CONST));
     QVariantMap configuration;
     configuration.insert("start", 0.0);
     configuration.insert("end",10.0);
     configuration.insert("step", 1.0);
     configuration.insert("number",1);
-    model->addSource( Source("C",SOURCE_MODE_VOLTAGE,SOURCE_DIRECTION_INPUT,SOURCE_METHOD_LINEAR, configuration) );
+    model->addSource(new Source("C",SOURCE_MODE_VOLTAGE,SOURCE_DIRECTION_INPUT,SOURCE_METHOD_LINEAR, configuration) );
 
     configuration.clear();
 
@@ -109,10 +109,10 @@ void AnalysisStorage::testData() {
     configuration.insert("end",1.0);
     configuration.insert("step", 0.1);
     configuration.insert("number",2);
-    model->addSource( Source("B",SOURCE_MODE_VOLTAGE,SOURCE_DIRECTION_INPUT,SOURCE_METHOD_LINEAR, configuration) );
+    model->addSource(new Source("B",SOURCE_MODE_VOLTAGE,SOURCE_DIRECTION_INPUT,SOURCE_METHOD_LINEAR, configuration) );
 
-    model->addSource(Source("B",SOURCE_MODE_CURRENT,SOURCE_DIRECTION_OUTPUT));
-    model->addSource(Source("C",SOURCE_MODE_CURRENT,SOURCE_DIRECTION_OUTPUT));
+    model->addSource(new Source("B",SOURCE_MODE_CURRENT,SOURCE_DIRECTION_OUTPUT));
+    model->addSource(new Source("C",SOURCE_MODE_CURRENT,SOURCE_DIRECTION_OUTPUT));
 
 
     if(!saveAnalysis( model )){
@@ -136,8 +136,8 @@ bool AnalysisStorage::saveAnalysisImpl(AnalysisModel *model) {
         return false;
     }
 
-    sqlQuery = sql("INSERT OR REPLACE INTO %1(id,device_id,name,type,sources,createdAt,changedAt,enable) "
-                   "VALUES(:id,:device,:name,:type,:sources,:createdAt,:changedAt,:enable)")
+    sqlQuery = sql("INSERT OR REPLACE INTO %1(id,device_id,name,type,analysis,sources,createdAt,changedAt,enable) "
+                   "VALUES(:id,:device,:name,:type,:analysis,:sources,:createdAt,:changedAt,:enable)")
             .arg(TABLE_NAME_ANALYSES);
 
     QSqlQuery q(sqlQuery,db());
@@ -151,6 +151,7 @@ bool AnalysisStorage::saveAnalysisImpl(AnalysisModel *model) {
     q.bindValue(":device",model->deviceId());
     q.bindValue(":name", model->name());
     q.bindValue(":type",model->typeJson());
+    q.bindValue(":analysis",model->analysis()->json());
     q.bindValue(":sources",model->sourcesJson());
     q.bindValue(":createdAt",model->createAt());
     q.bindValue(":changedAt",model->changeAt());
@@ -195,6 +196,7 @@ AnalysisModel *AnalysisStorage::openAnalysisImpl(int analysisId) {
     model->id(          ITEM("id").toInt() );
     model->deviceId(    ITEM("device_id").toInt());
     model->name(        ITEM("name").toString() );
+    model->analysis(    ITEM("analysis").toString());
     model->sourcesJson( ITEM("sources").toString() );
     model->type(        ITEM("type").toString() );
     model->createAt(    ITEM("createdAt").toDateTime() );
@@ -235,6 +237,7 @@ QList<AnalysisModel *> AnalysisStorage::getAnalysesByDeviceIdImpl(int deviceId) 
         model->id(          ITEM("id").toInt() );
         model->deviceId(    ITEM("device_id").toInt());
         model->name(        ITEM("name").toString() );
+        model->analysis(    ITEM("analysis").toString());
         model->sourcesJson( ITEM("sources").toString() );
         model->type(        ITEM("type").toString() );
         model->createAt(    ITEM("createdAt").toDateTime() );
@@ -256,6 +259,7 @@ bool AnalysisStorage::createTable(AnalysisTable table) {
                        "name TEXT,"
                        "device_id INTEGER,"
                        "type TEXT,"
+                       "analysis TEXT,"
                        "sources TEXT,"
                        "createdAt NUMERIC,"
                        "changedAt NUMERIC,"

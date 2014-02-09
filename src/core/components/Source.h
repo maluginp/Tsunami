@@ -47,7 +47,7 @@ public:
     void type(const QString& type);
     void type(SourceType type);
     const SourceType& type();
-    QString typeJson();
+    QString typeJson() const;
 
     QVariant configuration(const QString& key, const QVariant &defaultValue = QVariant()) const;
     bool hasConfiguration( const QString& key ) { return configuration_.contains(key); }

@@ -77,7 +77,8 @@ SOURCES += main.cpp \
     spice/devices/PulseSourceDevice.cpp \
     spice/devices/SinSourceDevice.cpp \
     spice/devices/ExpSourceDevice.cpp \
-    spice/devices/DiodeDevice.cpp
+    spice/devices/DiodeDevice.cpp \
+    components/Analysis.cpp
 
 HEADERS += \
     components/Json.h \
@@ -139,5 +140,6 @@ HEADERS += \
     spice/devices/SinSourceDevice.h \
     spice/devices/ExpSourceDevice.h \
     spice/devices/DiodeDevice.h \
-    spice/Devices.h
+    spice/Devices.h \
+    components/Analysis.h
 

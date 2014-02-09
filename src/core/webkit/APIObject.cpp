@@ -20,24 +20,24 @@ void APIObject::openAnalysis( db::AnalysisModel* analysis ) {
         return;
     }
 
-    analysis_ = analysis;
+//    analysis_ = analysis;
 
-    QList<Source> sources = analysis_->sources();
-    QVariantMap sourcesJson;
+//    QList<Source> sources = analysis_->sources();
+//    QVariantMap sourcesJson;
 
-    foreach( Source source, sources ){
-        if( source.direction() == SOURCE_DIRECTION_INPUT ){
-            QVariantMap sourceJson;
-            sourceJson.insert( "mode", source.modeJson() );
-            sourceJson.insert("method", source.methodJson());
-            sourceJson.insert("config", source.configurations());
-            sourceJson.insert("name",source.name());
-            sourcesJson.insert( source.node(), sourceJson );
-        }
-    }
+//    foreach( Source source, sources ){
+//        if( source.direction() == SOURCE_DIRECTION_INPUT ){
+//            QVariantMap sourceJson;
+//            sourceJson.insert( "mode", source.modeJson() );
+//            sourceJson.insert("method", source.methodJson());
+//            sourceJson.insert("config", source.configurations());
+//            sourceJson.insert("name",source.name());
+//            sourcesJson.insert( source.node(), sourceJson );
+//        }
+//    }
 
 //    if(!sourcesJson.isEmpty()){
-    emit openedAnalysis(analysis_->id(), sourcesJson );
+//    emit openedAnalysis(analysis_->id(), sourcesJson );
 //    }
 
 }

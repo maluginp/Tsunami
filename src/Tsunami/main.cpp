@@ -11,6 +11,7 @@ int main(int argc, char *argv[])
     QTextCodec::setCodecForCStrings(utfcodec);
 
     tsunami::AnalysisWindow w(1);
+    w.openAnalysis(-1);
     w.show();
 //    tsunami::DeviceWindow w;
 //    w.show();

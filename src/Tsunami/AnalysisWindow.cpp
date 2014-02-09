@@ -40,13 +40,6 @@ AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
         ui->node4TypeComboBox->addItem(modes.key(mode),mode);
     }
 
-    ui->sourceFirstStartLineEdit->setText("0.0");
-    ui->sourceSecondStartLineEdit->setText("0.0");
-    ui->sourceFirstStepLineEdit->setText("1.0");
-    ui->sourceSecondStepLineEdit->setText("1.0");
-    ui->sourceFirstStopLineEdit->setText("10.0");
-    ui->sourceSecondStopLineEdit->setText("10.0");
-
     changedAnalysisType( ui->analysisTypeComboBox->currentIndex() );
 
     prepareDevice();
@@ -101,6 +94,39 @@ void AnalysisWindow::showSource(const QString &node) {
 
 }
 
+void AnalysisWindow::showAnalysis(const Analysis *analysis) const {
+    int indexType = ui->analysisTypeComboBox->findData( analysis->typeJson() );
+    ui->analysisTypeComboBox->setCurrentIndex( indexType );
+    QVariantList sources = analysis->sources();
+    if(analysis->type() == ANALYSIS_DC){
+
+        int modeId = ui->sourceFirstTypeComboBox->findData(sources[0].toMap().value("mode"));
+        ui->sourceFirstTypeComboBox->setCurrentIndex(modeId);
+        int nodeId = ui->sourceFirstNodeComboBox->findData(sources[0].toMap().value("node"));
+        ui->sourceFirstTypeComboBox->setCurrentIndex(nodeId);
+        ui->sourceFirstStartLineEdit->setText( sources[0].toMap().value("start").toString() );
+        ui->sourceFirstStepLineEdit->setText( sources[0].toMap().value("step").toString() );
+        ui->sourceFirstStopLineEdit->setText( sources[0].toMap().value("stop").toString() );
+
+        if(sources.count() == 2){
+            modeId = ui->sourceSecondTypeComboBox->findData(sources[1].toMap().value("mode"));
+            ui->sourceSecondTypeComboBox->setCurrentIndex(modeId);
+            nodeId = ui->sourceSecondNodeComboBox->findData(sources[1].toMap().value("node"));
+            ui->sourceSecondTypeComboBox->setCurrentIndex(nodeId);
+            ui->sourceSecondStartLineEdit->setText( sources[1].toMap().value("start").toString() );
+            ui->sourceSecondStepLineEdit->setText( sources[1].toMap().value("step").toString() );
+            ui->sourceSecondStopLineEdit->setText( sources[1].toMap().value("stop").toString() );
+        }
+
+    }else{
+        ui->sourceFirstStartLineEdit->setText( sources[0].toMap().value("start").toString() );
+        ui->sourceFirstStepLineEdit->setText( sources[0].toMap().value("step").toString() );
+        ui->sourceFirstStopLineEdit->setText( sources[0].toMap().value("stop").toString() );
+    }
+
+
+}
+
 void AnalysisWindow::hideSource(int index, bool hide) {
     getNodeButton(index)->setHidden(hide);
     getNodeComboBox(index)->setHidden(hide);
@@ -136,22 +162,83 @@ QComboBox *AnalysisWindow::getNodeComboBox(int index) {
     return NULL;
 }
 
+QVariantList AnalysisWindow::parseAnalysisSources() {
+    int analysisTypeIndex = ui->analysisTypeComboBox->currentIndex();
+    QString type = ui->analysisTypeComboBox->itemData(analysisTypeIndex).toString();
+    QVariantList sources;
+    QVariantMap source;
+    if(type == "dc"){
+        QString mode;
+        int nodeId = ui->sourceFirstNodeComboBox->currentIndex();
+        source.insert("node", ui->sourceFirstNodeComboBox->itemData(nodeId));
+        int modeId = ui->sourceFirstTypeComboBox->currentIndex();
+        source.insert("mode",ui->sourceFirstTypeComboBox->itemData(modeId));
+        source.insert("start",ui->sourceFirstStartLineEdit->text());
+        source.insert("step",ui->sourceFirstStepLineEdit->text());
+        source.insert("stop",ui->sourceFirstStopLineEdit->text());
 
-void AnalysisWindow::clickedOpenAnalysis() {
-    if( analysisId_ != -1 ){
-        openAnalysis(analysisId_);
+        sources.append(source);
+
+        if( ui->sourceSecondEnable->isChecked() ){
+            source.clear();
+            int nodeId = ui->sourceSecondNodeComboBox->currentIndex();
+            source.insert("node", ui->sourceSecondNodeComboBox->itemData(nodeId));
+            int modeId = ui->sourceSecondTypeComboBox->currentIndex();
+            source.insert("mode",ui->sourceSecondTypeComboBox->itemData(modeId));
+            source.insert("start",ui->sourceSecondStartLineEdit->text());
+            source.insert("step",ui->sourceSecondStepLineEdit->text());
+            source.insert("stop",ui->sourceSecondStopLineEdit->text());
+            sources.append(source);    \
+
+        }
+    }else{
+        source.insert("start",ui->sourceFirstStartLineEdit->text());
+        source.insert("step",ui->sourceFirstStepLineEdit->text());
+        source.insert("stop",ui->sourceFirstStopLineEdit->text());
+
+        sources.append(source);
     }
+
+    return sources;
 }
 
-void AnalysisWindow::clickedSaveAnalysis(const QList<tsunami::Source> &sources) {
+
+void AnalysisWindow::clickedOpenAnalysis() {
+//    if( analysisId_ != -1 ){
+//        analysis_ = openAnalysis(analysisId_);
+//        return;
+//    }
+}
+
+void AnalysisWindow::clickedSaveAnalysis() {
     log::logTrace() << "Saving analysis";
     QString analysisName = ui->analysisNameLineEdit->text();
     if(analysisName.isEmpty()){
         return;
     }
+    analysis_->deviceId( deviceId_ );
+    analysis_->name(analysisName);
+    analysis_->enable( ui->analysisEnableCheckBox->isChecked() );
+
+    Analysis* analysisType = new Analysis();
+    int analysisTypeIndex = ui->analysisTypeComboBox->currentIndex();
+    QString type = ui->analysisTypeComboBox->itemData(analysisTypeIndex).toString();
+    analysisType->type( type );
+
+    analysisType->sources(parseAnalysisSources());
 
 
-//    if(storage_->exists( deviceId_, analysisName )){
+    analysis_->analysis( analysisType );
+    analysis_->clearSources();
+
+    foreach(Source* source,sources_.values()){
+        analysis_->addSource( source );
+    }
+
+
+    storage_->saveAnalysis(analysis_);
+
+    //    if(storage_->exists( deviceId_, analysisName )){
 //        // TODO: show message if analysis exists
 //        QMessageBox::warning(this,windowTitle(),tr("Analysis is existed"));
 //        log::logDebug() << "Analysis existed";
@@ -186,6 +273,42 @@ void AnalysisWindow::clickedSaveAnalysis(const QList<tsunami::Source> &sources) 
 
 void AnalysisWindow::openAnalysis(int analysisId) {
 
+    if(analysisId == -1) {
+        analysis_ = new AnalysisModel();
+        foreach(QString node, nodes_.values()){
+            Source* source = new Source();
+            source->node( node );
+            analysis_->addSource( source );
+        }
+
+        Analysis* analysisType = new Analysis();
+        analysisType->type("dc");
+
+        QVariantMap source;
+
+        source.insert("mode", "voltage");
+        source.insert("node", nodes_.values().first());
+        source.insert("start","0.0");
+        source.insert("stop","10.0");
+        source.insert("step","1.0");
+        analysisType->appendSource(source);
+
+        analysis_->analysis( analysisType );
+    } else {
+        analysis_ = storage_->openAnalysis( analysisId );
+    }
+
+    ui->analysisNameLineEdit->setText( analysis_->name() );
+    ui->analysisEnableCheckBox->setChecked( analysis_->enable() );
+
+    foreach( Source* source, analysis_->sources() ){
+        sources_.insert(source->node(),source);
+        showSource(source->node());
+    }
+
+
+    showAnalysis( analysis_->analysis() );
+
 
 
 
@@ -199,14 +322,10 @@ void AnalysisWindow::prepareDevice() {
     int index = 1;
     foreach(QString node, device->nodes()){
         nodes_.insert(index,node);
-        Source* source = new Source();
-        source->node( node );
-        sources_.insert(node,source);
 
         ui->sourceFirstNodeComboBox->addItem(node,node);
         ui->sourceSecondNodeComboBox->addItem(node,node);
 
-        showSource(node);
         index++;
     }
 

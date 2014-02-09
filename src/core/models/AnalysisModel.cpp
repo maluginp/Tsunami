@@ -15,42 +15,28 @@ AnalysisModel::AnalysisModel()
 
 }
 
-void AnalysisModel::addSource( const Source& source ){
-    if(sourceExists(source.node(),source.direction())){
-        int nSources = sources_.size();
-        for(int i=0; i < nSources; i++ ){
-            if(sources_[i].direction() == source.direction() &&
-               sources_[i].node().compare(source.node()) == 0){
-                sources_[i] = source;
-            }
-        }
-    }else{
-        sources_.append( source );
-    }
+void AnalysisModel::addSource(Source *source ){
+    sources_.append( source );
 }
 
+//const Source &AnalysisModel::findSource(const QString &node, SourceDirection direction) {
+//    int nSources = sources_.size();
+//    for(int i=0; i < nSources; i++ ){
+//        if(sources_[i].direction() == direction && sources_[i].node().compare(node) == 0){
+//            return sources_[i];
+//        }
+//    }
+//    Q_ASSERT(false);
+//}
 
-const Source &AnalysisModel::findSource(const QString &node, SourceDirection direction) {
-    int nSources = sources_.size();
-    for(int i=0; i < nSources; i++ ){
-        if(sources_[i].direction() == direction && sources_[i].node().compare(node) == 0){
-            return sources_[i];
-        }
-    }
-    Q_ASSERT(false);
-}
-
-void AnalysisModel::removeSource(const Source &source) {
-
-    QList<Source>::iterator it = sources_.begin();
-    for(; it != sources_.end(); ++it){
-        if(it->direction() == source.direction() && it->node().compare(source.node()) == 0){
-            sources_.erase( it );
-        }
-    }
-
-
-}
+//void AnalysisModel::removeSource(const Source &source) {
+//    QList<Source>::iterator it = sources_.begin();
+//    for(; it != sources_.end(); ++it){
+//        if(it->direction() == source.direction() && it->node().compare(source.node()) == 0){
+//            sources_.erase( it );
+//        }
+//    }
+//}
 
 void AnalysisModel::type(const QString &type) {
     if(type.compare("dc") == 0){
@@ -70,18 +56,31 @@ void AnalysisModel::sourcesJson(const QString &json){
 
     for(int i=0; i < sources.size(); ++i) {
         QVariantMap sourceJson = sources[i].toMap();
-        Source source;
-        source.node(sourceJson.value( "node" ).toString());
-        source.method(sourceJson.value("method").toString());
-        source.configurations(sourceJson.value("configuration",QVariantMap()).toMap());
-        source.mode( sourceJson.value("mode").toString() );
-        source.direction(sourceJson.value("direction").toString());
+        Source* source = new Source();
+        source->node(sourceJson.value( "node" ).toString());
+        source->type(sourceJson.value("type").toString());
+        source->method(sourceJson.value("method").toString());
+        source->configurations(sourceJson.value("configuration",QVariantMap()).toMap());
+        source->mode( sourceJson.value("mode").toString() );
+        source->direction(sourceJson.value("direction").toString());
 
         sources_.append(source);
 
     }
 
 
+}
+
+void AnalysisModel::analysis(Analysis *analysis) {
+    analysis_ = analysis;
+}
+
+void AnalysisModel::analysis(const QString &analysisJson) {
+    if(analysis_){
+        delete analysis_;
+    }
+    analysis_ = new Analysis();
+    analysis_->parseJson( analysisJson );
 }
 
 QString AnalysisModel::typeJson() const {
@@ -96,26 +95,35 @@ QString AnalysisModel::typeJson() const {
     return QString("unknown");
 }
 
-QList<Source> AnalysisModel::sources(SourceDirection direction) const{
-    QList<Source> sources;
-    int nSources = sources_.size();
-    for(int i=0; i < nSources; ++i){
-        if(sources_[i].direction() == direction){
-            sources.append( sources_[i] );
-        }
-    }
-
-    return sources;
-
+const Analysis *AnalysisModel::analysis() const {
+    return analysis_;
 }
+
+void AnalysisModel::clearSources() {
+    qDeleteAll(sources_);
+    sources_.clear();
+}
+
+//QList<Source> AnalysisModel::sources(SourceDirection direction) const{
+//    QList<Source> sources;
+//    int nSources = sources_.size();
+//    for(int i=0; i < nSources; ++i){
+//        if(sources_[i].direction() == direction){
+//            sources.append( sources_[i] );
+//        }
+//    }
+
+//    return sources;
+
+//}
 
 QString AnalysisModel::sourcesJson() const {
     QString json;
 
     QVariantList sources;
 
-    foreach(Source source, sources_){
-        sources.append( source.json() );
+    foreach(Source* source, sources_){
+        sources.append( source->json() );
     }
 
     json = QtJson::serializeStr( sources );
@@ -123,20 +131,20 @@ QString AnalysisModel::sourcesJson() const {
     return json;
 }
 
-bool AnalysisModel::sourceExists(const QString &node, SourceDirection direction) {
-    int nSources = sources_.size();
-    for(int i=0; i < nSources; i++ ){
-        if(sources_[i].direction() == direction && sources_[i].node().compare(node) == 0){
-            return true;
-        }
-    }
+//bool AnalysisModel::sourceExists(const QString &node, SourceDirection direction) {
+//    int nSources = sources_.size();
+//    for(int i=0; i < nSources; i++ ){
+//        if(sources_[i].direction() == direction && sources_[i].node().compare(node) == 0){
+//            return true;
+//        }
+//    }
 
-    return false;
-}
+//    return false;
+//}
 
-Source AnalysisModel::source(int i) const {
-    return sources_[i];
-}
+//Source AnalysisModel::source(int i) const {
+//    return sources_[i];
+//}
 
 
 }

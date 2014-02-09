@@ -22,18 +22,13 @@ QVariantMap Source::json() const{
     QVariantMap sourceJson;
     sourceJson.insert("node",      node_ );
     sourceJson.insert("mode",      modeJson());
+    sourceJson.insert("type",      typeJson());
     sourceJson.insert("direction", directionJson());
-    QVariantMap config;
-    if(mode_ != SOURCE_MODE_GND && direction_ == SOURCE_DIRECTION_INPUT){
-        sourceJson.insert( "method", methodJson());
 
-        if( method_ == SOURCE_METHOD_CONST ){
-            config.insert("const", configuration_.value("const") );
-        }else if(method_ == SOURCE_METHOD_LINEAR) {
-            config.insert("number", configuration_.value("number"));
-            config.insert("start",configuration_.value("start"));
-            config.insert("end",configuration_.value("end"));
-            config.insert("step",configuration_.value("step"));
+    QVariantMap config;
+    if( mode_ != SOURCE_MODE_GND ){
+        foreach( QString key, configuration_.keys() ){
+            config.insert( key, configuration_.value(key) );
         }
     }
 
@@ -206,12 +201,39 @@ QString Source::methodJson() const{
     return "";
 }
 
+void Source::type(const QString &type) {
+    if(type == "const"){
+        type_ = SOURCE_TYPE_CONST;
+    }else if(type == "pulse"){
+        type_ = SOURCE_TYPE_PULSE;
+    }else if(type == "exp"){
+        type_ = SOURCE_TYPE_EXP;
+    }else if(type == "sin"){
+        type_ = SOURCE_TYPE_SIN;
+    }
+}
+
 void Source::type(SourceType type) {
     type_ = type;
 }
 
 const SourceType &Source::type() {
     return type_;
+}
+
+QString Source::typeJson() const {
+    if(type_ == SOURCE_TYPE_CONST){
+        return "const";
+    }else if(type_ == SOURCE_TYPE_PULSE){
+        return "pulse";
+    }else if(type_ == SOURCE_TYPE_EXP){
+        return "exp";
+    }else if(type_ == SOURCE_TYPE_SIN){
+        return "sin";
+    }
+
+    Q_ASSERT(false);
+    return "";
 }
 
 QVariant Source::configuration(const QString &key,const QVariant& defaultValue) const{

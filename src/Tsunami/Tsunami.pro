@@ -35,7 +35,6 @@ SOURCES += main.cpp\
     ExtractorWindow.cpp \
     LibraryWindow.cpp \
     ChoiceAnalysisForm.cpp \
-    AnalysisForm.cpp \
     MeasureWindow.cpp \
     OpenDeviceDialog.cpp \
     OpenLibraryDialog.cpp \
@@ -55,7 +54,6 @@ HEADERS  += \
     CreateLibraryDialog.h \
     PlotExtractionDialog.h \
     MeasureWindow.h \
-    AnalysisForm.h \
     ChoiceAnalysisForm.h \
     DeviceWindow.h \
     ExtractorWindow.h \
