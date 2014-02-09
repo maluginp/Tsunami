@@ -69,7 +69,8 @@ AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
     connect(ui->node4ParamsButton,SIGNAL(clicked()),
             this,SLOT(clickedSourceParamsNode4()));
 
-
+    connect(ui->saveButton,SIGNAL(clicked()),
+            this,SLOT(clickedSaveAnalysis()));
 }
 
 AnalysisWindow::~AnalysisWindow() {

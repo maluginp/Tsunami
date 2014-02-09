@@ -91,7 +91,7 @@ QString AnalysisModel::typeJson() const {
     default:
         break;
     }
-    Q_ASSERT(false);
+//    Q_ASSERT(false);
     return QString("unknown");
 }
 
