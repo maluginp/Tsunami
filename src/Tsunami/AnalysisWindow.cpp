@@ -90,6 +90,7 @@ void AnalysisWindow::showSource(const QString &node) {
     }else{
         index = getNodeComboBox( nodeId )->findData( "gnd" );
         getNodeButton(nodeId)->setHidden(true);
+        getNodeCheckBox(nodeId)->setHidden(true);
     }
     getNodeComboBox( nodeId )->setCurrentIndex(index);
 
@@ -133,6 +134,7 @@ void AnalysisWindow::showAnalysis(const Analysis *analysis) const {
 void AnalysisWindow::hideSource(int index, bool hide) {
     getNodeButton(index)->setHidden(hide);
     getNodeComboBox(index)->setHidden(hide);
+    getNodeCheckBox(index)->setHidden(hide);
 }
 
 QPushButton *AnalysisWindow::getNodeButton(int index) {
@@ -160,6 +162,21 @@ QComboBox *AnalysisWindow::getNodeComboBox(int index) {
         return ui->node2TypeComboBox;
     case 1:
         return ui->node1TypeComboBox;
+    }
+
+    return NULL;
+}
+
+QCheckBox *AnalysisWindow::getNodeCheckBox(int index){
+    switch(index){
+    case 4:
+        return ui->node4CheckBox;
+    case 3:
+        return ui->node3CheckBox;
+    case 2:
+        return ui->node2CheckBox;
+    case 1:
+        return ui->node1CheckBox;
     }
 
     return NULL;
@@ -356,7 +373,7 @@ void AnalysisWindow::prepareDevice() {
     }
 
     ui->imagePixmap->setPixmap( deviceImage );
-
+    ui->imageOutput->setPixmap(deviceImage);
 }
 
 /**
@@ -423,8 +440,10 @@ void AnalysisWindow::changeSourceType(int nodeId, const QString &type) {
 
     if(type == "gnd"){
         getNodeButton(nodeId)->setHidden(true);
+        getNodeCheckBox(nodeId)->setHidden(true);
     }else{
         getNodeButton(nodeId)->setHidden(false);
+        getNodeCheckBox(nodeId)->setHidden(false);
     }
 
     QString node = nodes_.value(nodeId);

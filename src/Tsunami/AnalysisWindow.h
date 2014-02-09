@@ -32,6 +32,7 @@ private:
     void hideSource(int index,bool hide = true);
     QPushButton *getNodeButton(int index);
     QComboBox* getNodeComboBox(int index);
+    QCheckBox* getNodeCheckBox(int index);
     QVariantList parseAnalysisSources();
 
 
