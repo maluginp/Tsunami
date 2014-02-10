@@ -136,8 +136,8 @@ void MeasureWindow::showSourcesDescription() {
     QVector< QVector<double> > data;
 
 
-    QVariantList sources = analysis->analysis()->sources();
-    if(analysis->analysis()->type() == ANALYSIS_DC){
+    QVariantList sources = analysis->analyses();
+    if(analysis->type() == ANALYSIS_DC){
 
         columns.append( sourceManager->inputByNode(sources[0].toMap().value("node").toString())->title());
 
@@ -146,7 +146,7 @@ void MeasureWindow::showSourcesDescription() {
         double dcFirstStop  = sources[0].toMap().value("stop").toDouble();
 
 
-        if(analysis->analysis()->numberSources() == 2){
+        if(analysis->numberAnalyses() == 2){
             columns.append( sourceManager->inputByNode(sources[1].toMap().value("node").toString())->title());
 
             double dcSecondValue = sources[1].toMap().value("start").toDouble();
@@ -173,7 +173,7 @@ void MeasureWindow::showSourcesDescription() {
             }
         }
     }else{
-        columns.append( analysis->analysis()->typeJson() );
+        columns.append( analysis->typeJson() );
         double srcFirstValue = sources[0].toMap().value("start").toDouble();
         double srcFirstStep  = sources[0].toMap().value("step").toDouble();
         double srcFirstStop  = sources[0].toMap().value("stop").toDouble();

@@ -85,41 +85,41 @@ int AnalysisStorage::lastInsertId(const QString &table) {
 
 void AnalysisStorage::testData() {
     // Test Analysis
-    AnalysisModel* model = new AnalysisModel();
-    model->id( 1 );
-    model->type("ac");
-    model->type(ANALYSIS_DC);
-    model->deviceId(1);
-    model->name("Test DC analysis");
-    model->enable(true);
+//    AnalysisModel* model = new AnalysisModel();
+//    model->id( 1 );
+//    model->type("ac");
+//    model->type(ANALYSIS_DC);
+//    model->deviceId(1);
+//    model->name("Test DC analysis");
+//    model->enable(true);
 
-    // Sources;
+//    // Sources;
 
-    model->addSource(new Source("E",SOURCE_MODE_GND,SOURCE_DIRECTION_INPUT,SOURCE_METHOD_CONST));
-    QVariantMap configuration;
-    configuration.insert("start", 0.0);
-    configuration.insert("end",10.0);
-    configuration.insert("step", 1.0);
-    configuration.insert("number",1);
-    model->addSource(new Source("C",SOURCE_MODE_VOLTAGE,SOURCE_DIRECTION_INPUT,SOURCE_METHOD_LINEAR, configuration) );
+//    model->addSource(new Source("E",SOURCE_MODE_GND,SOURCE_DIRECTION_INPUT,SOURCE_METHOD_CONST));
+//    QVariantMap configuration;
+//    configuration.insert("start", 0.0);
+//    configuration.insert("end",10.0);
+//    configuration.insert("step", 1.0);
+//    configuration.insert("number",1);
+//    model->addSource(new Source("C",SOURCE_MODE_VOLTAGE,SOURCE_DIRECTION_INPUT,SOURCE_METHOD_LINEAR, configuration) );
 
-    configuration.clear();
+//    configuration.clear();
 
-    configuration.insert("start", 0.0);
-    configuration.insert("end",1.0);
-    configuration.insert("step", 0.1);
-    configuration.insert("number",2);
-    model->addSource(new Source("B",SOURCE_MODE_VOLTAGE,SOURCE_DIRECTION_INPUT,SOURCE_METHOD_LINEAR, configuration) );
+//    configuration.insert("start", 0.0);
+//    configuration.insert("end",1.0);
+//    configuration.insert("step", 0.1);
+//    configuration.insert("number",2);
+//    model->addSource(new Source("B",SOURCE_MODE_VOLTAGE,SOURCE_DIRECTION_INPUT,SOURCE_METHOD_LINEAR, configuration) );
 
-    model->addSource(new Source("B",SOURCE_MODE_CURRENT,SOURCE_DIRECTION_OUTPUT));
-    model->addSource(new Source("C",SOURCE_MODE_CURRENT,SOURCE_DIRECTION_OUTPUT));
+//    model->addSource(new Source("B",SOURCE_MODE_CURRENT,SOURCE_DIRECTION_OUTPUT));
+//    model->addSource(new Source("C",SOURCE_MODE_CURRENT,SOURCE_DIRECTION_OUTPUT));
 
 
-    if(!saveAnalysis( model )){
-        Q_ASSERT(false);
-    }
+//    if(!saveAnalysis( model )){
+//        Q_ASSERT(false);
+//    }
 
-    delete model;
+//    delete model;
 
     return;
 
@@ -136,8 +136,8 @@ bool AnalysisStorage::saveAnalysisImpl(AnalysisModel *model) {
         return false;
     }
 
-    sqlQuery = sql("INSERT OR REPLACE INTO %1(id,device_id,name,type,analysis,sources,createdAt,changedAt,enable) "
-                   "VALUES(:id,:device,:name,:type,:analysis,:sources,:createdAt,:changedAt,:enable)")
+    sqlQuery = sql("INSERT OR REPLACE INTO %1(id,device_id,name,type,analyses,inputs,outputs,createdAt,changedAt,enable) "
+                   "VALUES(:id,:device,:name,:type,:analyses,:inputs,:outputs,:createdAt,:changedAt,:enable)")
             .arg(TABLE_NAME_ANALYSES);
 
     QSqlQuery q(sqlQuery,db());
@@ -151,8 +151,9 @@ bool AnalysisStorage::saveAnalysisImpl(AnalysisModel *model) {
     q.bindValue(":device",model->deviceId());
     q.bindValue(":name", model->name());
     q.bindValue(":type",model->typeJson());
-    q.bindValue(":analysis",model->analysis()->json());
-    q.bindValue(":sources",model->sourcesJson());
+    q.bindValue(":analyses",model->analysesJson());
+    q.bindValue(":inputs",model->sourcesJson(SOURCE_DIRECTION_INPUT));
+    q.bindValue(":outputs",model->sourcesJson(SOURCE_DIRECTION_OUTPUT));
     q.bindValue(":createdAt",model->createAt());
     q.bindValue(":changedAt",model->changeAt());
     q.bindValue(":enable",model->enable());
@@ -196,8 +197,9 @@ AnalysisModel *AnalysisStorage::openAnalysisImpl(int analysisId) {
     model->id(          ITEM("id").toInt() );
     model->deviceId(    ITEM("device_id").toInt());
     model->name(        ITEM("name").toString() );
-    model->analysis(    ITEM("analysis").toString());
-    model->sourcesJson( ITEM("sources").toString() );
+    model->analysesJson(    ITEM("analyses").toString());
+    model->sourcesJson( ITEM("inputs").toString() );
+    model->sourcesJson( ITEM("outputs").toString() );
     model->type(        ITEM("type").toString() );
     model->createAt(    ITEM("createdAt").toDateTime() );
     model->changeAt(    ITEM("changedAt").toDateTime());
@@ -237,8 +239,9 @@ QList<AnalysisModel *> AnalysisStorage::getAnalysesByDeviceIdImpl(int deviceId) 
         model->id(          ITEM("id").toInt() );
         model->deviceId(    ITEM("device_id").toInt());
         model->name(        ITEM("name").toString() );
-        model->analysis(    ITEM("analysis").toString());
-        model->sourcesJson( ITEM("sources").toString() );
+        model->analysesJson(    ITEM("analyses").toString());
+        model->sourcesJson( ITEM("inputs").toString() );
+        model->sourcesJson( ITEM("outputs").toString() );
         model->type(        ITEM("type").toString() );
         model->createAt(    ITEM("createdAt").toDateTime() );
         model->changeAt(    ITEM("changedAt").toDateTime());
@@ -259,8 +262,9 @@ bool AnalysisStorage::createTable(AnalysisTable table) {
                        "name TEXT,"
                        "device_id INTEGER,"
                        "type TEXT,"
-                       "analysis TEXT,"
-                       "sources TEXT,"
+                       "analyses TEXT,"
+                       "inputs TEXT,"
+                       "outputs TEXT,"
                        "createdAt NUMERIC,"
                        "changedAt NUMERIC,"
                        "enable NUMERIC)"

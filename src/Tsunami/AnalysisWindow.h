@@ -28,7 +28,7 @@ public:
 private:
     void prepareDevice();
     void showSource(const QString& node);
-    void showAnalysis(const Analysis *analysis) const;
+    void showAnalysis() const;
     void hideSource(int index,bool hide = true);
     QPushButton *getNodeButton(int index);
     QComboBox* getNodeComboBox(int index);

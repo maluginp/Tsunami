@@ -91,36 +91,36 @@ void AnalysisWindow::showSource(const QString &node) {
 
 }
 
-void AnalysisWindow::showAnalysis(const Analysis *analysis) const {
-    int indexType = ui->analysisTypeComboBox->findData( analysis->typeJson() );
+void AnalysisWindow::showAnalysis() const {
+    int indexType = ui->analysisTypeComboBox->findData( analysis_->typeJson() );
     ui->analysisTypeComboBox->setCurrentIndex( indexType );
-    QVariantList sources = analysis->sources();
+//    QVariantList sources = analysis_->analyses();
     ui->sourceSecondEnable->setChecked(false);
-    if(analysis->type() == ANALYSIS_DC){
+    if(analysis_->type() == ANALYSIS_DC){
 
 //        int modeId = ui->sourceFirstTypeComboBox->findData(sources[0].toMap().value("mode"));
 //        ui->sourceFirstTypeComboBox->setCurrentIndex(modeId);
-        int nodeId = ui->sourceFirstNodeComboBox->findData(sources[0].toMap().value("node"));
+        int nodeId = ui->sourceFirstNodeComboBox->findData(analysis_->analysis(0).value("node"));
         ui->sourceFirstNodeComboBox->setCurrentIndex(nodeId);
-        ui->sourceFirstStartLineEdit->setText( sources[0].toMap().value("start").toString() );
-        ui->sourceFirstStepLineEdit->setText( sources[0].toMap().value("step").toString() );
-        ui->sourceFirstStopLineEdit->setText( sources[0].toMap().value("stop").toString() );
+        ui->sourceFirstStartLineEdit->setText( analysis_->analysis(0).value("start").toString() );
+        ui->sourceFirstStepLineEdit->setText( analysis_->analysis(0).value("step").toString() );
+        ui->sourceFirstStopLineEdit->setText( analysis_->analysis(0).value("stop").toString() );
 
-        if(sources.count() == 2){
+        if(analysis_->numberAnalyses() == 2){
             ui->sourceSecondEnable->setChecked(true);
 //            modeId = ui->sourceSecondTypeComboBox->findData(sources[1].toMap().value("mode"));
 //            ui->sourceSecondTypeComboBox->setCurrentIndex(modeId);
-            nodeId = ui->sourceSecondNodeComboBox->findData(sources[1].toMap().value("node"));
+            nodeId = ui->sourceSecondNodeComboBox->findData(analysis_->analysis(1).value("node"));
             ui->sourceSecondNodeComboBox->setCurrentIndex(nodeId);
-            ui->sourceSecondStartLineEdit->setText( sources[1].toMap().value("start").toString() );
-            ui->sourceSecondStepLineEdit->setText( sources[1].toMap().value("step").toString() );
-            ui->sourceSecondStopLineEdit->setText( sources[1].toMap().value("stop").toString() );
+            ui->sourceSecondStartLineEdit->setText( analysis_->analysis(1).value("start").toString() );
+            ui->sourceSecondStepLineEdit->setText( analysis_->analysis(1).value("step").toString() );
+            ui->sourceSecondStopLineEdit->setText( analysis_->analysis(1).value("stop").toString() );
         }
 
     }else{
-        ui->sourceFirstStartLineEdit->setText( sources[0].toMap().value("start").toString() );
-        ui->sourceFirstStepLineEdit->setText( sources[0].toMap().value("step").toString() );
-        ui->sourceFirstStopLineEdit->setText( sources[0].toMap().value("stop").toString() );
+        ui->sourceFirstStartLineEdit->setText( analysis_->analysis(0).value("start").toString() );
+        ui->sourceFirstStepLineEdit->setText( analysis_->analysis(0).value("step").toString() );
+        ui->sourceFirstStopLineEdit->setText( analysis_->analysis(0).value("stop").toString() );
     }
 
 
@@ -235,20 +235,35 @@ void AnalysisWindow::clickedSaveAnalysis() {
     analysis_->name(analysisName);
     analysis_->enable( ui->analysisEnableCheckBox->isChecked() );
 
-    Analysis* analysisType = new Analysis();
     int analysisTypeIndex = ui->analysisTypeComboBox->currentIndex();
     QString type = ui->analysisTypeComboBox->itemData(analysisTypeIndex).toString();
-    analysisType->type( type );
-
-    analysisType->sources(parseAnalysisSources());
+    analysis_->type(type);
 
 
-    analysis_->analysis( analysisType );
-//    analysis_->clearSources();
+    analysis_->analyses(parseAnalysisSources());
 
-//    foreach(Source* source,sources_.values()){
-//        analysis_->addSource( source );
-//    }
+    // Parse outputs
+
+    analysis_->clearSources(SOURCE_DIRECTION_OUTPUT);
+
+    foreach(int nodeId, nodes_.keys()){
+        if( !getNodeCheckBox(nodeId)->isHidden() && getNodeCheckBox(nodeId)->isChecked()){
+            Source* outputSource = new Source();
+            outputSource->node( nodes_.value(nodeId) );
+            outputSource->direction( SOURCE_DIRECTION_OUTPUT );
+            int index = getNodeComboBox(nodeId)->currentIndex();
+            QString sourceMode = getNodeComboBox(nodeId)->itemData(index).toString();
+            if(sourceMode == "voltage"){
+                outputSource->mode(SOURCE_MODE_CURRENT);
+            }else{
+                outputSource->mode(SOURCE_MODE_VOLTAGE);
+            }
+
+            analysis_->addSource( outputSource );
+
+        }
+
+    }
 
 
     storage_->saveAnalysis(analysis_);
@@ -296,19 +311,15 @@ void AnalysisWindow::openAnalysis(int analysisId) {
             analysis_->addSource( newSource );
         }
 
-        Analysis* analysisType = new Analysis();
-        analysisType->type("dc");
+        analysis_->type( ANALYSIS_DC );
 
-        QVariantMap source;
+        QVariantMap analysis;
+        analysis.insert("node", nodes_.values().first());
+        analysis.insert("start","0.0");
+        analysis.insert("stop","10.0");
+        analysis.insert("step","1.0");
 
-        source.insert("mode", "voltage");
-        source.insert("node", nodes_.values().first());
-        source.insert("start","0.0");
-        source.insert("stop","10.0");
-        source.insert("step","1.0");
-        analysisType->appendSource(source);
-
-        analysis_->analysis( analysisType );
+        analysis_->addAnalysis(analysis);
     } else {
         analysis_ = storage_->openAnalysis( analysisId );
     }
@@ -316,15 +327,19 @@ void AnalysisWindow::openAnalysis(int analysisId) {
     ui->analysisNameLineEdit->setText( analysis_->name() );
     ui->analysisEnableCheckBox->setChecked( analysis_->enable() );
 
-    foreach( Source* source, analysis_->sources() ){
+    foreach( Source* source, analysis_->sources(SOURCE_DIRECTION_INPUT) ){
         sources_.insert(source->node(),source);
         showSource(source->node());
     }
 
 
-    showAnalysis( analysis_->analysis() );
+    foreach( Source* source, analysis_->sources(SOURCE_DIRECTION_OUTPUT) ){
+        int nodeId = nodes_.key(source->node());
+        getNodeCheckBox(nodeId)->setChecked(true);
+    }
 
 
+    showAnalysis( );
 
 
 
