@@ -9,21 +9,21 @@ DelegateDoubleItem::DelegateDoubleItem(QObject *parent)
 QWidget *DelegateDoubleItem::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const {
 
 
-    QTextEdit* editor = new QTextEdit(parent);
+    QLineEdit* editor = new QLineEdit(parent);
     return editor;
 
 }
 
 void DelegateDoubleItem::setEditorData(QWidget *editor, const QModelIndex &index) const {
-    QTextEdit *textEdit = static_cast<QTextEdit*>(editor);
+    QLineEdit *textEdit = static_cast<QLineEdit*>(editor);
     QString data = index.model()->data(index,Qt::DisplayRole).toString();
     textEdit->setText( data );
 }
 
 void DelegateDoubleItem::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const {
-    QTextEdit *textEdit = static_cast<QTextEdit*>(editor);
+    QLineEdit *textEdit = static_cast<QLineEdit*>(editor);
 
-    QString data = textEdit->toPlainText();
+    QString data = textEdit->text();
 
     data.replace( "m","e-3" );
     data.replace( "u", "e-6" );

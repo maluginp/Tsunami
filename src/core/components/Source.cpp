@@ -384,15 +384,42 @@ bool Source::compare( const QList<Source>& sources1,const QList<Source>& sources
 }
 
 
+SourceManager::SourceManager(const QList<Source *> &sources)
+    : sources_(sources)
+{
+
+}
+
 QList<Source *> SourceManager::inputs() {
-    return sources_;
+    QList<Source*> sources;
+    foreach(Source* source,sources_){
+        if(source->direction() == SOURCE_DIRECTION_INPUT){
+            sources.append(source);
+        }
+    }
+
+    return sources;
 }
 
 QList<Source *> SourceManager::outputs() {
-    return sources_;
+    QList<Source*> sources;
+    foreach(Source* source,sources_){
+        if(source->direction() == SOURCE_DIRECTION_OUTPUT){
+            sources.append(source);
+        }
+    }
+
+    return sources;
 }
 
-const Source *SourceManager::inputByNode(const QString &name) {
+const Source *SourceManager::inputByNode(const QString &node) {
+    foreach(Source* source, sources_){
+        if(source->direction() == SOURCE_DIRECTION_INPUT
+                && source->node().compare(node,Qt::CaseInsensitive)==0){
+            return source;
+        }
+    }
+
     return NULL;
 }
 

@@ -33,6 +33,10 @@ QString Analysis::json() const {
     return QtJson::serializeStr( analysis );
 }
 
+const int &Analysis::numberSources() const {
+    return numberSources_;
+}
+
 AnalysisType Analysis::type() const {
     return type_;
 }
@@ -61,6 +65,10 @@ QString Analysis::typeJson() const {
 void Analysis::appendSource(const QVariantMap &source) {
     numberSources_++;
     sources_.append( source );
+}
+
+const QVariantMap &Analysis::source(int i) const {
+    return sources_[i].toMap();
 }
 
 void Analysis::sources(const QVariantList &sources) {

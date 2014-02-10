@@ -11,12 +11,14 @@ public:
 
     void parseJson(const QString& json);
     QString json() const;
-
+    const int& numberSources() const;
     AnalysisType type() const;
     void type(const QString& type);
     QString typeJson() const;
 
     void appendSource(const QVariantMap& source);
+
+    const QVariantMap &source(int i) const;
 
     void setSource(int i,const QVariantMap& source);
     void sources(const QVariantList &sources);

@@ -52,17 +52,17 @@ void MeasureWindow::createMeasure(int analysisId) {
     ui->addButton->setText( tr("Add") );
 
     db::AnalysisStorage* storage = db::AnalysisStorage::instance();
-//    db::AnalysisModel* analysis = storage->openAnalysis( analysisId );
+    db::AnalysisModel* analysis = storage->openAnalysis( analysisId );
 //    if(!analysis) { return; }
 //    qDebug() << analysis->source(0).configurations();
-//    db::MeasureModel* measure = new db::MeasureModel();
+     measure_ = new db::MeasureModel();
 //    measure->sources( analysis->sources() );
 //    measure->type( analysis->type() );
 ////    measure->deviceId(deviceId_);
-//    prepareMeasureData( measure );
+    prepareMeasureData( analysis );
 //    delete analysis;
 
-//    showMeasure(measure);
+    showMeasure(measure_);
 }
 
 void MeasureWindow::updateMeasure(int measureId) {
@@ -80,12 +80,12 @@ MeasureWindow::~MeasureWindow() {
 }
 
 void MeasureWindow::showMeasure(db::MeasureModel *measure) {
-    if(measure_){
-        delete measure_;
-        measure_ = 0;
-    }
+//    if(measure_){
+//        delete measure_;
+//        measure_ = 0;
+//    }
 
-    measure_ = measure;
+//    measure_ = measure;
 
     ui->nameMeasureLineEdit->setText(measure->name());
 
@@ -128,78 +128,67 @@ void MeasureWindow::showSourcesDescription() {
     ui->measureSources->setText( sourcesDescription );
 }
 // \fixme stub code :(
- bool MeasureWindow::prepareMeasureData(db::MeasureModel* measure) {
-     if(!measure) { return false; }
+ bool MeasureWindow::prepareMeasureData(db::AnalysisModel* analysis) {
+//    if(!measure) { return false; }
 
+    SourceManager* sourceManager = new SourceManager(analysis->sources());
     QStringList columns;
     QVector< QVector<double> > data;
 
-    int nNonLinearSources = 0;
-    QMap< int, QVector<double> > nonLinearSourcesData;
 
-    foreach(Source source, measure->sources()){
-        columns.append( source.name() );
-        if( source.method() == SOURCE_METHOD_LINEAR ) {
-            double start = source.configuration("start").toDouble();
-            double step = source.configuration("step").toDouble();
-            double end = source.configuration("end").toDouble();
+    QVariantList sources = analysis->analysis()->sources();
+    if(analysis->analysis()->type() == ANALYSIS_DC){
 
-            QVector<double> sourceData;
-            int count = static_cast<int>(fabs((end-start)/step));
-            for(int i=0; i<= count;++i){
-                sourceData.append(start+step*i);
+        columns.append( sourceManager->inputByNode(sources[0].toMap().value("node").toString())->title());
+
+        double dcFirstValue = sources[0].toMap().value("start").toDouble();
+        double dcFirstStep  = sources[0].toMap().value("step").toDouble();
+        double dcFirstStop  = sources[0].toMap().value("stop").toDouble();
+
+
+        if(analysis->analysis()->numberSources() == 2){
+            columns.append( sourceManager->inputByNode(sources[1].toMap().value("node").toString())->title());
+
+            double dcSecondValue = sources[1].toMap().value("start").toDouble();
+            double dcSecondStep  = sources[1].toMap().value("step").toDouble();
+            double dcSecondStop  = sources[1].toMap().value("stop").toDouble();
+
+
+            for(; dcSecondValue <= dcSecondStop; dcSecondValue+=dcSecondStep){
+                for(; dcFirstValue <= dcFirstStop; dcFirstValue+=dcFirstStep){
+                    QVector<double> row;
+                    row.append( dcFirstValue );
+                    row.append( dcSecondValue );
+
+                    data.append( row );
+                }
             }
+        }else{
+            for(; dcFirstValue <= dcFirstStop; dcFirstValue+=dcFirstStep){
+                QVector<double> row;
+                row.append( dcFirstValue );
+//                row.append( dcSecondValue );
+                data.append( row );
 
-            int number= source.configuration("number").toInt();
-            if(number > 0){
-                nonLinearSourcesData.insert( number, sourceData );
             }
-            nNonLinearSources++;
+        }
+    }else{
+        columns.append( analysis->analysis()->typeJson() );
+        double srcFirstValue = sources[0].toMap().value("start").toDouble();
+        double srcFirstStep  = sources[0].toMap().value("step").toDouble();
+        double srcFirstStop  = sources[0].toMap().value("stop").toDouble();
+
+        for(; srcFirstValue <= srcFirstStop; srcFirstValue+=srcFirstStep){
+            QVector<double> row;
+            row.append( srcFirstValue );
+//                row.append( dcSecondValue );
+            data.append( row );
         }
     }
 
-    Q_ASSERT( nNonLinearSources > 0 && nNonLinearSources <= 2);
 
-    if(nNonLinearSources == 1){
-        nonLinearSourcesData.insert(2, QVector<double>() << .0 );
-    }
-
-//    if( nNonLinearSources == 2 ){
-       foreach(double dc2, nonLinearSourcesData[2]){
-           foreach(double dc1, nonLinearSourcesData[1]){
-               QVector<double> rowData;
-               foreach(Source source, measure->sources()){
-                   if(source.direction() == SOURCE_DIRECTION_INPUT){
-                       switch(source.method()){
-                       case SOURCE_METHOD_CONST:
-                           rowData.append( source.configuration("const").toDouble() );
-                           break;
-                       case SOURCE_METHOD_LINEAR:
-                           {
-                             int num = source.configuration("number").toInt();
-                             if(num == 2){
-                                 rowData.append( dc2 );
-                             }else if(num == 1){
-                                 rowData.append( dc1 );
-                             }else{
-                                 Q_ASSERT(false);
-                             }
-                           }
-                           break;
-                       default:
-                           rowData.append(.0);
-                       }
-                   }else{
-                       rowData.append(.0);
-                   }
-               }
-               data.append( rowData );
-           }
-       }
-//    }
-
-    measure->columns( columns );
-    measure->data( data );
+    measure_->columns( columns );
+    measure_->data( data );
 
     return true;
 

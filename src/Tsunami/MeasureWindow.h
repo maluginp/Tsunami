@@ -27,7 +27,7 @@ public:
 private:
     void showMeasure(db::MeasureModel* measure);
     void showSourcesDescription();
-    bool prepareMeasureData(db::MeasureModel* measure);
+    bool prepareMeasureData(db::AnalysisModel* analysis);
 
     void setHeaderData();
 

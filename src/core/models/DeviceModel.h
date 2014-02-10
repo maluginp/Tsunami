@@ -34,6 +34,8 @@ public:
 
     QStringList nodes();
 
+
+
     static QString modelNameToTitle(const QString& modelName);
 
     static DeviceType nameToType( const QString& name );
