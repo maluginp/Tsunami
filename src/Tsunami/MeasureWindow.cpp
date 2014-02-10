@@ -135,41 +135,56 @@ void MeasureWindow::showSourcesDescription() {
     QStringList columns;
     QVector< QVector<double> > data;
 
-
+    int numberOutputs = sourceManager->outputs().count();
     QVariantList sources = analysis->analyses();
     if(analysis->type() == ANALYSIS_DC){
 
-        columns.append( sourceManager->inputByNode(sources[0].toMap().value("node").toString())->title());
+        columns.append( sourceManager->inputByNode(sources[0].toMap().value("node").toString())->name());
 
         double dcFirstValue = sources[0].toMap().value("start").toDouble();
         double dcFirstStep  = sources[0].toMap().value("step").toDouble();
         double dcFirstStop  = sources[0].toMap().value("stop").toDouble();
 
 
+
         if(analysis->numberAnalyses() == 2){
-            columns.append( sourceManager->inputByNode(sources[1].toMap().value("node").toString())->title());
+            columns.append( sourceManager->inputByNode(sources[1].toMap().value("node").toString())->name());
 
             double dcSecondValue = sources[1].toMap().value("start").toDouble();
             double dcSecondStep  = sources[1].toMap().value("step").toDouble();
             double dcSecondStop  = sources[1].toMap().value("stop").toDouble();
 
+            foreach(Source* source,sourceManager->outputs()){
+                columns.append( source->name() );
+            }
 
             for(; dcSecondValue <= dcSecondStop; dcSecondValue+=dcSecondStep){
                 for(; dcFirstValue <= dcFirstStop; dcFirstValue+=dcFirstStep){
                     QVector<double> row;
                     row.append( dcFirstValue );
                     row.append( dcSecondValue );
+                    for(int i=0; i < numberOutputs; ++i){
+                        row.append(.0);
+                    }
+
+
 
                     data.append( row );
                 }
             }
         }else{
+            foreach(Source* source,sourceManager->outputs()){
+                columns.append( source->name() );
+            }
             for(; dcFirstValue <= dcFirstStop; dcFirstValue+=dcFirstStep){
                 QVector<double> row;
                 row.append( dcFirstValue );
 //                row.append( dcSecondValue );
                 data.append( row );
 
+                for(int i=0; i < numberOutputs; ++i){
+                    row.append(.0);
+                }
             }
         }
     }else{
@@ -183,6 +198,9 @@ void MeasureWindow::showSourcesDescription() {
             row.append( srcFirstValue );
 //                row.append( dcSecondValue );
             data.append( row );
+            for(int i=0; i < numberOutputs; ++i){
+                row.append(.0);
+            }
         }
     }
 

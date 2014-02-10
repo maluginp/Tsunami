@@ -412,7 +412,7 @@ QList<Source *> SourceManager::outputs() {
     return sources;
 }
 
-const Source *SourceManager::inputByNode(const QString &node) {
+Source *SourceManager::inputByNode(const QString &node) {
     foreach(Source* source, sources_){
         if(source->direction() == SOURCE_DIRECTION_INPUT
                 && source->node().compare(node,Qt::CaseInsensitive)==0){
