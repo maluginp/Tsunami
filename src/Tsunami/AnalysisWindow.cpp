@@ -27,11 +27,6 @@ AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
     QVariantMap modes;
     modes.insert(tr("Current"),"current");
     modes.insert(tr("Voltage"),"voltage");
-
-    foreach(QVariant mode,modes.values()){
-        ui->sourceFirstTypeComboBox->addItem( modes.key(mode), mode);
-        ui->sourceSecondTypeComboBox->addItem( modes.key(mode), mode);
-    }
     modes.insert(tr("Ground"),"gnd");
     foreach(QVariant mode,modes.values()){
         ui->node1TypeComboBox->addItem(modes.key(mode),mode);
@@ -103,20 +98,20 @@ void AnalysisWindow::showAnalysis(const Analysis *analysis) const {
     ui->sourceSecondEnable->setChecked(false);
     if(analysis->type() == ANALYSIS_DC){
 
-        int modeId = ui->sourceFirstTypeComboBox->findData(sources[0].toMap().value("mode"));
-        ui->sourceFirstTypeComboBox->setCurrentIndex(modeId);
+//        int modeId = ui->sourceFirstTypeComboBox->findData(sources[0].toMap().value("mode"));
+//        ui->sourceFirstTypeComboBox->setCurrentIndex(modeId);
         int nodeId = ui->sourceFirstNodeComboBox->findData(sources[0].toMap().value("node"));
-        ui->sourceFirstTypeComboBox->setCurrentIndex(nodeId);
+        ui->sourceFirstNodeComboBox->setCurrentIndex(nodeId);
         ui->sourceFirstStartLineEdit->setText( sources[0].toMap().value("start").toString() );
         ui->sourceFirstStepLineEdit->setText( sources[0].toMap().value("step").toString() );
         ui->sourceFirstStopLineEdit->setText( sources[0].toMap().value("stop").toString() );
 
         if(sources.count() == 2){
             ui->sourceSecondEnable->setChecked(true);
-            modeId = ui->sourceSecondTypeComboBox->findData(sources[1].toMap().value("mode"));
-            ui->sourceSecondTypeComboBox->setCurrentIndex(modeId);
+//            modeId = ui->sourceSecondTypeComboBox->findData(sources[1].toMap().value("mode"));
+//            ui->sourceSecondTypeComboBox->setCurrentIndex(modeId);
             nodeId = ui->sourceSecondNodeComboBox->findData(sources[1].toMap().value("node"));
-            ui->sourceSecondTypeComboBox->setCurrentIndex(nodeId);
+            ui->sourceSecondNodeComboBox->setCurrentIndex(nodeId);
             ui->sourceSecondStartLineEdit->setText( sources[1].toMap().value("start").toString() );
             ui->sourceSecondStepLineEdit->setText( sources[1].toMap().value("step").toString() );
             ui->sourceSecondStopLineEdit->setText( sources[1].toMap().value("stop").toString() );
@@ -191,8 +186,8 @@ QVariantList AnalysisWindow::parseAnalysisSources() {
         QString mode;
         int nodeId = ui->sourceFirstNodeComboBox->currentIndex();
         source.insert("node", ui->sourceFirstNodeComboBox->itemData(nodeId));
-        int modeId = ui->sourceFirstTypeComboBox->currentIndex();
-        source.insert("mode",ui->sourceFirstTypeComboBox->itemData(modeId));
+//        int modeId = ui->sourceFirstTypeComboBox->currentIndex();
+//        source.insert("mode",ui->sourceFirstTypeComboBox->itemData(modeId));
         source.insert("start",ui->sourceFirstStartLineEdit->text());
         source.insert("step",ui->sourceFirstStepLineEdit->text());
         source.insert("stop",ui->sourceFirstStopLineEdit->text());
@@ -203,8 +198,8 @@ QVariantList AnalysisWindow::parseAnalysisSources() {
             source.clear();
             int nodeId = ui->sourceSecondNodeComboBox->currentIndex();
             source.insert("node", ui->sourceSecondNodeComboBox->itemData(nodeId));
-            int modeId = ui->sourceSecondTypeComboBox->currentIndex();
-            source.insert("mode",ui->sourceSecondTypeComboBox->itemData(modeId));
+//            int modeId = ui->sourceSecondTypeComboBox->currentIndex();
+//            source.insert("mode",ui->sourceSecondTypeComboBox->itemData(modeId));
             source.insert("start",ui->sourceSecondStartLineEdit->text());
             source.insert("step",ui->sourceSecondStepLineEdit->text());
             source.insert("stop",ui->sourceSecondStopLineEdit->text());
@@ -385,7 +380,7 @@ void AnalysisWindow::changedAnalysisType(int index) {
     QString analysis = ui->analysisTypeComboBox->itemData( index ).toString();
 
     if(analysis == "dc"){
-        ui->sourceFirstTypeComboBox->setEnabled(true);
+//        ui->sourceFirstTypeComboBox->setEnabled(true);
         ui->sourceFirstNodeComboBox->setEnabled(true);
 
         ui->sourceSecondEnable->setEnabled(true);
@@ -396,7 +391,7 @@ void AnalysisWindow::changedAnalysisType(int index) {
         }
 
     } else if(analysis == "ac" || analysis == "tran"){
-        ui->sourceFirstTypeComboBox->setEnabled(false);
+//        ui->sourceFirstTypeComboBox->setEnabled(false);
         ui->sourceFirstNodeComboBox->setEnabled(false);
         ui->sourceSecondEnable->setEnabled(false);
         ui->sourceSecondGroup->setEnabled(false);

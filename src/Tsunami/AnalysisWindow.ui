@@ -123,48 +123,12 @@
      <string>Второй источник DC</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="analysisNameLineEdit">
-    <property name="geometry">
-     <rect>
-      <x>127</x>
-      <y>10</y>
-      <width>511</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="analysisEnableCheckBox">
-    <property name="geometry">
-     <rect>
-      <x>660</x>
-      <y>10</y>
-      <width>55</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Enable</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>90</x>
-      <y>10</y>
-      <width>31</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Name:</string>
-    </property>
-   </widget>
    <widget class="QGroupBox" name="sourceFirstGroup">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>80</y>
-      <width>221</width>
+      <width>201</width>
       <height>191</height>
      </rect>
     </property>
@@ -175,7 +139,7 @@
      <property name="geometry">
       <rect>
        <x>16</x>
-       <y>84</y>
+       <y>48</y>
        <width>41</width>
        <height>20</height>
       </rect>
@@ -188,30 +152,7 @@
      <property name="geometry">
       <rect>
        <x>70</x>
-       <y>58</y>
-       <width>123</width>
-       <height>20</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_6">
-     <property name="geometry">
-      <rect>
-       <x>16</x>
-       <y>32</y>
-       <width>22</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Тип:</string>
-     </property>
-    </widget>
-    <widget class="QComboBox" name="sourceFirstTypeComboBox">
-     <property name="geometry">
-      <rect>
-       <x>70</x>
-       <y>32</y>
+       <y>22</y>
        <width>123</width>
        <height>20</height>
       </rect>
@@ -221,7 +162,7 @@
      <property name="geometry">
       <rect>
        <x>16</x>
-       <y>136</y>
+       <y>100</y>
        <width>35</width>
        <height>20</height>
       </rect>
@@ -234,7 +175,7 @@
      <property name="geometry">
       <rect>
        <x>16</x>
-       <y>58</y>
+       <y>22</y>
        <width>48</width>
        <height>20</height>
       </rect>
@@ -247,7 +188,7 @@
      <property name="geometry">
       <rect>
        <x>70</x>
-       <y>84</y>
+       <y>48</y>
        <width>123</width>
        <height>20</height>
       </rect>
@@ -257,7 +198,7 @@
      <property name="geometry">
       <rect>
        <x>70</x>
-       <y>136</y>
+       <y>100</y>
        <width>123</width>
        <height>20</height>
       </rect>
@@ -267,7 +208,7 @@
      <property name="geometry">
       <rect>
        <x>16</x>
-       <y>110</y>
+       <y>74</y>
        <width>25</width>
        <height>20</height>
       </rect>
@@ -280,7 +221,7 @@
      <property name="geometry">
       <rect>
        <x>70</x>
-       <y>110</y>
+       <y>74</y>
        <width>123</width>
        <height>20</height>
       </rect>
@@ -292,7 +233,7 @@
      <rect>
       <x>10</x>
       <y>320</y>
-      <width>221</width>
+      <width>201</width>
       <height>181</height>
      </rect>
     </property>
@@ -302,8 +243,8 @@
     <widget class="QLabel" name="label_12">
      <property name="geometry">
       <rect>
-       <x>26</x>
-       <y>100</y>
+       <x>16</x>
+       <y>74</y>
        <width>25</width>
        <height>20</height>
       </rect>
@@ -312,21 +253,11 @@
       <string>Шаг:</string>
      </property>
     </widget>
-    <widget class="QComboBox" name="sourceSecondTypeComboBox">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>22</y>
-       <width>123</width>
-       <height>20</height>
-      </rect>
-     </property>
-    </widget>
     <widget class="QLineEdit" name="sourceSecondStartLineEdit">
      <property name="geometry">
       <rect>
-       <x>80</x>
-       <y>74</y>
+       <x>70</x>
+       <y>48</y>
        <width>123</width>
        <height>20</height>
       </rect>
@@ -335,8 +266,8 @@
     <widget class="QLabel" name="label_11">
      <property name="geometry">
       <rect>
-       <x>26</x>
-       <y>48</y>
+       <x>16</x>
+       <y>22</y>
        <width>48</width>
        <height>20</height>
       </rect>
@@ -345,24 +276,11 @@
       <string>Источник</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_9">
-     <property name="geometry">
-      <rect>
-       <x>26</x>
-       <y>22</y>
-       <width>22</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Тип:</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="label_8">
      <property name="geometry">
       <rect>
-       <x>26</x>
-       <y>74</y>
+       <x>16</x>
+       <y>48</y>
        <width>41</width>
        <height>20</height>
       </rect>
@@ -374,8 +292,8 @@
     <widget class="QLabel" name="label_10">
      <property name="geometry">
       <rect>
-       <x>26</x>
-       <y>126</y>
+       <x>16</x>
+       <y>100</y>
        <width>35</width>
        <height>20</height>
       </rect>
@@ -387,8 +305,8 @@
     <widget class="QLineEdit" name="sourceSecondStopLineEdit">
      <property name="geometry">
       <rect>
-       <x>80</x>
-       <y>126</y>
+       <x>70</x>
+       <y>100</y>
        <width>123</width>
        <height>20</height>
       </rect>
@@ -397,8 +315,8 @@
     <widget class="QComboBox" name="sourceSecondNodeComboBox">
      <property name="geometry">
       <rect>
-       <x>80</x>
-       <y>48</y>
+       <x>70</x>
+       <y>22</y>
        <width>123</width>
        <height>20</height>
       </rect>
@@ -407,8 +325,8 @@
     <widget class="QLineEdit" name="sourceSecondStepLineEdit">
      <property name="geometry">
       <rect>
-       <x>80</x>
-       <y>100</y>
+       <x>70</x>
+       <y>74</y>
        <width>123</width>
        <height>20</height>
       </rect>
@@ -431,7 +349,7 @@
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>220</x>
+      <x>240</x>
       <y>50</y>
       <width>541</width>
       <height>381</height>
@@ -640,6 +558,35 @@
      <zorder>node3CheckBox</zorder>
      <zorder>node4CheckBox</zorder>
     </widget>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>10</y>
+      <width>631</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Name:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="analysisNameLineEdit"/>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="analysisEnableCheckBox">
+       <property name="text">
+        <string>Enable</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
