@@ -50,7 +50,7 @@ QVariant MeasureItemView::data(const QModelIndex &index, int role) const  {
     if(role == Qt::BackgroundColorRole){
         QString column = headerData( index.column(), Qt::Horizontal, Qt::DisplayRole ).toString();
 
-        if(measure_->isSourceDirection( column, SOURCE_DIRECTION_INPUT ) ){
+        if(measure_->isFixed( column ) ){
             return QVariant(QColor(0xDA,0xDA,0xDA));
         }
 
@@ -73,7 +73,7 @@ Qt::ItemFlags MeasureItemView::flags(const QModelIndex &index) const {
 //    Q_UNUSED(index)
     QString column = headerData( index.column(), Qt::Horizontal, Qt::DisplayRole ).toString();
 
-    if(measure_->isSourceDirection( column, SOURCE_DIRECTION_INPUT ) ){
+    if(measure_->isFixed( column ) ){
 
         return (Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
@@ -107,7 +107,7 @@ QVariant MeasureItemView::headerData(int section, Qt::Orientation orientation, i
 bool MeasureItemView::isColumnReadOnly(int index) {
     QString column = headerData( index, Qt::Horizontal, Qt::DisplayRole ).toString();
 
-    return measure_->isSourceDirection( column, SOURCE_DIRECTION_INPUT );
+    return measure_->isFixed( column );
 }
 
 

@@ -18,8 +18,8 @@ ParseMeasureModel::ParseMeasureModel(const QByteArray& data) {
     QString dataSources = readSection("SOURCES");
     QList<QString> parseSources = dataSources.split('\n',QString::SkipEmptyParts);
     foreach(QString parseSource,parseSources){
-        Source source =  readSource(parseSource);
-        qDebug() <<"Parse " << source.configurations();
+        Source* source =  readSource(parseSource);
+        qDebug() <<"Parse " << source->configurations();
         model_->addSource( source );
     }
 
@@ -28,11 +28,11 @@ ParseMeasureModel::ParseMeasureModel(const QByteArray& data) {
     QStringList columns = readColumns(measures[0]);
 
 
-    foreach(Source source, model_->sources()){
-        if(source.direction() == SOURCE_DIRECTION_INPUT){
-            if(source.method() == SOURCE_METHOD_CONST
-                    || source.mode() == SOURCE_MODE_GND){
-                columns.append(  source.name() );
+    foreach(Source* source, model_->sources()){
+        if(source->direction() == SOURCE_DIRECTION_INPUT){
+            if(source->method() == SOURCE_METHOD_CONST
+                    || source->mode() == SOURCE_MODE_GND){
+                columns.append(  source->name() );
             }
         }
     }
@@ -44,12 +44,12 @@ ParseMeasureModel::ParseMeasureModel(const QByteArray& data) {
     foreach(QString measure, measures){
         QVector<double> dataRow = readDataRow(measure);
         // Добавить из источников
-        foreach(Source source, model_->sources()){
-            if(source.direction() == SOURCE_DIRECTION_INPUT){
-                if(source.method() == SOURCE_METHOD_CONST
-                   && source.mode() != SOURCE_MODE_GND){
-                    dataRow.append( source.configuration("const").toDouble() );
-                }else if(source.mode() == SOURCE_MODE_GND){
+        foreach(Source* source, model_->sources()){
+            if(source->direction() == SOURCE_DIRECTION_INPUT){
+                if(source->method() == SOURCE_METHOD_CONST
+                   && source->mode() != SOURCE_MODE_GND){
+                    dataRow.append( source->configuration("const").toDouble() );
+                }else if(source->mode() == SOURCE_MODE_GND){
                     dataRow.append(.0);
                 }
             }
@@ -81,24 +81,24 @@ QPair<QString, QVariant> ParseMeasureModel::readAttribute(const QString &data) {
     return pair;
 }
 
-Source ParseMeasureModel::readSource(const QString &data) {
+Source* ParseMeasureModel::readSource(const QString &data) {
 //   SOURCE INPUT C VOLTAGE LINEAR end=10 number=2 start=0 step=5
     QString sourceElement = readElement(data,"SOURCE");
-    Source source;
+    Source* source = new Source();
 
     QStringList elementAttrs = sourceElement.split(" ",QString::SkipEmptyParts);
 
     if(elementAttrs.count() >= 3){
-        source.direction( elementAttrs[0] );
-        source.node( elementAttrs[1] );
-        source.mode( elementAttrs[2] );
-        if(source.mode() != SOURCE_MODE_GND
-           && source.direction() != SOURCE_DIRECTION_OUTPUT){
+        source->direction( elementAttrs[0] );
+        source->node( elementAttrs[1] );
+        source->mode( elementAttrs[2] );
+        if(source->mode() != SOURCE_MODE_GND
+           && source->direction() != SOURCE_DIRECTION_OUTPUT){
 
-            source.method( elementAttrs[3] );
+            source->method( elementAttrs[3] );
             int countElements = elementAttrs.count();
             for(int i=4; i < countElements; ++i){
-                source.addConfiguration( readConfigParam(elementAttrs[i]) );
+                source->addConfiguration( readConfigParam(elementAttrs[i]) );
             }
         }
     }

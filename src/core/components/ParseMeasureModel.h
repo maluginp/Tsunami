@@ -12,7 +12,7 @@ public:
     static db::MeasureModel* parse(const QByteArray& data);
 private:
     QPair<QString,QVariant> readAttribute( const QString& data );
-    Source readSource( const QString& data);
+    Source *readSource( const QString& data);
     QVector<double> readDataRow( const QString& data  );
     QStringList readColumns(const QString& data);
     QPair<QString,QVariant> readConfigParam(const QString& data,char split='=');

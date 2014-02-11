@@ -92,12 +92,13 @@ void MeasureModel::sourcesJson(const QString &json) {
 
     for(int i=0; i < sources.size(); ++i) {
         QVariantMap sourceJson = sources[i].toMap();
-        Source source;
-        source.node(sourceJson.value( "node" ).toString());
-        source.method(sourceJson.value("method").toString());
-        source.configurations(sourceJson.value("configuration",QVariantMap()).toMap());
-        source.mode( sourceJson.value("mode").toString() );
-        source.direction(sourceJson.value("direction").toString());
+        Source* source = new Source();
+        source->node(sourceJson.value( "node" ).toString());
+        source->type(sourceJson.value("type").toString());
+        source->method(sourceJson.value("method").toString());
+        source->configurations(sourceJson.value("configuration",QVariantMap()).toMap());
+        source->mode( sourceJson.value("mode").toString() );
+        source->direction(sourceJson.value("direction").toString());
 
         sources_.append(source);
 
@@ -183,13 +184,13 @@ QString MeasureModel::attrsJson() const {
     return QtJson::serializeStr(attributes_);
 }
 // @fixme need implementation method
-Source MeasureModel::getSource(const QString &name) {
+Source* MeasureModel::getSource(const QString &name) {
     QString modeChar = name[0].toLower();
 //    SourceMode mode = SOURCE_MODE_
 //    if(modeChar == "v"){
-
+    Q_ASSERT(false);
 //    }
-    return Source();
+    return new Source();
 }
 
 QString MeasureModel::headerJson() {
@@ -227,21 +228,18 @@ QString MeasureModel::sourcesJson() {
 
     QVariantList sources;
 
-    foreach(Source source, sources_){
+    foreach(Source* source, sources_){
         QVariantMap sourceJson;
-        sourceJson.insert( "node",   source.node() );
-        sourceJson.insert( "method", source.methodJson());
-        sourceJson.insert( "configuration", source.configurations() );
-        sourceJson.insert( "mode",   source.modeJson());
+        sourceJson.insert( "node",   source->node() );
+        sourceJson.insert( "method", source->methodJson());
+        sourceJson.insert( "configuration", source->configurations() );
+        sourceJson.insert( "mode",   source->modeJson());
 
-        if(source.direction() == SOURCE_DIRECTION_INPUT){
+        if(source->direction() == SOURCE_DIRECTION_INPUT){
             sourceJson.insert("direction","input");
-        }else if(source.direction() == SOURCE_DIRECTION_OUTPUT){
-            sourceJson.insert("direction","output");
         }else{
-            Q_ASSERT(false);
+            sourceJson.insert("direction","output");
         }
-
 
         sources.append( sourceJson );
 
@@ -300,16 +298,16 @@ QMap<QString, double> MeasureModel::find(const QMap<QString, double> &data) {
     QStringList columnSearch;
 
     // Getting sources;
-    foreach(Source source, sources_){
+    foreach(Source* source, sources_){
         QString name;
-        if(source.direction() != SOURCE_DIRECTION_INPUT){
+        if(source->direction() != SOURCE_DIRECTION_INPUT){
             continue;
         }
 
-        if(source.mode() == SOURCE_MODE_VOLTAGE){
-            name = source.title("V%node");
-        }else if(source.mode() == SOURCE_MODE_CURRENT){
-            name = source.title("I%node");
+        if(source->mode() == SOURCE_MODE_VOLTAGE){
+            name = source->title("V%node");
+        }else if(source->mode() == SOURCE_MODE_CURRENT){
+            name = source->title("I%node");
         }
 
         if(!name.isEmpty()){
@@ -369,14 +367,16 @@ int MeasureModel::dataColumns() {
     return data_->columns();
 }
 
-bool MeasureModel::isSourceDirection(const QString &name, SourceDirection direction) {
+bool MeasureModel::isFixed(const QString &name) {
 
-    foreach( Source source, sources_ ){
-        if(source.name().compare(name,Qt::CaseInsensitive) == 0){
-            if(source.direction() == direction){
+    foreach(Source* source, sources_ ){
+        if(source->name().compare(name,Qt::CaseInsensitive) == 0){
+            if(source->direction() == SOURCE_DIRECTION_INPUT){
                 return true;
             }
-            break;
+        }else if(name.compare("tran",Qt::CaseInsensitive) ==0 ||
+                 name.compare("ac",Qt::CaseInsensitive) == 0){
+            return true;
         }
 
     }
@@ -412,25 +412,25 @@ QByteArray MeasureModel::exportTo(const MeasureModel *model) {
     // Sources
     data.append(QString("BEGIN_SOURCES\n"));
     QStringList columns;
-    QList<Source> sources = model->sources();
-    foreach(Source source, sources){
-        QString sourceData = source.title(" SOURCE %DIR %NODE %MODE %METHOD");
-        if( source.configurations().count() > 0 ){
-            foreach(QString name, source.configurations().keys()){
+    QList<Source*> sources = model->sources();
+    foreach(Source* source, sources){
+        QString sourceData = source->title(" SOURCE %DIR %NODE %MODE %METHOD");
+        if( source->configurations().count() > 0 ){
+            foreach(QString name, source->configurations().keys()){
                 sourceData.append(QString(" %1=%2")
                                   .arg(name)
-                                  .arg(source.configuration(name).toString())
+                                  .arg(source->configuration(name).toString())
                                   );
             }
         }
         sourceData.append("\n");
         data.append(sourceData);
 
-        if(source.direction() == SOURCE_DIRECTION_OUTPUT){
-            columns.append( source.name() );
-        }else if(source.method() != SOURCE_METHOD_CONST
-                 && source.mode() != SOURCE_MODE_GND ){
-            columns.append( source.name() );
+        if(source->direction() == SOURCE_DIRECTION_OUTPUT){
+            columns.append( source->name() );
+        }else if(source->method() != SOURCE_METHOD_CONST
+                 && source->mode() != SOURCE_MODE_GND ){
+            columns.append( source->name() );
         }
 
     }

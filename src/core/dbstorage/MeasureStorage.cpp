@@ -52,73 +52,73 @@ int MeasureStorage::lastInsertId(const QString &table) {
 void MeasureStorage::testData() {
     log::logTrace() << "Test data is added to database";
 
-    MeasureModel* model = new MeasureModel();
-    model->id(1);
-    model->deviceId(1);
-    model->name( "Test measures" );
+//    MeasureModel* model = new MeasureModel();
+//    model->id(1);
+//    model->deviceId(1);
+//    model->name( "Test measures" );
 
-    // BJT
+//    // BJT
 
-    model->type(ANALYSIS_DC);
+//    model->type(ANALYSIS_DC);
 
-    // Create Sources
-    model->addSource(Source("E",SOURCE_MODE_GND,SOURCE_DIRECTION_INPUT,SOURCE_METHOD_CONST));
-    QVariantMap configuration;
-    configuration.insert("start", 0.0);
-    configuration.insert("end",10.0);
-    configuration.insert("step", 5.0);
-    configuration.insert("number", 2);
+//    // Create Sources
+//    model->addSource(new Source("E",SOURCE_MODE_GND,SOURCE_DIRECTION_INPUT,SOURCE_METHOD_CONST));
+//    QVariantMap configuration;
+//    configuration.insert("start", 0.0);
+//    configuration.insert("end",10.0);
+//    configuration.insert("step", 5.0);
+//    configuration.insert("number", 2);
 
-    model->addSource( Source("C",SOURCE_MODE_VOLTAGE,SOURCE_DIRECTION_INPUT,SOURCE_METHOD_LINEAR, configuration) );
+//    model->addSource( Source("C",SOURCE_MODE_VOLTAGE,SOURCE_DIRECTION_INPUT,SOURCE_METHOD_LINEAR, configuration) );
 
-    configuration.clear();
+//    configuration.clear();
 
-    configuration.insert("start", 0.0);
-    configuration.insert("end",1.0);
-    configuration.insert("step", 0.1);
-    configuration.insert("number", 1);
-    model->addSource( Source("B",SOURCE_MODE_VOLTAGE,SOURCE_DIRECTION_INPUT,SOURCE_METHOD_LINEAR, configuration) );
+//    configuration.insert("start", 0.0);
+//    configuration.insert("end",1.0);
+//    configuration.insert("step", 0.1);
+//    configuration.insert("number", 1);
+//    model->addSource( Source("B",SOURCE_MODE_VOLTAGE,SOURCE_DIRECTION_INPUT,SOURCE_METHOD_LINEAR, configuration) );
 
-    model->header( MeasureHeader("No comment, althought test date =)") );
+//    model->header( MeasureHeader("No comment, althought test date =)") );
 
-    // OUTPUT
+//    // OUTPUT
 
-    model->addSource( Source("B",SOURCE_MODE_CURRENT,SOURCE_DIRECTION_OUTPUT,SOURCE_METHOD_CONST) );
-    model->addSource( Source("C",SOURCE_MODE_CURRENT,SOURCE_DIRECTION_OUTPUT,SOURCE_METHOD_CONST) );
+//    model->addSource( Source("B",SOURCE_MODE_CURRENT,SOURCE_DIRECTION_OUTPUT,SOURCE_METHOD_CONST) );
+//    model->addSource( Source("C",SOURCE_MODE_CURRENT,SOURCE_DIRECTION_OUTPUT,SOURCE_METHOD_CONST) );
 
 
-    QStringList columns;
-    columns << "Vb" << "Vc" << "Ve" << "Ib" << "Ic" ;
-    model->columns(columns);
+//    QStringList columns;
+//    columns << "Vb" << "Vc" << "Ve" << "Ib" << "Ic" ;
+//    model->columns(columns);
 
-    QVector< QVector<double> > data;
+//    QVector< QVector<double> > data;
 
-    for(double val1=0.0; val1 <= 10.0; val1 += 5.0){
+//    for(double val1=0.0; val1 <= 10.0; val1 += 5.0){
 
-        for(double val2=0.0; val2 <= 1.0; val2 += 0.1){
-            QVector<double> row;
-            row << val2 << val1 << 0.0 <<  val1+val2 << 2*(val1+val2);
-            data.append( row );
-        }
+//        for(double val2=0.0; val2 <= 1.0; val2 += 0.1){
+//            QVector<double> row;
+//            row << val2 << val1 << 0.0 <<  val1+val2 << 2*(val1+val2);
+//            data.append( row );
+//        }
 
-    }
+//    }
 
-    model->data(data);
-    QVariantMap attributes;
-    attributes.insert("w",1e-6);
-    attributes.insert("l",1e-3);
-    model->attrs( attributes );
+//    model->data(data);
+//    QVariantMap attributes;
+//    attributes.insert("w",1e-6);
+//    attributes.insert("l",1e-3);
+//    model->attrs( attributes );
 
-    model->createAt( QDateTime::currentDateTime() );
-    model->changeAt( QDateTime::currentDateTime() );
-    model->enable(true);
-    model->userId(1);
+//    model->createAt( QDateTime::currentDateTime() );
+//    model->changeAt( QDateTime::currentDateTime() );
+//    model->enable(true);
+//    model->userId(1);
 
-    if(!saveMeasure( model )){
-        log::logError() << "Measure save is failed";
-    }
+//    if(!saveMeasure( model )){
+//        log::logError() << "Measure save is failed";
+//    }
 
-    delete model;
+//    delete model;
 
 
 }

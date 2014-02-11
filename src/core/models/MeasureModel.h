@@ -58,9 +58,9 @@ public:
     void attrsJson( const QString& json );
     void addAttr( const QString& key, const QVariant& value )  { attributes_.insert( key,value ); }
     void addAttr( const QPair<QString,QVariant>& pair);
-    void sources( const QList<Source>& sources ) { sources_ = sources; }
+    void sources( const QList<Source*>& sources ) { sources_ = sources; }
     void sourcesJson( const QString& json);
-    void addSource( const Source& source ) { sources_.append( source ); }
+    void addSource( Source* source ) { sources_.append( source ); }
     void header( const MeasureHeader& header ) { header_ = header; }
     void header( const QString& comment, const QDate& fabrication, const QDate& user,
                  bool dubious );
@@ -88,8 +88,8 @@ public:
     QString typeJson() const;
     const QVariantMap& attrs() const { return attributes_; }
     QString attrsJson() const;
-    const QList<Source>& sources() const { return sources_; }
-    Source getSource( const QString& name );
+    const QList<Source*>& sources() const { return sources_; }
+    Source* getSource( const QString& name );
     const MeasureHeader& header() const { return header_; }
     QString headerJson();
     QString dataJson();
@@ -117,7 +117,7 @@ public:
     int dataColumns();
 
 
-    bool isSourceDirection(const QString& name, SourceDirection direction);
+    bool isFixed(const QString& name);
 
 
     static MeasureModel* importFrom( const QByteArray& data );
@@ -129,7 +129,7 @@ private:
     QString name_;
     AnalysisType type_;
     QVariantMap attributes_;
-    QList<Source> sources_;
+    QList<Source*> sources_;
     MeasureHeader header_;
     QStringList columns_;
 

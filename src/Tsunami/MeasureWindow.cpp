@@ -56,11 +56,11 @@ void MeasureWindow::createMeasure(int analysisId) {
 //    if(!analysis) { return; }
 //    qDebug() << analysis->source(0).configurations();
      measure_ = new db::MeasureModel();
-//    measure->sources( analysis->sources() );
-//    measure->type( analysis->type() );
-////    measure->deviceId(deviceId_);
+    measure_->sources( analysis->sources() );
+    measure_->type( analysis->type() );
+    measure_->deviceId(deviceId_);
     prepareMeasureData( analysis );
-//    delete analysis;
+    delete analysis;
 
     showMeasure(measure_);
 }
@@ -117,11 +117,11 @@ void MeasureWindow::showMeasure(db::MeasureModel *measure) {
 
 void MeasureWindow::showSourcesDescription() {
     QString sourcesDescription;
-    QList<Source> sources = measure_->sources();
-    foreach(Source source,sources){        
-        if(source.direction() == SOURCE_DIRECTION_INPUT){
+    QList<Source*> sources = measure_->sources();
+    foreach(Source* source,sources){
+        if(source->direction() == SOURCE_DIRECTION_INPUT){
             sourcesDescription.append(
-                        source.title("%MODE %NODE %METHOD %CONFIG\n")
+                        source->title("%MODE %NODE %METHOD %CONFIG\n")
                         );
         }
     }
@@ -130,6 +130,8 @@ void MeasureWindow::showSourcesDescription() {
 // \fixme stub code :(
  bool MeasureWindow::prepareMeasureData(db::AnalysisModel* analysis) {
 //    if(!measure) { return false; }
+
+
 
     SourceManager* sourceManager = new SourceManager(analysis->sources());
     QStringList columns;
@@ -309,11 +311,12 @@ void MeasureWindow::clickedImportButton() {
                            .arg(importedMeasure->dataRows())
                            .arg(importedMeasure->dataColumns());
 
-        if(!Source::compare(measure_->sources(),
-                            importedMeasure->sources())) {
-            log::logError() << "Import not passed by sources";
-            return;
-        }
+        Q_ASSERT(false);
+//        if(!Source::compare(measure_->sources(),
+//                            importedMeasure->sources())) {
+//            log::logError() << "Import not passed by sources";
+//            return;
+//        }
 
         // Check attributes
         QVariantMap attributes = measure_->attrs();

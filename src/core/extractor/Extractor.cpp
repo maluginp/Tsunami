@@ -255,10 +255,10 @@ double Extractor::computeError(const db::MeasureModel *measure) {
         }
 
 
-        foreach(Source source, measure->sources()){
-            if(source.direction() == SOURCE_DIRECTION_OUTPUT){
-                error += fabs( subtract( measured.value(source.name(),.0),
-                                         simulated.value(source.name(),.0))  );
+        foreach(Source* source, measure->sources()){
+            if(source->direction() == SOURCE_DIRECTION_OUTPUT){
+                error += fabs( subtract( measured.value(source->name(),.0),
+                                         simulated.value(source->name(),.0))  );
             }
         }
 
