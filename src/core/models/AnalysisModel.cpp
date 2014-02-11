@@ -159,6 +159,25 @@ QVariantMap AnalysisModel::analysis(int i) const {
     return analyses_[i].toMap();
 }
 
+QList<double> AnalysisModel::analysisValues(int i) {
+    Q_ASSERT( i < analyses_.count());
+
+    QVariantMap analysis = analyses_[i].toMap();
+    QList<double> values;
+
+    double start = analysis.value("start").toDouble();
+    double step  = analysis.value("step").toDouble();
+    double stop  = analysis.value("stop").toDouble();
+
+
+    int numberValues = static_cast<int>(fabs((stop-start)/step));
+    for(int i=0; i<= numberValues;++i){
+        values.append(start+step*i);
+    }
+
+    return values;
+}
+
 void AnalysisModel::analysesJson(const QString &json) {
     analyses_ = QtJson::parse(json).toList();
 }

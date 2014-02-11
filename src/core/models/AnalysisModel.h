@@ -45,6 +45,9 @@ public:
     void addAnalysis(const QVariantMap& analysis);
     int numberAnalyses();
     QVariantMap analysis(int i) const;
+    QList<double> analysisValues(int i);
+
+
 
     void analysesJson(const QString& json);
     QString analysesJson();

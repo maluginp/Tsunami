@@ -266,8 +266,9 @@ void AnalysisWindow::clickedSaveAnalysis() {
     }
 
 
-    storage_->saveAnalysis(analysis_);
-
+    if(storage_->saveAnalysis(analysis_)){
+        emit updatedDataBase();
+    }
     //    if(storage_->exists( deviceId_, analysisName )){
 //        // TODO: show message if analysis exists
 //        QMessageBox::warning(this,windowTitle(),tr("Analysis is existed"));
