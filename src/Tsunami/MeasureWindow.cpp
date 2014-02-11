@@ -134,67 +134,55 @@ void MeasureWindow::showSourcesDescription() {
 
 
     SourceManager* sourceManager = new SourceManager(analysis->sources());
-    QStringList columns;
-    QVector< QVector<double> > data;
+    QStringList columns = getColumns(analysis);
+    QVector< QVector<double> > data, analysisData;
 
     int numberOutputs = sourceManager->outputs().count();
 
     QList<double> analysisFirstValues = analysis->analysisValues(0);
 
-    if(analysis->type() == ANALYSIS_DC){
-        columns.append( sourceManager->inputByNode(analysis->analysis(0).value("node").toString())->name());
-
-        if(analysis->numberAnalyses() == 2){
-            columns.append( sourceManager->inputByNode(analysis->analysis(0).value("node").toString())->name());
-
-            QList<double> analysisSecondValues = analysis->analysisValues(1);
-
-            foreach(Source* source,sourceManager->outputs()){
-                columns.append( source->name() );
-            }
-
-            foreach(double dc2, analysisSecondValues){
-                foreach(double dc1, analysisFirstValues){
-                    QVector<double> row;
-                    row.append( dc1 );
-                    row.append( dc2 );
-                    for(int i=0; i < numberOutputs; ++i){
-                        row.append(.0);
-                    }
-
-                    data.append( row );
-                }
-            }
-        }else{
-            foreach(Source* source,sourceManager->outputs()){
-                columns.append( source->name() );
-            }
-            foreach(double value,analysisFirstValues){
+    if(analysis->type() == ANALYSIS_DC && analysis->numberAnalyses() == 2){
+        QList<double> analysisSecondValues = analysis->analysisValues(1);
+        foreach(double dc2, analysisSecondValues){
+            foreach(double dc1, analysisFirstValues){
                 QVector<double> row;
-                row.append( value );
-
-                for(int i=0; i < numberOutputs; ++i){
-                    row.append(.0);
-                }
-
-                data.append( row );
+                row.append( dc1 );
+                row.append( dc2 );
+                analysisData.append( row );
             }
         }
     }else{
-        columns.append( analysis->typeJson() );
-
         foreach(double value,analysisFirstValues){
             QVector<double> row;
             row.append( value );
-
-            for(int i=0; i < numberOutputs; ++i){
-                row.append(.0);
-            }
-
-            data.append( row );
+            analysisData.append( row );
         }
     }
 
+
+    foreach(QVector<double> tmpData, analysisData){
+        QVector<double> row = tmpData;
+
+        foreach(Source* source,sourceManager->inputs()){
+            int index = columns.indexOf( source->name() );
+            if(index != -1 && index >= analysis->numberAnalyses()){
+//                if(source->hasConfiguration("dc")){
+                    row.append( source->configuration("dc",.0).toDouble() );
+//                }else{
+//                    row.append(.0);
+//                }
+            }
+        }
+
+
+        for(int i=0; i < numberOutputs; ++i){
+            row.append(.0);
+        }
+
+        Q_ASSERT( row.count() == columns.count());
+        data.append(row);
+
+    }
 
     measure_->columns( columns );
     measure_->data( data );
@@ -229,6 +217,41 @@ void MeasureWindow::showSourcesDescription() {
      ui->headerTableView->setModel( headerView_ );
      ui->headerTableView->setColumnWidth(0,150);
      headerView_->fillDelegates( ui->headerTableView );
+ }
+
+ QStringList MeasureWindow::getColumns(db::AnalysisModel *analysis) {
+     QStringList columns;
+     SourceManager* sourceManager = new SourceManager(analysis->sources());
+
+
+     if(analysis->type() == ANALYSIS_DC){
+         QString node1 = analysis->analysis(0).value("node").toString();
+         columns.append( sourceManager->inputByNode(node1)->name() );
+         if(analysis->numberAnalyses() == 2){
+             QString node2 = analysis->analysis(1).value("node").toString();
+             columns.append(sourceManager->inputByNode(node2)->name());
+         }
+     }else{
+         if(analysis->type()==ANALYSIS_AC){
+             columns.append("ac");
+         }else{
+             columns.append("tran");
+         }
+     }
+
+     foreach(Source* source, sourceManager->inputs()){
+         if(!columns.contains(source->name())
+                 && source->type() == SOURCE_TYPE_CONST
+                 && source->mode() != SOURCE_MODE_GND){
+             columns.append(source->name());
+         }
+     }
+
+     foreach(Source* source, sourceManager->outputs()){
+         columns.append(source->name());
+     }
+
+     return columns;
  }
 
 void MeasureWindow::clickedAddAttributeButton() {

@@ -104,6 +104,7 @@ public:
     SourceManager(const QList<Source*>& sources);
     QList<Source*> inputs();
     QList<Source*> outputs();
+    int count() { return sources_.count(); }
     Source *inputByNode(const QString& node);
 private:
     QList<Source *> sources_;

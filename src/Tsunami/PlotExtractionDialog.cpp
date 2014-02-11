@@ -145,13 +145,13 @@ void PlotExtractionDialog::changedMeasure(int index) {
     ui->axisValueComboxBox->clear();;
     ui->constComboBox->clear();
 
-    QList<Source> sources = measure->sources();
-    foreach(Source source,sources){
-        if(source.direction() == SOURCE_DIRECTION_OUTPUT){
-            ui->axisValueComboxBox->addItem( source.name() );
-        }else if(source.mode() != SOURCE_MODE_GND) {
-            ui->axisKeyComboBox->addItem( source.name() );
-            ui->constComboBox->addItem(source.name());
+    QList<Source*> sources = measure->sources();
+    foreach(Source* source,sources){
+        if(source->direction() == SOURCE_DIRECTION_OUTPUT){
+            ui->axisValueComboxBox->addItem(source->name());
+        }else if(source->mode() != SOURCE_MODE_GND) {
+            ui->axisKeyComboBox->addItem(source->name());
+            ui->constComboBox->addItem(source->name());
         }
     }
 

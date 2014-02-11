@@ -30,6 +30,8 @@ private:
     bool prepareMeasureData(db::AnalysisModel* analysis);
 
     void setHeaderData();
+    QStringList getColumns(db::AnalysisModel* analysis);
+
 
     Ui::MeasureWindow *ui;
     int deviceId_;
