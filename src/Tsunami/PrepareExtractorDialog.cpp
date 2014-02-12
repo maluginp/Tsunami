@@ -7,7 +7,10 @@
 namespace tsunami{
 PrepareExtractorDialog::PrepareExtractorDialog(int deviceId, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::PrepareExtractorDialog),measures_(0),deviceId_(deviceId) {
+    ui(new Ui::PrepareExtractorDialog),
+    measures_(0),
+    deviceId_(deviceId)
+{
     ui->setupUi(this);
 
     ui->measuresTableView->setItemDelegateForColumn(0,new DelegateCheckBox(ui->measuresTableView));
@@ -15,13 +18,13 @@ PrepareExtractorDialog::PrepareExtractorDialog(int deviceId, QWidget *parent) :
     db::MeasureStorage* storage =  db::MeasureStorage::instance();
 
     analysisTypeView_ = new gui::ListItemView("Analysis");
-    if(storage->numberMeasuresByAnalysis(deviceId_,"ac") > 0){
+    if(storage->numberMeasuresByType(deviceId_,"ac") > 0){
         analysisTypeView_->addItem( "AC","ac");
     }
-    if(storage->numberMeasuresByAnalysis(deviceId_,"dc") > 0){
+    if(storage->numberMeasuresByType(deviceId_,"dc") > 0){
         analysisTypeView_->addItem( "DC", "dc" );
     }
-    if(storage->numberMeasuresByAnalysis(deviceId_,"tran") > 0){
+    if(storage->numberMeasuresByType(deviceId_,"tran") > 0){
         analysisTypeView_->addItem( "TRAN", "tran");
     }
 

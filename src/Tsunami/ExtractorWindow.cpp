@@ -8,11 +8,14 @@
 #include "PlotExtractionDialog.h"
 
 namespace tsunami{
+using namespace core;
+
 ExtractorWindow::ExtractorWindow(DeviceType type, int libraryId, QList<int> measures, const QString& optimize,
                                  QWidget *parent) :
     QMainWindow(parent),
     running_(false),
-    ui(new Ui::ExtractorWindow) {
+    ui(new Ui::ExtractorWindow)
+{
     ui->setupUi(this);
 
     type_ = type;
@@ -73,7 +76,7 @@ void ExtractorWindow::runExtraction() {
     QString pathSimulator = settings_->value(QString("spice/%1/path").
                                              arg(simulator)).toString();
 
-    core::Extractor* extractor = core::Extractor::createExtractor(optimize_,type_,library_,measures_);
+    Extractor* extractor = Extractor::createExtractor(optimize_,type_,library_,measures_);
     extractor->simulator(simulator,pathSimulator);
     QThread* thread = new QThread;
 

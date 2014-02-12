@@ -13,8 +13,7 @@ namespace tsunami{
 namespace gui{
     class MeasureEnableView;
 }
-class PrepareExtractorDialog : public QDialog
-{
+class PrepareExtractorDialog : public QDialog {
     Q_OBJECT
 
 public:

@@ -3,6 +3,9 @@
 #include "models/MeasureModel.h"
 #include "Log.h"
 #include "spice/Circuit.h"
+
+#include "Device.h"
+
 namespace tsunami{
 namespace spice{
 
@@ -22,6 +25,7 @@ Simulator::Simulator(const QString &path)
 
 }
 
+
 void Simulator::setCircuit(Circuit *circuit) {
     if(circuit != NULL){
         circuit_ = circuit;
@@ -31,6 +35,10 @@ void Simulator::setCircuit(Circuit *circuit) {
 Circuit *Simulator::circuit() {
     Q_ASSERT(circuit_ != NULL);
     return circuit_;
+}
+
+void Simulator::analyses(const QVariantList &analyses) {
+    analyses_ = analyses;
 }
 
 const bool &Simulator::external() const {
@@ -51,6 +59,10 @@ void Simulator::path(const QString &path) {
 
 db::MeasureModel* Simulator::simulatedData(){
     return simulated_;
+}
+
+void Simulator::typeAnalysis(AnalysisType analysisType) {
+    typeAnalysis_ = analysisType;
 }
 
 bool Simulator::exec(QByteArray& data, const QStringList &arguments){
@@ -84,25 +96,23 @@ QByteArray Simulator::netlist() {
     Circuit* cir = circuit_;
 
     QByteArray nets;
-//    nets.append( QString("%1\n\n").arg(cir->name()) );
+    nets.append( QString("%1\n\n").arg(cir->name()) );
 
 //    // Сгенерируем все net для устройств
-//    cir->beginDevice();
-//    Device* device = cir->nextDevice();
-//    while(device){
-//        nets.append( QString("%1\n").arg(device->netList()) );
-//    }
+    foreach(Device* device, cir->getDevices()){
+        nets.append( QString("%1\n").arg(QString(device->netlist())) );
+    }
 
-//    QByteArray modelCards = netListModels();
-//    nets.append( modelCards );
+    QByteArray modelCards = netListModels();
+    nets.append( modelCards );
 
-//    nets.append( netListAnalysis() );
-//    nets.append( ".width out=257\n" );
-//    nets.append( netListPrints() );
-//    nets.append(".options noacct nopage\n");
-//    nets.append(".end\n");
-//    log::logTrace() << QString("Generated NetList\n%1")
-//                       .arg(QString(nets));
+    nets.append( netListAnalyses() );
+    nets.append( ".width out=257\n" );
+    nets.append( netListPrints() );
+    nets.append(".options noacct nopage\n");
+    nets.append(".end\n");
+    log::logTrace() << QString("Generated NetList\n%1")
+                       .arg(QString(nets));
     return nets;
 }
 
@@ -186,43 +196,54 @@ QByteArray Simulator::netListPrints() {
 
 }
 
-QByteArray Simulator::netListAnalysis() {
-    QByteArray source;
-    Circuit* cir = circuit_;
-//    switch(cir->typeAnalysis()){
-//    case ANALYSIS_DC:
-//        source = ".dc";
-//        break;
-//    case ANALYSIS_AC:
-//        source = ".ac";
-//        break;
-//    case ANALYSIS_TRAN:
-//        source =".tran";
-//        break;
-//    case ANALYSIS_UNKNOWN:
-//    default:
-//        Q_ASSERT(false);
-//    }
+QByteArray Simulator::netListAnalyses() {
+    QString source;
+    QVariantMap analysis = analyses_[0].toMap();
 
-    // \todo Source to netlist for analysis
+    if(typeAnalysis_ == ANALYSIS_DC){
+        QString name = analysis.value("name").toString();
+        double start = analysis.value("start").toDouble();
+        double step = analysis.value("start").toDouble();
+        double stop  = analysis.value("stop").toDouble();
 
-//    int sourceNumber = 1;
+        source = QString(".dc %1 %2 %3 %4").arg(name).arg(start).arg(step).arg(stop);
 
-//    while(sourceNumber <= 2){
-//        cir->beginDevice(DEVICE_FLAG_SOURCE);
-//        device = cir->nextDevice();
-//        while(device){
-//            if(device->source().configuration("number").toInt() == sourceNumber){
-//                source.append(" ").append(device->sourceNetlist());
-//            }
+        if(analyses_.count() == 2){
+            QVariantMap analysisSecond = analyses_[1].toMap();
+            QString nameSecond = analysisSecond.value("name").toString();
+            double startSecond = analysisSecond.value("start").toDouble();
+            double stepSecond = analysisSecond.value("start").toDouble();
+            double stopSecond  = analysisSecond.value("stop").toDouble();
 
-//            device = circuit()->nextDevice();
-//        }
-//        sourceNumber++;
-//    }
-//    source.append("\n");
+            source.append(QString(" %1 %2 %3 %4").arg(nameSecond)
+                          .arg(startSecond).arg(stepSecond)
+                          .arg(stopSecond));
 
-    return source;
+        }
+
+    }else{
+        if(typeAnalysis_ == ANALYSIS_AC){
+            int points = analysis.value("points").toInt();
+            double start = analysis.value("start").toDouble();
+            double stop  = analysis.value("stop").toDouble();
+            // dec, oct, lin
+            QString variation = analysis.value("variation").toString();
+
+            source = QString(".ac %1 %2 %3 %5").arg(variation)
+                    .arg(points).arg(start).arg(stop);
+        }else if(typeAnalysis_ == ANALYSIS_TRAN){
+
+            double start = analysis.value("start").toDouble();
+            double step = analysis.value("start").toDouble();
+            double stop  = analysis.value("stop").toDouble();
+
+            source = QString(".tran %1 %2 %3").arg(step).arg(stop).arg(start);
+        }
+    }
+
+
+
+    return source.toAscii();
 }
 
 

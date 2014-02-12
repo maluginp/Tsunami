@@ -17,8 +17,8 @@ NgSpiceSimulator::NgSpiceSimulator(const QString &path) :
 }
 
 bool NgSpiceSimulator::simulate() {
-    changeSigns_.clear();
-//    log::logTrace() << "Simulating";
+//    changeSigns_.clear();
+    log::logTrace() << "Simulating";
     // Append models;
     QString fileName = randomName(8);
 
@@ -32,15 +32,14 @@ bool NgSpiceSimulator::simulate() {
         return false;
     }
 
-//    QByteArray netlist = netlist();
+    QByteArray generatedNetlist = netlist();
 
-//    if(file.write( netlist ) == -1){
-//        file.close();
-////        file.remove();
-//        return false;
-//    }
+    if(file.write( generatedNetlist ) == -1){
+//        file.remove();
+        return false;
+    }
 
-//    file.close();
+    file.close();
 
     // Execute
     QStringList arguments;
@@ -62,8 +61,6 @@ bool NgSpiceSimulator::simulate() {
     output = output.mid(positionStartIndex).replace("\r","");
 
     parseSimulatedData(output);
-
-
 
     return true;
 }
@@ -128,13 +125,6 @@ void NgSpiceSimulator::parseSimulatedData(const QByteArray &outputData) {
 
 }
 
-bool NgSpiceSimulator::isChangeSign(int numberColumn) {
-
-    QString column = columns_[numberColumn];
-
-    return changeSigns_.contains(column);
-
-}
 
 
 

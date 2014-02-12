@@ -35,12 +35,12 @@ public:
     Terminal* terminal(const QString& node);
 
     const QList<DeviceParameter>& parameters() const;
-
+    void paramValue(const QString& name,const QVariant& value);
 protected:
 
 
 
-    int numberTerminals_;
+//    int numberTerminals_;
     QStringList terminals_;
     DeviceFlag flags_;
     SpiceModel* model_;

@@ -19,6 +19,11 @@ AnalysisWindow::AnalysisWindow(int deviceId, QWidget *parent) :
 
     storage_ = db::AnalysisStorage::instance();
 
+    ui->sourceVariationComboBox->addItem("DEC", "dec");
+    ui->sourceVariationComboBox->addItem("OCT", "oct");
+    ui->sourceVariationComboBox->addItem("LINEAR", "linear");
+
+
     // Заполняем типы анализов
     ui->analysisTypeComboBox->addItem( "AC", "ac" );
     ui->analysisTypeComboBox->addItem( "DC", "dc" );
@@ -96,6 +101,9 @@ void AnalysisWindow::showAnalysis() const {
     ui->analysisTypeComboBox->setCurrentIndex( indexType );
 //    QVariantList sources = analysis_->analyses();
     ui->sourceSecondEnable->setChecked(false);
+
+
+
     if(analysis_->type() == ANALYSIS_DC){
 
 //        int modeId = ui->sourceFirstTypeComboBox->findData(sources[0].toMap().value("mode"));
@@ -177,6 +185,7 @@ QCheckBox *AnalysisWindow::getNodeCheckBox(int index){
     return NULL;
 }
 
+// @todo добавить нормальные анализаторы
 QVariantList AnalysisWindow::parseAnalysisSources() {
     int analysisTypeIndex = ui->analysisTypeComboBox->currentIndex();
     QString type = ui->analysisTypeComboBox->itemData(analysisTypeIndex).toString();
@@ -414,6 +423,31 @@ void AnalysisWindow::changedAnalysisType(int index) {
 
     }
 
+    // @todo изменить код, это говно код.
+    if(analysis == "dc" || analysis == "tran"){
+        ui->sourcePointsLabel->setHidden(true);
+        ui->sourcePointsLineEdit->setHidden(true);
+        ui->sourceFirstStepLineEdit->setHidden(false);
+        ui->sourceStepLabel->setHidden(false);
+        ui->sourceVariationComboBox->setHidden(true);
+        ui->sourceVariationLabel->setHidden(true);
+        if(analysis == "dc"){
+            ui->sourceNodeLabel->setHidden(false);
+            ui->sourceFirstNodeComboBox->setHidden(false);
+        }else{
+            ui->sourceNodeLabel->setHidden(true);
+            ui->sourceFirstNodeComboBox->setHidden(true);
+        }
+    }else if(analysis == "ac"){
+        ui->sourcePointsLabel->setHidden(false);
+        ui->sourcePointsLineEdit->setHidden(false);
+        ui->sourceFirstStepLineEdit->setHidden(true);
+        ui->sourceStepLabel->setHidden(true);
+        ui->sourceVariationComboBox->setHidden(false);
+        ui->sourceVariationLabel->setHidden(false);
+        ui->sourceNodeLabel->setHidden(true);
+        ui->sourceFirstNodeComboBox->setHidden(true);
+    }
 }
 
 /**

@@ -69,6 +69,16 @@ const QList<DeviceParameter> &Device::parameters() const {
     return parameters_;
 }
 
+void Device::paramValue(const QString &name, const QVariant &value) {
+    int numberParams = parameters_.count();
+    for(int i=0; i < numberParams; ++i){
+        if(parameters_[i].name().compare(name,Qt::CaseInsensitive)==0){
+            parameters_[i].value(value);
+        }
+    }
+}
+
+
 //void Device::connect(Terminal *terminal) {
 //    link(terminal);
 //    terminal->attachDevice( this );

@@ -20,6 +20,7 @@ public:
 
     void setCircuit( Circuit* circuit );
     Circuit* circuit();
+    void analyses(const QVariantList& analyses);
 
     const bool& external() const;
     const QString& path()  const;
@@ -28,6 +29,8 @@ public:
 
     virtual bool simulate() = 0;
     virtual db::MeasureModel *simulatedData();
+
+    void typeAnalysis(AnalysisType analysisType);
 
 protected:
     virtual bool exec(QByteArray &data,const QStringList& arguments = QStringList());
@@ -40,7 +43,10 @@ protected:
 private:
     QByteArray netListModels();
     QByteArray netListPrints();
-    QByteArray netListAnalysis();
+    QByteArray netListAnalyses();
+
+    AnalysisType typeAnalysis_;
+    QVariantList analyses_;
 
     bool external_;
     QString path_;

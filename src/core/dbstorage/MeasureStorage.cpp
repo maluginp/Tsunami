@@ -46,7 +46,7 @@ int MeasureStorage::lastInsertId(const QString &table) {
 
     }
 
-    return -1;
+    return 0;
 }
 
 void MeasureStorage::testData() {
@@ -151,7 +151,8 @@ QList<MeasureModel *> MeasureStorage::getMeasuresByDeviceIdImpl(int deviceId) {
         model->id(          ITEM("id").toInt()  );
         model->deviceId(    ITEM("device_id").toInt() );
         model->name(        ITEM("name").toString() );
-        model->type(        ITEM("analysis").toString());
+        model->type(        ITEM("type").toString());
+        model->analyses(    ITEM("analyses").toString() );
         model->attrsJson(   ITEM("attributes").toString());
         model->sourcesJson( ITEM("sources").toString());
         model->columnsJson( ITEM("columns").toString());
@@ -193,7 +194,8 @@ MeasureModel *MeasureStorage::openMeasureImpl(int measureId) {
     model->id(          ITEM("id").toInt()  );
     model->deviceId(    ITEM("device_id").toInt() );
     model->name(        ITEM("name").toString() );
-    model->type(        ITEM("analysis").toString());
+    model->type(        ITEM("type").toString());
+    model->analyses(    ITEM("analyses").toString() );
     model->attrsJson(   ITEM("attributes").toString());
     model->sourcesJson( ITEM("sources").toString());
     model->columnsJson( ITEM("columns").toString());
@@ -216,7 +218,8 @@ bool MeasureStorage::createTable(const MeasureTable &table) {
                        "id INTEGER PRIMARY KEY ON CONFLICT REPLACE,"
                        "device_id INTEGER,"
                        "name TEXT,"
-                       "analysis TEXT,"
+                       "type TEXT,"
+                       "analyses TEXT,"
                        "attributes TEXT,"
                        "sources TEXT,"
                        "header TEXT,"
@@ -250,10 +253,10 @@ bool MeasureStorage::saveMeasureImpl(MeasureModel *measure) {
 
      QString sqlQuery;
      sqlQuery = sql("INSERT OR REPLACE INTO %1("
-                    "id,device_id,name,analysis,attributes,sources,header,"
+                    "id,device_id,name,type,analyses,attributes,sources,header,"
                     "columns,data,user_id,created_at,changed_at,enable) "
                     "VALUES("
-                    ":id,:device_id,:name,:analysis,:attributes,:sources,:header,"
+                    ":id,:device_id,:name,:type,:analyses,:attributes,:sources,:header,"
                     ":columns,:data,:user_id,:created_at,:changed_at,:enable) "
                     ).arg(TABLE_NAME_MEASURES);
 
@@ -272,7 +275,8 @@ bool MeasureStorage::saveMeasureImpl(MeasureModel *measure) {
     q.bindValue(":id", measureId);
     q.bindValue(":device_id", measure->deviceId());
     q.bindValue(":name",measure->name());
-    q.bindValue(":analysis", measure->typeJson() );
+    q.bindValue(":type", measure->typeJson() );
+    q.bindValue(":analyses",measure->analysesJson());
     q.bindValue(":attributes",measure->attrsJson());
     q.bindValue(":sources", measure->sourcesJson());
     q.bindValue(":header",measure->headerJson());
@@ -323,8 +327,8 @@ QList<MeasureModel*> MeasureStorage::findMeasures(const QVariantMap &criteria) {
         deviceId = criteria.value( "device", -1 ).toInt();
     }
 
-    if( criteria.contains("analysis") ) {
-        criteriaSql.append( "analysis=:type" );
+    if( criteria.contains("type") ) {
+        criteriaSql.append( "type=:type" );
         type = criteria.value("analysis",QString()).toString();
     }
 
@@ -349,7 +353,8 @@ QList<MeasureModel*> MeasureStorage::findMeasures(const QVariantMap &criteria) {
         model->id(          ITEM("id").toInt()  );
         model->deviceId(    ITEM("device_id").toInt() );
         model->name(        ITEM("name").toString() );
-        model->type(        ITEM("analysis").toString());
+        model->type(        ITEM("type").toString());
+        model->analyses(    ITEM("analyses").toString());
         model->attrsJson(   ITEM("attributes").toString());
         model->sourcesJson( ITEM("sources").toString());
         model->columnsJson( ITEM("columns").toString());
@@ -395,19 +400,19 @@ int MeasureStorage::numberMeasures(int deviceId) {
     return nMeasures;
 }
 
-int MeasureStorage::numberMeasuresByAnalysis(int deviceId, const QString &analysis) {
+int MeasureStorage::numberMeasuresByType(int deviceId, const QString &type) {
     int nMeasures = 0;
 
     setLastError( QString() );
 
     QString sqlQuery;
 
-    sqlQuery = sql("SELECT id FROM %1 WHERE device_id=:device_id AND analysis=:analysis")
+    sqlQuery = sql("SELECT id FROM %1 WHERE device_id=:device_id AND type=:type")
             .arg( TABLE_NAME_MEASURES );
 
     QSqlQuery q(sqlQuery,db());
     q.bindValue(":device_id", deviceId);
-    q.bindValue(":analysis",analysis);
+    q.bindValue(":type",type);
     if(!q.exec()){
         setLastError( q.lastError().text() );
         log::logError() << "Sql error:" << q.lastError().text();

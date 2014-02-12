@@ -56,6 +56,7 @@ void MeasureWindow::createMeasure(int analysisId) {
 //    if(!analysis) { return; }
 //    qDebug() << analysis->source(0).configurations();
      measure_ = new db::MeasureModel();
+     measure_->analyses(analysis->analyses());
     measure_->sources( analysis->sources() );
     measure_->type( analysis->type() );
     measure_->deviceId(deviceId_);
@@ -69,8 +70,8 @@ void MeasureWindow::updateMeasure(int measureId) {
     if(measureId == -1) { return; }
     ui->addButton->setText( tr("Save") );
 
-    db::MeasureModel* measure = measureStorage_->openMeasure(measureId);
-    showMeasure(measure);
+    measure_ = measureStorage_->openMeasure(measureId);
+    showMeasure(measure_);
 
 }
 

@@ -20,12 +20,13 @@ public:
     ~Circuit();
     const QString& name() const;
 
-    bool create(DeviceType type, SourceManager *sources );
+    bool create(DeviceType type, const QList<Source *> &sources, SpiceModel *model);
 
     QList<Device *> getDevices(DeviceFlag flag = 0);
 
 private:
-    Device *addDeviceImpl(const QString& name, DeviceType type);
+    Device *addDeviceImpl(const QString& name, DeviceType type, SpiceModel *model = NULL);
+    Device *addSourceImpl(const QString& name, DeviceType type,Source* source);
     void clean();
 
     QString name_;

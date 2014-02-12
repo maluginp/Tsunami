@@ -54,6 +54,8 @@ public:
     void name( const QString& name ) { name_ = name; }
     void type( AnalysisType type ) { type_ = type; }
     void type( const QString& type);
+    void analyses( const QString& json);
+    void analyses(const QVariantList& analyses);
     void attrs( const QVariantMap& attributes ) { attributes_ = attributes; }
     void attrsJson( const QString& json );
     void addAttr( const QString& key, const QVariant& value )  { attributes_.insert( key,value ); }
@@ -94,6 +96,7 @@ public:
     QString headerJson();
     QString dataJson();
     QString sourcesJson();
+    QString analysesJson();
     const QStringList& columns() const { return columns_; }
     QString columnsJson();
     const QDateTime& createAt() const { return createdAt_; }
@@ -107,6 +110,11 @@ public:
     int countSource( );
 
     QMap<QString,double> find( const  QMap<QString,double>& data );
+
+    int numberAnalyses();
+    QList<double> analysisValues(int i);
+
+    const QVariantList& analyses() const;
 
     const double &at(int row, const QString& name) const;
     const double &at(int row, int column) const;
@@ -132,6 +140,8 @@ private:
     QList<Source*> sources_;
     MeasureHeader header_;
     QStringList columns_;
+
+    QVariantList analyses_;
 
     MatrixDouble* data_;
     QDateTime createdAt_;

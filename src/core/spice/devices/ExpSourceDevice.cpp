@@ -6,8 +6,13 @@ namespace spice{
 ExpSourceDevice::ExpSourceDevice(const QString &name, SourceMode type)
     : IndependentSourceDevice(name,type)
 {
-    addParameter("V1",QVariant::Double);
-    addParameter("V2",QVariant::Double);
+    if(type == SOURCE_MODE_CURRENT){
+        addParameter("I1",QVariant::Double);
+        addParameter("I2",QVariant::Double);
+    }else{
+        addParameter("V1",QVariant::Double);
+        addParameter("V2",QVariant::Double);
+    }
     addParameter("TD1",QVariant::Double);
     addParameter("TAU1",QVariant::Double);
     addParameter("TD2",QVariant::Double);

@@ -77,6 +77,42 @@ void MeasureModel::header(const QString &comment, const QDate &fabrication, cons
     header_ = header;
 }
 
+
+void MeasureModel::analyses( const QString& json){
+    analyses_ = QtJson::parse(json).toList();
+}
+
+void MeasureModel::analyses(const QVariantList &analyses) {
+    analyses_ = analyses;
+}
+
+int MeasureModel::numberAnalyses() {
+    return analyses_.count();
+}
+
+QList<double> MeasureModel::analysisValues(int i) {
+    Q_ASSERT( i < analyses_.count());
+
+    QVariantMap analysis = analyses_[i].toMap();
+    QList<double> values;
+
+    double start = analysis.value("start").toDouble();
+    double step  = analysis.value("step").toDouble();
+    double stop  = analysis.value("stop").toDouble();
+
+
+    int numberValues = static_cast<int>(fabs((stop-start)/step));
+    for(int i=0; i<= numberValues;++i){
+        values.append(start+step*i);
+    }
+
+    return values;
+}
+
+const QVariantList &MeasureModel::analyses() const {
+    return analyses_;
+}
+
 void MeasureModel::attrsJson( const QString& json ){
     QVariantMap attrs = QtJson::parse(json).toMap();
     attributes_ = attrs;
@@ -249,6 +285,10 @@ QString MeasureModel::sourcesJson() {
 
     return json;
 
+}
+
+QString MeasureModel::analysesJson() {
+    return QtJson::serializeStr( analyses_ );
 }
  QString MeasureModel::columnsJson() {
     QVariantList items;

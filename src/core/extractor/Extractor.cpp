@@ -8,9 +8,12 @@
 #include "ExtractorHookeJeeves.h"
 
 #include <Log.h>
-
 namespace tsunami{
+using namespace spice;
+
 namespace core{
+
+
 
 Extractor::Extractor(DeviceType type, db::LibraryModel* library, const QList<int> &measures) :
         previousFunctionError_(DBL_MAX),
@@ -18,8 +21,8 @@ Extractor::Extractor(DeviceType type, db::LibraryModel* library, const QList<int
         simulator_(0),
         library_(library),
         dataset_(0),
-        storageParameters_(0) {
-
+        storageParameters_(0)
+{
     type_ = type;
 
     db::SettingStorage* setting = db::SettingStorage::instance();
@@ -60,26 +63,25 @@ double Extractor::functionError() {
     double funcError = 0.0;
 
     Q_ASSERT(simulator_ != NULL);
-//    Q_ASSERT(optimize_  != NULL);
     Q_ASSERT(dataset_   != NULL);
 
-//    dataset_->begin();
-//    while(dataset_->isNext()){
-//        const db::MeasureModel* measure = dataset_->next();
-//        spice::Circuit *circuit = spice::Circuit::createCircuitDevice( type_,
-//                                                                       measure->sources() );
+    dataset_->begin();
+    while(dataset_->isNext()){
+        const db::MeasureModel* measure = dataset_->next();
+        Circuit* circuit = new Circuit("Check function error");
 
-//        spice::SpiceModel* model = new spice::SpiceModel( "bjt" ,type_);
-//        model->setLibrary( library_ );
+        simulator_->analyses( measure->analyses() );
+        simulator_->typeAnalysis( measure->type() );
 
+        SpiceModel* model = new SpiceModel("SPICEMODEL",type_);
+        circuit->create( type_, measure->sources(), model);
+        model->setLibrary(library_);
 
-//        circuit->setSpiceModel( type_, model );
-//        simulator_->setCircuit( circuit );
-//        funcError += computeError(measure);
+        funcError += computeError(measure);
 
-//        delete circuit;
-//        simulator_->setCircuit(NULL);
-//    }
+        delete circuit;
+        simulator_->setCircuit(NULL);
+    }
 
     return funcError;
 }

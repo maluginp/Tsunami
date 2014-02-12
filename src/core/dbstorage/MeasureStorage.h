@@ -27,7 +27,7 @@ public:
     QList<MeasureModel*> getMeasuresByDeviceId( int deviceId );
 
     int numberMeasures(int deviceId);
-    int numberMeasuresByAnalysis(int deviceId,const QString& analysis);
+    int numberMeasuresByType(int deviceId, const QString& type);
 
     QList<MeasureModel*> getMeasures(const QList<int>& measureIds );
 

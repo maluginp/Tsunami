@@ -9,5 +9,6 @@
 #include "spice/devices/PulseSourceDevice.h"
 #include "spice/devices/SinSourceDevice.h"
 #include "spice/devices/ExpSourceDevice.h"
+#include "spice/devices/GndDevice.h"
 
 #endif // DEVICES_H
