@@ -107,7 +107,7 @@ QByteArray Simulator::netlist() {
     nets.append( modelCards );
 
     nets.append( netListAnalyses() );
-    nets.append( ".width out=257\n" );
+    nets.append( "\n.width out=257\n" );
     nets.append( netListPrints() );
     nets.append(".options noacct nopage\n");
     nets.append(".end\n");
@@ -124,6 +124,13 @@ QString Simulator::randomName(int num) {
 // а им заменить db::LibraryModel
 QByteArray Simulator::netListModels() {
     QByteArray cards;
+
+    foreach(Device* device,circuit_->getDevices(DEVICE_FLAG_HAVE_MODEL)){
+        if(device->hasSpiceModel()){
+            cards.append( device->spiceModel()->generateNetList() );
+        }
+    }
+
 //    circuit_->beginModel();
 //    SpiceModel* model = circuit_->nextModel();
 //    while(model){

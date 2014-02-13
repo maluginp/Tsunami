@@ -19,7 +19,7 @@ public:
 
     const QString& name() const;
     void name(const QString& name);
-    const int& id() const;
+    virtual int id() const;
 
     void setNode(int index,GraphNode* node);
 private:

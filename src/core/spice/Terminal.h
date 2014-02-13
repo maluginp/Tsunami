@@ -15,6 +15,8 @@ public:
 
     void setRef();
     bool isRef();
+
+    int id() const;
 private:
     bool isRef_;
 

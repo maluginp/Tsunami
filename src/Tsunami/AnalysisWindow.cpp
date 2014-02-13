@@ -96,39 +96,19 @@ void AnalysisWindow::showSource(const QString &node) {
 
 }
 
-void AnalysisWindow::showAnalysis() const {
-    int indexType = ui->analysisTypeComboBox->findData( analysis_->typeJson() );
-    ui->analysisTypeComboBox->setCurrentIndex( indexType );
-//    QVariantList sources = analysis_->analyses();
+void AnalysisWindow::showAnalysis() {
+    setAnalysisParameter("analysis",analysis_->typeJson());
+
     ui->sourceSecondEnable->setChecked(false);
 
-
-
     if(analysis_->type() == ANALYSIS_DC){
-
-//        int modeId = ui->sourceFirstTypeComboBox->findData(sources[0].toMap().value("mode"));
-//        ui->sourceFirstTypeComboBox->setCurrentIndex(modeId);
-        int nodeId = ui->sourceFirstNodeComboBox->findData(analysis_->analysis(0).value("node"));
-        ui->sourceFirstNodeComboBox->setCurrentIndex(nodeId);
-        ui->sourceFirstStartLineEdit->setText( analysis_->analysis(0).value("start").toString() );
-        ui->sourceFirstStepLineEdit->setText( analysis_->analysis(0).value("step").toString() );
-        ui->sourceFirstStopLineEdit->setText( analysis_->analysis(0).value("stop").toString() );
-
+        setAnalysisParameters(analysis_->analysis(0),1);
         if(analysis_->numberAnalyses() == 2){
-            ui->sourceSecondEnable->setChecked(true);
-//            modeId = ui->sourceSecondTypeComboBox->findData(sources[1].toMap().value("mode"));
-//            ui->sourceSecondTypeComboBox->setCurrentIndex(modeId);
-            nodeId = ui->sourceSecondNodeComboBox->findData(analysis_->analysis(1).value("node"));
-            ui->sourceSecondNodeComboBox->setCurrentIndex(nodeId);
-            ui->sourceSecondStartLineEdit->setText( analysis_->analysis(1).value("start").toString() );
-            ui->sourceSecondStepLineEdit->setText( analysis_->analysis(1).value("step").toString() );
-            ui->sourceSecondStopLineEdit->setText( analysis_->analysis(1).value("stop").toString() );
+            setAnalysisParameter("enable_source2",true);
+            setAnalysisParameters(analysis_->analysis(1),2);
         }
-
     }else{
-        ui->sourceFirstStartLineEdit->setText( analysis_->analysis(0).value("start").toString() );
-        ui->sourceFirstStepLineEdit->setText( analysis_->analysis(0).value("step").toString() );
-        ui->sourceFirstStopLineEdit->setText( analysis_->analysis(0).value("stop").toString() );
+        setAnalysisParameters(analysis_->analysis(0),1);
     }
 
 
@@ -187,39 +167,38 @@ QCheckBox *AnalysisWindow::getNodeCheckBox(int index){
 
 // @todo добавить нормальные анализаторы
 QVariantList AnalysisWindow::parseAnalysisSources() {
-    int analysisTypeIndex = ui->analysisTypeComboBox->currentIndex();
-    QString type = ui->analysisTypeComboBox->itemData(analysisTypeIndex).toString();
+    QString type = analysisParameter("analysis").toString();
+
     QVariantList sources;
     QVariantMap source;
     if(type == "dc"){
-        QString mode;
-        int nodeId = ui->sourceFirstNodeComboBox->currentIndex();
-        source.insert("node", ui->sourceFirstNodeComboBox->itemData(nodeId));
-//        int modeId = ui->sourceFirstTypeComboBox->currentIndex();
-//        source.insert("mode",ui->sourceFirstTypeComboBox->itemData(modeId));
-        source.insert("start",ui->sourceFirstStartLineEdit->text());
-        source.insert("step",ui->sourceFirstStepLineEdit->text());
-        source.insert("stop",ui->sourceFirstStopLineEdit->text());
-
+        source.insert("node",  analysisParameter("node"));
+        source.insert("start", analysisParameter("start"));
+        source.insert("step",  analysisParameter("step"));
+        source.insert("stop",  analysisParameter("stop"));
+        source.insert("name",  analysisParameter("name"));
         sources.append(source);
 
-        if( ui->sourceSecondEnable->isChecked() ){
+        if( analysisParameter("enable_source2").toBool() ){
             source.clear();
-            int nodeId = ui->sourceSecondNodeComboBox->currentIndex();
-            source.insert("node", ui->sourceSecondNodeComboBox->itemData(nodeId));
-//            int modeId = ui->sourceSecondTypeComboBox->currentIndex();
-//            source.insert("mode",ui->sourceSecondTypeComboBox->itemData(modeId));
-            source.insert("start",ui->sourceSecondStartLineEdit->text());
-            source.insert("step",ui->sourceSecondStepLineEdit->text());
-            source.insert("stop",ui->sourceSecondStopLineEdit->text());
-            sources.append(source);    \
+            source.insert("node",  analysisParameter("node",2));
+            source.insert("start", analysisParameter("start",2));
+            source.insert("step",  analysisParameter("step",2));
+            source.insert("stop",  analysisParameter("stop",2));
+            source.insert("name",  analysisParameter("name",2));
+            sources.append(source);
 
         }
-    }else{
-        source.insert("start",ui->sourceFirstStartLineEdit->text());
-        source.insert("step",ui->sourceFirstStepLineEdit->text());
-        source.insert("stop",ui->sourceFirstStopLineEdit->text());
-
+    }else if(type == "ac"){
+        source.insert("variation", analysisParameter("variation"));
+        source.insert("start",     analysisParameter("start"));
+        source.insert("points",    analysisParameter("points"));
+        source.insert("stop",      analysisParameter("stop"));
+        sources.append(source);
+    }else if(type == "tran"){
+        source.insert("start", analysisParameter("start"));
+        source.insert("step",  analysisParameter("step"));
+        source.insert("stop",  analysisParameter("stop"));
         sources.append(source);
     }
 
@@ -257,7 +236,7 @@ void AnalysisWindow::hideAnalysisParameter(const QString &name,bool hide,int sou
             ui->sourceFirstNodeComboBox->setHidden(hide);
             ui->sourceNodeLabel->setHidden(hide);
         }else if(source == 2){
-            ui->sourceSecondNodeComboBox-->setHidden(hide);
+            ui->sourceSecondNodeComboBox->setHidden(hide);
             ui->sourceSecondNodeLabel->setHidden(hide);
         }
     }else if(name == "points"){
@@ -303,9 +282,71 @@ QVariant AnalysisWindow::analysisParameter(const QString &name, int source) {
     }else if(name=="variation"){
         int index = ui->sourceVariationComboBox->currentIndex();
         return ui->sourceVariationComboBox->itemData(index);
+    }else if(name =="enable_source2"){
+        return ui->sourceSecondEnable->isChecked();
+    }else if(name == "name"){
+        QString node = analysisParameter("node",source).toString();
+        Source* source = sources_.value(node);
+
+        if(source->isGnd()){
+            return QString();
+        }
+        return source->name();
+    }else if(name == "analysis"){
+        int analysisTypeIndex = ui->analysisTypeComboBox->currentIndex();
+        return ui->analysisTypeComboBox->itemData(analysisTypeIndex).toString();
+
     }
 
     return QVariant();
+}
+
+void AnalysisWindow::setAnalysisParameter(const QString &name, const QVariant &value, int source) {
+    if(name == "start"){
+        if(source == 1){
+            ui->sourceFirstStartLineEdit->setText(value.toString());
+
+        }else if(source == 2){
+            ui->sourceSecondStartLineEdit->setText(value.toString());
+        }
+    }else if(name == "step"){
+        if(source == 1){
+            ui->sourceFirstStepLineEdit->setText(value.toString());
+        }else if(source == 2){
+            ui->sourceSecondStepLineEdit->setText(value.toString());
+        }
+    }else if(name == "stop"){
+        if(source == 1){
+            ui->sourceFirstStopLineEdit->setText(value.toString());
+        }else if(source == 2){
+            ui->sourceSecondStopLineEdit->setText(value.toString());
+        }
+    }else if(name == "node"){
+        if(source == 1){
+            int index = ui->sourceFirstNodeComboBox->findData(value);
+            ui->sourceFirstNodeComboBox->setCurrentIndex(index);
+        }else if(source == 2){
+            int index = ui->sourceSecondNodeComboBox->findData(value);
+            ui->sourceSecondNodeComboBox->setCurrentIndex(index);
+        }
+    }else if(name == "points"){
+        ui->sourcePointsLineEdit->setText(value.toString());
+    }else if(name=="variation"){
+        int index = ui->sourceVariationComboBox->findData(value);
+        ui->sourceVariationComboBox->setCurrentIndex(index);
+    }else if(name =="enable_source2"){
+        ui->sourceSecondEnable->setChecked( value.toBool() );
+    }else if(name == "analysis"){
+        int index = ui->analysisTypeComboBox->findData(value);
+        ui->analysisTypeComboBox->setCurrentIndex(index);
+
+    }
+}
+
+void AnalysisWindow::setAnalysisParameters(const QVariantMap &parameters, int source) {
+    foreach(QString key,parameters.keys()){
+        setAnalysisParameter(key,parameters.value(key),source);
+    }
 }
 
 
@@ -486,49 +527,36 @@ void AnalysisWindow::changedAnalysisType(int index) {
 
     QString analysis = ui->analysisTypeComboBox->itemData( index ).toString();
 
-    if(analysis == "dc"){
+//    if(analysis == "dc"){
 //        ui->sourceFirstTypeComboBox->setEnabled(true);
-        ui->sourceFirstNodeComboBox->setEnabled(true);
+//        ui->sourceFirstNodeComboBox->setEnabled(true);
 
-        ui->sourceSecondEnable->setEnabled(true);
-        if(ui->sourceSecondEnable->isChecked()){
-            ui->sourceSecondGroup->setEnabled(true);
-        }else{
-            ui->sourceSecondGroup->setEnabled(false);
-        }
 
-    } else if(analysis == "ac" || analysis == "tran"){
-//        ui->sourceFirstTypeComboBox->setEnabled(false);
-        ui->sourceFirstNodeComboBox->setEnabled(false);
-        ui->sourceSecondEnable->setEnabled(false);
-        ui->sourceSecondGroup->setEnabled(false);
-
-    }
+    ui->sourceSecondEnable->setEnabled(false);
+    ui->sourceSecondGroup->setEnabled(false);
 
     // @todo изменить код, это говно код.
     if(analysis == "dc" || analysis == "tran"){
-        ui->sourcePointsLabel->setHidden(true);
-        ui->sourcePointsLineEdit->setHidden(true);
-        ui->sourceFirstStepLineEdit->setHidden(false);
-        ui->sourceStepLabel->setHidden(false);
-        ui->sourceVariationComboBox->setHidden(true);
-        ui->sourceVariationLabel->setHidden(true);
+        hideAnalysisParameter("points");
+        hideAnalysisParameter("variation");
+        hideAnalysisParameter("step",false);
+        hideAnalysisParameter("node");
         if(analysis == "dc"){
-            ui->sourceNodeLabel->setHidden(false);
-            ui->sourceFirstNodeComboBox->setHidden(false);
-        }else{
-            ui->sourceNodeLabel->setHidden(true);
-            ui->sourceFirstNodeComboBox->setHidden(true);
+            ui->sourceSecondEnable->setEnabled(true);
+            hideAnalysisParameter("node",false);
+            if(analysisParameter("enable_source2").toBool()){
+                ui->sourceSecondGroup->setEnabled(true);
+            }else{
+                ui->sourceSecondGroup->setEnabled(false);
+            }
+
         }
     }else if(analysis == "ac"){
-        ui->sourcePointsLabel->setHidden(false);
-        ui->sourcePointsLineEdit->setHidden(false);
-        ui->sourceFirstStepLineEdit->setHidden(true);
-        ui->sourceStepLabel->setHidden(true);
-        ui->sourceVariationComboBox->setHidden(false);
-        ui->sourceVariationLabel->setHidden(false);
-        ui->sourceNodeLabel->setHidden(true);
-        ui->sourceFirstNodeComboBox->setHidden(true);
+        hideAnalysisParameter("points",false);
+        hideAnalysisParameter("variation",false);
+        hideAnalysisParameter("step",true);
+        hideAnalysisParameter("node");
+
     }
 }
 

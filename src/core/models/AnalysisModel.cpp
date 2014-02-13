@@ -163,16 +163,28 @@ QList<double> AnalysisModel::analysisValues(int i) {
     Q_ASSERT( i < analyses_.count());
 
     QVariantMap analysis = analyses_[i].toMap();
+
     QList<double> values;
+    if(type_ == ANALYSIS_AC){
+        double start = analysis.value("start").toDouble();
+        double stop  = analysis.value("stop").toDouble();
+        double points = analysis.value("points").toInt();
+        double step = fabs((stop-start)/points);
 
-    double start = analysis.value("start").toDouble();
-    double step  = analysis.value("step").toDouble();
-    double stop  = analysis.value("stop").toDouble();
+        for(int i=0; i <= points; ++i){
+            values.append( start+step*i );
+        }
 
+    }else{
 
-    int numberValues = static_cast<int>(fabs((stop-start)/step));
-    for(int i=0; i<= numberValues;++i){
-        values.append(start+step*i);
+        double start = analysis.value("start").toDouble();
+        double step  = analysis.value("step").toDouble();
+        double stop  = analysis.value("stop").toDouble();
+
+        int numberValues = static_cast<int>(fabs((stop-start)/step));
+        for(int i=0; i<= numberValues;++i){
+            values.append(start+step*i);
+        }
     }
 
     return values;

@@ -5,12 +5,9 @@
 #include "defines.h"
 #include "Terminal.h"
 #include "DeviceParameter.h"
-
+#include "SpiceModel.h"
 namespace tsunami{
 namespace spice{
-
-
-class SpiceModel;
 
 class TSUNAMI_EXPORT Device : public GraphNode  {
 public:

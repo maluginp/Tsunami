@@ -28,7 +28,7 @@ public:
 private:
     void prepareDevice();
     void showSource(const QString& node);
-    void showAnalysis() const;
+    void showAnalysis();
     void hideSource(int index,bool hide = true);
     QPushButton *getNodeButton(int index);
     QComboBox* getNodeComboBox(int index);
@@ -39,8 +39,8 @@ private:
     // Управление анализом
     void hideAnalysisParameter(const QString& name, bool hide=true, int source=1);
     QVariant analysisParameter(const QString& name, int source=1 );
-
-
+    void setAnalysisParameter(const QString& name, const QVariant& value,int source =1);
+    void setAnalysisParameters(const QVariantMap& parameters, int source=1);
     Ui::AnalysisWindow *ui;
 
     db::AnalysisStorage* storage_;

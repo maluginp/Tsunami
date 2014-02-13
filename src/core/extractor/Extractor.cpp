@@ -70,6 +70,7 @@ double Extractor::functionError() {
         const db::MeasureModel* measure = dataset_->next();
         Circuit* circuit = new Circuit("Check function error");
 
+        simulator_->setCircuit(circuit);
         simulator_->analyses( measure->analyses() );
         simulator_->typeAnalysis( measure->type() );
 

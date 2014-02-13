@@ -25,6 +25,13 @@ bool Terminal::isRef() {
     return isRef_;
 }
 
+int Terminal::id() const {
+    if(isRef_){
+        return 0;
+    }
+    return GraphNode::id();
+}
+
 
 
 }
