@@ -73,7 +73,7 @@ double Extractor::functionError() {
         simulator_->setCircuit(circuit);
         simulator_->analyses( measure->analyses() );
         simulator_->typeAnalysis( measure->type() );
-
+        simulator_->measure(measure);
         SpiceModel* model = new SpiceModel("SPICEMODEL",type_);
         circuit->create( type_, measure->sources(), model);
         model->setLibrary(library_);

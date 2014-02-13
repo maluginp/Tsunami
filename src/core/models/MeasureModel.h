@@ -111,11 +111,11 @@ public:
 
     QMap<QString,double> find( const  QMap<QString,double>& data );
 
-    int numberAnalyses();
-    QList<double> analysisValues(int i);
+    int numberAnalyses() const;
+    QList<double> analysisValues(int i) const;
 
     const QVariantList& analyses() const;
-
+    QVariantMap analysis(int i) const;
     const double &at(int row, const QString& name) const;
     const double &at(int row, int column) const;
     double &at(int row, int column);

@@ -12,8 +12,8 @@ public:
     NgSpiceSimulator( const QString& path );
 
     bool simulate();
-protected:
-    QStringList columns_;
+//protected:
+//    QStringList columns_;
 
 private:
     bool isCorrectForParse();

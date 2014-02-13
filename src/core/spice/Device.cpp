@@ -78,6 +78,10 @@ void Device::paramValue(const QString &name, const QVariant &value) {
     }
 }
 
+const QStringList &Device::terminals() const {
+    return terminals_;
+}
+
 
 //void Device::connect(Terminal *terminal) {
 //    link(terminal);

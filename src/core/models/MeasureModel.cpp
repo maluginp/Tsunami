@@ -86,11 +86,11 @@ void MeasureModel::analyses(const QVariantList &analyses) {
     analyses_ = analyses;
 }
 
-int MeasureModel::numberAnalyses() {
+int MeasureModel::numberAnalyses() const {
     return analyses_.count();
 }
 
-QList<double> MeasureModel::analysisValues(int i) {
+QList<double> MeasureModel::analysisValues(int i) const{
     Q_ASSERT( i < analyses_.count());
 
     QVariantMap analysis = analyses_[i].toMap();
@@ -111,6 +111,11 @@ QList<double> MeasureModel::analysisValues(int i) {
 
 const QVariantList &MeasureModel::analyses() const {
     return analyses_;
+}
+
+QVariantMap MeasureModel::analysis(int i) const {
+    Q_ASSERT(i < analyses_.count());
+    return analyses_[i].toMap();
 }
 
 void MeasureModel::attrsJson( const QString& json ){

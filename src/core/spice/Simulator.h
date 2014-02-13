@@ -32,14 +32,20 @@ public:
 
     void typeAnalysis(AnalysisType analysisType);
 
+    void measure(const db::MeasureModel* measure){
+        measure_ = measure;
+    }
+
 protected:
     virtual bool exec(QByteArray &data,const QStringList& arguments = QStringList());
 
     QByteArray netlist();
     QString randomName(int num);
 
-
+    const db::MeasureModel* measure_;
     db::MeasureModel* simulated_;
+protected:
+    QStringList columns_;
 private:
     QByteArray netListModels();
     QByteArray netListPrints();
@@ -51,6 +57,7 @@ private:
     bool external_;
     QString path_;
     Circuit* circuit_;
+
 
 
 

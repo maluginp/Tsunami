@@ -24,6 +24,7 @@ public:
 
     QList<Device *> getDevices(DeviceFlag flag = 0);
 
+    const QList<Source*>& sources() const;
 private:
     Device *addDeviceImpl(const QString& name, DeviceType type, SpiceModel *model = NULL);
     Device *addSourceImpl(const QString& name, DeviceType type,Source* source);
@@ -31,13 +32,6 @@ private:
 
     QString name_;
     DeviceMap devices_;
-//    ModelList models_;
-
-//    DeviceMap::iterator currentDevice_;
-//    ModelList::iterator  currentModel_;
-
-
-
 
 };
 

@@ -41,10 +41,14 @@ void IndependentSourceDevice::mode(SourceMode mode) {
 }
 
 QByteArray IndependentSourceDevice::netlist() {
+    QString devName = name();
 
-    QString type = (mode_ == SOURCE_MODE_CURRENT) ? "I" : "V";
+    if(devName.isEmpty()){
+        QString type = (mode_ == SOURCE_MODE_CURRENT) ? "I" : "V";
+        devName = QString("%1%2").arg(type).arg(id());
+    }
 
-    QString nets = QString("%1%2 %3 %4").arg(type).arg(id())
+    QString nets = QString("%1 %2 %3").arg(devName)
             .arg(terminal("P")->id()).arg(terminal("M")->id());
 
     // заполнить параметры

@@ -33,6 +33,8 @@ public:
 
     const QList<DeviceParameter>& parameters() const;
     void paramValue(const QString& name,const QVariant& value);
+
+    const QStringList& terminals() const;
 protected:
 
 

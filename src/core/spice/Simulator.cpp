@@ -5,6 +5,7 @@
 #include "spice/Circuit.h"
 
 #include "Device.h"
+#include "Devices.h"
 
 namespace tsunami{
 namespace spice{
@@ -143,59 +144,54 @@ QByteArray Simulator::netListModels() {
 QByteArray Simulator::netListPrints() {
     QByteArray netlist = ".print ";
 
-//    columns_.clear();
-//    columns_ << "number" << "analysis";
+    columns_.clear();
+    columns_ << "number" << "analysis";
 
-//    switch(circuit()->typeAnalysis()){
-//    case ANALYSIS_DC:
-//        netlist.append("dc");
-//        break;
-//    case ANALYSIS_AC:
-//        netlist.append("ac");
-//        break;
-//    case ANALYSIS_TRAN:
-//        netlist.append("tran");
-//        break;
-//    default:
-//        Q_ASSERT(false);
-//    }
+    switch(typeAnalysis_){
+    case ANALYSIS_DC:
+        netlist.append("dc");
+        break;
+    case ANALYSIS_AC:
+        netlist.append("ac");
+        break;
+    case ANALYSIS_TRAN:
+        netlist.append("tran");
+        break;
+    default:
+        Q_ASSERT(false);
+    }
 
 
+    foreach(Device* device,circuit()->getDevices( DEVICE_FLAG_SOURCE )){
+        IndependentSourceDevice* sourceDevice = dynamic_cast<IndependentSourceDevice*>(device);
+//        QStringList terminals = sourceDevice->terminals();
 
-//    QList<Source> sources = circuit()->sources();
+        if(sourceDevice->type() == DEVICE_VSOURCE){
+//            columns_.append(sourceDevice->name());
+            QString column = sourceDevice->name();
+            column[0] = 'I';
+            columns_.append(column);
+            netlist.append(
+                        QString(" i(%1)")
+//                           .arg(sourceDevice->terminal("P")->id())
+//                           .arg(sourceDevice->terminal("M")->id())
+                           .arg(sourceDevice->name())
+                        );
 
-//    // Looking for all input source
-//    circuit()->beginDevice(DEVICE_FLAG_SOURCE);
-//    Device* device = circuit()->nextDevice();
-//    while(device){
-//        Source source = device->source();
+        }else if(sourceDevice->type() == DEVICE_ISOURCE){
+//            columns_.append(sourceDevice->name());
+            QString column = sourceDevice->name();
+            column[0] = 'V';
+            columns_.append(column);
 
-//        Q_ASSERT( device->numberPorts() == 2 );
-//        Q_ASSERT( source.mode() != SOURCE_MODE_GND );
-
-//        int plus  = (!device->terminal(0)->isRef()) ? device->terminal(0)->id() : 0;
-//        int minus = (!device->terminal(1)->isRef()) ? device->terminal(1)->id() : 0;
-
-//        if( device->type() == DEVICE_VSOURCE ){
-//            netlist.append( QString(" v(%1,%2)").arg(plus).arg(minus) );
-//            netlist.append( QString(" i(%1) ").arg(device->name()) );
-//            columns_ << QString("V%1").arg( source.node().toLower() );
-
-//            columns_ << QString("I%1").arg( source.node().toLower() );
-
-//            if(!source.isPositive()){
-//                changeSigns_ << columns_.last();
-//            }
-//        }else{
-//            Q_ASSERT(false);
-//        }
-//        device = circuit()->nextDevice();
-//    }
-
-    // Add ground
-//    int gndId = circuit()->getRefTerminalId();
-//    netlist.append( QString(" v(%1)").arg(0) ); //.arg(minus) );
-//    columns_ << QString("V%1").arg( circuit()->getTerminal(gndId)->name().toLower() );
+            netlist.append(
+                        QString(" v(%1,%2)")
+//                           .arg(sourceDevice->name())
+                           .arg(sourceDevice->terminal("P")->id())
+                           .arg(sourceDevice->terminal("M")->id())
+                        );
+        }
+    }
 
     netlist.append("\n");
     return netlist;
@@ -210,21 +206,22 @@ QByteArray Simulator::netListAnalyses() {
     if(typeAnalysis_ == ANALYSIS_DC){
         QString name = analysis.value("name").toString();
         double start = analysis.value("start").toDouble();
-        double step = analysis.value("start").toDouble();
+        double step = analysis.value("step").toDouble();
         double stop  = analysis.value("stop").toDouble();
 
-        source = QString(".dc %1 %2 %3 %4").arg(name).arg(start).arg(step).arg(stop);
+        source = QString(".dc %1 %2 %3 %4").arg(name).arg(start).arg(stop).arg(step);
 
         if(analyses_.count() == 2){
             QVariantMap analysisSecond = analyses_[1].toMap();
             QString nameSecond = analysisSecond.value("name").toString();
             double startSecond = analysisSecond.value("start").toDouble();
-            double stepSecond = analysisSecond.value("start").toDouble();
+            double stepSecond = analysisSecond.value("step").toDouble();
             double stopSecond  = analysisSecond.value("stop").toDouble();
 
             source.append(QString(" %1 %2 %3 %4").arg(nameSecond)
-                          .arg(startSecond).arg(stepSecond)
-                          .arg(stopSecond));
+                          .arg(startSecond)
+                          .arg(stopSecond)
+                          .arg(stepSecond));
 
         }
 
@@ -241,7 +238,7 @@ QByteArray Simulator::netListAnalyses() {
         }else if(typeAnalysis_ == ANALYSIS_TRAN){
 
             double start = analysis.value("start").toDouble();
-            double step = analysis.value("start").toDouble();
+            double step = analysis.value("step").toDouble();
             double stop  = analysis.value("stop").toDouble();
 
             source = QString(".tran %1 %2 %3").arg(step).arg(stop).arg(start);
