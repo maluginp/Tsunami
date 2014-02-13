@@ -36,6 +36,11 @@ private:
     QVariantList parseAnalysisSources();
 
 
+    // Управление анализом
+    void hideAnalysisParameter(const QString& name, bool hide=true, int source=1);
+    QVariant analysisParameter(const QString& name, int source=1 );
+
+
     Ui::AnalysisWindow *ui;
 
     db::AnalysisStorage* storage_;
@@ -53,6 +58,8 @@ private slots:
 
 //    void selectedAnalysisItem( const QModelIndex& index );
 
+
+
     // -- new
     void changedAnalysisType(int index);
     void checkedSourceSecondEnable(bool checked);
@@ -63,7 +70,6 @@ private slots:
     void changedSourceTypeNode4(int index);
 
     void changeSourceType(int nodeId, const QString& type);
-
 
     void clickedSourceParamsNode1();
     void clickedSourceParamsNode2();

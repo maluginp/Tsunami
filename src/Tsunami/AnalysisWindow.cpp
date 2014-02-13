@@ -226,6 +226,88 @@ QVariantList AnalysisWindow::parseAnalysisSources() {
     return sources;
 }
 
+void AnalysisWindow::hideAnalysisParameter(const QString &name,bool hide,int source) {
+
+    if(name == "start"){
+        if(source == 1){
+            ui->sourceFirstStartLineEdit->setHidden(hide);
+            ui->sourceStartLabel->setHidden(hide);
+        }else if(source == 2){
+            ui->sourceSecondStartLabel->setHidden(hide);
+            ui->sourceSecondStartLineEdit->setHidden(hide);
+        }
+    }else if(name == "step"){
+        if(source == 1){
+            ui->sourceFirstStepLineEdit->setHidden(hide);
+            ui->sourceStepLabel->setHidden(hide);
+        }else if(source == 2){
+            ui->sourceSecondStepLabel->setHidden(hide);
+            ui->sourceSecondStepLineEdit->setHidden(hide);
+        }
+    }else if(name == "stop"){
+        if(source == 1){
+            ui->sourceFirstStopLineEdit->setHidden(hide);
+            ui->sourceStopLabel->setHidden(hide);
+        }else if(source == 2){
+            ui->sourceSecondStopLabel->setHidden(hide);
+            ui->sourceSecondStopLineEdit->setHidden(hide);
+        }
+    }else if(name == "node"){
+        if(source == 1){
+            ui->sourceFirstNodeComboBox->setHidden(hide);
+            ui->sourceNodeLabel->setHidden(hide);
+        }else if(source == 2){
+            ui->sourceSecondNodeComboBox-->setHidden(hide);
+            ui->sourceSecondNodeLabel->setHidden(hide);
+        }
+    }else if(name == "points"){
+        ui->sourcePointsLabel->setHidden(hide);
+        ui->sourcePointsLineEdit->setHidden(hide);
+    }else if(name=="variation"){
+        ui->sourceVariationComboBox->setHidden(hide);
+        ui->sourceVariationLabel->setHidden(hide);
+    }
+
+}
+
+QVariant AnalysisWindow::analysisParameter(const QString &name, int source) {
+    if(name == "start"){
+        if(source == 1){
+            return ui->sourceFirstStartLineEdit->text();
+
+        }else if(source == 2){
+            return ui->sourceSecondStartLineEdit->text();
+        }
+    }else if(name == "step"){
+        if(source == 1){
+            return ui->sourceFirstStepLineEdit->text();
+        }else if(source == 2){
+            return ui->sourceSecondStepLineEdit->text();
+        }
+    }else if(name == "stop"){
+        if(source == 1){
+            return ui->sourceFirstStopLineEdit->text();
+        }else if(source == 2){
+            return ui->sourceSecondStopLineEdit->text();
+        }
+    }else if(name == "node"){
+        if(source == 1){
+            int index = ui->sourceFirstNodeComboBox->currentIndex();
+            return ui->sourceFirstNodeComboBox->itemData(index);
+        }else if(source == 2){
+            int index = ui->sourceSecondNodeComboBox->currentIndex();
+            return ui->sourceSecondNodeComboBox->itemData(index);
+        }
+    }else if(name == "points"){
+        return ui->sourcePointsLineEdit->text();
+    }else if(name=="variation"){
+        int index = ui->sourceVariationComboBox->currentIndex();
+        return ui->sourceVariationComboBox->itemData(index);
+    }
+
+    return QVariant();
+}
+
 
 void AnalysisWindow::clickedOpenAnalysis() {
 //    if( analysisId_ != -1 ){
