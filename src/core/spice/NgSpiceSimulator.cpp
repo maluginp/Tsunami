@@ -164,7 +164,6 @@ void NgSpiceSimulator::parseSimulatedData(const QByteArray &outputData) {
             foreach(double dc1,sourceFirstValues){
                 QVector<double> row = data.at(index);
                 row.append(dc1);
-//                row.append(dc2);
 
                 tempData.append(row);
                 index++;

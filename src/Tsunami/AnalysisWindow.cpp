@@ -302,6 +302,8 @@ QVariant AnalysisWindow::analysisParameter(const QString &name, int source) {
 }
 
 void AnalysisWindow::setAnalysisParameter(const QString &name, const QVariant &value, int source) {
+    ufo::logTrace() << QString("setAnalysisParameter(%1,%2,%3)")
+                       .arg(name,value.toString()).arg(source);
     if(name == "start"){
         if(source == 1){
             ui->sourceFirstStartLineEdit->setText(value.toString());
@@ -358,7 +360,6 @@ void AnalysisWindow::clickedOpenAnalysis() {
 }
 
 void AnalysisWindow::clickedSaveAnalysis() {
-    log::logTrace() << "Saving analysis";
     QString analysisName = ui->analysisNameLineEdit->text();
     if(analysisName.isEmpty()){
         return;
@@ -397,10 +398,12 @@ void AnalysisWindow::clickedSaveAnalysis() {
 
     }
 
+    log::logDebug() << QString("Saving %1").arg(analysis_->debug());
 
     if(storage_->saveAnalysis(analysis_)){
         emit updatedDataBase();
     }
+
     //    if(storage_->exists( deviceId_, analysisName )){
 //        // TODO: show message if analysis exists
 //        QMessageBox::warning(this,windowTitle(),tr("Analysis is existed"));
@@ -410,31 +413,8 @@ void AnalysisWindow::clickedSaveAnalysis() {
 
 }
 
-//void AnalysisWindow::clickedCreateAnalysis() {
-//    log::logTrace() << "Creating analysis";
-//    currentAnalysis_ = new db::AnalysisModel();
-//    currentAnalysis_->deviceId( deviceId_ );
-
-//    ui->analysisNameLineEdit->setText("");
-//    ui->analysisTypeComboBox->setCurrentIndex(0);
-//    ui->analysisEnableCheckBox->setCheckState(Qt::Unchecked);
-
-//    api_->openAnalysis( currentAnalysis_ );
-
-//}
-
-//void AnalysisWindow::selectedAnalysisItem(const QModelIndex &index) {
-//    bool ok;
-//    int analysisId = index.data(Qt::UserRole).toInt(&ok);
-//    if(!ok || analysisId == -1){
-//        return;
-//    }
-
-//    openAnalysis( analysisId );
-
-//}
-
 void AnalysisWindow::openAnalysis(int analysisId) {
+    log::logDebug() << QString("Open analysis %1").arg(analysisId);
 
     if(analysisId == -1) {
         analysis_ = new AnalysisModel();
@@ -457,6 +437,8 @@ void AnalysisWindow::openAnalysis(int analysisId) {
         analysis_ = storage_->openAnalysis( analysisId );
     }
 
+    log::logDebug() << QString("Opening %1").arg(analysis_->debug());
+
     ui->analysisNameLineEdit->setText( analysis_->name() );
     ui->analysisEnableCheckBox->setChecked( analysis_->enable() );
 
@@ -474,13 +456,16 @@ void AnalysisWindow::openAnalysis(int analysisId) {
 
     showAnalysis( );
 
-
-
 }
 
 void AnalysisWindow::prepareDevice() {
     DeviceStorage* deviceStorage = DeviceStorage::instance();
     DeviceModel* device = deviceStorage->openDevice( deviceId_ );
+
+    if(!device) {
+        log::logError() << QString("Can not open device %1").arg(deviceId_);
+        return;
+    }
 
     int index = 1;
     foreach(QString node, device->nodes()){
@@ -491,6 +476,9 @@ void AnalysisWindow::prepareDevice() {
 
         index++;
     }
+
+    log::logDebug() << QString("Device %1 (Nodes:%2)").arg(device->name())
+                       .arg(device->nodes());
 
     // Скрываем оставшиеся
     int MAX_NODES = 4;
@@ -513,10 +501,16 @@ void AnalysisWindow::prepareDevice() {
         deviceImage = QPixmap(":/images/NMOS");
     }else if(device->type() == DEVICE_PMOS){
         deviceImage = QPixmap(":/images/PMOS");
+    }else{
+        deviceImage = QPixmap(":/images/DEVICE_NONE");
     }
 
-    ui->imagePixmap->setPixmap( deviceImage );
-    ui->imageOutput->setPixmap(deviceImage);
+    log::logTrace() << QString("Device has image: %1").arg(deviceImage.isNull());
+
+    if(!deviceImage.isNull()){
+        ui->imagePixmap->setPixmap(deviceImage);
+        ui->imageOutput->setPixmap(deviceImage);
+    }
 }
 
 /**
@@ -527,15 +521,9 @@ void AnalysisWindow::changedAnalysisType(int index) {
 
     QString analysis = ui->analysisTypeComboBox->itemData( index ).toString();
 
-//    if(analysis == "dc"){
-//        ui->sourceFirstTypeComboBox->setEnabled(true);
-//        ui->sourceFirstNodeComboBox->setEnabled(true);
-
-
     ui->sourceSecondEnable->setEnabled(false);
     ui->sourceSecondGroup->setEnabled(false);
 
-    // @todo изменить код, это говно код.
     if(analysis == "dc" || analysis == "tran"){
         hideAnalysisParameter("points");
         hideAnalysisParameter("variation");
@@ -549,14 +537,12 @@ void AnalysisWindow::changedAnalysisType(int index) {
             }else{
                 ui->sourceSecondGroup->setEnabled(false);
             }
-
         }
     }else if(analysis == "ac"){
         hideAnalysisParameter("points",false);
         hideAnalysisParameter("variation",false);
         hideAnalysisParameter("step",true);
         hideAnalysisParameter("node");
-
     }
 }
 

@@ -47,10 +47,10 @@ public:
     QVariantMap analysis(int i) const;
     QList<double> analysisValues(int i);
 
-
-
     void analysesJson(const QString& json);
     QString analysesJson();
+
+    QString debug() const;
 private:
     QVariantList analyses_;
 

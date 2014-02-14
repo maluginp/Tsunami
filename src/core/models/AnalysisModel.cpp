@@ -198,20 +198,16 @@ QString AnalysisModel::analysesJson() {
     return QtJson::serializeStr(analyses_);
 }
 
-//bool AnalysisModel::sourceExists(const QString &node, SourceDirection direction) {
-//    int nSources = sources_.size();
-//    for(int i=0; i < nSources; i++ ){
-//        if(sources_[i].direction() == direction && sources_[i].node().compare(node) == 0){
-//            return true;
-//        }
-//    }
-
-//    return false;
-//}
-
-//Source AnalysisModel::source(int i) const {
-//    return sources_[i];
-//}
+QString AnalysisModel::debug() const {
+    QString debug = QString("AnalysisModel\n"
+                          "ID:%1, TYPE:%2, DEVICE_ID:%3, NAME:%4,
+                          "ENABLE:%5, CREATE_AT:%6, CHANGE_AT:%7\n"
+                          "SOURCES:%8")
+                  .arg(analysisId_).arg(typeJson()).arg(deviceId_)
+                  .arg(name_).arg(enable_).arg(createdAt_).arg(changeAt_)
+                  .arg(sourcesJson());
+    return debug;
+}
 
 
 }
