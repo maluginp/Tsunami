@@ -51,6 +51,13 @@ QByteArray IndependentSourceDevice::netlist() {
     QString nets = QString("%1 %2 %3").arg(devName)
             .arg(terminal("P")->id()).arg(terminal("M")->id());
 
+    if(hasParameter("dc")){
+        nets.append( QString(" DC %1").arg(paramValue("dc").toString()) );
+    }else{
+        nets.append(QString(" AC %1 %2")
+                    .arg(paramValue("acmag").toString())
+                    .arg(paramValue("acphase").toString()));
+    }
     // заполнить параметры
     return nets.toAscii();
 }

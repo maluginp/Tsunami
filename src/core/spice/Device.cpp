@@ -74,8 +74,34 @@ void Device::paramValue(const QString &name, const QVariant &value) {
     for(int i=0; i < numberParams; ++i){
         if(parameters_[i].name().compare(name,Qt::CaseInsensitive)==0){
             parameters_[i].value(value);
+            parameters_[i].enable(true);
         }
     }
+}
+
+const QVariant& Device::paramValue(const QString &name) const{
+    int numberParams = parameters_.count();
+    for(int i=0; i < numberParams; ++i){
+        if(parameters_[i].name().compare(name,Qt::CaseInsensitive)==0){
+            return parameters_[i].value();
+        }
+    }
+}
+
+void Device::setParameters(const QVariantMap &parameters) {
+    foreach(QString key, parameters.keys()){
+        paramValue( key, parameters.value(key) );
+    }
+}
+
+bool Device::hasParameter(const QString &name) {
+    int numberParams = parameters_.count();
+    for(int i=0; i < numberParams; ++i){
+        if(parameters_[i].name().compare(name,Qt::CaseInsensitive)==0){
+            return parameters_[i].enabled();
+        }
+    }
+    return false;
 }
 
 const QStringList &Device::terminals() const {

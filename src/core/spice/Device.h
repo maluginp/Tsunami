@@ -34,6 +34,10 @@ public:
     const QList<DeviceParameter>& parameters() const;
     void paramValue(const QString& name,const QVariant& value);
 
+    const QVariant& paramValue(const QString& name) const;
+
+    void setParameters(const QVariantMap& parameters);
+    bool hasParameter(const QString& name);
     const QStringList& terminals() const;
 protected:
 

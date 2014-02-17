@@ -90,19 +90,19 @@ void IndepedentSourceDialog::showPulse() {
 
     showAcSource();
     parameterLabel(3)->setText( tr("Time delay") );
-    parameterLineEdit(3)->setText( source_->configuration("tdelay").toString() );
+    parameterLineEdit(3)->setText( source_->configuration("td").toString() );
 
     parameterLabel(4)->setText( tr("Time rise") );
-    parameterLineEdit(4)->setText( source_->configuration("trise").toString() );
+    parameterLineEdit(4)->setText( source_->configuration("tr").toString() );
 
     parameterLabel(5)->setText( tr("Time fall") );
-    parameterLineEdit(5)->setText( source_->configuration("tfall").toString() );
+    parameterLineEdit(5)->setText( source_->configuration("tf").toString() );
 
     parameterLabel(6)->setText( tr("Time on") );
     parameterLineEdit(6)->setText( source_->configuration("ton").toString() );
 
     parameterLabel(7)->setText( tr("Period") );
-    parameterLineEdit(7)->setText( source_->configuration("period").toString() );
+    parameterLineEdit(7)->setText( source_->configuration("per").toString() );
 
     parameterLabel(8)->setText( tr("Cycles") );
     parameterLineEdit(8)->setText( source_->configuration("cycles").toString() );

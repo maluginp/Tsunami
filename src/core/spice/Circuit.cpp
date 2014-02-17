@@ -100,21 +100,10 @@ Device *Circuit::addSourceImpl(const QString &name, DeviceType type, Source *sou
 
     if(source->type() == SOURCE_TYPE_CONST){
         device = new IndependentSourceDevice(name,mode);
+        device->setParameters(source->configurations());
     }else if(source->type() == SOURCE_TYPE_PULSE){
         device = new PulseSourceDevice(name,mode);
-
-        if(mode == SOURCE_MODE_CURRENT){
-            device->paramValue("I1",source->configuration("I1",.0));
-            device->paramValue("I2",source->configuration("I2",.0));
-        }else{
-            device->paramValue("V1",source->configuration("V1",.0));
-            device->paramValue("V2",source->configuration("V2",.0));
-        }
-        device->paramValue("TD",source->configuration("TD",.0));
-        device->paramValue("TR",source->configuration("TR",.0));
-        device->paramValue("TF",source->configuration("TF",.0));
-        device->paramValue("PW",source->configuration("PW",.0));
-        device->paramValue("PER",source->configuration("PER",.0));
+        device->setParameters(source->configurations());
     }else if(source->type() == SOURCE_TYPE_SIN){
         device = new SinSourceDevice(name,mode);
         if(mode == SOURCE_MODE_CURRENT){
@@ -145,9 +134,9 @@ Device *Circuit::addSourceImpl(const QString &name, DeviceType type, Source *sou
         Q_ASSERT(false);
     }
 
-    device->paramValue( "dc", source->configuration("dc",.0) );
-    device->paramValue( "acmag", source->configuration("acmag",.0) );
-    device->paramValue( "acphase", source->configuration("acphase",.0) );
+//    device->paramValue( "dc", source->configuration("dc",.0) );
+//    device->paramValue( "acmag", source->configuration("acmag",.0) );
+//    device->paramValue( "acphase", source->configuration("acphase",.0) );
 
     devices_.insert(device->id(),device);
     return device;
