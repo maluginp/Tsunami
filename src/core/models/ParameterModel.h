@@ -31,6 +31,7 @@ public:
     const bool& fixed() const { return fixed_; }
     const bool& enable() const { return enable_; }
 
+    QString debug();
 private:
     int libraryId_;
     int parameterId_;

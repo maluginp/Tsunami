@@ -80,6 +80,10 @@ double Extractor::functionError() {
 
         funcError += computeError(measure);
 
+        if(funcError == TSUNAMI_DOUBLE_MAX || funcError == TSUNAMI_DOUBLE_INF){
+            return TSUNAMI_DOUBLE_MAX;
+        }
+
         delete circuit;
         simulator_->setCircuit(NULL);
     }
@@ -242,38 +246,38 @@ double Extractor::subtract(double value1, double value2) {
 }
 
 double Extractor::computeError(const db::MeasureModel *measure) {
-    simulator_->simulate();
-    db::MeasureModel* simulate = simulator_->simulatedData();
-    int rows = measure->rows();
-    double error;
+    if(simulator_->simulate()){
+        db::MeasureModel* simulate = simulator_->simulatedData();
+        int rows = measure->rows();
+        double error;
 
-    int nNotFound = 0;
-    for(int i=0; i < rows; ++i){
-        QMap<QString, double> measured  = measure->get(i);
-        QMap<QString, double> simulated = simulate->find(measured);
+        int nNotFound = 0;
+        for(int i=0; i < rows; ++i){
+            QMap<QString, double> measured  = measure->get(i);
+            QMap<QString, double> simulated = simulate->find(measured);
 
-        if(simulated.size() == 0){
-            nNotFound++;
-            continue;
-        }
-
-
-        foreach(Source* source, measure->sources()){
-            if(source->direction() == SOURCE_DIRECTION_OUTPUT){
-                error += fabs( subtract( measured.value(source->name(),.0),
-                                         simulated.value(source->name(),.0))  );
+            if(simulated.size() == 0){
+                nNotFound++;
+                continue;
             }
-        }
 
+            foreach(Source* source, measure->sources()){
+                if(source->direction() == SOURCE_DIRECTION_OUTPUT){
+                    error += fabs( subtract( measured.value(source->name(),.0),
+                                             simulated.value(source->name(),.0))  );
+                }
+                /// @note Нет смысла дальше продолжать расчёт функции ошибки
+                if(error == TSUNAMI_DOUBLE_INF || error == TSUNAMI_DOUBLE_MAX){
+                    return TSUNAMI_DOUBLE_MAX;
+                }
+            }
+
+        }
+        return error;
     }
 
 
-
-//    log::logDebugF("Number found: %d",rows-nNotFound);
-
-
-
-    return error;
+    return TSUNAMI_DOUBLE_MAX;
 }
 
 

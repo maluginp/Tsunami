@@ -63,6 +63,8 @@ void MeasureWindow::createMeasure(int analysisId) {
     prepareMeasureData( analysis );
     delete analysis;
 
+    log::logDebug() << QString("Created %1").arg(measure_->debug());
+
     showMeasure(measure_);
 }
 
@@ -87,6 +89,8 @@ void MeasureWindow::showMeasure(db::MeasureModel *measure) {
 //    }
 
 //    measure_ = measure;
+
+    log::logDebug() << QString("Show %1").arg(measure->debug());
 
     ui->nameMeasureLineEdit->setText(measure->name());
 
@@ -132,7 +136,7 @@ void MeasureWindow::showSourcesDescription() {
  bool MeasureWindow::prepareMeasureData(db::AnalysisModel* analysis) {
 //    if(!measure) { return false; }
 
-
+    log::logTrace() << "Preparing measure data";
 
     SourceManager* sourceManager = new SourceManager(analysis->sources());
     QStringList columns = getColumns(analysis);

@@ -51,6 +51,7 @@ public:
 
     int countParameters();
 
+    QString debug();
 protected:
     ParameterModel& find(const QString& name);
     ParameterModel& find(int index);

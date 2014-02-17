@@ -93,7 +93,14 @@ DeviceWindow::~DeviceWindow() {
 void DeviceWindow::openDevice(int deviceId) {
     log::logDebug() << QString("Open device %1").arg(deviceId);
     device_ = storage_->openDevice( deviceId );
-    if(device_ == 0) Q_ASSERT(false);
+    if(!device_){
+        log::logError() << QString("Can not opened device %1 (%2)")
+                           .arg(deviceId).arg(storage_->lastError());
+        return;
+    }
+
+    log::logDebug() << QString("Opened %1").arg(device_->debug());
+
     deviceId_ = device_->id();
 
     ui->deviceNameText->setText( device_->name() );
@@ -288,7 +295,6 @@ void DeviceWindow::clickedAnalysisAdd() {
 }
 
 void DeviceWindow::clickedLibraryAdd() {
-//    clickedParametersEditor();
     if(createLibraryWindow()) {
         libraryWindow_->openLibrary(-1);
         libraryWindow_->clickedNewLibraryAction();

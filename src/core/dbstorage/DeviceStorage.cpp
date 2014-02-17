@@ -163,7 +163,7 @@ bool DeviceStorage::createTable(DeviceStorage::DeviceTable table) {
 DeviceModel *DeviceStorage::openDeviceImpl(int deviceId) {
     QString sqlQuery;
 
-    log::logTrace() << "Open device " << deviceId;
+//    log::logTrace() << "Open device " << deviceId;
 
     sqlQuery = sql( "SELECT * FROM %1 WHERE id=:id").arg(TABLE_NAME_DEVICES);
     QSqlQuery q(sqlQuery,db());

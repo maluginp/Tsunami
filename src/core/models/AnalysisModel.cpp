@@ -200,12 +200,15 @@ QString AnalysisModel::analysesJson() {
 
 QString AnalysisModel::debug() const {
     QString debug = QString("AnalysisModel\n"
-                          "ID:%1, TYPE:%2, DEVICE_ID:%3, NAME:%4,
+                          "ID:%1, TYPE:%2, DEVICE_ID:%3, NAME:%4,"
                           "ENABLE:%5, CREATE_AT:%6, CHANGE_AT:%7\n"
-                          "SOURCES:%8")
+                          "SOURCES INPUTS:%8\nSOURCE OUTPUTS:%9")
                   .arg(analysisId_).arg(typeJson()).arg(deviceId_)
-                  .arg(name_).arg(enable_).arg(createdAt_).arg(changeAt_)
-                  .arg(sourcesJson());
+                  .arg(name_).arg(enable_)
+                  .arg(createdAt_.toString())
+                  .arg(changedAt_.toString())
+                  .arg(sourcesJson(SOURCE_DIRECTION_INPUT))
+                  .arg(sourcesJson(SOURCE_DIRECTION_OUTPUT));
     return debug;
 }
 

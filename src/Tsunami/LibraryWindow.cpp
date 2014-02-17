@@ -46,14 +46,18 @@ LibraryWindow::~LibraryWindow() {
 
 void LibraryWindow::openLibrary(int libraryId) {
     if(libraryId == -1){
+        log::logTrace() << "Open library -1";
         return;
     }
 
     library_ = storage_->openLibrary(libraryId);
-    if(library_){
-        log::logDebug() << QString("Library #%1 opened")
-                           .arg(libraryId);
+    if(!library_){
+        log::logError() << QString("Can not open library %1").arg(libraryId);
+        return;
     }
+
+    log::logDebug() << QString("Opened %1").arg(library_->debug());
+
     showParameters( library_ );
     enableButtons(true);
 
@@ -86,7 +90,7 @@ void LibraryWindow::enableButtons(bool enable) {
 
 
 void LibraryWindow::clickedOpenLibraryAction() {
-    log::logTrace() << "Opening library";
+    log::logTrace() << "Clicked open library";
     int libraryId =  OpenLibraryDialog::getLibraryId(deviceId_);
 
     openLibrary( libraryId );
@@ -94,7 +98,7 @@ void LibraryWindow::clickedOpenLibraryAction() {
 }
 
 void LibraryWindow::clickedNewLibraryAction() {
-    log::logTrace() << "Creating new library";
+    log::logTrace() << "Clicked new library";
     CreateLibraryDialog dialog(deviceId_);
     if(dialog.exec() == QDialog::Accepted){
         library_ = dialog.library();
@@ -107,7 +111,7 @@ void LibraryWindow::clickedNewLibraryAction() {
 }
 
 void LibraryWindow::clickedAddParameterAction() {
-    log::logTrace() << "Adding parameter";
+    log::logTrace() << "Clicked add parameter";
     parameters_->addEmptyParameter();
 }
 
@@ -122,6 +126,7 @@ void LibraryWindow::clickedRemoveParameterAction() {
 //        }
 //    }
 
+    log::logTrace() << "Clicked remove parameter";
     parameters_->removeSelectedParameter( ui->parametersTableView->currentIndex() );
 }
 
@@ -237,7 +242,7 @@ void LibraryWindow::clickedRemoveLibrary() {
 }
 
 void LibraryWindow::clickedCloseLibrary() {
-    log::logTrace() << "Closing library";
+    log::logTrace() << "Clicked close library";
     ui->libraryNameText->setText(tr("Choice library"));
     delete parameters_;
     ui->parametersTableView->setModel(0);

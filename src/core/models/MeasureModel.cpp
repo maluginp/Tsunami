@@ -264,7 +264,7 @@ QString MeasureModel::dataJson() {
     return json;
 }
 
-QString MeasureModel::sourcesJson() {
+QString MeasureModel::sourcesJson() const {
     QString json;
 
     QVariantList sources;
@@ -292,10 +292,10 @@ QString MeasureModel::sourcesJson() {
 
 }
 
-QString MeasureModel::analysesJson() {
+QString MeasureModel::analysesJson() const {
     return QtJson::serializeStr( analyses_ );
 }
- QString MeasureModel::columnsJson() {
+ QString MeasureModel::columnsJson() const {
     QVariantList items;
     foreach(QString item,columns_){
         items.append( item );
@@ -428,6 +428,20 @@ bool MeasureModel::isFixed(const QString &name) {
 
     return false;
 
+}
+
+QString MeasureModel::debug() const {
+    QString debug = QString("Measure Model\n"
+                            "ID: %1, DEVICE_ID: %2, NAME: %3,"
+                            "TYPE: %4, ENABLE:%5\n")
+            .arg(measureId_).arg(deviceId_).arg(name_)
+            .arg(typeJson()).arg(enable_);
+    debug.append(QString("Sources:\n>>> %1\n").arg(sourcesJson()));
+    debug.append(QString(">>> Columns: %1\n").arg(columns_.join(",")));
+    debug.append(QString(">>> Data rows: %1, columns: %2\n")
+                 .arg(data_->rows()).arg(data_->columns()));
+    debug.append(QString(">>> Analyses:%1").arg(analysesJson()));
+    return debug;
 }
 
 MeasureModel *MeasureModel::importFrom(const QByteArray &data) {

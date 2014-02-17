@@ -107,6 +107,17 @@ QStringList DeviceModel::nodes() {
     return QStringList();
 }
 
+QString DeviceModel::debug() const {
+    QString debug = QString("Device Model\n"
+                            "ID: %1, NAME: %2, TYPE: %3, MODEL: %4, "
+                            "ENABLE: %5, CREATED: %6, CHANGED: %7")
+            .arg(deviceId_).arg(name_).arg(typeJson()).arg(model_).arg(enable_)
+            .arg(createdAt_.toString())
+            .arg(changedAt_.toString());
+
+    return debug;
+}
+
 // FIXME: Add translations
 QString DeviceModel::modelNameToTitle(const QString &modelName) {
     if(modelName == "gummelpoon") {

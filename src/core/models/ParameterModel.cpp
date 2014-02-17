@@ -41,5 +41,14 @@ ParameterModel &ParameterModel::operator=(const ParameterModel &other) {
     return *this;
 }
 
+QString ParameterModel::debug() {
+    QString debug = QString("Parameter ID:%1, LIBRARY_ID:%2, NAME:%3,"
+                            "INITIAL:%4, FITTED:%5, MINIMUM:%6, MAXIMUM:%7,"
+                            "FIXED:%8, ENABLE:%9")
+            .arg(parameterId_).arg(libraryId_).arg(name_).arg(initial_)
+            .arg(fitted_).arg(minimum_).arg(maximum_).arg(fixed_).arg(enable_);
+    return debug;
+}
+
 }
 }

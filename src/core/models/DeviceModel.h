@@ -34,7 +34,7 @@ public:
 
     QStringList nodes();
 
-
+    QString debug() const;
 
     static QString modelNameToTitle(const QString& modelName);
 

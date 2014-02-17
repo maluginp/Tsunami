@@ -51,15 +51,13 @@ bool NgSpiceSimulator::simulate() {
         return false;
     }
 
-    // No. of Data Rows :
-
-    log::logTrace() << QString("Result simulated\n%1").arg(QString(output));
-
-
     int positionStartIndex = output.indexOf("Index");
-    Q_ASSERT(positionStartIndex != -1);
-    output = output.mid(positionStartIndex).replace("\r","");
+    if(positionStartIndex == -1){
+        log::logError() << QString("Failed simulated\n%1").arg(QString(output));
+        return false;
+    }
 
+    output = output.mid(positionStartIndex).replace("\r","");
     parseSimulatedData(output);
 
     return true;
@@ -97,6 +95,7 @@ void NgSpiceSimulator::parseSimulatedData(const QByteArray &outputData) {
 
     QVector< QVector<double> > data;
 //    int dc1=0, dc2=0;
+    QStringList canNotParse;
     foreach(QByteArray str,list){
 
         QList<QByteArray> vals = str.split('\t');
@@ -105,14 +104,8 @@ void NgSpiceSimulator::parseSimulatedData(const QByteArray &outputData) {
         }
 
         if( columns_.size() != vals.size() ){
-            log::logDebug() << "Can not parsing "
-                            << str;
+            canNotParse << str;
             continue;
-        }else{
-
-            if(measure_->type() == ANALYSIS_DC){
-
-            }
         }
 
         QVector<double> row;
@@ -175,6 +168,12 @@ void NgSpiceSimulator::parseSimulatedData(const QByteArray &outputData) {
     log::logTrace() << "Columns after parse: " << columns_;
     simulated_->columns(columns_);
     simulated_->data(data);
+
+    if(!canNotParse.isEmpty()){
+        log::logDebug() << QString("Can not parsed strings(%1)\n%2")
+                           .arg(canNotParse.count())
+                           .arg(canNotParse.join("\n"));
+    }
 
 }
 

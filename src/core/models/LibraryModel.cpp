@@ -27,6 +27,18 @@ int LibraryModel::countParameters() {
     return parameters_.size();
 }
 
+QString LibraryModel::debug() {
+    QString debug = QString("Library Model\n"
+                            "ID: %1, DEVICE_ID: %2, NAME: %3,"
+                            "ENABLE: %4\n")
+            .arg(libraryId_).arg(deviceId_).arg(name_).arg(enable_);
+    foreach(ParameterModel param, parameters_){
+        debug.append(">> ").append(param.debug()).append("\n");
+    }
+
+    return debug;
+}
+
 ParameterModel &LibraryModel::find(const QString &name) {
     int rows = parameters_.size();
 

@@ -302,7 +302,7 @@ QVariant AnalysisWindow::analysisParameter(const QString &name, int source) {
 }
 
 void AnalysisWindow::setAnalysisParameter(const QString &name, const QVariant &value, int source) {
-    ufo::logTrace() << QString("setAnalysisParameter(%1,%2,%3)")
+    log::logTrace() << QString("setAnalysisParameter(%1,%2,%3)")
                        .arg(name,value.toString()).arg(source);
     if(name == "start"){
         if(source == 1){
@@ -478,7 +478,7 @@ void AnalysisWindow::prepareDevice() {
     }
 
     log::logDebug() << QString("Device %1 (Nodes:%2)").arg(device->name())
-                       .arg(device->nodes());
+                       .arg(device->nodes().join(","));
 
     // Скрываем оставшиеся
     int MAX_NODES = 4;

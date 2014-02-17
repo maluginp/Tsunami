@@ -95,10 +95,10 @@ public:
     const MeasureHeader& header() const { return header_; }
     QString headerJson();
     QString dataJson();
-    QString sourcesJson();
-    QString analysesJson();
+    QString sourcesJson() const;
+    QString analysesJson() const;
     const QStringList& columns() const { return columns_; }
-    QString columnsJson();
+    QString columnsJson() const;
     const QDateTime& createAt() const { return createdAt_; }
     const QDateTime& changeAt() const { return changedAt_; }
     const int& userId() const { return userId_; }
@@ -127,6 +127,7 @@ public:
 
     bool isFixed(const QString& name);
 
+    QString debug() const;
 
     static MeasureModel* importFrom( const QByteArray& data );
     static QByteArray exportTo( const MeasureModel* model );
