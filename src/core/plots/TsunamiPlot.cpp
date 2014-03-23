@@ -9,27 +9,36 @@ TsunamiPlot::TsunamiPlot(QWidget *parent) : QCustomPlot(parent) {
 //    setInteraction( QCP::iSelectAxes | QCP::iZo QCustomPlot::iSelectPlottables );
 }
 
-PlotItem *TsunamiPlot::addPlot(const QString &name) {
-    PlotItem* plot = new PlotItem(this,name);
+PlotItem *TsunamiPlot::addPlot(const QString &name, PlotItem::PlotType type) {
+    PlotItem* plot = new PlotItem(this,name,type);
     plots_.append( plot );
 
     return plot;
 }
 
-PlotItem *TsunamiPlot::plot(const QString &name) {
+PlotItem *TsunamiPlot::plot(const QString &name, PlotItem::PlotType type) {
     foreach(PlotItem* plot, plots_){
         if(plot->name().compare(name,Qt::CaseInsensitive) == 0){
+            plot->type( type );
             return plot;
         }
     }
 
-    return addPlot(name);
+    return addPlot(name,type);
 }
 
 void TsunamiPlot::clearPlots() {
     clearGraphs();
     qDeleteAll(plots_);
     plots_.clear();
+}
+
+void TsunamiPlot::setLabelAxisX(const QString &key) {
+    xAxis->setLabel( key );
+}
+
+void TsunamiPlot::setLabelAxisY(const QString &value) {
+    yAxis->setLabel( value );
 }
 
 void TsunamiPlot::build() {

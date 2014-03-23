@@ -36,6 +36,8 @@ public:
 
     QString debug() const;
 
+    QString image();
+
     static QString modelNameToTitle(const QString& modelName);
 
     static DeviceType nameToType( const QString& name );

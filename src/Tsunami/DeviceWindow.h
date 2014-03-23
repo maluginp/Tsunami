@@ -26,6 +26,8 @@ private:
     bool createLibraryWindow();
     bool createAnalysisWindow();
     bool createMeasureWindow(MeasureWindow::Action action,int id);
+    bool isDeviceOpened();
+
     Ui::DeviceWindow *ui;
 
     db::DeviceStorage* storage_;
@@ -60,6 +62,7 @@ private slots:
     void clickedDeviceRemove();
     void clickedSettingsOpen();
     void clickedAboutOpen();
+    void clickedBuildGraphics();
 
     void selectedMeasure( const QModelIndex& index );
     void selectedAnalysis( const QModelIndex& index );

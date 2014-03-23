@@ -21,15 +21,18 @@ public:
     db::MeasureModel *simulate(db::MeasureModel *measure);
 private:
     bool checkInputValues();
+    bool simulateEnabled();
+    db::LibraryModel* getLibrary();
 
     Ui::PlotExtractionDialog *ui;
     int deviceId_;
     QList<db::MeasureModel*> measures_;
-    db::LibraryModel* library_;
+    QList<db::LibraryModel*> libraries_;
     spice::Simulator* simulator_;
 private slots:
     void clickedBuildButton();
     void changedMeasure(int index);
+    void checkedSimulateEnable(bool enable);
 };
 }
 #endif // PLOTEXTRACTIONDIALOG_H

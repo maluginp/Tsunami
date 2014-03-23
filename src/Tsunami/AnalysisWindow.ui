@@ -181,13 +181,13 @@
     <property name="title">
      <string>Источник 2</string>
     </property>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>16</x>
        <y>22</y>
        <width>193</width>
-       <height>112</height>
+       <height>115</height>
       </rect>
      </property>
      <layout class="QFormLayout" name="formLayout_2">
@@ -237,10 +237,10 @@
    <widget class="QPushButton" name="saveButton">
     <property name="geometry">
      <rect>
-      <x>644</x>
-      <y>452</y>
+      <x>670</x>
+      <y>440</y>
       <width>111</width>
-      <height>31</height>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
@@ -266,7 +266,7 @@
      <widget class="QComboBox" name="node3TypeComboBox">
       <property name="geometry">
        <rect>
-        <x>310</x>
+        <x>350</x>
         <y>270</y>
         <width>121</width>
         <height>22</height>
@@ -276,7 +276,7 @@
      <widget class="QComboBox" name="node4TypeComboBox">
       <property name="geometry">
        <rect>
-        <x>360</x>
+        <x>380</x>
         <y>160</y>
         <width>111</width>
         <height>22</height>
@@ -286,9 +286,9 @@
      <widget class="QPushButton" name="node4ParamsButton">
       <property name="geometry">
        <rect>
-        <x>390</x>
+        <x>400</x>
         <y>190</y>
-        <width>81</width>
+        <width>91</width>
         <height>23</height>
        </rect>
       </property>
@@ -299,9 +299,9 @@
      <widget class="QPushButton" name="node2ParamsButton">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>70</x>
         <y>200</y>
-        <width>81</width>
+        <width>91</width>
         <height>23</height>
        </rect>
       </property>
@@ -312,7 +312,7 @@
      <widget class="QPushButton" name="node3ParamsButton">
       <property name="geometry">
        <rect>
-        <x>340</x>
+        <x>380</x>
         <y>300</y>
         <width>91</width>
         <height>23</height>
@@ -325,7 +325,7 @@
      <widget class="QComboBox" name="node2TypeComboBox">
       <property name="geometry">
        <rect>
-        <x>60</x>
+        <x>50</x>
         <y>170</y>
         <width>111</width>
         <height>22</height>
@@ -335,7 +335,7 @@
      <widget class="QComboBox" name="node1TypeComboBox">
       <property name="geometry">
        <rect>
-        <x>310</x>
+        <x>370</x>
         <y>50</y>
         <width>111</width>
         <height>22</height>
@@ -361,9 +361,9 @@
      <widget class="QPushButton" name="node1ParamsButton">
       <property name="geometry">
        <rect>
-        <x>340</x>
+        <x>390</x>
         <y>80</y>
-        <width>81</width>
+        <width>91</width>
         <height>23</height>
        </rect>
       </property>
@@ -466,7 +466,7 @@
       <x>90</x>
       <y>10</y>
       <width>631</width>
-      <height>25</height>
+      <height>28</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -489,13 +489,13 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>20</x>
       <y>50</y>
-      <width>141</width>
-      <height>25</height>
+      <width>173</width>
+      <height>26</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -524,7 +524,7 @@
      <x>0</x>
      <y>0</y>
      <width>791</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

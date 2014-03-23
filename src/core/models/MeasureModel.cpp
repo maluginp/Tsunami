@@ -62,8 +62,8 @@ void MeasureModel::type( const QString& type){
     }else if(type.compare("tran",Qt::CaseInsensitive) == 0){
         type_ = ANALYSIS_TRAN;
     }else{
-        Q_ASSERT(false);
-        type_ = ANALYSIS_UNKNOWN;
+//        Q_ASSERT(false);
+        type_ = ANALYSIS_DC;
     }
 
 }

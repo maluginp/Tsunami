@@ -13,7 +13,7 @@
 #include "math/Matrix.h"
 #include "math/Vector.h"
 #include "components/Source.h"
-
+#include "utils.h"
 
 namespace tsunami{
 

@@ -99,6 +99,7 @@ QByteArray Simulator::netlist() {
     QByteArray nets;
     nets.append( QString("%1\n\n").arg(cir->name()) );
 
+    qDebug() << nets;
 //    // Сгенерируем все net для устройств
     foreach(Device* device, cir->getDevices()){
         nets.append( QString("%1\n").arg(QString(device->netlist())) );

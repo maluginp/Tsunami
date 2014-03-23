@@ -141,5 +141,6 @@ HEADERS += \
     spice/devices/ExpSourceDevice.h \
     spice/devices/DiodeDevice.h \
     spice/Devices.h \
-    spice/devices/GndDevice.h
+    spice/devices/GndDevice.h \
+    utils.h
 

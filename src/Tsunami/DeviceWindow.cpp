@@ -2,6 +2,7 @@
 #include "ui_DeviceWindow.h"
 #include "OpenDeviceDialog.h"
 #include "PrepareExtractorDialog.h"
+#include "PlotExtractionDialog.h"
 #include "OpenMeasureDialog.h"
 #include "ChoiceAnalysisForm.h"
 #include "Log.h"
@@ -65,6 +66,7 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
     connect( ui->actionDeviceRemove,SIGNAL(triggered()),this,SLOT(clickedDeviceRemove()));
     connect( ui->actionSettingsOpen,SIGNAL(triggered()),this,SLOT(clickedSettingsOpen()));
     connect( ui->actionAboutOpen,SIGNAL(triggered()),this,SLOT(clickedAboutOpen()));
+    connect(ui->actionBuildGraphics,SIGNAL(triggered()),this,SLOT(clickedBuildGraphics()));
 
     connect( ui->addAnalysisButton,SIGNAL(clicked()),this,SLOT(clickedAnalysisAdd()) );
     connect( ui->addLibraryButton,SIGNAL(clicked()),this,SLOT(clickedLibraryAdd()));
@@ -111,18 +113,7 @@ void DeviceWindow::openDevice(int deviceId) {
     ui->deviceModelText->setText(  db::DeviceModel::modelNameToTitle( device_->model() ) );
     setWindowTitle( tr("%1 - Devices Manager").arg(device_->name()) );
 
-    QPixmap deviceImage;
-
-    switch( device_->type() ){
-    case DEVICE_NBJT: deviceImage.load(":/images/NBJT" ); break;
-    case DEVICE_PBJT: deviceImage.load(":/images/PBJT" ); break;
-    case DEVICE_NFET: deviceImage.load(":/images/NFET" ); break;
-    case DEVICE_PFET: deviceImage.load(":/images/PFET" ); break;
-    case DEVICE_NMOS: deviceImage.load(":/images/NMOS" ); break;
-    case DEVICE_PMOS: deviceImage.load(":/images/PMOS" ); break;
-    default:
-        deviceImage.load(":/images/NONE_DEVICE");
-    }
+    QPixmap deviceImage( device_->image() );
 
     ui->deviceImage->setPixmap( deviceImage );
     ui->deviceImage->show();
@@ -183,8 +174,18 @@ bool DeviceWindow::createMeasureWindow(MeasureWindow::Action action, int id) {
     return (measuresWindow_ != 0);
 }
 
+bool DeviceWindow::isDeviceOpened() {
+    if(device_ == 0 || deviceId_ == -1){
+        return false;
+    }
+    return true;
+}
+
 void DeviceWindow::updateDeviceWindow() {
-    if( device_ == 0) return;
+
+    if(!isDeviceOpened()) {
+        return;
+    }
 
     // Updates datasets
 
@@ -334,7 +335,7 @@ void DeviceWindow::clickedDeviceNew() {
 }
 
 void DeviceWindow::clickedDeviceRemove() {
-    if(device_ == 0 || deviceId_ == -1){
+    if(!isDeviceOpened()){
         return;
     }
 
@@ -365,6 +366,13 @@ void DeviceWindow::clickedSettingsOpen() {
 void DeviceWindow::clickedAboutOpen() {
     AboutDialog dialog;
     dialog.exec();
+}
+
+void DeviceWindow::clickedBuildGraphics() {
+    if(isDeviceOpened()) {
+        PlotExtractionDialog dlg(deviceId_,NULL,QList<int>());
+        dlg.exec();
+    }
 }
 
 void DeviceWindow::selectedMeasure(const QModelIndex &index) {
