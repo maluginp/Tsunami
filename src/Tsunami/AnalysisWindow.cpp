@@ -486,25 +486,7 @@ void AnalysisWindow::prepareDevice() {
         hideSource(i);
     }
 
-    QPixmap deviceImage;
-    if(device->type() == DEVICE_NBJT){
-        deviceImage = QPixmap(":/images/NBJT");
-    }else if(device->type() == DEVICE_PBJT){
-        deviceImage = QPixmap(":/images/PBJT");
-    }else if(device->type() == DEVICE_NFET){
-        deviceImage = QPixmap(":/images/NFET");
-    }else if(device->type() == DEVICE_NFET){
-        deviceImage = QPixmap(":/images/NFET");
-    }else if(device->type() == DEVICE_PFET){
-        deviceImage = QPixmap(":/images/PFET");
-    }else if(device->type() == DEVICE_NMOS){
-        deviceImage = QPixmap(":/images/NMOS");
-    }else if(device->type() == DEVICE_PMOS){
-        deviceImage = QPixmap(":/images/PMOS");
-    }else{
-        deviceImage = QPixmap(":/images/DEVICE_NONE");
-    }
-
+    QPixmap deviceImage( device->image() );
     log::logTrace() << QString("Device has image: %1").arg(deviceImage.isNull());
 
     if(!deviceImage.isNull()){

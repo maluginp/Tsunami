@@ -8,6 +8,8 @@
 
 namespace tsunami{
 
+using namespace spice;
+
 PlotExtractionDialog::PlotExtractionDialog(int deviceId,
                                            db::LibraryModel* library,
                                            const QList<int>& measures,
@@ -50,15 +52,11 @@ db::MeasureModel* PlotExtractionDialog::simulate(db::MeasureModel* measure) {
     log::logTrace() << "Simulating";
     db::DeviceStorage* storage = db::DeviceStorage::instance();
     db::DeviceModel* device = storage->openDevice( deviceId_ );
-    spice::Circuit *circuit = NULL;
-//    spice::Circuit *circuit = spice::Circuit::createCircuitDevice( device->type(),
-//                                                                   measure->sources() );
-
-    spice::SpiceModel* model = new spice::SpiceModel( "simulate" ,device->type());
+    SpiceModel* model = new SpiceModel("SPICEMODEL",device->type());
+    Circuit* circuit = new Circuit("Plot");
+    circuit->create( device->type(), measure->sources(), model);
     model->setLibrary( library_ );
 
-
-//    circuit->setSpiceModel( device->type(), model );
     simulator_->setCircuit( circuit );
 
     simulator_->simulate();

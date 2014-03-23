@@ -339,7 +339,7 @@ void MeasureWindow::clickedImportButton() {
                            .arg(importedMeasure->dataRows())
                            .arg(importedMeasure->dataColumns());
 
-        Q_ASSERT(false);
+//        Q_ASSERT(false);
 //        if(!Source::compare(measure_->sources(),
 //                            importedMeasure->sources())) {
 //            log::logError() << "Import not passed by sources";

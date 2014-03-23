@@ -118,6 +118,28 @@ QString DeviceModel::debug() const {
     return debug;
 }
 
+QString DeviceModel::image() {
+    QString deviceImage;
+
+    switch(type_){
+    case DEVICE_NBJT :
+        deviceImage = ":/images/NBJT"; break;
+    case DEVICE_PBJT :
+        deviceImage = ":/images/PBJT"; break;
+    case DEVICE_NFET :
+        deviceImage = ":/images/NFET"; break;
+    case DEVICE_PFET :
+        deviceImage = ":/images/PFET"; break;
+    case DEVICE_NMOS :
+        deviceImage = ":/images/NMOS"; break;
+    case DEVICE_PMOS :
+        deviceImage = ":/images/PMOS"; break;
+    default:
+        deviceImage = ":/images/DEVICE_NONE";
+    }
+    return deviceImage;
+}
+
 // FIXME: Add translations
 QString DeviceModel::modelNameToTitle(const QString &modelName) {
     if(modelName == "gummelpoon") {
