@@ -19,7 +19,7 @@ public:
     Circuit(const QString& name);
     ~Circuit();
     const QString& name() const;
-
+    DeviceType type();
     bool create(DeviceType type, const QList<Source *> &sources, SpiceModel *model);
 
     QList<Device *> getDevices(DeviceFlag flag = 0);
@@ -30,6 +30,7 @@ private:
     Device *addSourceImpl(const QString& name, DeviceType type,Source* source);
     void clean();
 
+    DeviceType type_;
     QString name_;
     DeviceMap devices_;
 

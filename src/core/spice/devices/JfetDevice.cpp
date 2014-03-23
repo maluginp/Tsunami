@@ -35,7 +35,7 @@ QByteArray JfetDevice::netlist() {
 
 
     if(hasSpiceModel()){
-//        nets.append( spiceModel()-> )
+        nets.append(" ").append( spiceModel()->name() );
     }
 
     foreach(DeviceParameter parameter,parameters()){

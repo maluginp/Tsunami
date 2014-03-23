@@ -4,6 +4,7 @@
 #include <QDialog>
 #include "dbstorage/DbStorages.h"
 #include "spice/Simulator.h"
+#include "plots/TsunamiPlot.h"
 
 namespace Ui {
 class PlotExtractionDialog;
@@ -33,6 +34,8 @@ private slots:
     void clickedBuildButton();
     void changedMeasure(int index);
     void checkedSimulateEnable(bool enable);
+
+    void clickedPlot(QCPAbstractPlottable* plot,QMouseEvent *mouseEvent);
 };
 }
 #endif // PLOTEXTRACTIONDIALOG_H

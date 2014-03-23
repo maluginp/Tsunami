@@ -122,6 +122,17 @@ QString Simulator::randomName(int num) {
     // FIXME: implementation random name generator for netlist
     return QString("Mock%1").arg(num);
 }
+
+// @fixme Need fix
+bool Simulator::signChanged(int column) {
+    if(circuit_->type() == DEVICE_PFET || circuit_->type() == DEVICE_PMOS
+            || circuit_->type() == DEVICE_PBJT){
+        return true;
+    }
+
+
+    return false;
+}
 // \todo Стоит подумать о том чтобы убрать класс SpiceModel,
 // а им заменить db::LibraryModel
 QByteArray Simulator::netListModels() {

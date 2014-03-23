@@ -28,9 +28,14 @@ const QString &Circuit::name() const {
     return name_;
 }
 
+DeviceType Circuit::type() {
+    return type_;
+}
+
 bool Circuit::create(DeviceType type, const QList<Source*>& sources, SpiceModel* model) {
     clean();
 
+    type_ = type;
     SourceManager *sourceManager = new SourceManager(sources);
 
     Device* device = addDeviceImpl( "device", type, model );

@@ -60,8 +60,10 @@ PlotExtractionDialog::PlotExtractionDialog(int deviceId,
 
     checkedSimulateEnable(false);
 
+    ui->labelConstant->setText("");
 
-
+    connect(ui->plotter,SIGNAL(plottableDoubleClick(QCPAbstractPlottable*,QMouseEvent*)),
+            this,SLOT(clickedPlot(QCPAbstractPlottable*,QMouseEvent*)));
     connect(ui->buildButton,SIGNAL(clicked()),this,SLOT(clickedBuildButton()));
     connect(ui->enableSimulateCheckBox,SIGNAL(toggled(bool)),this,SLOT(checkedSimulateEnable(bool)));
 }
@@ -175,6 +177,8 @@ void PlotExtractionDialog::clickedBuildButton() {
             plot->addRow( measured[keyName], simulated[valueName], measured[valueName] );
         }
 
+        plot->setProperty("constant",constName);
+        plot->setProperty("value",measured[constName]);
 
 
     }
@@ -210,6 +214,14 @@ void PlotExtractionDialog::changedMeasure(int index) {
 
 void PlotExtractionDialog::checkedSimulateEnable(bool enable) {
     ui->simulateGroup->setEnabled( enable );
+}
+
+void PlotExtractionDialog::clickedPlot(QCPAbstractPlottable *plot, QMouseEvent *mouseEvent) {
+    log::logTrace() << "Clicked by plot " << plot->property("constant").toString()
+                    << "=" << plot->property("value").toString();
+
+    ui->labelConstant->setText( QString("%1=%2").arg(plot->property("constant").toString(),plot->property("value").toString()) );
+
 }
 
 }

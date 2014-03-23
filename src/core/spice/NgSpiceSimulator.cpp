@@ -112,9 +112,11 @@ void NgSpiceSimulator::parseSimulatedData(const QByteArray &outputData) {
         int nColumn = 0;
         foreach(QByteArray val, vals){
             double value = val.toDouble();
-//            if(isChangeSign(nColumn)){
-//                value *= -1.0;
-//            }
+
+            if( signChanged(nColumn) ){
+                value *= -1.0;
+            }
+
             row.append(  value );
             nColumn++;
         }
@@ -164,6 +166,24 @@ void NgSpiceSimulator::parseSimulatedData(const QByteArray &outputData) {
         }
         data = tempData;
     }
+
+    QString dbgData = "Parsed data\n";
+    foreach(QString column,columns_) {
+        if(column != "number" && column != "analysis"){
+            dbgData.append(column).append("\t");
+        }
+    }
+    dbgData.append("\n");
+    for(int i=0; i < data.count();++i) {
+        for(int j=0; j < columns_.count(); ++j){
+            if(j > 1){
+                dbgData.append( QString::number(data[i][j]) ).append("\t");
+            }
+        }
+        dbgData.append("\n");
+    }
+
+    log::logDebug() << dbgData;
 
     log::logTrace() << "Columns after parse: " << columns_;
     simulated_->columns(columns_);

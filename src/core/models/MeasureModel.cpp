@@ -352,13 +352,16 @@ QMap<QString, double> MeasureModel::find(const QMap<QString, double> &data) {
     bool found = false;
     for( int i=0; i < rows_; ++i ){
         found = false;
+
+        int matched = 0;
+
         foreach(QString column, columnSearch){
             if(data.contains(column) && fabs(data[column]-at(i,column)) < 1e-15) {
-                found = true;
+                matched++;
             }
         }
 
-        if(found){
+        if(matched == columnSearch.count()){
             return get(i);
         }
 

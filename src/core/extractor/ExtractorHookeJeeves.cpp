@@ -42,7 +42,7 @@ void ExtractorHookeJeeves::process() {
     while(checkConvergence()){
         increaseIteration();
         log::logTrace() << "Iteration #" << iteration_;
-        emit log(tr("Iteration #%1").arg(iteration_));
+        emit log(tr("<font color='green'>Iteration #%1</font>").arg(iteration_));
 
         if( currentFunctionError() > tempFunctionError_ ){
             currentFunctionError( tempFunctionError_ );
@@ -70,7 +70,7 @@ bool ExtractorHookeJeeves::findBestNearby() {
     double error;
     log::logTrace() << "Find best nearby";
     tempFunctionError_ = currentFunctionError();
-    emit log("Find best nearby");
+//    emit log(tr("Find best nearby"));
     int nParameters = numberParameters();
     for(int i=0; i < nParameters; ++i){
         if(!fixed(i)){
@@ -109,7 +109,7 @@ bool ExtractorHookeJeeves::findBestNearby() {
         currentFunctionError( tempFunctionError_ );
         emit log("Found best nearby");
     }else{
-        emit log("Best nearby not found");
+//        emit log("Best nearby not found");
     }
 
     log::logTrace() << "Found best nearby: "
@@ -168,7 +168,7 @@ bool ExtractorHookeJeeves::decreaseSteps() {
 
     QString dbg = QString("Decrease steps\n").append(debugSteps());
     log::logTrace() << dbg;
-    emit log(dbg);
+//    emit log(dbg);
 
 
     return checkConvergence(false);

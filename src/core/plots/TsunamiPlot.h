@@ -18,6 +18,7 @@ public:
 
 public slots:
     void build();
+
 private:
     QList<PlotItem*> plots_;
     PlotItem* currentGraphic_;

@@ -185,5 +185,7 @@ void PlotItem::setStyleGraph(PlotItem::PlotType type, QCPGraph *graph) {
         graph->setScatterStyle( QCPScatterStyle(QCPScatterStyle::ssCross,4) );
     }else if(type == PLOT_SIMULATE){
         graph->setLineStyle(QCPGraph::lsLine);
+        graph->setScatterStyle( QCPScatterStyle(QCPScatterStyle::ssCircle,4) );
+
     }
 }

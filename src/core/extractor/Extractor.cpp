@@ -177,8 +177,9 @@ QString Extractor::debugSteps() {
 }
 
 bool Extractor::testBoundary(int index, double value) {
-    double val = fabs(value);
-    return (fabs(minimum(index)) >= val && val <= fabs(maximum(index)));
+//    double val = fabs(value);
+//    return (fabs(minimum(index)) >= val && val <= fabs(maximum(index)));
+    return (minimum(index) >= value && value <= maximum(index));
 }
 
 void Extractor::increaseIteration() {

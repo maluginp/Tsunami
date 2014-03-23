@@ -1,12 +1,15 @@
 #include "TsunamiPlot.h"
-
+#include "Log.h"
+using namespace tsunami;
 TsunamiPlot::TsunamiPlot(QWidget *parent) : QCustomPlot(parent) {
 //    setupFullAxesBox();
 
 //    setRangeDrag(Qt::Horizontal|Qt::Vertical);
 //    setRangeZoom(Qt::Horizontal|Qt::Vertical);
-    setInteractions( QCP::iRangeDrag | QCP::iRangeZoom );
-//    setInteraction( QCP::iSelectAxes | QCP::iZo QCustomPlot::iSelectPlottables );
+    setInteractions( QCP::iRangeDrag
+                     | QCP::iRangeZoom
+                     | QCP::iSelectAxes
+                     | QCP::iSelectPlottables );
 }
 
 PlotItem *TsunamiPlot::addPlot(const QString &name, PlotItem::PlotType type) {

@@ -44,6 +44,9 @@ protected:
 
     const db::MeasureModel* measure_;
     db::MeasureModel* simulated_;
+
+    bool signChanged(int column);
+
 protected:
     QStringList columns_;
 private:
