@@ -17,7 +17,6 @@ PlotExtractionDialog::PlotExtractionDialog(int deviceId,
     QDialog(parent),
     ui(new Ui::PlotExtractionDialog),
     deviceId_(deviceId),
-    library_(library),
     simulator_(NULL)
 {
     ui->setupUi(this);
@@ -25,8 +24,14 @@ PlotExtractionDialog::PlotExtractionDialog(int deviceId,
     ui->typeParameterComboBox->addItem( tr("Initial"), "initial" );
     ui->typeParameterComboBox->addItem( tr("Fitted"),  "fitted" );
     db::SettingStorage* settings = db::SettingStorage::instance();
-    db::MeasureStorage* storage =  db::MeasureStorage::instance();
-    measures_ = storage->getMeasures( measures );
+    db::MeasureStorage* measureStorage =  db::MeasureStorage::instance();
+
+    if(measures.count() > 0) {
+        measures_ = measureStorage->getMeasures( measures );
+    }else{
+        measures_ = measureStorage->getMeasuresByDeviceId( deviceId_ );
+    }
+
 
     foreach(db::MeasureModel* measure, measures_){
         ui->measureComboBox->addItem( measure->name(), measure->id() );
@@ -35,12 +40,30 @@ PlotExtractionDialog::PlotExtractionDialog(int deviceId,
     QString simulator = settings->value("spice/simulator").toString();
     QString pathSimulator = settings->value(QString("spice/%1/path").
                                              arg(simulator)).toString();
-//    if(simulator.compare("ngspice") == 0){
+
     simulator_ = new spice::NgSpiceSimulator( pathSimulator );
-//    }
+
+
+    if(!library) { // нулевая библиотека
+
+        db::ParameterStorage* parameterStorage = db::ParameterStorage::instance();
+        libraries_ = parameterStorage->getLibrariesByDeviceId( deviceId_ );
+        foreach(db::LibraryModel* lib,libraries_){
+            ui->libraryComboBox->addItem( lib->name(), lib->id() );
+        }
+        ui->libraryComboBox->setEnabled(true);
+    }else{
+        ui->libraryComboBox->addItem( library->name(), library->id() );
+        libraries_.append( library );
+        ui->libraryComboBox->setEnabled(false);
+    }
+
+    checkedSimulateEnable(false);
+
 
 
     connect(ui->buildButton,SIGNAL(clicked()),this,SLOT(clickedBuildButton()));
+    connect(ui->enableSimulateCheckBox,SIGNAL(toggled(bool)),this,SLOT(checkedSimulateEnable(bool)));
 }
 
 PlotExtractionDialog::~PlotExtractionDialog()
@@ -55,9 +78,14 @@ db::MeasureModel* PlotExtractionDialog::simulate(db::MeasureModel* measure) {
     SpiceModel* model = new SpiceModel("SPICEMODEL",device->type());
     Circuit* circuit = new Circuit("Plot");
     circuit->create( device->type(), measure->sources(), model);
-    model->setLibrary( library_ );
 
+    model->setLibrary( getLibrary() );
+
+    // Prepare simulator
     simulator_->setCircuit( circuit );
+    simulator_->analyses( measure->analyses() );
+    simulator_->typeAnalysis( measure->type() );
+    simulator_->measure( measure );
 
     simulator_->simulate();
     db::MeasureModel* simulate = simulator_->simulatedData();
@@ -81,22 +109,40 @@ bool PlotExtractionDialog::checkInputValues() {
     return true;
 }
 
+bool PlotExtractionDialog::simulateEnabled() {
+    return ui->enableSimulateCheckBox->isChecked();
+}
+
+db::LibraryModel *PlotExtractionDialog::getLibrary() {
+    int index = ui->libraryComboBox->currentIndex();
+
+    if(index >= libraries_.count()){
+        return NULL;
+    }
+
+    return libraries_[index];
+
+}
+
 void PlotExtractionDialog::clickedBuildButton() {
     log::logTrace() << "Building plot";
 
 //    ui->plotter->clearPlots();
 
     if(!checkInputValues()){
-        QMessageBox::warning(this,windowTitle(),tr("Incorrect input values"));
+        MESSAGE_WARNING(tr("Incorrect input values"));
         return;
     }
 
     int index = ui->measureComboBox->currentIndex();
     db::MeasureModel* measureModel = measures_[index];
-    db::MeasureModel* simulateModel = simulate(measureModel);
-    if(!simulateModel){
-        log::logError() << "Can not simulate model";
-        return;
+    db::MeasureModel* simulateModel = NULL;
+    if(simulateEnabled()){
+        simulateModel = simulate(measureModel);
+        if(!simulateModel){
+            log::logError() << "Can not simulate model";
+            return;
+        }
     }
     int rows = measureModel->rows();
 
@@ -104,25 +150,32 @@ void PlotExtractionDialog::clickedBuildButton() {
     QString valueName = ui->axisValueComboxBox->currentText();
     QString constName = ui->constComboBox->currentText();
 
-//    QVector<double> constants;
     ui->plotter->clearPlots();
+
+    ui->plotter->setLabelAxisX( keyName );
+    ui->plotter->setLabelAxisY( valueName );
+
     for(int i=0; i < rows; ++i){
         QMap<QString, double> measured  = measureModel->get(i);
-        QMap<QString, double> simulated = simulateModel->find(measured);
-        if(simulated.size() == 0){
-            continue;
-        }
 
         PlotItem* plot;
-//        if(constants.contains( measured[constName] )){
-            plot = ui->plotter->plot( QString::number( measured[constName]) );
-//        }else{
-//        if()
-//            constants.append( measured[constName] );
-//            plot = ui->plotter->addPlot( QString::number( measured[constName]) );
-//        }
+        QMap<QString, double> simulated;
+        if(simulateEnabled()){
+            simulated = simulateModel->find(measured);
+            if(simulated.size() == 0){
+                continue;
+            }
+        }
 
-        plot->addRow( measured[keyName], simulated[valueName], measured[valueName] );
+        if(!simulateEnabled()){
+            plot = ui->plotter->plot( QString::number( measured[constName]), PlotItem::PLOT_MEASURE );
+            plot->addRow( measured[keyName], .0, measured[valueName] );
+        }else{
+            plot = ui->plotter->plot( QString::number( measured[constName]));
+            plot->addRow( measured[keyName], simulated[valueName], measured[valueName] );
+        }
+
+
 
     }
 
@@ -153,6 +206,10 @@ void PlotExtractionDialog::changedMeasure(int index) {
         }
     }
 
+}
+
+void PlotExtractionDialog::checkedSimulateEnable(bool enable) {
+    ui->simulateGroup->setEnabled( enable );
 }
 
 }

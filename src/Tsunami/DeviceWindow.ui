@@ -249,6 +249,7 @@
     <addaction name="actionDeviceOpen"/>
     <addaction name="actionDeviceRemove"/>
     <addaction name="actionDeviceClose"/>
+    <addaction name="actionBuildGraphics"/>
    </widget>
    <widget class="QMenu" name="menuMeasures">
     <property name="title">
@@ -371,6 +372,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+A</string>
+   </property>
+  </action>
+  <action name="actionBuildGraphics">
+   <property name="text">
+    <string>Graphics</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+G</string>
    </property>
   </action>
  </widget>

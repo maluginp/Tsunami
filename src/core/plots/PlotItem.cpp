@@ -64,6 +64,10 @@ void PlotItem::hide( PlotItem::PlotType type ) {
 
 }
 
+void PlotItem::build() {
+    build( type_ );
+}
+
 void PlotItem::build(PlotItem::PlotType type) {
     if( type == PLOT_ALL ){
         build(PLOT_MEASURE);
@@ -79,6 +83,10 @@ void PlotItem::build(PlotItem::PlotType type) {
         graph = plotter_->addGraph( axis( AXIS_X ), axis( AXIS_Y ) );
         graph->setProperty( "name", name_ );
         graph->setProperty( "type", type );
+
+        foreach(QString key, properties_.keys()){
+            graph->setProperty(key.toAscii(), properties_.value(key));
+        }
 
         setStyleGraph( type, graph );
 
@@ -96,6 +104,10 @@ void PlotItem::setAxis(PlotItem::PlotAxis axis, const QString &title) {
 
 QPoint PlotItem::rangeAxis(PlotItem::PlotAxis axis){
     return QPoint();
+}
+
+void PlotItem::setProperty(const QString &key, const QVariant &property) {
+    properties_.insert(key,property);
 }
 
 bool PlotItem::isType(PlotItem::PlotType type) {
@@ -170,7 +182,7 @@ QVector<double> PlotItem::preparedVector(PlotItem::PlotAxis axis, PlotItem::Plot
 void PlotItem::setStyleGraph(PlotItem::PlotType type, QCPGraph *graph) {
     if(type == PLOT_MEASURE){
         graph->setLineStyle(QCPGraph::lsNone);
-        graph->setScatterStyle( QCPScatterStyle(QCPScatterStyle::ssCross,3) );
+        graph->setScatterStyle( QCPScatterStyle(QCPScatterStyle::ssCross,4) );
     }else if(type == PLOT_SIMULATE){
         graph->setLineStyle(QCPGraph::lsLine);
     }
