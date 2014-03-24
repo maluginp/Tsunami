@@ -78,7 +78,8 @@ SOURCES += main.cpp \
     spice/devices/SinSourceDevice.cpp \
     spice/devices/ExpSourceDevice.cpp \
     spice/devices/DiodeDevice.cpp \
-    spice/devices/GndDevice.cpp
+    spice/devices/GndDevice.cpp \
+    extractor/ExtractorQuasiNewton.cpp
 
 HEADERS += \
     components/Json.h \
@@ -142,5 +143,6 @@ HEADERS += \
     spice/devices/DiodeDevice.h \
     spice/Devices.h \
     spice/devices/GndDevice.h \
-    utils.h
+    utils.h \
+    extractor/ExtractorQuasiNewton.h
 

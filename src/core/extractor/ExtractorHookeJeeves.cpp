@@ -1,6 +1,5 @@
 #include "ExtractorHookeJeeves.h"
-#include "models/LibraryModel.h"
-#include "models/ParameterModel.h"
+
 #include <Log.h>
 namespace tsunami{
 namespace core{

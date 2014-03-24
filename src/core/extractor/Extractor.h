@@ -1,6 +1,9 @@
 #ifndef EXTRACTOR_H
 #define EXTRACTOR_H
+
 #include"defines.h"
+#include "models/LibraryModel.h"
+#include "models/ParameterModel.h"
 
 namespace tsunami{
 namespace db{
