@@ -11,20 +11,6 @@ ExtractorQuasiNewton::ExtractorQuasiNewton(DeviceType type,
 {
     int N = numberParameters();
 
-    Matrix<double> Ak(N,N,Matrix::MATRIX_ZERO),
-            Ak2(N,N,Matrix::MATRIX_ZERO),
-//            Xk1(N,1,Matrix::MATRIX_ZERO),
-//            Xk(N,1,Matrix::MATRIX_ZERO),
-            S(N,1,Matrix::MATRIX_ZERO),
-//            Grad(N,1,Matrix::MATRIX_ZERO),
-//            LastGrad(N,1,Matrix::MATRIX_ZERO),
-            dX(N,1,Matrix::MATRIX_ZERO),
-            dGrad(N,1,Matrix::MATRIX_ZERO);
-
-
-
-
-
 
 }
 
@@ -36,8 +22,8 @@ void ExtractorQuasiNewton::process() {
 
     currentFunctionError_ = functionError();
 
-    Matrix<double> Ak1(N,N,Matrix::MATRIX_IDENTITY),
-            Ak(N,N,Matrix::MATRIX_ZERO);
+    MatrixDouble Ak1(N,N,MatrixDouble::MATRIX_IDENTITY),
+            Ak(N,N,MatrixDouble::MATRIX_ZERO);
 
     Vector<double> S(N);
 
@@ -72,7 +58,7 @@ void ExtractorQuasiNewton::process() {
 
         Ak = Ak1;
 
-        Ak1 = solveAk(Ak);
+        Ak1 = solveAk(Ak,dGradient,dX);
 
 
 
@@ -90,24 +76,27 @@ Vector<double> ExtractorQuasiNewton::modifyS(const Vector<double> &S, double cap
     return modifiedS;
 }
 
-Matrix<double> ExtractorQuasiNewton::solveAk(const Matrix<double> &Ak,
+MatrixDouble ExtractorQuasiNewton::solveAk(const MatrixDouble &Ak,
                                              const Vector<double>& dGradient,
                                              const Vector<double>& dX) {
-    Matrix<double> solvedAk(Ak,Matrix::MATRIX_COPY);
+    MatrixDouble tmp(Ak,MatrixDouble::MATRIX_COPY);
 
-    solvedAk = Ak*dGrad;
-    solvedAk *= Matrix<double>(dGradient,Matrix::MATRIX_TRANSPOSE);
-    solvedAk *= Matrix<double>(Ak,Matrix::MATRIX_TRANSPOSE);
+    tmp *= dGradient;
+    tmp *= MatrixDouble(dGradient,MatrixDouble::MATRIX_TRANSPOSE);
+    tmp *= MatrixDouble(Ak,MatrixDouble::MATRIX_TRANSPOSE);
 
-    Matrix<double> divider = Matrix<double>(dGradient,Matrix::MATRIX_TRANSPOSE);
-    divider *= Matrix<double>(Ak,Matrix::MATRIX_TRANSPOSE);
+    MatrixDouble divider = MatrixDouble(dGradient,MatrixDouble::MATRIX_TRANSPOSE);
+    divider *= MatrixDouble(Ak,MatrixDouble::MATRIX_TRANSPOSE);
     divider *= dGradient;
 
-    solvedAk /= divider;
-    solvedAk = Ak - solvedAk;
+    tmp /= divider;
 
-    divider = dX* Matrix<double>(dX,Matrix::MATRIX_TRANSPOSE);
-    divider /= (Matrix<double>(dX,Matrix::MATRIX_TRANSPOSE) * dGradient);
+    MatrixDouble solvedAk(Ak);
+    solvedAk -= tmp;
+
+    divider = MatrixDouble(dX);
+    divider *= MatrixDouble(dX,MatrixDouble::MATRIX_TRANSPOSE);
+    divider /= (MatrixDouble(dX,MatrixDouble::MATRIX_TRANSPOSE) * dGradient);
 
     solvedAk += divider;
 
@@ -118,6 +107,8 @@ double ExtractorQuasiNewton::newtonRaphsonMethod(const Vector<double>& Xk,
                                                  const Vector<double>& S) {
     double cappa = 1.0;
     double tmpCappa = 1.0;
+
+//    double func = Xk
 
 
 

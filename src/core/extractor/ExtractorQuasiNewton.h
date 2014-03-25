@@ -19,7 +19,7 @@ private:
     Vector<double> modifyS(const Vector<double>& S,double cappa);
     Matrix<double> solveAk(const Matrix<double>& Ak, const Vector<double> &dGradient, const Vector<double> &dX);
 
-    double newtonRaphsonMethod();
+    double newtonRaphsonMethod(const Vector<double> &Xk, const Vector<double> &S);
 };
 
 } // core

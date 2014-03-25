@@ -1,11 +1,7 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
-#if defined(TSUNAMI_MAKEDLL)
-# define TSUNAMI_EXPORT Q_DECL_EXPORT
-#else
-# define TSUNAMI_EXPORT Q_DECL_IMPORT
-#endif
+#include "export.h"
 
 #include <QtCore>
 #include <QtGui>
@@ -69,6 +65,7 @@ typedef core::Vector<int>    VectorInt;
 #define TSUNAMI_DOUBLE_MAX std::numeric_limits<double>::max()
 #define TSUNAMI_DOUBLE_MIN std::numeric_limits<double>::min()
 #define TSUNAMI_DOUBLE_INF std::numeric_limits<double>::infinity()
+#define TSUNAMI_DOUBLE_EPS std::numeric_limits<double>::epsilon()
 
 }
 

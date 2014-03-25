@@ -17,8 +17,9 @@ public:
     ~Vector();
 
     T& operator[](int row);
+    const T& operator[](int row) const;
 
-    const int &rows();
+    const int &rows() const;
 private:
     int rows_;
     T* vector_;
@@ -38,7 +39,7 @@ template<class T>
 Vector<T>::Vector(const Vector<T> &other)
     : rows_(other.rows_){
 
-    T* vector_ = new T[rows_];
+    vector_ = new T[rows_];
     for(int i=0; i < rows_; ++i){
         vector_[i] = other[i];
     }
@@ -100,7 +101,12 @@ T &Vector<T>::operator[](int row) {
     return vector_[row];
 }
 template<class T>
-const int &Vector<T>::rows() {
+const T &Vector<T>::operator[](int row) const{
+    assert( row >= 0 && row < rows_ );
+    return vector_[row];
+}
+template<class T>
+const int &Vector<T>::rows() const{
     return rows_;
 }
 

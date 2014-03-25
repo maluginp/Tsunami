@@ -145,5 +145,6 @@ HEADERS += \
     spice/devices/GndDevice.h \
     utils.h \
     extractor/ExtractorQuasiNewton.h \
-    math/Math.h
+    math/Math.h \
+    export.h
 

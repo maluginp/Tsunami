@@ -4,7 +4,8 @@ SUBDIRS += \
     src/logger \
     src/core  \
     src/Tsunami \
-    test
+    test \
+    src/experiments
 
 OTHER_FILES += \
     Tsunami.pri

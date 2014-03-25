@@ -15,6 +15,12 @@ template<class T> class Vector;
 template<class T>
 class Matrix
 {
+    friend Matrix<T> operator*(const Vector<T>& vector, const Matrix<T>& matrix);
+//    friend Matrix<T> operator*(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
+//    friend Matrix<T> operator+(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
+//    friend Matrix<T> operator-(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
+//    friend Matrix<T> operator/(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
+
 public:
     enum TypeMatrix{
         MATRIX_ZERO,
@@ -37,16 +43,21 @@ public:
     Matrix<T>& operator=( const Vector<T>& vector);
     ~Matrix();
 
-    int rows();
-    int columns();
+    int rows() const;
+    int columns() const;
 
     Matrix<T>& operator*( const Matrix<T>& other);
+    Matrix<T>& operator*=( const Matrix<T>& other);
+
     Matrix<T>& operator*( const Vector<T>& vector);
     Matrix<T>& operator*( T scalar );
     Matrix<T>& operator/( const Matrix<T>& other);
+    Matrix<T>& operator/=( const Matrix<T>& other);
     Matrix<T>& operator/( T scalar );
     Matrix<T>& operator+( const Matrix<T>& other);
+    Matrix<T>& operator+=( const Matrix<T>& other);
     Matrix<T>& operator-( const Matrix<T>& other);
+    Matrix<T>& operator-=( const Matrix<T>& other);
 
     T& operator()(int row, int column);
     const T& operator()(int row, int column) const;
@@ -56,9 +67,9 @@ public:
     bool inverse();
     void transpose();
 
-    bool isEmpty();
-    bool isScalar();
-    bool isVector();
+    bool isEmpty() const;
+    bool isScalar() const;
+    bool isVector() const;
 private:
 
     void swap( int row1, int row2 );
@@ -269,11 +280,11 @@ Matrix<T>::~Matrix() {
     delete[] matrix_;
 }
 template<class T>
-int Matrix<T>::rows() {
+int Matrix<T>::rows() const {
     return rows_;
 }
 template<class T>
-int Matrix<T>::columns() {
+int Matrix<T>::columns() const{
     return columns_;
 }
 template<class T>
@@ -322,6 +333,53 @@ Matrix<T> &Matrix<T>::operator*(const Matrix<T> &other){
 
 }
 template<class T>
+Matrix<T> &Matrix<T>::operator*=(const Matrix<T> &other){
+    if(other.isScalar()){
+        *this * other.at(0,0);
+    }
+    if( isScalar() ){
+        T scalar = at(0,0);
+        initialize(MATRIX_ZERO,other.rows_,other.columns_);
+
+        Matrix<T> temp(other);
+        temp = temp*scalar;
+
+        for( int i=0; i < temp.rows_; ++i ){
+            for(int j=0; j < temp.columns_; ++j){
+                at(i,j) = temp(i,j);
+            }
+        }
+
+    }
+
+    assert( columns_ == other.rows_ );
+
+    int M = rows_, N = other.columns_, R = other.rows_;
+
+    T* matrix = new T[M*N];
+
+    for(int i=0; i < M; ++i){
+        for(int j=0; j < N; ++i){
+            T c = static_cast<T>(0.0);
+            for(int r=0; r<R; r++){
+                c += at(i,r)*other.at(r,j);
+            }
+            matrix[i*M+j] = c;
+        }
+    }
+
+    rows_ = M;
+    columns_ = N;
+
+    delete[] matrix_;
+    matrix_ = matrix;
+
+    return *this;
+
+}
+
+
+template<class T>
 Matrix<T> &Matrix<T>::operator*(const Vector<T> &vector) {
     Matrix<T> matrix(vector);
     *this*matrix;
@@ -338,6 +396,15 @@ Matrix<T> &Matrix<T>::operator*(T scalar) {
 }
 template<class T>
 Matrix<T> &Matrix<T>::operator/(const Matrix<T> &other) {
+    Matrix<T> matrix(other);
+    matrix.inverse();
+
+    *this * matrix;
+
+    return *this;
+}
+template<class T>
+Matrix<T> &Matrix<T>::operator/=(const Matrix<T> &other) {
     Matrix<T> matrix(other);
     matrix.inverse();
 
@@ -363,8 +430,17 @@ Matrix<T> &Matrix<T>::operator+(const Matrix<T> &other) {
     }
     return *this;
 }
+
 template<class T>
-Matrix<T> &Matrix<T>::operator-(const Matrix<T> &other) {
+Matrix<T> &Matrix<T>::operator+=(const Matrix<T> &other) {
+    assert( other.rows_ == rows_ && other.columns_ == columns_ );
+    *this + other;
+
+    return *this;
+}
+
+template<class T>
+Matrix<T> &Matrix<T>::operator-(const Matrix<T> &other){
     assert( other.rows_ == rows_ && other.columns_ == columns_ );
 
     for(int i=0; i < rows_; ++i){
@@ -372,6 +448,14 @@ Matrix<T> &Matrix<T>::operator-(const Matrix<T> &other) {
             at(i,j) -= other.at(i,j);
         }
     }
+    return *this;
+}
+template<class T>
+Matrix<T> &Matrix<T>::operator-=(const Matrix<T> &other) {
+    assert( other.rows_ == rows_ && other.columns_ == columns_ );
+
+    *this - other;
+
     return *this;
 }
 template<class T>
@@ -404,11 +488,11 @@ void Matrix<T>::initialize(TypeMatrix type, int rows, int columns) {
     }
 }
 template<class T>
-bool Matrix<T>::isScalar() {
+bool Matrix<T>::isScalar() const{
     return (rows_ == 1 && columns_ == 1);
 }
 template<class T>
-bool Matrix<T>::isVector() {
+bool Matrix<T>::isVector() const{
     return (rows_ > 1 && columns_ == 1);
 }
 template<class T>
@@ -424,13 +508,50 @@ void Matrix<T>::swap(int row1, int row2) {
     return;
 }
 template<class T>
-bool Matrix<T>::isEmpty() {
+bool Matrix<T>::isEmpty() const{
     return (rows_ == 0 && columns_ == 0);
 }
+template<class T>
+Matrix<T> operator*(const Vector<T>& vector, const Matrix<T>& matrix){
+    Matrix<T> newMatrix(vector);
 
+    newMatrix*matrix;
 
+    return newMatrix;
 }
-}
+//template<class T>
+//Matrix<T> operator*(const Matrix<T>& matrix1, const Matrix<T>& matrix2){
+//    Matrix<T> newMatrix(matrix1);
+
+//    newMatrix*matrix2;
+//    return newMatrix;
+//}
+//template<class T>
+//Matrix<T> operator+(const Matrix<T>& matrix1, const Matrix<T>& matrix2){
+//    Matrix<T> newMatrix(matrix1);
+
+//    newMatrix+matrix2;
+//    return newMatrix;
+//}
+
+//template<class T>
+//Matrix<T> operator-(const Matrix<T>& matrix1, const Matrix<T>& matrix2){
+//    Matrix<T> newMatrix(matrix1);
+
+//    newMatrix-matrix2;
+//    return newMatrix;
+//}
+
+//template<class T>
+//Matrix<T> operator/(const Matrix<T>& matrix1, const Matrix<T>& matrix2){
+//    Matrix<T> newMatrix(matrix1);
+
+//    newMatrix/matrix2;
+//    return newMatrix;
+//}
+
+} // core
+} // tsunami
 
 
 #endif // MATRIX_H
