@@ -36,6 +36,15 @@ Extractor::Extractor(DeviceType type, db::LibraryModel* library, const QList<int
     dataset_ = new Dataset();
     dataset_->load( measures );
 
+    int nParameters = library->countParameters();
+
+    for(int i=0; i < nParameters; ++i){
+        previousSteps_.insert( i, DBL_MAX );
+        double diff = library->at(i).maximum() - library->at(i).minimum();
+        currentSteps_.insert(i, diff);
+    }
+
+    tolerances_.insert(TOLERANCE_STEP,1e-19);
 
 }
 
@@ -279,6 +288,57 @@ double Extractor::computeError(const db::MeasureModel *measure) {
 
 
     return TSUNAMI_DOUBLE_MAX;
+}
+
+Vector<double> Extractor::solveGradient() {
+    int N = numberParameters();
+    double dif = TSUNAMI_DOUBLE_MAX,
+           mod = .0;
+
+    Vector<double> grad(N);
+    double h = 0.0;
+    for(int i=0; i < N; ++i){
+        h = fabs( maximum(i) - minimum(i) ) / 100;
+        dif = derivation(i,h);
+        if(dif == TSUNAMI_DOUBLE_MAX){
+            break;
+        }
+        mod += dif*dif;
+
+        grad[i] = dif;
+    }
+
+    mod = sqrt(mod);
+
+    for(int i = 0; i < N; ++i) {
+        grad[i] = grad[i] / mod;
+    }
+
+    return grad;
+}
+
+double Extractor::derivation(int index, double h) {
+
+    if(fixed(index)){
+        return 0.0;
+    }
+
+    double param = fitted(index);
+    fitted(index,param+h);
+    double f1 = functionError();
+    fitted(index,param-h);
+    double f2 = functionError();
+
+    fitted(param);
+
+    double dydx = (f1-f2) / (2*h);
+
+    if( fabs(dydx) == TSUNAMI_DOUBLE_INF ){
+        return TSUNAMI_DOUBLE_MAX;
+    }
+
+    return dydx;
+
 }
 
 

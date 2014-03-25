@@ -28,7 +28,11 @@ template<class T>
 Vector<T>::Vector(int rows)
     : rows_(rows) {
 
-    T* vector_ = new T[rows_];
+    vector_ = new T[rows_];
+
+    for(int i=0; i < rows_; ++i){
+        vector_[i] = .0;
+    }
 }
 template<class T>
 Vector<T>::Vector(const Vector<T> &other)

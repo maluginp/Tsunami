@@ -9,13 +9,8 @@ ExtractorHookeJeeves::ExtractorHookeJeeves(DeviceType type, db::LibraryModel *li
 
     int nParameters = library->countParameters();
 
-    // TODO: remove temp code
-    tolerances_.insert(TOLERANCE_STEP,1e-19);
 
     for(int i=0; i < nParameters; ++i){
-        previousSteps_.insert( i, DBL_MAX );
-        double diff = library->at(i).maximum() - library->at(i).minimum();
-        currentSteps_.insert(i, diff);
         masks_.insert( i, HJ_HOLD );
     }
 

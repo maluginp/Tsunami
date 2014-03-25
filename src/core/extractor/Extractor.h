@@ -86,6 +86,9 @@ protected:
     double subtract(double value1,double value2);
     virtual double computeError(const db::MeasureModel* measure );
 
+    Vector<double> solveGradient();
+    double derivation(int index, double h);
+
 
     double previousFunctionError_, currentFunctionError_;
     QMap<int, double> previousSteps_,currentSteps_;
