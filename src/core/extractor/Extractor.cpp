@@ -6,6 +6,7 @@
 #include "dbstorage/DbStorages.h"
 #include "spice/NgSpiceSimulator.h"
 #include "ExtractorHookeJeeves.h"
+#include "ExtractorQuasiNewton.h"
 
 #include <Log.h>
 namespace tsunami{
@@ -155,12 +156,13 @@ void Extractor::step(int index, double step) {
 
 Extractor *Extractor::createExtractor(const QString &methodOptimization, DeviceType type,
                                       db::LibraryModel* library, const QList<int> &measures) {
-    if(methodOptimization.compare("hookejeeves") == 0){
-        return new ExtractorHookeJeeves(type,library,measures);
-    }
+//    if(methodOptimization.compare("hookejeeves") == 0){
+//        return new ExtractorHookeJeeves(type,library,measures);
+//    }
 
+    return new ExtractorQuasiNewton(type,library,measures);
 
-    return NULL;
+//    return NULL;
 }
 
 void Extractor::stop() {
@@ -188,7 +190,7 @@ QString Extractor::debugSteps() {
 bool Extractor::testBoundary(int index, double value) {
 //    double val = fabs(value);
 //    return (fabs(minimum(index)) >= val && val <= fabs(maximum(index)));
-    return (minimum(index) >= value && value <= maximum(index));
+    return (minimum(index) <= value && value <= maximum(index));
 }
 
 void Extractor::increaseIteration() {
@@ -298,7 +300,7 @@ Vector<double> Extractor::solveGradient() {
     Vector<double> grad(N);
     double h = 0.0;
     for(int i=0; i < N; ++i){
-        h = fabs( maximum(i) - minimum(i) ) / 100;
+        h = fabs( maximum(i) - minimum(i) )/2;
         dif = derivation(i,h);
         if(dif == TSUNAMI_DOUBLE_MAX){
             break;
@@ -323,21 +325,60 @@ double Extractor::derivation(int index, double h) {
         return 0.0;
     }
 
+    const int ntab = 10;
+    const double con = 1.4, con2 = (con*con);
+    const double safe = 2.0;
+
+    double errt,fac,hh,ans,error = TSUNAMI_DOUBLE_MAX;
+
+    MatrixDouble a(ntab,ntab,MatrixDouble::MATRIX_ZERO);
+
+    hh = h;
+
+    a.at(0,0) = calcDif(index,hh);
+
+    for(int i=1; i < ntab; i++){
+
+        hh /= con;
+
+        a.at(0,i) = calcDif(index,hh);
+        fac = con2;
+        for(int j=1; j <= i;j++){
+            a.at(j,i) = (a.at(j-1,i)*fac-a(j-1,i-1))/(fac-1.0);
+
+            fac *= con2;
+
+            errt = std::max<double>(fabs(a.at(j,i)-a.at(j-1,i)),
+                                    fabs(a.at(j,i)-a.at(j-1,i-1))
+                                    );
+
+            if(errt <= error){
+                error = errt;
+                ans = a.at(j,i);
+            }
+        }
+        if(fabs(a.at(i,i)-a.at(i-1,i-1)) >= safe*error){
+            break;
+        }
+    }
+
+    qDebug() << "Dif" << index << "error: " << error;
+    return ans;
+
+}
+
+double Extractor::calcDif(int index, double h) {
     double param = fitted(index);
     fitted(index,param+h);
     double f1 = functionError();
     fitted(index,param-h);
     double f2 = functionError();
 
-    fitted(param);
+    fitted(index,param);
 
     double dydx = (f1-f2) / (2*h);
-
-    if( fabs(dydx) == TSUNAMI_DOUBLE_INF ){
-        return TSUNAMI_DOUBLE_MAX;
-    }
-
     return dydx;
+
 
 }
 

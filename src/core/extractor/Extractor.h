@@ -107,12 +107,14 @@ protected:
     // DB STORAGES
     db::ParameterStorage* storageParameters_;
     bool stopped_;
+private:
+    double calcDif(int index, double h);
 signals:
     void log(const QString& name);
     void finished();
 //    void updateFunctionError();
 
-};
+  };
 
 }
 }

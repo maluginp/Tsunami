@@ -45,45 +45,78 @@ malugin.p@gmail.com</source>
     </message>
     <message>
         <location filename="../AnalysisForm.ui" line="30"/>
-        <source>Name:</source>
-        <translation>Название:</translation>
+        <source>DC</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../AnalysisForm.ui" line="40"/>
+        <source>DC1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
         <location filename="../AnalysisForm.ui" line="46"/>
+        <source>Источник</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <location filename="../AnalysisForm.ui" line="63"/>
+        <location filename="../AnalysisForm.ui" line="80"/>
+        <location filename="../AnalysisForm.ui" line="97"/>
+        <location filename="../AnalysisForm.ui" line="133"/>
+        <location filename="../AnalysisForm.ui" line="150"/>
+        <location filename="../AnalysisForm.ui" line="167"/>
+        <location filename="../AnalysisForm.ui" line="208"/>
+        <location filename="../AnalysisForm.ui" line="225"/>
+        <location filename="../AnalysisForm.ui" line="242"/>
+        <source>Начало:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../AnalysisForm.ui" line="115"/>
+        <source>DC2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../AnalysisForm.ui" line="125"/>
+        <source>AC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../AnalysisForm.ui" line="200"/>
+        <source>TRAN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name:</source>
+        <translation type="obsolete">Название:</translation>
+    </message>
+    <message>
         <source>Type analysis:</source>
-        <translation>Тип анализа:</translation>
+        <translation type="obsolete">Тип анализа:</translation>
     </message>
     <message>
-        <location filename="../AnalysisForm.ui" line="69"/>
         <source>Measures</source>
-        <translation>Измерения</translation>
+        <translation type="obsolete">Измерения</translation>
     </message>
     <message>
-        <location filename="../AnalysisForm.ui" line="164"/>
-        <location filename="../AnalysisForm.ui" line="283"/>
         <source>Remove</source>
-        <translation>Удалить</translation>
+        <translation type="obsolete">Удалить</translation>
     </message>
     <message>
-        <location filename="../AnalysisForm.ui" line="171"/>
-        <location filename="../AnalysisForm.ui" line="290"/>
         <source>Add</source>
-        <translation>Добавить</translation>
+        <translation type="obsolete">Добавить</translation>
     </message>
     <message>
-        <location filename="../AnalysisForm.ui" line="185"/>
         <source>Analysis</source>
-        <translation>Анализ</translation>
+        <translation type="obsolete">Анализ</translation>
     </message>
     <message>
-        <location filename="../AnalysisForm.ui" line="322"/>
         <source>Cancel</source>
-        <translation>Закрыть</translation>
+        <translation type="obsolete">Закрыть</translation>
     </message>
     <message>
-        <location filename="../AnalysisForm.ui" line="329"/>
         <source>Save</source>
-        <translation>Сохранить</translation>
+        <translation type="obsolete">Сохранить</translation>
     </message>
 </context>
 <context>
@@ -93,32 +126,110 @@ malugin.p@gmail.com</source>
         <translation type="obsolete">Добавить</translation>
     </message>
     <message>
-        <location filename="../AnalysisWindow.ui" line="14"/>
+        <location filename="../AnalysisWindow.ui" line="78"/>
         <source>Manager analysis</source>
         <translation>Менеджер анализов</translation>
     </message>
     <message>
-        <location filename="../AnalysisWindow.ui" line="41"/>
         <source>Add</source>
-        <translation>Добавить</translation>
+        <translation type="obsolete">Добавить</translation>
     </message>
     <message>
-        <location filename="../AnalysisWindow.ui" line="48"/>
         <source>Open</source>
-        <translation>Открыть</translation>
+        <translation type="obsolete">Открыть</translation>
+    </message>
+    <message utf8="true">
+        <location filename="../AnalysisWindow.ui" line="94"/>
+        <source>Второй источник DC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <location filename="../AnalysisWindow.ui" line="107"/>
+        <source>Источник 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <location filename="../AnalysisWindow.ui" line="113"/>
+        <source>Вариация</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <location filename="../AnalysisWindow.ui" line="123"/>
+        <location filename="../AnalysisWindow.ui" line="197"/>
+        <source>Источник</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <location filename="../AnalysisWindow.ui" line="133"/>
+        <location filename="../AnalysisWindow.ui" line="207"/>
+        <source>Начало:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <location filename="../AnalysisWindow.ui" line="143"/>
+        <location filename="../AnalysisWindow.ui" line="217"/>
+        <source>Шаг:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <location filename="../AnalysisWindow.ui" line="153"/>
+        <source>Число точек:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <location filename="../AnalysisWindow.ui" line="163"/>
+        <location filename="../AnalysisWindow.ui" line="227"/>
+        <source>Конец:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <location filename="../AnalysisWindow.ui" line="182"/>
+        <source>Источник 2</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../AnalysisWindow.ui" line="64"/>
+        <location filename="../AnalysisWindow.ui" line="247"/>
+        <source>Save</source>
+        <translation type="unfinished">Сохранить</translation>
+    </message>
+    <message utf8="true">
+        <location filename="../AnalysisWindow.ui" line="264"/>
+        <source>Входные источники</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <location filename="../AnalysisWindow.ui" line="296"/>
+        <location filename="../AnalysisWindow.ui" line="309"/>
+        <location filename="../AnalysisWindow.ui" line="322"/>
+        <location filename="../AnalysisWindow.ui" line="371"/>
+        <source>Настроить</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <location filename="../AnalysisWindow.ui" line="386"/>
+        <source>Выходные источники</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <location filename="../AnalysisWindow.ui" line="398"/>
+        <location filename="../AnalysisWindow.ui" line="411"/>
+        <location filename="../AnalysisWindow.ui" line="424"/>
+        <location filename="../AnalysisWindow.ui" line="453"/>
+        <source>Измерять</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../AnalysisWindow.ui" line="476"/>
         <source>Name:</source>
         <translation>Название:</translation>
     </message>
     <message>
-        <location filename="../AnalysisWindow.ui" line="93"/>
+        <location filename="../AnalysisWindow.ui" line="511"/>
         <source>Analysis:</source>
         <translation>Анализ:</translation>
     </message>
     <message>
-        <location filename="../AnalysisWindow.ui" line="103"/>
+        <location filename="../AnalysisWindow.ui" line="486"/>
         <source>Enable</source>
         <translation>Включить</translation>
     </message>
@@ -233,7 +344,7 @@ malugin.p@gmail.com</source>
     <message>
         <location filename="../CreateLibraryDialog.ui" line="34"/>
         <source>Placeholder error</source>
-        <translation type="unfinished"></translation>
+        <translation>Placeholder error</translation>
     </message>
 </context>
 <context>
@@ -244,54 +355,94 @@ malugin.p@gmail.com</source>
         <translation>Устройства</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.ui" line="255"/>
+        <location filename="../DeviceWindow.ui" line="256"/>
         <source>Measures</source>
         <translation>Измерения</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.ui" line="262"/>
+        <location filename="../DeviceWindow.ui" line="263"/>
         <source>Parameters</source>
         <translation>Параметры</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.ui" line="268"/>
+        <location filename="../DeviceWindow.ui" line="269"/>
         <source>Extraction</source>
         <translation>Экстракция</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.ui" line="274"/>
+        <location filename="../DeviceWindow.ui" line="275"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.ui" line="309"/>
+        <location filename="../DeviceWindow.ui" line="310"/>
         <source>Open</source>
         <translation>Открыть</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.ui" line="314"/>
+        <location filename="../DeviceWindow.ui" line="313"/>
+        <source>Ctrl+O</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../DeviceWindow.ui" line="318"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.ui" line="319"/>
+        <location filename="../DeviceWindow.ui" line="321"/>
+        <source>Ctrl+D</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../DeviceWindow.ui" line="326"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.ui" line="324"/>
+        <location filename="../DeviceWindow.ui" line="329"/>
+        <source>Ctrl+C</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../DeviceWindow.ui" line="334"/>
         <source>Editor</source>
         <translation>Редактор</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.ui" line="329"/>
+        <location filename="../DeviceWindow.ui" line="337"/>
+        <source>Ctrl+L</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../DeviceWindow.ui" line="342"/>
         <source>Run</source>
         <translation>Запустить</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.ui" line="334"/>
+        <location filename="../DeviceWindow.ui" line="345"/>
+        <source>Ctrl+R</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../DeviceWindow.ui" line="350"/>
         <source>Add</source>
         <translation>Добавить</translation>
+    </message>
+    <message>
+        <location filename="../DeviceWindow.ui" line="374"/>
+        <source>Ctrl+A</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../DeviceWindow.ui" line="379"/>
+        <source>Graphics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../DeviceWindow.ui" line="382"/>
+        <source>Ctrl+G</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../DeviceWindow.ui" line="14"/>
@@ -333,17 +484,27 @@ malugin.p@gmail.com</source>
         <translation>Запустить экстракцию</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.ui" line="339"/>
+        <location filename="../DeviceWindow.ui" line="353"/>
+        <source>Ctrl+Shift+M</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../DeviceWindow.ui" line="358"/>
         <source>Edit</source>
         <translation>Редактировать</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.ui" line="344"/>
+        <location filename="../DeviceWindow.ui" line="361"/>
+        <source>Ctrl+M</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../DeviceWindow.ui" line="366"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.ui" line="349"/>
+        <location filename="../DeviceWindow.ui" line="371"/>
         <source>About</source>
         <translation>О программе</translation>
     </message>
@@ -379,6 +540,72 @@ malugin.p@gmail.com</source>
         <location filename="../ExtractorWindow.ui" line="138"/>
         <source>Run</source>
         <translation>Запустить</translation>
+    </message>
+</context>
+<context>
+    <name>IndepedentSourceDialog</name>
+    <message>
+        <location filename="../analysis/IndepedentSourceDialog.ui" line="14"/>
+        <source>Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <location filename="../analysis/IndepedentSourceDialog.ui" line="26"/>
+        <source>Константа</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../analysis/IndepedentSourceDialog.ui" line="39"/>
+        <source>PULSE (V1 V2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../analysis/IndepedentSourceDialog.ui" line="52"/>
+        <source>SIN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../analysis/IndepedentSourceDialog.ui" line="65"/>
+        <source>EXP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../analysis/IndepedentSourceDialog.ui" line="78"/>
+        <location filename="../analysis/IndepedentSourceDialog.ui" line="100"/>
+        <source>DC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../analysis/IndepedentSourceDialog.ui" line="114"/>
+        <source>AC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <location filename="../analysis/IndepedentSourceDialog.ui" line="126"/>
+        <source>Амплитуда</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <location filename="../analysis/IndepedentSourceDialog.ui" line="149"/>
+        <source>Фаза</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <location filename="../analysis/IndepedentSourceDialog.ui" line="173"/>
+        <source>Сохранить</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../analysis/IndepedentSourceDialog.ui" line="189"/>
+        <location filename="../analysis/IndepedentSourceDialog.ui" line="199"/>
+        <location filename="../analysis/IndepedentSourceDialog.ui" line="209"/>
+        <location filename="../analysis/IndepedentSourceDialog.ui" line="219"/>
+        <location filename="../analysis/IndepedentSourceDialog.ui" line="229"/>
+        <location filename="../analysis/IndepedentSourceDialog.ui" line="239"/>
+        <location filename="../analysis/IndepedentSourceDialog.ui" line="249"/>
+        <location filename="../analysis/IndepedentSourceDialog.ui" line="259"/>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -463,11 +690,70 @@ malugin.p@gmail.com</source>
     </message>
 </context>
 <context>
+    <name>MeasureWindow</name>
+    <message>
+        <location filename="../MeasureWindow.ui" line="14"/>
+        <source>Manager measure</source>
+        <translation>Менеджер измерений</translation>
+    </message>
+    <message>
+        <location filename="../MeasureWindow.ui" line="22"/>
+        <source>Name:</source>
+        <translation>Название:</translation>
+    </message>
+    <message>
+        <location filename="../MeasureWindow.ui" line="40"/>
+        <source>Description</source>
+        <translation>Описание</translation>
+    </message>
+    <message>
+        <location filename="../MeasureWindow.ui" line="61"/>
+        <source>Nodes</source>
+        <translation>Узлы</translation>
+    </message>
+    <message>
+        <location filename="../MeasureWindow.ui" line="84"/>
+        <source>Attributes</source>
+        <translation>Атрибуты</translation>
+    </message>
+    <message>
+        <location filename="../MeasureWindow.ui" line="119"/>
+        <location filename="../MeasureWindow.ui" line="207"/>
+        <source>Add</source>
+        <translation>Добавить</translation>
+    </message>
+    <message>
+        <location filename="../MeasureWindow.ui" line="131"/>
+        <source>Measures</source>
+        <translation>Измерения</translation>
+    </message>
+    <message>
+        <location filename="../MeasureWindow.ui" line="137"/>
+        <source>Sources description</source>
+        <translation>Описание источников</translation>
+    </message>
+    <message>
+        <location filename="../MeasureWindow.ui" line="165"/>
+        <source>Import</source>
+        <translation>Импорт</translation>
+    </message>
+    <message>
+        <location filename="../MeasureWindow.ui" line="172"/>
+        <source>Export</source>
+        <translation>Экспорт</translation>
+    </message>
+    <message>
+        <location filename="../MeasureWindow.ui" line="200"/>
+        <source>Close</source>
+        <translation>Закрыть</translation>
+    </message>
+</context>
+<context>
     <name>OpenDeviceDialog</name>
-    <message utf8="true">
+    <message>
         <location filename="../OpenDeviceDialog.ui" line="14"/>
-        <source>Открыть устройство</source>
-        <translation type="unfinished"></translation>
+        <source>Open device</source>
+        <translation>Открыть устройство</translation>
     </message>
     <message>
         <location filename="../OpenDeviceDialog.ui" line="26"/>
@@ -584,7 +870,7 @@ malugin.p@gmail.com</source>
     <message>
         <location filename="../PlotDataWindow.ui" line="144"/>
         <source>Add</source>
-        <translation type="unfinished">Добавить</translation>
+        <translation>Добавить</translation>
     </message>
     <message>
         <location filename="../PlotDataWindow.ui" line="204"/>
@@ -631,34 +917,54 @@ malugin.p@gmail.com</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="../PlotExtractionDialog.ui" line="59"/>
+        <location filename="../PlotExtractionDialog.ui" line="119"/>
+        <source>Enable simulate</source>
+        <translation>Включить симуляцию</translation>
+    </message>
+    <message>
+        <location filename="../PlotExtractionDialog.ui" line="139"/>
+        <source>Setting simulation</source>
+        <translation>Настройка симуляции</translation>
+    </message>
+    <message>
+        <location filename="../PlotExtractionDialog.ui" line="158"/>
+        <source>Library</source>
+        <translation>Библиотека</translation>
+    </message>
+    <message>
+        <location filename="../PlotExtractionDialog.ui" line="177"/>
         <source>Build</source>
         <translation>Построить</translation>
     </message>
     <message>
-        <location filename="../PlotExtractionDialog.ui" line="78"/>
+        <location filename="../PlotExtractionDialog.ui" line="190"/>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../PlotExtractionDialog.ui" line="148"/>
         <source>Type parameters</source>
         <translation>Тип параметров</translation>
     </message>
     <message>
-        <location filename="../PlotExtractionDialog.ui" line="88"/>
+        <location filename="../PlotExtractionDialog.ui" line="71"/>
         <source>Measure</source>
         <translation>Измерение</translation>
     </message>
     <message>
-        <location filename="../PlotExtractionDialog.ui" line="100"/>
+        <location filename="../PlotExtractionDialog.ui" line="97"/>
         <source>X:</source>
         <translation>X:</translation>
     </message>
     <message>
-        <location filename="../PlotExtractionDialog.ui" line="114"/>
+        <location filename="../PlotExtractionDialog.ui" line="83"/>
         <source>Y:</source>
         <translation>Y:</translation>
     </message>
     <message>
-        <location filename="../PlotExtractionDialog.ui" line="126"/>
+        <location filename="../PlotExtractionDialog.ui" line="109"/>
         <source>Constant</source>
-        <translation>Постоянная</translation>
+        <translation>Константа</translation>
     </message>
 </context>
 <context>
@@ -788,54 +1094,44 @@ malugin.p@gmail.com</source>
 <context>
     <name>addMeasureForm</name>
     <message>
-        <location filename="../AddMeasureForm.ui" line="14"/>
         <source>Add measure</source>
-        <translation>Добавить измерение</translation>
+        <translation type="obsolete">Добавить измерение</translation>
     </message>
     <message>
-        <location filename="../AddMeasureForm.ui" line="26"/>
         <source>Description</source>
-        <translation>Описание</translation>
+        <translation type="obsolete">Описание</translation>
     </message>
     <message>
-        <location filename="../AddMeasureForm.ui" line="49"/>
         <source>Nodes</source>
-        <translation>Узлы</translation>
+        <translation type="obsolete">Узлы</translation>
     </message>
     <message>
-        <location filename="../AddMeasureForm.ui" line="72"/>
         <source>Attributes</source>
-        <translation>Атрибуты</translation>
+        <translation type="obsolete">Атрибуты</translation>
     </message>
     <message>
-        <location filename="../AddMeasureForm.ui" line="94"/>
         <source>Measures</source>
-        <translation>Измерения</translation>
+        <translation type="obsolete">Измерения</translation>
     </message>
     <message>
-        <location filename="../AddMeasureForm.ui" line="100"/>
         <source>Sources description</source>
-        <translation>Описание источников</translation>
+        <translation type="obsolete">Описание источников</translation>
     </message>
     <message>
-        <location filename="../AddMeasureForm.ui" line="128"/>
         <source>Import</source>
-        <translation>Импорт</translation>
+        <translation type="obsolete">Импорт</translation>
     </message>
     <message>
-        <location filename="../AddMeasureForm.ui" line="135"/>
         <source>Export</source>
-        <translation>Экспорт</translation>
+        <translation type="obsolete">Экспорт</translation>
     </message>
     <message>
-        <location filename="../AddMeasureForm.ui" line="163"/>
         <source>Close</source>
-        <translation>Закрыть</translation>
+        <translation type="obsolete">Закрыть</translation>
     </message>
     <message>
-        <location filename="../AddMeasureForm.ui" line="170"/>
         <source>Add</source>
-        <translation>Добавить</translation>
+        <translation type="obsolete">Добавить</translation>
     </message>
     <message utf8="true">
         <source>Добавить</source>
@@ -845,79 +1141,62 @@ malugin.p@gmail.com</source>
 <context>
     <name>tsunami::AnalysisForm</name>
     <message>
-        <location filename="../AnalysisForm.cpp" line="7"/>
-        <location filename="../AnalysisForm.cpp" line="17"/>
         <source>Number</source>
-        <translation>Номер</translation>
+        <translation type="obsolete">Номер</translation>
     </message>
     <message>
-        <location filename="../AnalysisForm.cpp" line="8"/>
-        <location filename="../AnalysisForm.cpp" line="18"/>
-        <location filename="../AnalysisForm.cpp" line="25"/>
-        <location filename="../AnalysisForm.cpp" line="31"/>
         <source>Node</source>
-        <translation>Узел</translation>
+        <translation type="obsolete">Узел</translation>
     </message>
     <message>
-        <location filename="../AnalysisForm.cpp" line="9"/>
-        <location filename="../AnalysisForm.cpp" line="19"/>
-        <location filename="../AnalysisForm.cpp" line="26"/>
-        <location filename="../AnalysisForm.cpp" line="32"/>
         <source>Type</source>
-        <translation>Тип</translation>
+        <translation type="obsolete">Тип</translation>
     </message>
     <message>
-        <location filename="../AnalysisForm.cpp" line="10"/>
-        <location filename="../AnalysisForm.cpp" line="20"/>
         <source>Method</source>
-        <translation>Метод</translation>
+        <translation type="obsolete">Метод</translation>
     </message>
     <message>
-        <location filename="../AnalysisForm.cpp" line="11"/>
         <source>Start</source>
-        <translation>Начало</translation>
+        <translation type="obsolete">Начало</translation>
     </message>
     <message>
-        <location filename="../AnalysisForm.cpp" line="12"/>
         <source>Stop</source>
-        <translation>Конец</translation>
+        <translation type="obsolete">Конец</translation>
     </message>
     <message>
-        <location filename="../AnalysisForm.cpp" line="13"/>
         <source>Step</source>
-        <translation>Шаг</translation>
+        <translation type="obsolete">Шаг</translation>
     </message>
     <message>
-        <location filename="../AnalysisForm.cpp" line="21"/>
-        <location filename="../AnalysisForm.cpp" line="51"/>
         <source>List</source>
-        <translation>Список</translation>
+        <translation type="obsolete">Список</translation>
     </message>
     <message>
-        <location filename="../AnalysisForm.cpp" line="27"/>
-        <location filename="../AnalysisForm.cpp" line="49"/>
         <source>Constant</source>
-        <translation>Постоянная</translation>
+        <translation type="obsolete">Постоянная</translation>
     </message>
     <message>
-        <location filename="../AnalysisForm.cpp" line="50"/>
         <source>Linear</source>
-        <translation>Линейная</translation>
+        <translation type="obsolete">Линейная</translation>
+    </message>
+</context>
+<context>
+    <name>tsunami::AnalysisWindow</name>
+    <message>
+        <location filename="../AnalysisWindow.cpp" line="33"/>
+        <source>Current</source>
+        <translation>Ток</translation>
     </message>
     <message>
-        <location filename="../AnalysisForm.cpp" line="58"/>
-        <source>DC</source>
-        <translation type="unfinished"></translation>
+        <location filename="../AnalysisWindow.cpp" line="34"/>
+        <source>Voltage</source>
+        <translation>Напряжение</translation>
     </message>
     <message>
-        <location filename="../AnalysisForm.cpp" line="59"/>
-        <source>AC</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../AnalysisForm.cpp" line="60"/>
-        <source>TRAN</source>
-        <translation type="unfinished"></translation>
+        <location filename="../AnalysisWindow.cpp" line="35"/>
+        <source>Ground</source>
+        <translation>Земля</translation>
     </message>
 </context>
 <context>
@@ -938,9 +1217,8 @@ malugin.p@gmail.com</source>
         <translation>&lt;b&gt;Тип анализа:&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../ChoiceAnalysisForm.cpp" line="101"/>
         <source>&lt;b&gt;Sources&lt;/b&gt;&lt;br/&gt;</source>
-        <translation>&lt;b&gt;Источники&lt;/b&gt;&lt;br/&gt;</translation>
+        <translation type="obsolete">&lt;b&gt;Источники&lt;/b&gt;&lt;br/&gt;</translation>
     </message>
 </context>
 <context>
@@ -1042,115 +1320,296 @@ malugin.p@gmail.com</source>
 <context>
     <name>tsunami::DeviceWindow</name>
     <message>
-        <location filename="../DeviceWindow.cpp" line="50"/>
+        <location filename="../DeviceWindow.cpp" line="51"/>
         <source>Measures</source>
         <translation>Измерения</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.cpp" line="51"/>
+        <location filename="../DeviceWindow.cpp" line="52"/>
         <source>Libraries</source>
         <translation>Библиотеки</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.cpp" line="52"/>
+        <location filename="../DeviceWindow.cpp" line="53"/>
         <source>Analyses</source>
         <translation>Анализы</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.cpp" line="77"/>
+        <location filename="../DeviceWindow.cpp" line="79"/>
         <source>Tsunami ver %1</source>
         <translation>Tsunami версия %1</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.cpp" line="105"/>
+        <location filename="../DeviceWindow.cpp" line="114"/>
         <source>%1 - Devices Manager</source>
         <translation>%1 - Менеджер устройств</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.cpp" line="246"/>
+        <location filename="../DeviceWindow.cpp" line="259"/>
         <source>Not enough measures or libraries for extraction</source>
         <translation>Не были добавлены библиотеки или измерения для экстракции</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.cpp" line="266"/>
+        <location filename="../DeviceWindow.cpp" line="279"/>
         <source>Analysis null</source>
         <translation>Список анализов пуст</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.cpp" line="305"/>
-        <location filename="../DeviceWindow.cpp" line="306"/>
-        <location filename="../DeviceWindow.cpp" line="307"/>
+        <location filename="../DeviceWindow.cpp" line="319"/>
+        <location filename="../DeviceWindow.cpp" line="320"/>
+        <location filename="../DeviceWindow.cpp" line="321"/>
         <source>Choice device</source>
         <translation>Выберите устройство</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.cpp" line="329"/>
+        <location filename="../DeviceWindow.cpp" line="343"/>
         <source>Remove device</source>
         <translation>Удалить устройство</translation>
     </message>
     <message>
-        <location filename="../DeviceWindow.cpp" line="330"/>
+        <location filename="../DeviceWindow.cpp" line="344"/>
         <source>Do you want remove %1</source>
         <translation>Вы хотите удалить %1</translation>
+    </message>
+</context>
+<context>
+    <name>tsunami::ExtractorWindow</name>
+    <message>
+        <location filename="../ExtractorWindow.cpp" line="73"/>
+        <source>Library is saved</source>
+        <translation>Библиотека сохранена</translation>
+    </message>
+</context>
+<context>
+    <name>tsunami::IndepedentSourceDialog</name>
+    <message>
+        <location filename="../analysis/IndepedentSourceDialog.cpp" line="49"/>
+        <source>PULSE(V1 V2 ....)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../analysis/IndepedentSourceDialog.cpp" line="50"/>
+        <source>EXP(V1 V2 ....)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../analysis/IndepedentSourceDialog.cpp" line="51"/>
+        <source>SIN(V1 V2 ....)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../analysis/IndepedentSourceDialog.cpp" line="53"/>
+        <source>Voltage source</source>
+        <translation>Источник напряжения</translation>
+    </message>
+    <message>
+        <location filename="../analysis/IndepedentSourceDialog.cpp" line="57"/>
+        <source>PULSE(I1 I2 ....)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../analysis/IndepedentSourceDialog.cpp" line="58"/>
+        <source>EXP(I1 I2 ....)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../analysis/IndepedentSourceDialog.cpp" line="59"/>
+        <source>SIN(I1 I2 ....)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../analysis/IndepedentSourceDialog.cpp" line="61"/>
+        <source>Current source</source>
+        <translation>Источник тока</translation>
+    </message>
+    <message>
+        <location filename="../analysis/IndepedentSourceDialog.cpp" line="92"/>
+        <location filename="../analysis/IndepedentSourceDialog.cpp" line="158"/>
+        <source>Time delay</source>
+        <translation>Задержка времени</translation>
+    </message>
+    <message>
+        <location filename="../analysis/IndepedentSourceDialog.cpp" line="95"/>
+        <source>Time rise</source>
+        <translation>Время нарастания сигнала</translation>
+    </message>
+    <message>
+        <location filename="../analysis/IndepedentSourceDialog.cpp" line="98"/>
+        <source>Time fall</source>
+        <translation>Время задержки сигнала</translation>
+    </message>
+    <message>
+        <location filename="../analysis/IndepedentSourceDialog.cpp" line="101"/>
+        <source>Time on</source>
+        <translation>Время включения</translation>
+    </message>
+    <message>
+        <location filename="../analysis/IndepedentSourceDialog.cpp" line="104"/>
+        <source>Period</source>
+        <translation>Период</translation>
+    </message>
+    <message>
+        <location filename="../analysis/IndepedentSourceDialog.cpp" line="107"/>
+        <source>Cycles</source>
+        <translation>Циклы</translation>
+    </message>
+    <message>
+        <location filename="../analysis/IndepedentSourceDialog.cpp" line="128"/>
+        <source>Rise delay</source>
+        <translation>Задержка нарастания сигнала</translation>
+    </message>
+    <message>
+        <location filename="../analysis/IndepedentSourceDialog.cpp" line="131"/>
+        <source>Rise tau</source>
+        <translation>Tau нарастания сигнала</translation>
+    </message>
+    <message>
+        <location filename="../analysis/IndepedentSourceDialog.cpp" line="134"/>
+        <source>Fall delay</source>
+        <translation>Задержка спада сигнала</translation>
+    </message>
+    <message>
+        <location filename="../analysis/IndepedentSourceDialog.cpp" line="137"/>
+        <source>Fall tau</source>
+        <translation>Tau спада сигнала</translation>
+    </message>
+    <message>
+        <location filename="../analysis/IndepedentSourceDialog.cpp" line="156"/>
+        <source>Frequency, Hz</source>
+        <translation>Частота, Гц</translation>
+    </message>
+    <message>
+        <location filename="../analysis/IndepedentSourceDialog.cpp" line="160"/>
+        <source>Theta</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../analysis/IndepedentSourceDialog.cpp" line="170"/>
+        <location filename="../analysis/IndepedentSourceDialog.cpp" line="172"/>
+        <source>I1, A</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../analysis/IndepedentSourceDialog.cpp" line="175"/>
+        <source>V1, V</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../analysis/IndepedentSourceDialog.cpp" line="177"/>
+        <source>V2, V</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>tsunami::LibraryWindow</name>
     <message>
-        <location filename="../LibraryWindow.cpp" line="174"/>
+        <location filename="../LibraryWindow.cpp" line="187"/>
         <source>Export NetList</source>
         <translation>Экспорт NetList</translation>
     </message>
     <message>
-        <location filename="../LibraryWindow.cpp" line="203"/>
+        <location filename="../LibraryWindow.cpp" line="227"/>
         <source>Remove library</source>
         <translation>Удалить библиотеку</translation>
     </message>
     <message>
-        <location filename="../LibraryWindow.cpp" line="204"/>
+        <location filename="../LibraryWindow.cpp" line="228"/>
         <source>Do you want remove %1</source>
         <translation>Вы хотите удалить %1</translation>
     </message>
     <message>
-        <location filename="../LibraryWindow.cpp" line="222"/>
+        <location filename="../LibraryWindow.cpp" line="246"/>
         <source>Choice library</source>
         <translation>Выбрать библиотеку</translation>
     </message>
 </context>
 <context>
+    <name>tsunami::MeasureWindow</name>
+    <message>
+        <location filename="../MeasureWindow.cpp" line="52"/>
+        <source>Add</source>
+        <translation>Добавить</translation>
+    </message>
+    <message>
+        <location filename="../MeasureWindow.cpp" line="73"/>
+        <source>Save</source>
+        <translation>Сохранить</translation>
+    </message>
+    <message>
+        <location filename="../MeasureWindow.cpp" line="210"/>
+        <source>Analysis Type</source>
+        <translation>Тип анализа</translation>
+    </message>
+    <message>
+        <location filename="../MeasureWindow.cpp" line="212"/>
+        <source>User</source>
+        <translation>Пользователь</translation>
+    </message>
+    <message>
+        <location filename="../MeasureWindow.cpp" line="214"/>
+        <source>User date</source>
+        <translation>Дата измерения</translation>
+    </message>
+    <message>
+        <location filename="../MeasureWindow.cpp" line="216"/>
+        <source>Fabrication date</source>
+        <translation>Дата производства</translation>
+    </message>
+    <message>
+        <location filename="../MeasureWindow.cpp" line="218"/>
+        <source>Comment</source>
+        <translation>Комментарий</translation>
+    </message>
+    <message>
+        <location filename="../MeasureWindow.cpp" line="220"/>
+        <source>Dubious</source>
+        <translation>Сомнительное</translation>
+    </message>
+    <message>
+        <location filename="../MeasureWindow.cpp" line="311"/>
+        <source>Export to file</source>
+        <translation>Экспорт в файл</translation>
+    </message>
+    <message>
+        <location filename="../MeasureWindow.cpp" line="325"/>
+        <source>Import from file</source>
+        <translation>Импорт из файла</translation>
+    </message>
+</context>
+<context>
     <name>tsunami::OpenDeviceDialog</name>
     <message>
-        <location filename="../OpenDeviceDialog.cpp" line="66"/>
+        <location filename="../OpenDeviceDialog.cpp" line="69"/>
         <source>Choice device</source>
         <translation>Выберите устройство</translation>
     </message>
     <message>
-        <location filename="../OpenDeviceDialog.cpp" line="72"/>
+        <location filename="../OpenDeviceDialog.cpp" line="75"/>
         <source>&lt;b&gt;Name:&lt;/b&gt;&lt;br/&gt;%1&lt;br/&gt;</source>
         <translation>&lt;b&gt;Название:&lt;/b&gt;&lt;br/&gt;%1&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../OpenDeviceDialog.cpp" line="73"/>
+        <location filename="../OpenDeviceDialog.cpp" line="76"/>
         <source>&lt;b&gt;Model:&lt;/b&gt;&lt;br/&gt;%2&lt;br/&gt;</source>
         <translation>&lt;b&gt;Модель:&lt;/b&gt;&lt;br/&gt;%2&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../OpenDeviceDialog.cpp" line="74"/>
+        <location filename="../OpenDeviceDialog.cpp" line="77"/>
         <source>&lt;b&gt;Created:&lt;/b&gt;&lt;br/&gt;%1&lt;br/&gt;</source>
         <translation>&lt;b&gt;Создана:&lt;/b&gt;&lt;br/&gt;%1&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../OpenDeviceDialog.cpp" line="75"/>
+        <location filename="../OpenDeviceDialog.cpp" line="78"/>
         <source>&lt;b&gt;Changed:&lt;/b&gt;&lt;br/&gt;%1&lt;br/&gt;</source>
         <translation>&lt;b&gt;Изменено:&lt;/b&gt;&lt;br/&gt;%1&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../OpenDeviceDialog.cpp" line="101"/>
+        <location filename="../OpenDeviceDialog.cpp" line="108"/>
         <source>Remove device</source>
         <translation>Удалить устройство</translation>
     </message>
     <message>
-        <location filename="../OpenDeviceDialog.cpp" line="102"/>
+        <location filename="../OpenDeviceDialog.cpp" line="109"/>
         <source>Do you want remove %1</source>
         <translation>Вы хотите удалить %1</translation>
     </message>
@@ -1158,14 +1617,27 @@ malugin.p@gmail.com</source>
 <context>
     <name>tsunami::PlotExtractionDialog</name>
     <message>
-        <location filename="../PlotExtractionDialog.cpp" line="20"/>
+        <location filename="../PlotExtractionDialog.cpp" line="24"/>
         <source>Initial</source>
         <translation>Начальное</translation>
     </message>
     <message>
-        <location filename="../PlotExtractionDialog.cpp" line="21"/>
+        <location filename="../PlotExtractionDialog.cpp" line="25"/>
         <source>Fitted</source>
-        <translation type="unfinished"></translation>
+        <translation>Подгонка</translation>
+    </message>
+    <message>
+        <location filename="../PlotExtractionDialog.cpp" line="135"/>
+        <source>Incorrect input values</source>
+        <translation>Некорректные входные значения</translation>
+    </message>
+</context>
+<context>
+    <name>tsunami::PrepareExtractorDialog</name>
+    <message>
+        <location filename="../PrepareExtractorDialog.cpp" line="96"/>
+        <source>Measures are not choice</source>
+        <translation>Измерения невыбраны</translation>
     </message>
 </context>
 <context>
@@ -1189,24 +1661,20 @@ malugin.p@gmail.com</source>
 <context>
     <name>tsunami::addMeasureForm</name>
     <message>
-        <location filename="../AddMeasureForm.cpp" line="41"/>
         <source>Add</source>
-        <translation>Добавить</translation>
+        <translation type="obsolete">Добавить</translation>
     </message>
     <message>
-        <location filename="../AddMeasureForm.cpp" line="44"/>
         <source>Save</source>
-        <translation>Сохранить</translation>
+        <translation type="obsolete">Сохранить</translation>
     </message>
     <message>
-        <location filename="../AddMeasureForm.cpp" line="244"/>
         <source>Export to file</source>
-        <translation>Экспорт в файл</translation>
+        <translation type="obsolete">Экспорт в файл</translation>
     </message>
     <message>
-        <location filename="../AddMeasureForm.cpp" line="258"/>
         <source>Import from file</source>
-        <translation>Импорт из файла</translation>
+        <translation type="obsolete">Импорт из файла</translation>
     </message>
 </context>
 </TS>

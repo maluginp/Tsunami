@@ -19,7 +19,16 @@ private:
     Vector<double> modifyS(const Vector<double>& S,double cappa);
     Matrix<double> solveAk(const Matrix<double>& Ak, const Vector<double> &dGradient, const Vector<double> &dX);
 
+    VectorDouble linearSearch(const VectorDouble& oldX, const double fold,
+                              const VectorDouble& gradient,
+                              VectorDouble &S, double stepMax);
+
     double newtonRaphsonMethod(const Vector<double> &Xk, const Vector<double> &S);
+
+    // Debug methods
+    void print(const MatrixDouble& matrix);
+    void print(const VectorDouble& vector);
+
 };
 
 } // core

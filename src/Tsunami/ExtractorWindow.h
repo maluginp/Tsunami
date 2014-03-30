@@ -38,6 +38,8 @@ private:
     db::SettingStorage* settings_;
 private slots:
     void finishExtraction();
+    void clickedSave();
+
     void clickedStop();
     void runExtraction();
     void log( const QString& log );

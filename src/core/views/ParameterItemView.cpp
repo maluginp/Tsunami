@@ -102,12 +102,12 @@ QVariant ParameterItemView::headerData(int section, Qt::Orientation orientation,
     if(orientation == Qt::Horizontal){
         switch(section){
         case 0: return QString("");
-        case 1: return tr("Name");
-        case 2: return tr("Initial");
-        case 3: return tr("Fitted");
-        case 4: return tr("Minimum");
-        case 5: return tr("Maximum");
-        case 6: return tr("Fixed");
+        case 1: return tr("Параметр");
+        case 2: return tr("Начальная");
+        case 3: return tr("Подгонка");
+        case 4: return tr("Минимум");
+        case 5: return tr("Максимум");
+        case 6: return tr("Зафиксировать");
         }
     }
 

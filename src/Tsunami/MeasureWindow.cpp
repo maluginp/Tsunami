@@ -217,7 +217,7 @@ void MeasureWindow::showSourcesDescription() {
      headerView_->addPair("comment",  QVariant(""),
                           gui::KeyValuePair::TYPE_TEXT, tr("Comment"));
      headerView_->addPair("dubious",  QVariant(""),
-                          gui::KeyValuePair::TYPE_CHECKBOX, QString("Dubious"));
+                          gui::KeyValuePair::TYPE_CHECKBOX, tr("Dubious"));
 
      ui->headerTableView->setModel( headerView_ );
      ui->headerTableView->setColumnWidth(0,150);

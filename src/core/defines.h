@@ -58,6 +58,8 @@ typedef core::Matrix<int>    MatrixInt;
 typedef core::Vector<double> VectorDouble;
 typedef core::Vector<int>    VectorInt;
 
+typedef double (*FUNCTION)(const VectorDouble& x);
+typedef VectorDouble(*FUNC_GRADIENT)(const VectorDouble& x);
 
 
 #include <limits>
@@ -67,6 +69,8 @@ typedef core::Vector<int>    VectorInt;
 #define TSUNAMI_DOUBLE_INF std::numeric_limits<double>::infinity()
 #define TSUNAMI_DOUBLE_EPS std::numeric_limits<double>::epsilon()
 
+
 }
+
 
 #endif // DEFINES_H

@@ -26,4 +26,11 @@ CONFIG   -= app_bundle
 
 
 SOURCES += main.cpp \
-    linear_search.cpp
+    linear_search.cpp \
+    QuasiNewtonExpr.cpp \
+    GeneticAlgorithm.cpp
+
+HEADERS += \
+    linear_search.h \
+    QuasiNewtonExpr.h \
+    GeneticAlgorithm.h

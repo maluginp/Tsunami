@@ -1,4 +1,5 @@
 #include <QCoreApplication>
+#include <QTranslator>
 
 int main(int argc, char *argv[])
 {

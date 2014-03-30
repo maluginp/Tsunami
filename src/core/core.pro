@@ -148,3 +148,9 @@ HEADERS += \
     math/Math.h \
     export.h
 
+TRANSLATIONS += i18n/core_en.ts \
+                i18n/core_ru.ts
+
+RESOURCES +=
+
+FORMS +=

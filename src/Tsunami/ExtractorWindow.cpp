@@ -42,6 +42,8 @@ ExtractorWindow::ExtractorWindow(DeviceType type, int libraryId, QList<int> meas
     ui->runButton->setEnabled(true);
     ui->stopButton->setEnabled(false);
 
+    connect(ui->saveParametersButton, SIGNAL(clicked()),
+                                this, SLOT(clickedSave()));
     connect(ui->runButton,SIGNAL(clicked()),this,SLOT(runExtraction()));
     connect(ui->stopButton,SIGNAL(clicked()),this,SLOT(clickedStop()));
     connect(ui->showPlotButton,SIGNAL(clicked()),this,SLOT(clickedShowPlotButton()));
@@ -60,6 +62,17 @@ void ExtractorWindow::finishExtraction() {
     ui->saveParametersButton->setEnabled(true);
 
 
+}
+
+void ExtractorWindow::clickedSave() {
+    db::ParameterStorage *parameterStorage = db::ParameterStorage::instance();
+
+    bool saved = parameterStorage->saveLibrary( library_ );
+
+    if(saved){
+        MESSAGE_INFO(tr("Library is saved"));
+        return;
+    }
 }
 
 void ExtractorWindow::clickedStop() {
